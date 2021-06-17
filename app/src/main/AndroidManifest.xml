@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="mz.unilurio.solidermed">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Projecto_S">
+        <activity android:name=".Registo"
+            android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
+        <activity
+            android:name=".DadosPessoais"
+            android:label="@string/title_activity_dados_pessoais"
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
+        <activity android:name=".Seacher" />
+        <activity
+            android:name=".NoteActivity"
+            android:label="@string/title_activity_note"
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
+        <activity
+            android:name=".ManActivit"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Projecto_S.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

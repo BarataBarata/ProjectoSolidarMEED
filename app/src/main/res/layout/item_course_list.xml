@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="292dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="374dp"
+            android:layout_height="274dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
+
+
+            <TextView
+                android:id="@+id/id_titulo_Courses4"
+                android:layout_width="176dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="172dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="Apelido"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/id_titulo_Courses3" />
+
+            <TextView
+                android:id="@+id/id_titulo_Courses6"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="176dp"
+                android:layout_marginTop="68dp"
+                android:gravity="center"
+                android:text="Dilatacao"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/id_titulo_Courses3" />
+
+            <TextView
+                android:id="@+id/id_titulo_Courses7"
+                android:layout_width="51dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="304dp"
+                android:gravity="end"
+                android:text="horas"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="15dp"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.042" />
+
+            <TextView
+                android:id="@+id/id_titulo_Courses2"
+                android:layout_width="123dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="108dp"
+                android:gravity="center"
+                android:text="Nome :"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintEnd_toStartOf="@+id/id_titulo_Courses3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="165dp"
+                android:layout_height="73dp"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/partu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/id_titulo_Courses3"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginStart="172dp"
+                android:layout_marginTop="108dp"
+                android:gravity="center"
+                android:text="Nome Parturiente"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/id_titulo_Courses"
+                android:layout_width="134dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="Apelido :"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintEnd_toStartOf="@+id/id_titulo_Courses4"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/id_titulo_Courses2" />
+
+            <TextView
+                android:id="@+id/id_titulo_Courses5"
+                android:layout_width="128dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="72dp"
+                android:gravity="center"
+                android:text="Dilatacao :"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintEnd_toStartOf="@+id/id_titulo_Courses4"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/id_titulo_Courses2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
