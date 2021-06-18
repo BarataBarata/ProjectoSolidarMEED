@@ -3,9 +3,9 @@ package mz.unilurio.solidermed.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Entries {
+public class Queue {
 
-    public List<Observer> observers = new ArrayList<>();
+    private List<Observer> observers = new ArrayList<>();
 
     public void register(Observer observer){
         observers.add(observer);
@@ -15,12 +15,18 @@ public class Entries {
         observers.remove(observer);
     }
 
-    public void nofify(){
+    public boolean nofify(){
+
         for (Observer ob:observers) {
+//            System.out.println(ob.getMeasure().peek());
             if(ob.fireAlert()){
+
                 Notification notification = new Notification();
-                System.out.println("Disparou alerta!");
+                return true;
+            }else{
+                System.out.println("No notification");
             }
         }
+        return false;
     }
 }

@@ -7,7 +7,9 @@ public class Notification {
     private String message;
     private Date time;
     private boolean isOpen;
-    private ServicoDeParto servicoDeParto;
+    private DeliveryService deliveryService;
 
-
+    public Notification(){
+        System.out.println(" ---------- Alert Fired! ------------");
+    }
 }

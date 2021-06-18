@@ -1,15 +1,17 @@
 package mz.unilurio.solidermed.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Measures {
+public class Measure {
     private Date initialHour;
     private int initialDilatation;
     private Date predictedExpulsionHour;
     private int predictedDilatation;
 
-    public Measures(Date initialHour, int initialDilatation) {
+    public Measure(Date initialHour, int initialDilatation) {
         this.initialHour = initialHour;
         this.initialDilatation = initialDilatation;
         predictDilatationAndTime();
@@ -49,7 +51,8 @@ public class Measures {
 
     public void predictDilatationAndTime(){
         this.predictedDilatation = this.initialDilatation + 5;
-        this.predictedExpulsionHour = addHoursToJavaUtilDate(this.initialHour, 5);
+//        this.predictedExpulsionHour = addHoursToJavaUtilDate(this.initialHour, 5);
+        this.predictedExpulsionHour = addMinutesToJavaUtilDate(this.initialHour, 1);
     }
 
     public Date addHoursToJavaUtilDate(Date date, int hours) {
@@ -57,5 +60,27 @@ public class Measures {
         calendar.setTime(date);
         calendar.add(Calendar.HOUR_OF_DAY, hours);
         return calendar.getTime();
+    }
+
+    public Date addMinutesToJavaUtilDate(Date date, int minutes) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MINUTE, minutes);
+        return calendar.getTime();
+    }
+
+    @Override
+    public String toString() {
+        return "Measure{" +
+                "initialHour=" + format(initialHour) +
+                ", initialDilatation=" + initialDilatation +
+                ", predictedExpulsionHour=" + format(predictedExpulsionHour) +
+                ", predictedDilatation=" + predictedDilatation +
+                '}';
+    }
+
+    private String format(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        return dateFormat.format(date);
     }
 }

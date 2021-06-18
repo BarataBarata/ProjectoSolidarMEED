@@ -1,20 +1,24 @@
 package mz.unilurio.solidermed.model;
 
-public class Parturiente {
+public class Parturient {
     private String name;
     private String surname;
     private int idade;
-    private double dilatation;
     private boolean isTransfered;
     private String reason;
 
-    public Parturiente(){}
+    public Parturient(){}
 
-    public Parturiente(String name, String surname, int idade, double dilatation, boolean isTransfered, String reason) {
+    public Parturient(String name, String surname, int idade) {
         this.name = name;
         this.surname = surname;
         this.idade = idade;
-        this.dilatation = dilatation;
+    }
+
+    public Parturient(String name, String surname, int idade, boolean isTransfered, String reason) {
+        this.name = name;
+        this.surname = surname;
+        this.idade = idade;
         this.isTransfered = isTransfered;
         this.reason = reason;
     }
