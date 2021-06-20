@@ -1,9 +1,13 @@
 package mz.unilurio.solidermed.model;
 
+import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class Notification {
-    private Colour colour;
+public final class Notification implements Parcelable {
+    private int color;
     private String message;
     private Date time;
     private boolean isOpen;
@@ -11,5 +15,83 @@ public class Notification {
 
     public Notification(){
         System.out.println(" ---------- Alert Fired! ------------");
+    }
+
+    public Notification(int color, String message, Date time, boolean isOpen, DeliveryService deliveryService) {
+        this.color = color;
+        this.message = message;
+        this.time = time;
+        this.isOpen = isOpen;
+        this.deliveryService = deliveryService;
+    }
+
+    protected Notification(Parcel in) {
+        message = in.readString();
+        isOpen = in.readByte() != 0;
+    }
+
+    public static final Creator<Notification> CREATOR = new Creator<Notification>() {
+        @Override
+        public Notification createFromParcel(Parcel in) {
+            return new Notification(in);
+        }
+
+        @Override
+        public Notification[] newArray(int size) {
+            return new Notification[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public int getColour() {
+        return color;
+    }
+
+    public void setColour(int color) {
+        this.color = color;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
+
+    public DeliveryService getDeliveryService() {
+        return deliveryService;
+    }
+
+    public void setDeliveryService(DeliveryService deliveryService) {
+        this.deliveryService = deliveryService;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(deliveryService, 0);
+        dest.writeString(message);
+        dest.writeInt(color);
+        dest.writeByte((byte) (isOpen ? 1 : 0));
     }
 }

@@ -51,7 +51,7 @@ public class CoursesRecyclerAdapter extends RecyclerView.Adapter<CoursesRecycler
 
         public ViewHolter(@NonNull @NotNull View itemView) {
             super(itemView);
-            textCourses = (TextView)itemView.findViewById(R.id.id_titulo_Courses);
+            textCourses = (TextView)itemView.findViewById(R.id.txtTime);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

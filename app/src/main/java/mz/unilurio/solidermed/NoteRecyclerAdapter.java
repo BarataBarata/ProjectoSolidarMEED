@@ -16,6 +16,7 @@ import java.util.List;
 
 public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapter.ViewHolter>{
     private NoteRecyclerAdapter noteRecyclerAdapter;
+
     private final Context context;
     private List<NoteInfo> mNote;
     private final LayoutInflater layoutInflater;
@@ -58,8 +59,8 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
 
         public ViewHolter(@NonNull @NotNull View itemView) {
             super(itemView);
-            textCourses = (TextView)itemView.findViewById(R.id.id_titulo_Courses);
-            textTitle = (TextView)itemView.findViewById(R.id.id_textCourse);
+            textCourses = (TextView)itemView.findViewById(R.id.txtTime);
+            textTitle = (TextView)itemView.findViewById(R.id.txtNameParturient);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

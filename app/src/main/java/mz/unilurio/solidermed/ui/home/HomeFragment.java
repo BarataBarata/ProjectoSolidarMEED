@@ -27,7 +27,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_home, container, false);
+
         noteRecyclerAdapter=view.findViewById(R.id.list_notes);
+
         noteRecyclerAdapter.setLayoutManager(new LinearLayoutManager(getContext()));
         List<NoteInfo> notes= DataManager.getInstance().getNotes();
         noteRecyclerAdapter.setAdapter(new NoteRecyclerAdapter2(this,notes));
