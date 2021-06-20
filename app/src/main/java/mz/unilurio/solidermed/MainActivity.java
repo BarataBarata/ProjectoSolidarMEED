@@ -1,14 +1,14 @@
 package mz.unilurio.solidermed;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.widget.SearchView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,9 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Queue;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -119,17 +123,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initializeDisplayContent() {
-        recyclerItems = findViewById(R.id.list_notes);
+//        recyclerItems = findViewById(R.id.list_notes);
+//
+//        notificationLayoutManager = new LinearLayoutManager(this);
+//        List<Notification> notifications = DBManager.getInstance().getEmptyNotifications();
+//        notificationRecyclerAdapter = new NotificationRecyclerAdpter(this, notifications);
+//
+//        displayNotifications();
+//        NotificationThread thread = new NotificationThread(this);
+//        new Thread(thread).start();
 
-        notificationLayoutManager = new LinearLayoutManager(this);
-        List<Notification> notifications = DBManager.getInstance().getNotifications();
-        notificationRecyclerAdapter = new NotificationRecyclerAdpter(this, notifications);
+        Timer timer = new Timer();
+        timer.schedule(new ThreadTimer(this), 0, 100000); // 1 minute
 
-//        coursesLayoutManager = new GridLayoutManager(this, 2);
-//        List<CourseInfo> courses = DataManager.getInstance().getCourses();
-//        courseRecyclerAdapter = new CourseRecyclerAdapter(this, courses);
-
-        displayNotifications();
     }
 
 //    private void displayCourses() {
@@ -153,8 +159,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume() {
         super.onResume();
-        notificationRecyclerAdapter.notifyDataSetChanged();
+        if (notificationRecyclerAdapter != null){
+            notificationRecyclerAdapter.notifyDataSetChanged();
+        }
     }
+
+    class ThreadTimer extends TimerTask {
+        private Context context;
+        private boolean isloading = true;
+
+        public ThreadTimer(Context context){
+            this.context = context;
+        }
+
+        public void run() {
+
+            Queue queue = DBManager.getInstance().getQueue();
+            queue.nofify();
+            List<Notification> notifications = queue.getNotifications();
+            notificationRecyclerAdapter = new NotificationRecyclerAdpter(context, notifications);
+
+            if(isloading){
+                Log.d("ThreadTimer", "First -----");
+                recyclerItems = findViewById(R.id.list_notes);
+                notificationLayoutManager = new LinearLayoutManager(context);
+
+                recyclerItems.setAdapter(notificationRecyclerAdapter);
+                recyclerItems.setLayoutManager(notificationLayoutManager);
+                selectNavigationMenuItem(R.id.nav_note);
+
+                isloading = false;
+            }else{
+                Log.d("ThreadTimer", "Second -----");
+                notificationRecyclerAdapter.notifyDataSetChanged();
+            }
+
+
+
+        }
+    }
+
 
 
 }
