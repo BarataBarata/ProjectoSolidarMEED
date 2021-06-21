@@ -67,12 +67,12 @@ public class ExampleUnitTest {
         System.out.println(format(measure.getInitialHour()));
         System.out.println(format(measure.getPredictedExpulsionHour()));
 
-        while (true) {
-            boolean flag = queue.nofify();
-            if (flag) {
-                break;
-            }
-        }
+//        while (true) {
+//            boolean flag = queue.nofify();
+//            if (flag) {
+//                break;
+//            }
+//        }
     }
 
     @Test

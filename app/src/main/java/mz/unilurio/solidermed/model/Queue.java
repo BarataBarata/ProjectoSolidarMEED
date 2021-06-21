@@ -20,25 +20,21 @@ public class Queue {
         observers.remove(observer);
     }
 
-    public boolean nofify(){
+    public void nofify(){
 
         this.notifications = new ArrayList<>();
         for (Observer ob:observers) {
             if(ob.fireAlert()){
-
                 Notification notification = new Notification();
                 notification.setColour(Color.rgb(248, 215,218));
                 notification.setMessage("Message ...");
                 notification.setTime( Calendar.getInstance().getTime());
                 notification.setOpen(true);
                 notification.setDeliveryService((DeliveryService) ob);
-
                 this.notifications.add(notification);
-
-                return true;
             }
         }
-        return false;
+
     }
 
     public List<Notification> getNotifications() {

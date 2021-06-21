@@ -27,6 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
+//import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Queue;
 
@@ -174,25 +175,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         public void run() {
 
-            Queue queue = DBManager.getInstance().getQueue();
-            queue.nofify();
-            List<Notification> notifications = queue.getNotifications();
-            notificationRecyclerAdapter = new NotificationRecyclerAdpter(context, notifications);
+            runOnUiThread(new Runnable() {
 
-            if(isloading){
-                Log.d("ThreadTimer", "First -----");
-                recyclerItems = findViewById(R.id.list_notes);
-                notificationLayoutManager = new LinearLayoutManager(context);
+                @Override
+                public void run() {
 
-                recyclerItems.setAdapter(notificationRecyclerAdapter);
-                recyclerItems.setLayoutManager(notificationLayoutManager);
-                selectNavigationMenuItem(R.id.nav_note);
+                    // Stuff that updates the UI
 
-                isloading = false;
-            }else{
-                Log.d("ThreadTimer", "Second -----");
-                notificationRecyclerAdapter.notifyDataSetChanged();
-            }
+                    Queue queue = DBManager.getInstance().getQueue();
+                    queue.nofify();
+                    List<Notification> notifications = queue.getNotifications();
+                    notificationRecyclerAdapter = new NotificationRecyclerAdpter(context, notifications);
+
+                    if(isloading){
+                        Log.d("ThreadTimer", "First -----");
+                        recyclerItems = findViewById(R.id.list_notes);
+                        notificationLayoutManager = new LinearLayoutManager(context);
+
+                        recyclerItems.setAdapter(notificationRecyclerAdapter);
+                        recyclerItems.setLayoutManager(notificationLayoutManager);
+                        selectNavigationMenuItem(R.id.nav_note);
+
+                        isloading = false;
+                    }else{
+                        Log.d("ThreadTimer", "Second -----");
+                        notificationRecyclerAdapter.notifyDataSetChanged();
+                        recyclerItems.setAdapter(notificationRecyclerAdapter);
+                        recyclerItems.setLayoutManager(notificationLayoutManager);
+                        selectNavigationMenuItem(R.id.nav_note);
+                    }
+
+                }
+            });
+
 
 
 
