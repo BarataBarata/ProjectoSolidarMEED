@@ -57,6 +57,7 @@ public class DBManager {
 
     private DeliveryService InitializeDeliveryService1() {
         Parturient p = new Parturient("Ds", "One'", 18);
+        p.setId(1);
         Date current = Calendar.getInstance().getTime();
         Measure measure = new Measure(current, 6);
         return new DeliveryService(p, measure);
@@ -64,6 +65,7 @@ public class DBManager {
 
     private DeliveryService InitializeDeliveryService2() {
         Parturient p = new Parturient("Ds", "Two", 20);
+        p.setId(2);
         Calendar calendar = Calendar.getInstance();
 
         Date current = calendar.getTime();

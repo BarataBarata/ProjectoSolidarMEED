@@ -27,6 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,14 +42,12 @@ import mz.unilurio.solidermed.model.Queue;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
     private AppBarConfiguration mAppBarConfiguration;
-
     private RecyclerView recyclerItems;
-
     private LinearLayoutManager notificationLayoutManager;
     private NotificationRecyclerAdpter notificationRecyclerAdapter;
 
+    private HashMap<String, Notification> notificationTriggered = new HashMap<String, Notification>();
 //    private GridLayoutManager coursesLayoutManager;
 //    private CourseRecyclerAdapter courseRecyclerAdapter;
 
@@ -117,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume() {
         super.onResume();
-        if (notificationRecyclerAdapter != null){
+        if (notificationRecyclerAdapter != null) {
             notificationRecyclerAdapter.notifyDataSetChanged();
         }
     }
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         private Context context;
         private boolean isloading = true;
 
-        public ThreadTimer(Context context){
+        public ThreadTimer(Context context) {
             this.context = context;
         }
 
@@ -191,33 +191,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     List<Notification> notifications = queue.getNotifications();
                     notificationRecyclerAdapter = new NotificationRecyclerAdpter(context, notifications);
 
-//                    if(isloading){
-//                        Log.d("ThreadTimer", "First -----");
-//                        recyclerItems = findViewById(R.id.list_notes);
-//                        notificationLayoutManager = new LinearLayoutManager(context);
-//
-//                        recyclerItems.setAdapter(notificationRecyclerAdapter);
-//                        recyclerItems.setLayoutManager(notificationLayoutManager);
-//                        selectNavigationMenuItem(R.id.nav_note);
-//
-//                        isloading = false;
-//                    }else{
-//                        Log.d("ThreadTimer", "Second -----");
-                        recyclerItems = findViewById(R.id.list_notes);
-                        notificationRecyclerAdapter.notifyDataSetChanged();
-                        recyclerItems.setAdapter(notificationRecyclerAdapter);
-                        recyclerItems.setLayoutManager(notificationLayoutManager);
-                        selectNavigationMenuItem(R.id.nav_note);
+                    recyclerItems = findViewById(R.id.list_notes);
+                    notificationLayoutManager = new LinearLayoutManager(context);
+                    recyclerItems.setAdapter(notificationRecyclerAdapter);
+                    recyclerItems.setLayoutManager(notificationLayoutManager);
+                    selectNavigationMenuItem(R.id.nav_note);
 //                    }
 
                     // Send SMS
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
                             List<EmergencyMedicalPersonnel> eP = DBManager.getInstance().getEmergencyMedicalPersonnels();
-                            for (EmergencyMedicalPersonnel e:eP) {
-                                for (Notification n:notifications) {
-                                    System.out.println("sending SMS to "+e.getContact()+" Message: "+n.getMessage());
-                                    sendSMS(e.getContact(), n.getMessage());
+                            for (EmergencyMedicalPersonnel e : eP) {
+                                for (Notification n : notifications) {
+                                    System.out.println(" -------------------------------------------- size hash: " + notificationTriggered.size());
+                                    if (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())) {
+                                        System.out.println("sending SMS to " + e.getContact() + " Message: " + n.getMessage());
+                                        sendSMS(e.getContact(), n.getMessage());
+                                        System.out.println(" -------------b laljfljajflajl - " + n.getId());
+                                        notificationTriggered.put(n.getId(), n);
+                                    } else {
+                                        System.out.println(" ------------------------------------------------- notification " + n.getId() + " not trrigeer " + (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())));
+                                    }
                                 }
                             }
                         } else {
@@ -229,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void sendSMS(String phoneNumber, String message){
+    private void sendSMS(String phoneNumber, String message) {
         phoneNumber = phoneNumber.trim();
         message = message.trim();
 
@@ -237,10 +232,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNumber, null, message, null, null);
             Toast.makeText(this, "Message is sent", Toast.LENGTH_SHORT);
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
         }
-
 
 
     }

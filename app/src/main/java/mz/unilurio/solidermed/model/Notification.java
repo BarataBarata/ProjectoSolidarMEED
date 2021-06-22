@@ -4,14 +4,20 @@ import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public final class Notification implements Parcelable {
+    public static final int TWO_INTERVAL = 2;
+    public static final int FIVE_INTERVAL = 5;
+    public static final int TEN_INTERVAL = 10;
+    private String id;
     private int color;
     private String message;
     private Date time;
     private boolean isOpen;
     private DeliveryService deliveryService;
+    private Date nextNotifier;
 
     public Notification(){
         System.out.println(" ---------- Alert Fired! ------------");
@@ -23,9 +29,14 @@ public final class Notification implements Parcelable {
         this.time = time;
         this.isOpen = isOpen;
         this.deliveryService = deliveryService;
+        this.id = getId();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, Notification.FIVE_INTERVAL);
+        this.nextNotifier = calendar.getTime();
     }
 
     protected Notification(Parcel in) {
+        id = in.readString();
         message = in.readString();
         isOpen = in.readByte() != 0;
     }
@@ -87,8 +98,21 @@ public final class Notification implements Parcelable {
         this.deliveryService = deliveryService;
     }
 
+    public String getId() {
+        return this.deliveryService.getParturient().getId() + ""+color ;
+    }
+
+    public Date getNextNotifier() {
+        return nextNotifier;
+    }
+
+    public void setNextNotifier(Date nextNotifier) {
+        this.nextNotifier = nextNotifier;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeParcelable(deliveryService, 0);
         dest.writeString(message);
         dest.writeInt(color);

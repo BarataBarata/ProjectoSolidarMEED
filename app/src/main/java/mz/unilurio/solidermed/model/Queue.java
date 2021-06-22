@@ -32,6 +32,11 @@ public class Queue {
                 notification.setTime( Calendar.getInstance().getTime());
                 notification.setOpen(true);
                 notification.setDeliveryService((DeliveryService) ob);
+                Calendar calendar = Calendar.getInstance();
+//                calendar.add(Calendar.MINUTE, Notification.FIVE_INTERVAL);
+                calendar.add(Calendar.MINUTE, Notification.TWO_INTERVAL);
+                notification.setNextNotifier(calendar.getTime());
+//                notification
                 this.notifications.add(notification);
             }
         }

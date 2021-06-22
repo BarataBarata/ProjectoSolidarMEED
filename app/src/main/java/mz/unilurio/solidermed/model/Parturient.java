@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Parturient implements Parcelable {
+    private int id;
     private String name;
     private String surname;
     private int age;
@@ -28,6 +29,7 @@ public class Parturient implements Parcelable {
 
 
     protected Parturient(Parcel in) {
+        id = in.readInt();
         name = in.readString();
         surname = in.readString();
         age = in.readInt();
@@ -54,11 +56,20 @@ public class Parturient implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(name);
         dest.writeString(surname);
         dest.writeInt(age);
         dest.writeByte((byte) (isTransfered ? 1 : 0));
         dest.writeString(reason);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
