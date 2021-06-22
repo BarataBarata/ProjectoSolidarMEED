@@ -1,12 +1,17 @@
 package mz.unilurio.solidermed;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -27,7 +32,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
-//import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Queue;
 
@@ -181,39 +186,63 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void run() {
 
                     // Stuff that updates the UI
-
                     Queue queue = DBManager.getInstance().getQueue();
                     queue.nofify();
                     List<Notification> notifications = queue.getNotifications();
                     notificationRecyclerAdapter = new NotificationRecyclerAdpter(context, notifications);
 
-                    if(isloading){
-                        Log.d("ThreadTimer", "First -----");
+//                    if(isloading){
+//                        Log.d("ThreadTimer", "First -----");
+//                        recyclerItems = findViewById(R.id.list_notes);
+//                        notificationLayoutManager = new LinearLayoutManager(context);
+//
+//                        recyclerItems.setAdapter(notificationRecyclerAdapter);
+//                        recyclerItems.setLayoutManager(notificationLayoutManager);
+//                        selectNavigationMenuItem(R.id.nav_note);
+//
+//                        isloading = false;
+//                    }else{
+//                        Log.d("ThreadTimer", "Second -----");
                         recyclerItems = findViewById(R.id.list_notes);
-                        notificationLayoutManager = new LinearLayoutManager(context);
-
-                        recyclerItems.setAdapter(notificationRecyclerAdapter);
-                        recyclerItems.setLayoutManager(notificationLayoutManager);
-                        selectNavigationMenuItem(R.id.nav_note);
-
-                        isloading = false;
-                    }else{
-                        Log.d("ThreadTimer", "Second -----");
                         notificationRecyclerAdapter.notifyDataSetChanged();
                         recyclerItems.setAdapter(notificationRecyclerAdapter);
                         recyclerItems.setLayoutManager(notificationLayoutManager);
                         selectNavigationMenuItem(R.id.nav_note);
-                    }
+//                    }
 
+                    // Send SMS
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+                            List<EmergencyMedicalPersonnel> eP = DBManager.getInstance().getEmergencyMedicalPersonnels();
+                            for (EmergencyMedicalPersonnel e:eP) {
+                                for (Notification n:notifications) {
+                                    System.out.println("sending SMS to "+e.getContact()+" Message: "+n.getMessage());
+                                    sendSMS(e.getContact(), n.getMessage());
+                                }
+                            }
+                        } else {
+                            requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
+                        }
+                    }
                 }
             });
-
-
-
-
         }
     }
 
+    private void sendSMS(String phoneNumber, String message){
+        phoneNumber = phoneNumber.trim();
+        message = message.trim();
 
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+            Toast.makeText(this, "Message is sent", Toast.LENGTH_SHORT);
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
+        }
+
+
+
+    }
 
 }

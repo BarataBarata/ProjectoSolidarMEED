@@ -27,7 +27,8 @@ public class Queue {
             if(ob.fireAlert()){
                 Notification notification = new Notification();
                 notification.setColour(Color.rgb(248, 215,218));
-                notification.setMessage("Message ...");
+                Parturient p = ((DeliveryService) ob).getParturient();
+                notification.setMessage("ALERTA VERMELHO disparado. A parturiente "+p.getName()+" "+p.getSurname()+" necessita de cuidado médico");
                 notification.setTime( Calendar.getInstance().getTime());
                 notification.setOpen(true);
                 notification.setDeliveryService((DeliveryService) ob);

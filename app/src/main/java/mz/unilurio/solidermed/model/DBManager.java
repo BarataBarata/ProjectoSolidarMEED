@@ -2,8 +2,6 @@ package mz.unilurio.solidermed.model;
 
 import android.graphics.Color;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,25 +13,39 @@ public class DBManager {
 
     private List<Notification> notifications = new ArrayList<>();
     private Queue queue;
+    private List<EmergencyMedicalPersonnel> emergencyMedicalPersonnels = new ArrayList<>();
 
     public static DBManager getInstance() {
         if(ourInstance == null) {
             ourInstance = new DBManager();
             ourInstance.initializeNotifications();
             ourInstance.initializeQueue();
-//            ourInstance.initializeCourses();
-//            ourInstance.initializeExampleNotes();
+            ourInstance.initializeEmergencyPersonnels();
+
         }
         return ourInstance;
     }
 
+    public List<EmergencyMedicalPersonnel> getEmergencyMedicalPersonnels() {
+        return emergencyMedicalPersonnels;
+    }
+
+    private void initializeEmergencyPersonnels(){
+        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
+        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
+    }
+
+    private EmergencyMedicalPersonnel initializeEmergencyPersonnel1(){
+        return new EmergencyMedicalPersonnel("Saide", "Saide", "849288877");
+    }
+
+    private EmergencyMedicalPersonnel initializeEmergencyPersonnel2(){
+        return new EmergencyMedicalPersonnel("Felermino", "Ali", "846689637");
+    }
 
     private void initializeQueue(){
         DeliveryService ds1 = InitializeDeliveryService1();
-        System.out.println("Ds1 preditec: "+ ds1.getMeasure().peek().getPredictedExpulsionHour());
-
         DeliveryService ds2 = InitializeDeliveryService2();
-        System.out.println("Ds2 preditec: "+ ds2.getMeasure().peek().getPredictedExpulsionHour());
 
         Queue queue = new Queue();
         queue.register(ds1);
