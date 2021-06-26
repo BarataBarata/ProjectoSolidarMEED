@@ -3,15 +3,20 @@ package mz.unilurio.solidermed.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 public class Parturient implements Parcelable {
     private int id;
     private String name;
     private String surname;
     private int age;
+    private Date time;
     private boolean isTransfered;
     private String reason;
+    private int numeroCama;
 
     public Parturient(){}
+
 
     public Parturient(String name, String surname, int age) {
         this.name = name;
@@ -19,14 +24,31 @@ public class Parturient implements Parcelable {
         this.age = age;
     }
 
-    public Parturient(String name, String surname, int age, boolean isTransfered, String reason) {
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public Parturient(String name, String surname, int age, boolean isTransfered, String reason, Date time,int numeroCama) {
         this.name = name;
+        this.time = time;
         this.surname = surname;
         this.age = age;
         this.isTransfered = isTransfered;
         this.reason = reason;
+        this.numeroCama=numeroCama;
     }
 
+    public int getNumeroCama() {
+        return numeroCama;
+    }
+
+    public void setNumeroCama(int numeroCama) {
+        this.numeroCama = numeroCama;
+    }
 
     protected Parturient(Parcel in) {
         id = in.readInt();

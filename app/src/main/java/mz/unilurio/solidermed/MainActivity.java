@@ -1,9 +1,12 @@
 package mz.unilurio.solidermed;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -11,12 +14,16 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -34,9 +41,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.model.Queue;
 
 
@@ -45,18 +54,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AppBarConfiguration mAppBarConfiguration;
     private RecyclerView recyclerItems;
     private LinearLayoutManager notificationLayoutManager;
+    private LinearLayoutManager parturienteLinearLayoutManager;
     private NotificationRecyclerAdpter notificationRecyclerAdapter;
-
+    private ParturienteRecyclerAdpter parturienteRecyclerAdpter;
     private HashMap<String, Notification> notificationTriggered = new HashMap<String, Notification>();
 //    private GridLayoutManager coursesLayoutManager;
 //    private CourseRecyclerAdapter courseRecyclerAdapter;
+    private NotificationManagerCompat notificationManager;
+    private TextView textNotificacao;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        notificationManager=NotificationManagerCompat.from(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        textNotificacao = findViewById(R.id.titleMenu);
+        textNotificacao.setText("Notificações");
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,12 +98,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initializeDisplayContent();
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,17 +120,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NotNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        textNotificacao = findViewById(R.id.titleMenu);
 
-        if (id == R.id.nav_note) {
+        if (id == R.id.id_notificacao) {
+            textNotificacao.setText("Notificação");
             displayNotifications();
-        } else if (id == R.id.nav_courses) {
+        } else if (id == R.id.id_parturientes) {
+            textNotificacao.setText(" Parturiente ");
+              displayParturientes();
 //            displayCourses();
         }
-//        else if (id == R.id.nav_share) {
-//            handleSelection("Don't you think you've shared enough");
-//        } else if (id == R.id.nav_send) {
-//            handleSelection("Send");
-//        }
+        else if (id == R.id.id_out) {
+
+            if (id == R.id.id_out){
+
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                builder.setMessage("Logout");
+                builder.setMessage("sair ? ");
+                builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                });
+                builder.setNegativeButton("Nao", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -127,6 +170,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
+
+    public void initializeteDisplayContextParturientes() {
+        recyclerItems = (RecyclerView)findViewById(R.id.list_notes);
+        parturienteLinearLayoutManager = new LinearLayoutManager(this);
+        List<Parturient> parturients= DBManager.getInstance().getParturients();
+        parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(this,parturients);
+        recyclerItems.setLayoutManager(parturienteLinearLayoutManager);
+        recyclerItems.setAdapter(parturienteRecyclerAdpter);
+    }
+
+
 
     private void initializeDisplayContent() {
 //        recyclerItems = findViewById(R.id.list_notes);
@@ -153,13 +208,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void displayNotifications() {
         recyclerItems.setAdapter(notificationRecyclerAdapter);
         recyclerItems.setLayoutManager(notificationLayoutManager);
-        selectNavigationMenuItem(R.id.nav_note);
+        selectNavigationMenuItem(R.id.id_notificacao);
+    }
+    private void displayParturientes() {
+          initializeteDisplayContextParturientes();
+//        recyclerItems.setAdapter(parturienteRecyclerAdpter);
+//        recyclerItems.setLayoutManager(parturienteLinearLayoutManager);
+//        //selectNavigationMenuItem(R.id.id_parturientes);
     }
 
     private void selectNavigationMenuItem(int id) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
-        menu.findItem(R.id.nav_note).setCheckable(true);
+//        menu.findItem(R.id.nav_note).setCheckable(true);
     }
 
     @Override
@@ -208,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     if (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())) {
                                         System.out.println("sending SMS to " + e.getContact() + " Message: " + n.getMessage());
                                         sendSMS(e.getContact(), n.getMessage());
-                                        System.out.println(" -------------b laljfljajflajl - " + n.getId());
+                                        popNotification(n);
                                         notificationTriggered.put(n.getId(), n);
                                     } else {
                                         System.out.println(" ------------------------------------------------- notification " + n.getId() + " not trrigeer " + (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())));
@@ -235,8 +296,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
         }
-
-
     }
+
+    private void popNotification(Notification notification) {
+
+        android.app.Notification noti= new NotificationCompat.Builder(this, App.CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.mulhergravidabom2)
+                .setContentTitle("Alerta").setColor(Color.GREEN)
+                .setContentText(notification.getMessage())
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+        notificationManager.notify(Integer.parseInt(notification.getId()),noti);
+    }
+
 
 }

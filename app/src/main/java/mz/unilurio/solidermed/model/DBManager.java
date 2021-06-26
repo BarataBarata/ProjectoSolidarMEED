@@ -12,18 +12,60 @@ public class DBManager {
     private static DBManager ourInstance = null;
 
     private List<Notification> notifications = new ArrayList<>();
+    static private List<Parturient> parturients = new ArrayList<>();
+    static private List<Integer> colors = new ArrayList<Integer>();
+    static private List<Integer> idades = new ArrayList<Integer>();
+    static private List<Integer> camas = new ArrayList<Integer>();
     private Queue queue;
     private List<EmergencyMedicalPersonnel> emergencyMedicalPersonnels = new ArrayList<>();
 
     public static DBManager getInstance() {
         if(ourInstance == null) {
             ourInstance = new DBManager();
+            ourInstance.initializeColor();
+            ourInstance.initializeIdade();
+            ourInstance.initializeCamas();
             ourInstance.initializeNotifications();
             ourInstance.initializeQueue();
             ourInstance.initializeEmergencyPersonnels();
-
         }
         return ourInstance;
+    }
+
+    private void initializeCamas() {
+        for(int i=1;i<=100;i++){
+            this.camas.add(i);
+        }
+    }
+
+    private void initializeIdade() {
+       for(int i=18;i<=50;i++){
+           this.idades.add(i);
+       }
+    }
+
+    public static List<Integer> getCamas() {
+        return camas;
+    }
+
+    public static List<Integer> getIdades() {
+        return idades;
+    }
+
+    private void initializeColor() {
+        this.colors.add(Color.TRANSPARENT);
+        this.colors.add(Color.CYAN);
+        this.colors.add(Color.DKGRAY);
+        this.colors.add(Color.GREEN);
+        this.colors.add(Color.YELLOW);
+        this.colors.add(Color.LTGRAY);
+        this.colors.add(Color.RED);
+        this.colors.add(Color.BLACK);
+        this.colors.add(Color.MAGENTA);
+    }
+
+    public static List<Integer> getColors() {
+        return colors;
     }
 
     public List<EmergencyMedicalPersonnel> getEmergencyMedicalPersonnels() {
@@ -119,4 +161,14 @@ public class DBManager {
         Notification notification = new Notification(Color.rgb(248, 215,218), "Message ...", Calendar.getInstance().getTime(), true, ds);
         return notification;
     }
+
+    public void addParturiente(String name, String surname, int age, boolean isTransfered, String reason, Date time, int numeroCama){
+            this.parturients.add(new Parturient(name,surname,age,isTransfered,reason,time,numeroCama));
+    }
+
+    public List<Parturient> getParturients() {
+        return parturients;
+    }
+
+
 }

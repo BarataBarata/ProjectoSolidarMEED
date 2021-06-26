@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Projecto_S</string>
+    <string name="app_name"></string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -31,4 +31,7 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="Atualizar">Atualizar</string>
     <string name="title_activity_dados_pessoais"></string>
+    <string name="Parturientes">parturientes</string>
+    <string name="Notificacoes">notificacoes</string>
+    <string name="sair">sair</string>
 </resources>

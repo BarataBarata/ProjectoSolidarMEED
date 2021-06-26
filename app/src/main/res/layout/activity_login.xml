@@ -1,9 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="103dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="39dp"
+                    android:src="@drawable/login" />
+                <TextView
+                    android:textStyle="bold"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_below="@+id/image"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="22dp"
+                    android:text="Autenticação "/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="415dp"
+                android:layout_height="670dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/id_input_nome"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="240dp"
+                android:layout_marginEnd="50dp"
+                android:hint=" Nome :"
+                android:textColorHint="#0D653A"
+                app:counterEnabled="true"
+                app:counterMaxLength="15"
+                app:endIconMode="clear_text"
+                app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/id_input_password"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="340dp"
+                android:layout_marginEnd="50dp"
+                android:hint="Senha :"
+                android:textColorHint="#0D653A"
+
+                app:counterEnabled="true"
+                app:counterMaxLength="15"
+                app:endIconMode="password_toggle"
+                app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:gravity="center"
+                android:layout_marginTop="500dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+
+                <RelativeLayout
+                    android:layout_width="173dp"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:onClick="Entrar"
+                        android:id="@+id/butao_entrar"
+                        android:textColor="@color/white"
+                        android:layout_width="173dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/botaoentrareffect"
+                        android:gravity="center"
+                        android:text="Entrar"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_marginTop="460dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginLeft="50dp"
+                    android:textColor="#448AFF"
+                    android:text="Se esqueceu da senha ?"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:gravity="center"
+                android:layout_marginTop="430dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/id_alerta_pass_senha"
+                    android:textColor="#F80707"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

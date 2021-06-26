@@ -1,6 +1,7 @@
 package mz.unilurio.solidermed;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,43 +16,50 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Parturient;
 
-public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder>{
-
+public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteRecyclerAdpter.ViewHolder>{
+    private static int countColor=0;
     private final Context context;
-    private List<Notification> notifications;
+    private List<Parturient> parturientes;
     private final LayoutInflater layoutInflater;
 
-
-    public NotificationRecyclerAdpter(Context context, List<Notification> notifications) {
+    public ParturienteRecyclerAdpter(Context context, List<Parturient> parturients) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
-        this.notifications = notifications;
+        this.parturientes = parturients;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_note_list, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_parturientes_list, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Notification notification =  notifications.get(position);
-        holder.currentPosition = position;
+        Parturient parturient =  parturientes.get(position);
 
-        holder.cardView.setCardBackgroundColor(notification.getColour());
-        holder.txtTime.setText(format(notification.getTime()));
-        holder.txtNameParturient.setText(notification.getDeliveryService().getParturient().getName()+ " "+notification.getDeliveryService().getParturient().getSurname());
-        //holder.txtDetails.setText("idade: "+notification.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ notification.getDeliveryService().getMeasure().peek().getInitialDilatation()+"  |  Nº de cama: 3");
+        holder.currentPosition = position;
+        //holder.cardView.setCardBackgroundColor(parturient.getColour());
+        holder.textCircle.setText(DBManager.getInstance().getParturients().get(position).getName().charAt(0)+"");
+      //  holder.textCircle.setBackgroundTintList(DBManager.getInstance().getColors().get(countColor++));
+        holder.txtTime.setText(format(DBManager.getInstance().getParturients().get(position).getTime()));
+        holder.txtNameParturient.setText(DBManager.getInstance().getParturients().get(position).getName()+ " "+DBManager.getInstance().getParturients().get(position).getSurname());
+        holder.textNumeroCama.setText("| Nº cama: "+DBManager.getInstance().getParturients().get(position).getNumeroCama());
+        holder.textDilatacao.setText("| dilatação: "+DBManager.getInstance().getParturients().get(position).getReason());
+        holder.textIdade.setText("Idade: "+DBManager.getInstance().getParturients().get(position).getAge());
+
+        //holder.txtDetails.setText("idade: "+parturient.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ parturient.getDeliveryService().getMeasure().peek().getInitialDilatation()+"  |  Nº de cama: 3");
 
     }
 
     @Override
     public int getItemCount() {
-        return notifications.size();
+        return parturientes.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,15 +67,22 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         public final CardView cardView;
         public final TextView txtTime;
         public final TextView txtNameParturient;
+        public final TextView textNumeroCama;
+        public final TextView textIdade;
+        public final TextView textDilatacao;
+        public final TextView textCircle;
 //        public final TextView txtDetails;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            textIdade=(TextView)itemView.findViewById(R.id.txtIdade);
+            textDilatacao=(TextView)itemView.findViewById(R.id.txtDilatacao);
+            textCircle=(TextView)itemView.findViewById(R.id.textCircle);
+            textNumeroCama=(TextView)itemView.findViewById(R.id.id_numeroCamaParturiente);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.txtNameParturient);
+            txtTime = (TextView) itemView.findViewById(R.id.txtTimeParturiente);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.txtNameParturientParturiente);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +102,4 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         DateFormat dateFormat = new SimpleDateFormat("hh:mm - dd, MMM");
         return dateFormat.format(date);
     }
-
-
 }

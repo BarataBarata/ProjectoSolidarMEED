@@ -2,68 +2,158 @@ package mz.unilurio.solidermed;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.SQLOutput;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+
+import mz.unilurio.solidermed.model.DBManager;
 
 public class NoteActivity extends AppCompatActivity {
 
     public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
     public static final int POSITION_NOT_SET = -1;
+    private static final String TAG = "Date";
     private Toolbar binding;
     private NoteInfo mNote;
     private boolean isNewnote;
-    private Spinner spinnerCourses;
+    private Spinner spinnerHospitais;
+    private Spinner spinnerIdade;
+    private Spinner spinnerCama;
     private EditText textNoteTitle;
     private EditText text_note_text;
+    private static int dilatacaseekBar;
     private int mNotePosition;
     private boolean isCancel;
     private String originalNoteCoursesId;
     private String moriginalNoteCoursesId1;
     private String originalNoteTitle;
     private String originalNoteText;
-//    private NoteActivityViewModel mViewModel;
+    private EditText editText;
+    private TextView motivoText;
+    private TextView textOrigem;
+    private Spinner spinner;
+    private Spinner spinner4;
+    private boolean  show=true;
+    private TextView txtNameParturient;
+    private TextView textNumeroCama;
+    private TextView textIdade;
+    private TextView textDilatacao;
+    private SeekBar seekBar;
+    private TextView textseekBar;
+    private TextView textApelido;
+    private DatePickerDialog.OnDateSetListener dateSetListener;
+    private TextView textIdadeSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
 
+
+        seekBar=findViewById(R.id.seekBar);
+        textseekBar=(TextView)findViewById(R.id.textseekbar);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                textseekBar.setText(progress+"");
+                dilatacaseekBar=progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
         binding = findViewById(R.id.toolbar);
         setSupportActionBar(binding);
+        motivoText = findViewById(R.id.textView4);
+        textOrigem = findViewById(R.id.textOrigemTrasferencia);
+        spinner = findViewById(R.id.spinner_courses);
+        spinner4 = findViewById(R.id.spinner_courses4);
+        motivoText.setVisibility(View.INVISIBLE);
+        textOrigem.setVisibility(View.INVISIBLE);
+        spinner.setVisibility(View.INVISIBLE);
+        spinner4.setVisibility(View.INVISIBLE);
+
+
+
+
 
         ViewModelProvider viewModelProvider=new ViewModelProvider(getViewModelStore(),ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()));
         // mViewModel=viewModelProvider.get();
 
 
 
-        spinnerCourses = findViewById(R.id.spinner_courses);
+        spinnerHospitais = findViewById(R.id.spinner_courses);
         List<CourseInfo> courses=DataManager.getInstance().getCourses();
         ArrayAdapter<CourseInfo> adapterCourses=new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,courses);
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCourses.setAdapter(adapterCourses);
+        spinnerHospitais.setAdapter(adapterCourses);
+
+        spinnerHospitais = findViewById(R.id.spinner_courses4);
+        List<CourseInfo> courses2=DataManager.getInstance().getCourses();
+        ArrayAdapter<CourseInfo> adapterCourses2=new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,courses);
+        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner4.setAdapter(adapterCourses2);
+
+        //spinnerIdade = findViewById(R.id.spinner_courses2);
+        List<Integer>idades= DBManager.getInstance().getIdades();
+        ArrayAdapter<Integer> adapterIdade=new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,idades);
+        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spinnerIdade.setAdapter(adapterIdade);
+
+        spinnerCama = findViewById(R.id.spinner_courses3);
+        List<Integer>numeroCama= DBManager.getInstance().getCamas();
+        ArrayAdapter<Integer> adaptercama=new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,numeroCama);
+        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCama.setAdapter(adaptercama);
+
+
 
         readDisplayStateValues();
         saveOriginalNoteValues();
 
-        textNoteTitle = findViewById(R.id.text_note_title);
-        text_note_text = findViewById(R.id.text_note_text);
+//        textNoteTitle = findViewById(R.id.text_note_title);
+//        text_note_text = findViewById(R.id.text_note_text);
 
         if(!isNewnote)
-            displayNote(spinnerCourses, text_note_text, textNoteTitle);
+            displayNote(spinnerHospitais, text_note_text, textNoteTitle);
 
     }
 
@@ -86,9 +176,9 @@ public class NoteActivity extends AppCompatActivity {
 
     @Override
     public boolean onPreparePanel(int featureId, @Nullable @org.jetbrains.annotations.Nullable View view, @NonNull @NotNull Menu menu) {
-        MenuItem item=menu.findItem(R.id.action_next);
+        //MenuItem item=menu.findItem(R.id.action_next);
         int lastNoteIndex=DataManager.getInstance().getNotes().size()-1;
-        item.setEnabled(mNotePosition<lastNoteIndex);
+        //item.setEnabled(mNotePosition<lastNoteIndex);
 
         return super.onPreparePanel(featureId, view, menu);
     }
@@ -115,7 +205,7 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     private void saveNote() {
-        mNote.setCourse((CourseInfo) spinnerCourses.getSelectedItem());
+        mNote.setCourse((CourseInfo) spinnerHospitais.getSelectedItem());
         mNote.setTitle(textNoteTitle.getText().toString());
         mNote.setText(text_note_text.getText().toString());
 
@@ -151,7 +241,7 @@ public class NoteActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.note, menu);
         return true;
     }
 
@@ -162,13 +252,11 @@ public class NoteActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_send_email) {
-            sendEmail();
-            return true;
-        }
-        if(id == R.id.action_next){
-            moveNext();
-        }
+//        if (id == R.id.action_send_email) {
+//            sendEmail();
+//            return true;
+//        }
+
 
 
         return super.onOptionsItemSelected(item);
@@ -179,12 +267,12 @@ public class NoteActivity extends AppCompatActivity {
         ++mNotePosition;
         mNote=DataManager.getInstance().getNotes().get(mNotePosition);
         saveOriginalNoteValues();
-        displayNote(spinnerCourses, text_note_text, textNoteTitle);
+        displayNote(spinnerHospitais, text_note_text, textNoteTitle);
         invalidateOptionsMenu();
     }
 
     private void sendEmail() {
-        CourseInfo course=(CourseInfo)spinnerCourses.getSelectedItem();
+        CourseInfo course=(CourseInfo) spinnerHospitais.getSelectedItem();
         String subject=textNoteTitle.getText().toString();
         String text="checkout what I learned in the pluralsight courses\""+course.getTitle() + "\"\n" +text_note_text.getText();
         Intent intent =new Intent(Intent.ACTION_SEND);
@@ -197,5 +285,66 @@ public class NoteActivity extends AppCompatActivity {
     public void finish(View view) {
         isCancel = true;
         finish();
+    }
+
+    public void transferencia(View view) {
+
+        if(show){
+            motivoText = findViewById(R.id.textView4);
+            textOrigem = findViewById(R.id.textOrigemTrasferencia);
+            spinner = findViewById(R.id.spinner_courses);
+            motivoText.setVisibility(View.VISIBLE);
+            textOrigem.setVisibility(View.VISIBLE);
+            spinner.setVisibility(View.VISIBLE);
+            spinner4.setVisibility(View.VISIBLE);
+            show=false;
+        }else{
+            motivoText = findViewById(R.id.textView4);
+            textOrigem = findViewById(R.id.textOrigemTrasferencia);
+            spinner = findViewById(R.id.spinner_courses);
+            editText.setVisibility(View.INVISIBLE);
+            textOrigem.setVisibility(View.INVISIBLE);
+            spinner.setVisibility(View.INVISIBLE);
+            spinner4.setVisibility(View.INVISIBLE);
+            show=true;
+        }
+
+    }
+
+    public void registar(View view) {
+
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setTitle("REGISTO");
+        dialog.setMessage(" Deseja registar um Parturiente ?");
+        dialog.setCancelable(false);
+        dialog.setIcon(getDrawable(R.drawable.icon_registo));
+
+        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                textApelido = (TextView)findViewById(R.id.idText_nome2);
+                textIdade=(TextView)findViewById(R.id.idText_nome2);
+                textDilatacao=(TextView)findViewById(R.id.txtDilatacao);
+                textNumeroCama=(TextView)findViewById(R.id.id_numeroCamaParturiente);
+                txtNameParturient = (TextView)findViewById(R.id.idText_nome);
+
+                DBManager.getInstance().addParturiente(txtNameParturient.getText().toString(),textApelido.getText().toString(), (Integer) spinnerIdade.getSelectedItem(),true,String.valueOf(dilatacaseekBar),new Date(),(Integer) spinnerCama.getSelectedItem());
+                Toast.makeText(getApplicationContext()," Parturiente Registado com sucesso",Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+        dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext()," Operacao Cancelada",Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        dialog.create();
+        dialog.show();
+
+
     }
 }
