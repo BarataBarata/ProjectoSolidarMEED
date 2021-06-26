@@ -2,6 +2,7 @@ package mz.unilurio.solidermed;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -300,14 +301,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void popNotification(Notification notification) {
 
+        Intent intent=new Intent(this,MainActivity.class);
+        PendingIntent contentIntent=PendingIntent.getActivity(this,0,intent,0);
+
         android.app.Notification noti= new NotificationCompat.Builder(this, App.CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.mulhergravidabom2)
                 .setContentTitle("Alerta").setColor(Color.GREEN)
                 .setContentText(notification.getMessage())
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(contentIntent)
                 .build();
         notificationManager.notify(Integer.parseInt(notification.getId()),noti);
+
     }
 
 
