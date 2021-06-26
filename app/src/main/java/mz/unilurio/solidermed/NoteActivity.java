@@ -132,11 +132,11 @@ public class NoteActivity extends AppCompatActivity {
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner4.setAdapter(adapterCourses2);
 
-        //spinnerIdade = findViewById(R.id.spinner_courses2);
+        spinnerIdade = findViewById(R.id.spinner_courses2);
         List<Integer>idades= DBManager.getInstance().getIdades();
         ArrayAdapter<Integer> adapterIdade=new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,idades);
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinnerIdade.setAdapter(adapterIdade);
+        spinnerIdade.setAdapter(adapterIdade);
 
         spinnerCama = findViewById(R.id.spinner_courses3);
         List<Integer>numeroCama= DBManager.getInstance().getCamas();

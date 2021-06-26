@@ -32,6 +32,11 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         this.parturientes = parturients;
     }
 
+    public  String oUpperFirstCase(String string){
+        String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
+        return  auxString;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,10 +50,10 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
 
         holder.currentPosition = position;
         //holder.cardView.setCardBackgroundColor(parturient.getColour());
-        holder.textCircle.setText(DBManager.getInstance().getParturients().get(position).getName().charAt(0)+"");
+        holder.textCircle.setText((DBManager.getInstance().getParturients().get(position).getName().charAt(0)+"").toUpperCase());
       //  holder.textCircle.setBackgroundTintList(DBManager.getInstance().getColors().get(countColor++));
         holder.txtTime.setText(format(DBManager.getInstance().getParturients().get(position).getTime()));
-        holder.txtNameParturient.setText(DBManager.getInstance().getParturients().get(position).getName()+ " "+DBManager.getInstance().getParturients().get(position).getSurname());
+        holder.txtNameParturient.setText(oUpperFirstCase(DBManager.getInstance().getParturients().get(position).getName())+ " "+oUpperFirstCase(DBManager.getInstance().getParturients().get(position).getSurname()));
         holder.textNumeroCama.setText("| Nº cama: "+DBManager.getInstance().getParturients().get(position).getNumeroCama());
         holder.textDilatacao.setText("| dilatação: "+DBManager.getInstance().getParturients().get(position).getReason());
         holder.textIdade.setText("Idade: "+DBManager.getInstance().getParturients().get(position).getAge());
