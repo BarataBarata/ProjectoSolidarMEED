@@ -28,7 +28,7 @@
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
         <activity android:name=".Seacher" />
         <activity
-            android:name=".NoteActivity"
+            android:name=".AddParturientActivity"
             android:label="@string/title_activity_note"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
         <activity

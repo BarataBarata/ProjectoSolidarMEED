@@ -10,11 +10,9 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +33,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -47,6 +44,7 @@ import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.model.Queue;
+import mz.unilurio.solidermed.utils.Helper;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    private CourseRecyclerAdapter courseRecyclerAdapter;
     private NotificationManagerCompat notificationManager;
     private TextView textNotificacao;
+    private Timer timer;
+    private ThreadTimer threadTimer;
 
 
     @Override
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, NoteActivity.class));
+                startActivity(new Intent(MainActivity.this, AddParturientActivity.class));
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
             }
@@ -193,9 +193,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        displayNotifications();
 //        NotificationThread thread = new NotificationThread(this);
 //        new Thread(thread).start();
-
-        Timer timer = new Timer();
-        timer.schedule(new ThreadTimer(this), 0, 100000); // 1 minute
+        threadTimer = new ThreadTimer(this);
+        timer = new Timer();
+        timer.schedule(threadTimer, 0, 100000); // 1 minute
 
     }
 
@@ -226,17 +226,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume() {
         super.onResume();
+//        notificationRecyclerAdapter = new NotificationRecyclerAdpter(this, threadTimer.getNotifications());
         if (notificationRecyclerAdapter != null) {
+            System.out.println("entreiiiiiiiiiiiiiiiiiiii");
             notificationRecyclerAdapter.notifyDataSetChanged();
         }
     }
 
     class ThreadTimer extends TimerTask {
         private Context context;
-        private boolean isloading = true;
+        private List<Notification> notifications;
 
         public ThreadTimer(Context context) {
             this.context = context;
+        }
+
+        public List<Notification> getNotifications() {
+            return notifications;
         }
 
         public void run() {
@@ -249,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     // Stuff that updates the UI
                     Queue queue = DBManager.getInstance().getQueue();
                     queue.nofify();
-                    List<Notification> notifications = queue.getNotifications();
+                    notifications = queue.getNotifications();
                     notificationRecyclerAdapter = new NotificationRecyclerAdpter(context, notifications);
 
                     recyclerItems = findViewById(R.id.list_notes);
@@ -260,21 +266,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                    }
 
                     // Send SMS
+                    System.out.println("\n\n\n --------------------------");
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
                             List<EmergencyMedicalPersonnel> eP = DBManager.getInstance().getEmergencyMedicalPersonnels();
-                            for (EmergencyMedicalPersonnel e : eP) {
+
+
+                                System.out.println(" -------------------------------------------- size hash: " + notificationTriggered.size());
                                 for (Notification n : notifications) {
-                                    System.out.println(" -------------------------------------------- size hash: " + notificationTriggered.size());
+
                                     if (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())) {
-                                        System.out.println("sending SMS to " + e.getContact() + " Message: " + n.getMessage());
-                                        sendSMS(e.getContact(), n.getMessage());
-                                        popNotification(n);
+                                        for (EmergencyMedicalPersonnel e : eP) {
+                                            System.out.println("Emergengy person: "+e.getContact());
+                                            System.out.println(Helper.format(Calendar.getInstance().getTime())+": sending SMS to " + e.getContact() + " Message: " + n.getMessage() +" Próxima mensagem será enviada ás: "+ Helper.format(n.getNextNotifier()));
+                                            sendSMS(e.getContact(), n.getMessage());
+                                        }
                                         notificationTriggered.put(n.getId(), n);
-                                    } else {
-                                        System.out.println(" ------------------------------------------------- notification " + n.getId() + " not trrigeer " + (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())));
+                                        popNotification(n);
                                     }
-                                }
                             }
                         } else {
                             requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);

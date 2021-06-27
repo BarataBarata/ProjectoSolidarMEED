@@ -73,8 +73,9 @@ public class DBManager {
     }
 
     private void initializeEmergencyPersonnels(){
-        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
+//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
+        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel3());
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel1(){
@@ -83,6 +84,10 @@ public class DBManager {
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel2(){
         return new EmergencyMedicalPersonnel("Felermino", "Ali", "846689637");
+    }
+
+    private EmergencyMedicalPersonnel initializeEmergencyPersonnel3(){
+        return new EmergencyMedicalPersonnel("Felermino", "Ali", "864293652");
     }
 
     private void initializeQueue(){
