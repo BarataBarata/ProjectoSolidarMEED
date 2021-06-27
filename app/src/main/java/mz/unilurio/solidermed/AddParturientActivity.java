@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,12 +29,18 @@ import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLOutput;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import hearsilent.discreteslider.Dash;
+import hearsilent.discreteslider.DiscreteSlider;
+import hearsilent.discreteslider.Dot;
+import hearsilent.discreteslider.libs.Utils;
 import mz.unilurio.solidermed.model.DBManager;
+
 
 public class NoteActivity extends AppCompatActivity {
 
@@ -65,51 +72,86 @@ public class NoteActivity extends AppCompatActivity {
     private TextView textNumeroCama;
     private TextView textIdade;
     private TextView textDilatacao;
-    private SeekBar seekBar;
-    private TextView textseekBar;
+//    private SeekBar seekBar;
+
+//    private TextView textseekBar;
     private TextView textApelido;
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TextView textIdadeSelect;
+
+
+    private DiscreteSlider mSlider;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
 
+        findView();
+        setUpView();
 
-        seekBar=findViewById(R.id.seekBar);
-        textseekBar=(TextView)findViewById(R.id.textseekbar);
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
+        NumberPicker numberPicker1 = findViewById(R.id.numberPicker1);
+        numberPicker1.setMinValue(1);
+        numberPicker1.setMaxValue(6);
+        numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                textseekBar.setText(progress+"");
-                dilatacaseekBar=progress;
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+               // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
             }
         });
 
+        NumberPicker numberPicker2 = findViewById(R.id.numberPicker2);
+        numberPicker2.setMinValue(1);
+        numberPicker2.setMaxValue(9);
+        numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
+            }
+        });
 
-        binding = findViewById(R.id.toolbar);
-        setSupportActionBar(binding);
-        motivoText = findViewById(R.id.textView4);
-        textOrigem = findViewById(R.id.textOrigemTrasferencia);
-        spinner = findViewById(R.id.spinner_courses);
-        spinner4 = findViewById(R.id.spinner_courses4);
-        motivoText.setVisibility(View.INVISIBLE);
-        textOrigem.setVisibility(View.INVISIBLE);
-        spinner.setVisibility(View.INVISIBLE);
-        spinner4.setVisibility(View.INVISIBLE);
+//        seekBar=findViewById(R.id.seekBar);
+//        textseekBar=(TextView)findViewById(R.id.textseekbar);
+
+
+//        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                textseekBar.setText(progress+"xxx");
+//                dilatacaseekBar=progress;
+//
+//            }
+//
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
+
+
+
+
+//        binding = findViewById(R.id.toolbar);
+//        setSupportActionBar(binding);
+//        motivoText = findViewById(R.id.textView4);
+//        textOrigem = findViewById(R.id.textOrigemTrasferencia);
+//        spinner = findViewById(R.id.spinner_courses);
+//        spinner4 = findViewById(R.id.spinner_courses4);
+//        motivoText.setVisibility(View.INVISIBLE);
+//        textOrigem.setVisibility(View.INVISIBLE);
+//        spinner.setVisibility(View.INVISIBLE);
+//        spinner4.setVisibility(View.INVISIBLE);
 
 
 
@@ -120,29 +162,29 @@ public class NoteActivity extends AppCompatActivity {
 
 
 
-        spinnerHospitais = findViewById(R.id.spinner_courses);
-        List<CourseInfo> courses=DataManager.getInstance().getCourses();
-        ArrayAdapter<CourseInfo> adapterCourses=new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,courses);
-        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerHospitais.setAdapter(adapterCourses);
-
-        spinnerHospitais = findViewById(R.id.spinner_courses4);
-        List<CourseInfo> courses2=DataManager.getInstance().getCourses();
-        ArrayAdapter<CourseInfo> adapterCourses2=new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,courses);
-        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner4.setAdapter(adapterCourses2);
-
-        //spinnerIdade = findViewById(R.id.spinner_courses2);
-        List<Integer>idades= DBManager.getInstance().getIdades();
-        ArrayAdapter<Integer> adapterIdade=new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,idades);
-        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinnerIdade.setAdapter(adapterIdade);
-
-        spinnerCama = findViewById(R.id.spinner_courses3);
-        List<Integer>numeroCama= DBManager.getInstance().getCamas();
-        ArrayAdapter<Integer> adaptercama=new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,numeroCama);
-        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCama.setAdapter(adaptercama);
+//        spinnerHospitais = findViewById(R.id.spinner_courses);
+//        List<CourseInfo> courses=DataManager.getInstance().getCourses();
+//        ArrayAdapter<CourseInfo> adapterCourses=new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,courses);
+//        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerHospitais.setAdapter(adapterCourses);
+//
+//        spinnerHospitais = findViewById(R.id.spinner_courses4);
+//        List<CourseInfo> courses2=DataManager.getInstance().getCourses();
+//        ArrayAdapter<CourseInfo> adapterCourses2=new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,courses);
+//        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner4.setAdapter(adapterCourses2);
+//
+//        //spinnerIdade = findViewById(R.id.spinner_courses2);
+//        List<Integer>idades= DBManager.getInstance().getIdades();
+//        ArrayAdapter<Integer> adapterIdade=new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,idades);
+//        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        //spinnerIdade.setAdapter(adapterIdade);
+//
+//        spinnerCama = findViewById(R.id.spinner_courses3);
+//        List<Integer>numeroCama= DBManager.getInstance().getCamas();
+//        ArrayAdapter<Integer> adaptercama=new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,numeroCama);
+//        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerCama.setAdapter(adaptercama);
 
 
 
@@ -289,25 +331,25 @@ public class NoteActivity extends AppCompatActivity {
 
     public void transferencia(View view) {
 
-        if(show){
-            motivoText = findViewById(R.id.textView4);
-            textOrigem = findViewById(R.id.textOrigemTrasferencia);
-            spinner = findViewById(R.id.spinner_courses);
-            motivoText.setVisibility(View.VISIBLE);
-            textOrigem.setVisibility(View.VISIBLE);
-            spinner.setVisibility(View.VISIBLE);
-            spinner4.setVisibility(View.VISIBLE);
-            show=false;
-        }else{
-            motivoText = findViewById(R.id.textView4);
-            textOrigem = findViewById(R.id.textOrigemTrasferencia);
-            spinner = findViewById(R.id.spinner_courses);
-            editText.setVisibility(View.INVISIBLE);
-            textOrigem.setVisibility(View.INVISIBLE);
-            spinner.setVisibility(View.INVISIBLE);
-            spinner4.setVisibility(View.INVISIBLE);
-            show=true;
-        }
+//        if(show){
+//            motivoText = findViewById(R.id.textView4);
+//            textOrigem = findViewById(R.id.textOrigemTrasferencia);
+//            spinner = findViewById(R.id.spinner_courses);
+//            motivoText.setVisibility(View.VISIBLE);
+//            textOrigem.setVisibility(View.VISIBLE);
+//            spinner.setVisibility(View.VISIBLE);
+//            spinner4.setVisibility(View.VISIBLE);
+//            show=false;
+//        }else{
+//            motivoText = findViewById(R.id.textView4);
+//            textOrigem = findViewById(R.id.textOrigemTrasferencia);
+//            spinner = findViewById(R.id.spinner_courses);
+//            editText.setVisibility(View.INVISIBLE);
+//            textOrigem.setVisibility(View.INVISIBLE);
+//            spinner.setVisibility(View.INVISIBLE);
+//            spinner4.setVisibility(View.INVISIBLE);
+//            show=true;
+//        }
 
     }
 
@@ -347,4 +389,60 @@ public class NoteActivity extends AppCompatActivity {
 
 
     }
+
+
+    private void findView() {
+        mSlider = findViewById(R.id.discreteSlider);
+    }
+
+    private void setUpView() {
+        mSlider.setTrackWidth(Utils.convertDpToPixel(4, this));
+//        mSlider.setTrackColor(0xFFD81B60);
+//        mSlider.setInactiveTrackColor(0x3DD81B60);
+
+        mSlider.setThumbRadius(Utils.convertDpToPixel(6, this));
+//        mSlider.setThumbColor(0xFFD81B60);
+//        mSlider.setThumbPressedColor(0x1FD81B60);
+//
+//        mSlider.setTickMarkColor(0x3DFFFFFF);
+//        mSlider.setTickMarkInactiveColor(0x1FD81B60);
+        mSlider.setTickMarkPatterns(
+                Arrays.asList(new Dot(), new Dash(Utils.convertDpToPixel(1, this))));
+
+        mSlider.setValueLabelTextColor(Color.WHITE);
+        mSlider.setValueLabelTextSize(Utils.convertSpToPixel(16, this));
+        mSlider.setValueLabelFormatter(new DiscreteSlider.ValueLabelFormatter() {
+
+            @Override
+            public String getLabel(int input) {
+                return Integer.toString(input);
+            }
+        });
+
+        mSlider.setCount(11);
+        mSlider.setMode(DiscreteSlider.MODE_NORMAL);
+
+        mSlider.setMinProgress(0);
+
+        mSlider.setOnValueChangedListener(new DiscreteSlider.OnValueChangedListener() {
+
+            @Override
+            public void onValueChanged(int progress, boolean fromUser) {
+                super.onValueChanged(progress, fromUser);
+                Log.i("DiscreteSlider", "Progress: " + progress + ", fromUser: " + fromUser);
+            }
+
+            @Override
+            public void onValueChanged(int minProgress, int maxProgress, boolean fromUser) {
+                super.onValueChanged(minProgress, maxProgress, fromUser);
+                Log.i("DiscreteSlider",
+                        "MinProgress: " + minProgress + ", MaxProgress: " + maxProgress +
+                                ", fromUser: " + fromUser);
+            }
+        });
+
+        mSlider.setClickable(true);
+    }
+
+
 }
