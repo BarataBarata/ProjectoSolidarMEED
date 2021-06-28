@@ -328,7 +328,7 @@
                 <!--                    app:layout_constraintTop_toBottomOf="@+id/discreteSlider" />-->
 
                 <NumberPicker
-                    android:id="@+id/numberPicker1"
+                    android:id="@+id/numberPickerTwo"
                     android:layout_width="71dp"
                     android:layout_height="145dp"
                     android:layout_margin="20dp"
@@ -341,7 +341,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                 <NumberPicker
-                    android:id="@+id/numberPicker2"
+                    android:id="@+id/numberPickerOne"
                     android:layout_width="68dp"
                     android:layout_height="145dp"
                     android:layout_margin="20dp"
@@ -360,7 +360,7 @@
                     android:text="Dilatação cervical"
                     app:layout_constraintEnd_toEndOf="@+id/textView"
                     app:layout_constraintStart_toStartOf="@+id/textView"
-                    app:layout_constraintTop_toBottomOf="@+id/numberPicker1" />
+                    app:layout_constraintTop_toBottomOf="@+id/numberPickerTwo" />
 
                 <hearsilent.discreteslider.DiscreteSlider
                     android:id="@+id/dilatation"
@@ -449,7 +449,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/para" />
 
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/spinner_gestRange"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -464,9 +464,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Transferido"
-                    app:layout_constraintEnd_toEndOf="@+id/spinner"
-                    app:layout_constraintStart_toStartOf="@+id/spinner"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner" />
+                    app:layout_constraintEnd_toEndOf="@+id/spinner_gestRange"
+                    app:layout_constraintStart_toStartOf="@+id/spinner_gestRange"
+                    app:layout_constraintTop_toBottomOf="@+id/spinner_gestRange" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

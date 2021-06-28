@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -28,6 +29,7 @@ import hearsilent.discreteslider.DiscreteSlider;
 import hearsilent.discreteslider.Dot;
 import hearsilent.discreteslider.libs.Utils;
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.GestatinalRange;
 import mz.unilurio.solidermed.model.Parturient;
 
 
@@ -52,6 +54,8 @@ public class AddParturientActivity extends AppCompatActivity {
     private DiscreteSlider mSliderDilatation;
     private NumberPicker numberPicker1;
     private NumberPicker numberPicker2;
+    private Spinner spinner;
+    private DiscreteSlider para;
 
 
     @Override
@@ -62,13 +66,20 @@ public class AddParturientActivity extends AppCompatActivity {
         mSliderDilatation = findViewById(R.id.dilatation);
         setUpDilationSlider();
 
-        numberPicker1 = findViewById(R.id.numberPicker1);
-        numberPicker2 = findViewById(R.id.numberPicker2);
+        numberPicker1 = findViewById(R.id.numberPickerTwo);
+        numberPicker2 = findViewById(R.id.numberPickerOne);
         setUpNumberPickers();
 
         readDisplayStateValues();
         saveOriginalNoteValues();
 
+        spinner = findViewById(R.id.spinner_gestRange);
+        List<GestatinalRange> list = DBManager.getInstance().getGestatinalRange();
+        ArrayAdapter<GestatinalRange> adapterGesta = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
+        adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinner.setAdapter(adapterGesta);
+
+        para = findViewById(R.id.para);
     }
 
     @Override
@@ -232,17 +243,29 @@ public class AddParturientActivity extends AppCompatActivity {
         dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 textApelido = (TextView)findViewById(R.id.txtSurname);
                 txtNameParturient = (TextView)findViewById(R.id.txtName);
-                numberPicker1 = (NumberPicker) findViewById(R.id.numberPicker1);
-                numberPicker2 = (NumberPicker) findViewById(R.id.numberPicker2);
+                numberPicker1 = (NumberPicker) findViewById(R.id.numberPickerOne);
+                numberPicker2 = (NumberPicker) findViewById(R.id.numberPickerTwo);
 
                 Parturient parturient = new Parturient();
-
                 parturient.setId(DBManager.getInstance().getTotalPaturient());
                 parturient.setName(txtNameParturient.getText().toString());
                 parturient.setSurname(textApelido.getText().toString());
-//
+
+                String age = numberPicker1.getValue()+ ""+numberPicker2.getValue();
+                parturient.setAge(Integer.parseInt(age));
+
+
+                parturient.setGestatinalRange((GestatinalRange) spinner.getSelectedItem());
+                parturient.setPara(para.getProgress());
+
+                DBManager.getInstance().addParturiente(parturient);
+                DBManager.getInstance().updateQueue(mSliderDilatation.getProgress());
+
+                Intent intent = new Intent(AddParturientActivity.this, MainActivity.class);
+                startActivity(intent);
 //                DBManager.getInstance().addParturiente(txtNameParturient.getText().toString(),textApelido.getText().toString(), (Integer) spinnerIdade.getSelectedItem(),true,String.valueOf(dilatacaseekBar),new Date(),(Integer) spinnerCama.getSelectedItem());
 //                Toast.makeText(getApplicationContext()," Parturiente Registado com sucesso",Toast.LENGTH_LONG).show();
 

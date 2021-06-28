@@ -45,7 +45,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         holder.cardView.setCardBackgroundColor(notification.getColour());
         holder.txtTime.setText(format(notification.getTime()));
         holder.txtNameParturient.setText(notification.getDeliveryService().getParturient().getName()+ " "+notification.getDeliveryService().getParturient().getSurname());
-        //holder.txtDetails.setText("idade: "+notification.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ notification.getDeliveryService().getMeasure().peek().getInitialDilatation()+"  |  Nº de cama: 3");
+        holder.txtDetails.setText("idade: "+notification.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ notification.getDeliveryService().getMeasure().peek().getInitialDilatation());
 
     }
 
@@ -59,7 +59,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         public final CardView cardView;
         public final TextView txtTime;
         public final TextView txtNameParturient;
-//        public final TextView txtDetails;
+        public final TextView txtDetails;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -68,7 +68,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
             txtNameParturient = (TextView) itemView.findViewById(R.id.txtNameParturient);
-            //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
+            txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
