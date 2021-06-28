@@ -274,11 +274,11 @@
 
 
                 <EditText
-                    android:id="@+id/idText_nome"
+                    android:id="@+id/txtName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:ems="10"
                     android:hint="Nome"
@@ -290,7 +290,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/idText_nome2"
+                    android:id="@+id/txtSurname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -298,64 +298,79 @@
                     android:gravity="start|top"
                     android:hint="Apelido"
                     android:inputType="textMultiLine"
-                    app:layout_constraintEnd_toEndOf="@+id/idText_nome"
+                    app:layout_constraintEnd_toEndOf="@+id/txtName"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/idText_nome"
-                    app:layout_constraintTop_toBottomOf="@+id/idText_nome" />
+                    app:layout_constraintStart_toStartOf="@+id/txtName"
+                    app:layout_constraintTop_toBottomOf="@+id/txtName" />
 
 
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="0dp"
                     android:layout_height="18dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:text="Idade"
-                    android:textAlignment="textStart"
-                    app:layout_constraintEnd_toEndOf="@+id/idText_nome2"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="@+id/txtSurname"
                     app:layout_constraintHorizontal_bias="0.215"
-                    app:layout_constraintStart_toStartOf="@+id/idText_nome2"
-                    app:layout_constraintTop_toBottomOf="@+id/idText_nome2" />
+                    app:layout_constraintStart_toStartOf="@+id/txtSurname"
+                    app:layout_constraintTop_toBottomOf="@+id/txtSurname" />
 
+
+                <!--                <Spinner-->
+                <!--                    android:id="@+id/spinner_courses3"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="39dp"-->
+                <!--                    android:layout_marginTop="32dp"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@+id/discreteSlider"-->
+                <!--                    app:layout_constraintHorizontal_bias="0.0"-->
+                <!--                    app:layout_constraintStart_toStartOf="@+id/discreteSlider"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/discreteSlider" />-->
 
                 <NumberPicker
                     android:id="@+id/numberPicker1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="71dp"
+                    android:layout_height="145dp"
                     android:layout_margin="20dp"
-                    app:layout_constraintStart_toStartOf="@+id/textView"
+                    android:layout_marginStart="235dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="319dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.621"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                 <NumberPicker
                     android:id="@+id/numberPicker2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="68dp"
+                    android:layout_height="145dp"
                     android:layout_margin="20dp"
-                    app:layout_constraintEnd_toEndOf="@+id/textView"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/numberPicker1"
+                    android:layout_marginStart="235dp"
+                    android:layout_marginEnd="319dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.372"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-
-<!--                <Spinner-->
-<!--                    android:id="@+id/spinner_courses3"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="39dp"-->
-<!--                    android:layout_marginTop="32dp"-->
-<!--                    app:layout_constraintEnd_toEndOf="@+id/discreteSlider"-->
-<!--                    app:layout_constraintHorizontal_bias="0.0"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/discreteSlider"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/discreteSlider" />-->
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Dilatação cervical"
+                    app:layout_constraintEnd_toEndOf="@+id/textView"
+                    app:layout_constraintStart_toStartOf="@+id/textView"
+                    app:layout_constraintTop_toBottomOf="@+id/numberPicker1" />
 
                 <hearsilent.discreteslider.DiscreteSlider
-                    android:id="@+id/discreteSlider"
-                    android:layout_width="359dp"
+                    android:id="@+id/dilatation"
+                    android:layout_width="0dp"
                     android:layout_height="600dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:paddingLeft="16dp"
-                    android:paddingTop="48dp"
+                    android:paddingTop="40dp"
                     android:paddingRight="16dp"
                     app:ds_count="21"
                     app:ds_inactiveTrackColor="#CAF4CC"
@@ -371,16 +386,87 @@
                     app:ds_tickMarkInactiveColor="@color/teal_200"
                     app:ds_tickMarkPatterns="dot,dash"
                     app:ds_trackColor="@color/purple_500"
-
                     app:ds_trackWidth="4dp"
                     app:ds_valueLabelMode="showOnPressHold"
                     app:ds_valueLabelTextColor="#FFF"
-
                     app:ds_valueLabelTextSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/textView2"
+                    app:layout_constraintStart_toStartOf="@+id/textView2"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                <TextView
+                    android:id="@+id/textPara"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Opções de paridade (PARA)"
+                    app:layout_constraintEnd_toEndOf="@+id/dilatation"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/dilatation"
+                    app:layout_constraintTop_toBottomOf="@+id/dilatation" />
+
+                <hearsilent.discreteslider.DiscreteSlider
+                    android:id="@+id/para"
+                    android:layout_width="0dp"
+                    android:layout_height="600dp"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="40dp"
+                    android:paddingRight="16dp"
+                    app:ds_count="21"
+                    app:ds_inactiveTrackColor="#CAF4CC"
+                    app:ds_maxProgress="10"
+                    app:ds_minProgress="0"
+                    app:ds_mode="normal"
+                    app:ds_progressOffset="0"
+                    app:ds_thumbColor="@color/purple_500"
+                    app:ds_thumbPressedColor="#80E4F8E4"
+                    app:ds_thumbRadius="6dp"
+                    app:ds_tickMarkColor="#3DFFFFFF"
+                    app:ds_tickMarkDashLength="1dp"
+                    app:ds_tickMarkInactiveColor="@color/teal_200"
+                    app:ds_tickMarkPatterns="dot,dash"
+                    app:ds_trackColor="@color/purple_500"
+                    app:ds_trackWidth="4dp"
+                    app:ds_valueLabelMode="showOnPressHold"
+                    app:ds_valueLabelTextColor="#FFF"
+                    app:ds_valueLabelTextSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/textPara"
+                    app:layout_constraintStart_toStartOf="@+id/textPara"
+                    app:layout_constraintTop_toBottomOf="@+id/textPara" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Idade"
+                    app:layout_constraintEnd_toEndOf="@+id/para"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/para"
+                    app:layout_constraintTop_toBottomOf="@+id/para" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="@+id/textView3"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/numberPicker1"
-                    app:layout_constraintTop_toBottomOf="@+id/numberPicker1" />
+                    app:layout_constraintStart_toStartOf="@+id/textView3"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Transferido"
+                    app:layout_constraintEnd_toEndOf="@+id/spinner"
+                    app:layout_constraintStart_toStartOf="@+id/spinner"
+                    app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

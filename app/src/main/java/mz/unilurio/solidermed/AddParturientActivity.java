@@ -1,11 +1,9 @@
 package mz.unilurio.solidermed;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -22,10 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import hearsilent.discreteslider.Dash;
@@ -33,6 +28,7 @@ import hearsilent.discreteslider.DiscreteSlider;
 import hearsilent.discreteslider.Dot;
 import hearsilent.discreteslider.libs.Utils;
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.Parturient;
 
 
 public class AddParturientActivity extends AppCompatActivity {
@@ -61,9 +57,9 @@ public class AddParturientActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_note);
+        setContentView(R.layout.activity_add_mother);
 
-        mSliderDilatation = findViewById(R.id.discreteSlider);
+        mSliderDilatation = findViewById(R.id.dilatation);
         setUpDilationSlider();
 
         numberPicker1 = findViewById(R.id.numberPicker1);
@@ -236,11 +232,16 @@ public class AddParturientActivity extends AppCompatActivity {
         dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                textApelido = (TextView)findViewById(R.id.idText_nome2);
-//                textIdade=(TextView)findViewById(R.id.idText_nome2);
-//                textDilatacao=(TextView)findViewById(R.id.txtDilatacao);
-//                textNumeroCama=(TextView)findViewById(R.id.id_numeroCamaParturiente);
-                txtNameParturient = (TextView)findViewById(R.id.idText_nome);
+                textApelido = (TextView)findViewById(R.id.txtSurname);
+                txtNameParturient = (TextView)findViewById(R.id.txtName);
+                numberPicker1 = (NumberPicker) findViewById(R.id.numberPicker1);
+                numberPicker2 = (NumberPicker) findViewById(R.id.numberPicker2);
+
+                Parturient parturient = new Parturient();
+
+                parturient.setId(DBManager.getInstance().getTotalPaturient());
+                parturient.setName(txtNameParturient.getText().toString());
+                parturient.setSurname(textApelido.getText().toString());
 //
 //                DBManager.getInstance().addParturiente(txtNameParturient.getText().toString(),textApelido.getText().toString(), (Integer) spinnerIdade.getSelectedItem(),true,String.valueOf(dilatacaseekBar),new Date(),(Integer) spinnerCama.getSelectedItem());
 //                Toast.makeText(getApplicationContext()," Parturiente Registado com sucesso",Toast.LENGTH_LONG).show();
@@ -313,18 +314,18 @@ public class AddParturientActivity extends AppCompatActivity {
 
     public void setUpNumberPickers(){
 
-        numberPicker1.setMinValue(1);
-        numberPicker1.setMaxValue(6);
-        numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
+        numberPicker2.setMinValue(1);
+        numberPicker2.setMaxValue(5);
+        numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
                 // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
             }
         });
 
-        numberPicker2.setMinValue(1);
-        numberPicker2.setMaxValue(9);
-        numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
+        numberPicker1.setMinValue(0);
+        numberPicker1.setMaxValue(9);
+        numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
                 // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);

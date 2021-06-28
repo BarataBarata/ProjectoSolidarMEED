@@ -18,6 +18,7 @@ public class DBManager {
     static private List<Integer> camas = new ArrayList<Integer>();
     private Queue queue;
     private List<EmergencyMedicalPersonnel> emergencyMedicalPersonnels = new ArrayList<>();
+    private int totalPaturient;
 
     public static DBManager getInstance() {
         if(ourInstance == null) {
@@ -169,11 +170,15 @@ public class DBManager {
 
     public void addParturiente(String name, String surname, int age, boolean isTransfered, String reason, Date time, int numeroCama){
             this.parturients.add(new Parturient(name,surname,age,isTransfered,reason,time,numeroCama));
+            totalPaturient++;
     }
 
     public List<Parturient> getParturients() {
         return parturients;
     }
 
+    public int getTotalPaturient(){
+        return totalPaturient;
+    }
 
 }
