@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.NotificationCompat;
@@ -55,8 +56,11 @@ import mz.unilurio.solidermed.utils.Helper;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    TabLayout tabLayout;
     private AppBarConfiguration mAppBarConfiguration;
     private RecyclerView recyclerItems;
+    private RecyclerView recyclerParturientes;
+
     private LinearLayoutManager notificationLayoutManager;
     private LinearLayoutManager parturienteLinearLayoutManager;
     private NotificationRecyclerAdpter notificationRecyclerAdapter;
@@ -74,12 +78,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        recyclerParturientes = findViewById(R.id.recyclerVieParturiente);
+        tabLayout=(TabLayout)findViewById(R.id.tabLayout);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition()==0){
+                    displayNotifications();
+                    recyclerItems.setVisibility(View.VISIBLE);
+                    recyclerParturientes.setVisibility(View.INVISIBLE);
+                 }else {
+                    recyclerItems.setVisibility(View.INVISIBLE);
+                    recyclerParturientes.setVisibility(View.VISIBLE);
+//                    displayParturientes();
+                    displayParturiente();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         notificationManager=NotificationManagerCompat.from(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        textNotificacao = findViewById(R.id.titleMenu);
-        textNotificacao.setText("Notificações");
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                        .setAction("Action", null).show();
             }
         });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -124,13 +155,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NotNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        textNotificacao = findViewById(R.id.titleMenu);
 
         if (id == R.id.id_notificacao) {
-            textNotificacao.setText("Notificação");
+
             displayNotifications();
         } else if (id == R.id.id_parturientes) {
-            textNotificacao.setText(" Parturiente ");
+
               displayParturientes();
 //            displayCourses();
         }
@@ -177,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void initializeteDisplayContextParturientes() {
-        recyclerItems = (RecyclerView)findViewById(R.id.list_notes);
+        recyclerItems = (RecyclerView)findViewById(R.id.recyclerVieParturiente);
         parturienteLinearLayoutManager = new LinearLayoutManager(this);
         List<Parturient> parturients= DBManager.getInstance().getParturients();
         parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(this,parturients);
@@ -211,12 +241,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    }
 
     private void displayNotifications() {
+
         recyclerItems.setAdapter(notificationRecyclerAdapter);
         recyclerItems.setLayoutManager(notificationLayoutManager);
         selectNavigationMenuItem(R.id.id_notificacao);
     }
+
+    private void displayParturiente() {
+        parturienteLinearLayoutManager = new LinearLayoutManager(this);
+        List<Parturient> parturients= DBManager.getInstance().getParturients();
+        parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(this,parturients);
+        recyclerParturientes.setAdapter(parturienteRecyclerAdpter);
+        recyclerParturientes.setLayoutManager(parturienteLinearLayoutManager);
+//        selectNavigationMenuItem(R.id.id_notificacao);
+    }
+
     private void displayParturientes() {
-          initializeteDisplayContextParturientes();
+//          initializeteDisplayContextParturientes();
 //        recyclerItems.setAdapter(parturienteRecyclerAdpter);
 //        recyclerItems.setLayoutManager(parturienteLinearLayoutManager);
 //        //selectNavigationMenuItem(R.id.id_parturientes);
