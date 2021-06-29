@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.slider.Slider;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
@@ -44,6 +45,9 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private String moriginalNoteCoursesId1;
     private String originalNoteTitle;
     private String originalNoteText;
+
+    private Slider para;
+    private Slider mSliderDilatation;
 
     @NotEmpty
     @Length(min = 3, max = 10)
@@ -84,6 +88,8 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         txtNameParturient = findViewById(R.id.txtName);
         numberPicker1 = findViewById(R.id.numberPickerOne);
         numberPicker2 = findViewById(R.id.numberPickerTwo);
+        para = findViewById(R.id.para);
+        mSliderDilatation = findViewById(R.id.dilatation);
 
         spinner = findViewById(R.id.spinner_gestRange);
         List<GestatinalRange> list = DBManager.getInstance().getGestatinalRange();
@@ -259,12 +265,12 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
                 String age = numberPicker1.getValue()+ ""+numberPicker2.getValue();
                 parturient.setAge(Integer.parseInt(age));
-//
-//                parturient.setGestatinalRange((GestatinalRange) spinner.getSelectedItem());
-//                parturient.setPara(para.getProgress());
-//
-//                DBManager.getInstance().addParturiente(parturient);
-//                DBManager.getInstance().updateQueue(mSliderDilatation.getProgress());
+
+                parturient.setGestatinalRange((GestatinalRange) spinner.getSelectedItem());
+                parturient.setPara((int)para.getValue());
+
+                DBManager.getInstance().addParturiente(parturient);
+                DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
 
                 Intent intent = new Intent(AddParturientActivity.this, MainActivity.class);
                 startActivity(intent);
