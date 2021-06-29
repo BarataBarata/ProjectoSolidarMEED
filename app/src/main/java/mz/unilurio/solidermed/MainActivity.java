@@ -2,6 +2,7 @@ package mz.unilurio.solidermed;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -439,18 +440,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void popNotification(Notification notification) {
 
-        Intent intent=new Intent(this,MainActivity.class);
-        PendingIntent contentIntent=PendingIntent.getActivity(this,0,intent,0);
-
-        android.app.Notification noti= new NotificationCompat.Builder(this, App.CHANNEL_1_ID)
+        NotificationCompat.Builder builder=new NotificationCompat.Builder(MainActivity.this)
                 .setSmallIcon(R.drawable.mulhergravidabom2)
                 .setContentTitle("Alerta").setColor(Color.GREEN)
                 .setContentText(notification.getMessage())
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setContentIntent(contentIntent)
-                .build();
-        notificationManager.notify(Integer.parseInt(notification.getId()),noti);
+                .setAutoCancel(true);
+
+        Intent intent=new Intent(MainActivity.this,DadosPessoais.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        intent.putExtra("id",notification.getId());
+        PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
+        NotificationManager noti2ficationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0,builder.build());
+
 
     }
 

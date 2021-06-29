@@ -15,106 +15,67 @@
         app:cardUseCompatPadding="true"
         app:contentPadding="16dp">
 
-
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:gravity="center"
+                android:id="@+id/textCircle"
+                android:background="@drawable/circulo"
+                android:layout_width="48dp"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:text="C"
+                android:layout_height="48dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:id="@+id/txtTimeParturiente"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="20dp"
-                android:gravity="end"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="11:41 - 19, Junho"
                 android:textAlignment="viewEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#721C24"/>
+                android:textColor="#721C24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/textCircle"
-                android:id="@+id/txtNameParturientParturiente"
-                android:layout_width="match_parent"
+                android:id="@+id/txtNameParturient"
+                android:layout_width="0dp"
                 android:layout_height="24dp"
                 android:layout_below="@id/txtTimeParturiente"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
                 android:text="Júlia Namovartacha"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="#721C24"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtNameParturientParturiente"
-                android:layout_marginStart="-3dp"
-                android:layout_marginTop="12dp"
-                android:layout_toEndOf="@id/textCircle"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/txtNameParturientParturiente">
-
-
-                <TextView
-                    android:id="@+id/txtIdade"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="idade"
-                    android:textColor="#000"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.057"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <TextView
-                    android:id="@+id/id_numeroCamaParturiente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="29dp"
-                    android:layout_marginStart="100dp"
-                    android:text="Ncama"
-                    android:textColor="#000"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.855"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txtDilatacao"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="dilatacao"
-                    android:textColor="#000"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/id_numeroCamaParturiente"
-                    app:layout_constraintHorizontal_bias="0.467"
-                    app:layout_constraintStart_toEndOf="@+id/txtIdade"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:textColor="#721C24"
+                app:layout_constraintEnd_toEndOf="@+id/txtTimeParturiente"
+                app:layout_constraintStart_toEndOf="@+id/textCircle"
+                app:layout_constraintTop_toBottomOf="@+id/txtTimeParturiente" />
 
             <TextView
-                android:id="@+id/textCircle"
-                android:layout_width="53dp"
-                android:layout_height="53dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="17dp"
-                android:background="@drawable/circulo"
-                android:gravity="center"
-                android:text="C"
-                android:textColor="#ffffff"
-                android:textSize="28dp"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="4dp" />
-
-        </RelativeLayout>
-
+                android:id="@+id/txtDetails2"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="8dp"
+                android:text="idade: 22   |  Dilatacao: 4  |  Nº de cama: 3"
+                android:textColor="#000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/txtNameParturient"
+                app:layout_constraintStart_toStartOf="@+id/txtNameParturient"
+                app:layout_constraintTop_toBottomOf="@+id/txtNameParturient" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>

@@ -1,9 +1,12 @@
 package mz.unilurio.solidermed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,6 +50,40 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         holder.txtNameParturient.setText(notification.getDeliveryService().getParturient().getName()+ " "+notification.getDeliveryService().getParturient().getSurname());
         holder.txtDetails.setText("idade: "+notification.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ notification.getDeliveryService().getMeasure().peek().getInitialDilatation());
 
+
+        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //creating a popup menu
+                Context mCtx = null;
+                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.options_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.item1:
+                                //handle menu1 click
+                                return true;
+                            case R.id.item2:
+                                //handle menu2 click
+                                return true;
+                            case R.id.item3:
+                                //handle menu3 click
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
+            }
+        });
     }
 
     @Override
@@ -60,6 +97,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         public final TextView txtTime;
         public final TextView txtNameParturient;
         public final TextView txtDetails;
+        public View buttonViewOption;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -69,13 +107,14 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
             txtNameParturient = (TextView) itemView.findViewById(R.id.txtNameParturient);
             txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
+            buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptions);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = new Intent(context, NoteActivity.class);
-//                    intent.putExtra(NoteActivity.NOTE_POSITION, currentPosition);
-//                    context.startActivity(intent);
+                    Intent intent = new Intent(context, DadosPessoais.class);
+                    intent.putExtra("id", currentPosition+"");
+                    context.startActivity(intent);
                 }
             });
         }

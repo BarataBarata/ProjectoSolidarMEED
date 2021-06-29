@@ -24,10 +24,10 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.List;
 
-import hearsilent.discreteslider.Dash;
-import hearsilent.discreteslider.DiscreteSlider;
-import hearsilent.discreteslider.Dot;
-import hearsilent.discreteslider.libs.Utils;
+//import hearsilent.discreteslider.Dash;
+//import hearsilent.discreteslider.DiscreteSlider;
+//import hearsilent.discreteslider.Dot;
+//import hearsilent.discreteslider.libs.Utils;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.GestatinalRange;
 import mz.unilurio.solidermed.model.Parturient;
@@ -51,11 +51,11 @@ public class AddParturientActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TextView textIdadeSelect;
 
-    private DiscreteSlider mSliderDilatation;
+    //private DiscreteSlider mSliderDilatation;
     private NumberPicker numberPicker1;
     private NumberPicker numberPicker2;
     private Spinner spinner;
-    private DiscreteSlider para;
+    //private DiscreteSlider para;
 
 
     @Override
@@ -63,8 +63,8 @@ public class AddParturientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
 
-        mSliderDilatation = findViewById(R.id.dilatation);
-        setUpDilationSlider();
+      //  mSliderDilatation = findViewById(R.id.dilatation);
+//        setUpDilationSlider();
 
         numberPicker1 = findViewById(R.id.numberPickerTwo);
         numberPicker2 = findViewById(R.id.numberPickerOne);
@@ -79,7 +79,7 @@ public class AddParturientActivity extends AppCompatActivity {
         adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapterGesta);
 
-        para = findViewById(R.id.para);
+        //para = findViewById(R.id.para);
     }
 
     @Override
@@ -257,12 +257,12 @@ public class AddParturientActivity extends AppCompatActivity {
                 String age = numberPicker1.getValue()+ ""+numberPicker2.getValue();
                 parturient.setAge(Integer.parseInt(age));
 
-
-                parturient.setGestatinalRange((GestatinalRange) spinner.getSelectedItem());
-                parturient.setPara(para.getProgress());
-
-                DBManager.getInstance().addParturiente(parturient);
-                DBManager.getInstance().updateQueue(mSliderDilatation.getProgress());
+//
+//                parturient.setGestatinalRange((GestatinalRange) spinner.getSelectedItem());
+//                parturient.setPara(para.getProgress());
+//
+//                DBManager.getInstance().addParturiente(parturient);
+//                DBManager.getInstance().updateQueue(mSliderDilatation.getProgress());
 
                 Intent intent = new Intent(AddParturientActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -286,55 +286,55 @@ public class AddParturientActivity extends AppCompatActivity {
 
     }
 
-    private void setUpDilationSlider() {
-        mSliderDilatation.setTrackWidth(Utils.convertDpToPixel(4, this));
-//        mSlider.setTrackColor(0xFFD81B60);
-//        mSlider.setInactiveTrackColor(0x3DD81B60);
-
-        mSliderDilatation.setThumbRadius(Utils.convertDpToPixel(6, this));
-//        mSlider.setThumbColor(0xFFD81B60);
-//        mSlider.setThumbPressedColor(0x1FD81B60);
+//    private void setUpDilationSlider() {
+//        mSliderDilatation.setTrackWidth(Utils.convertDpToPixel(4, this));
+////        mSlider.setTrackColor(0xFFD81B60);
+////        mSlider.setInactiveTrackColor(0x3DD81B60);
 //
-//        mSlider.setTickMarkColor(0x3DFFFFFF);
-//        mSlider.setTickMarkInactiveColor(0x1FD81B60);
-        mSliderDilatation.setTickMarkPatterns(
-                Arrays.asList(new Dot(), new Dash(Utils.convertDpToPixel(1, this))));
-
-        mSliderDilatation.setValueLabelTextColor(Color.WHITE);
-        mSliderDilatation.setValueLabelTextSize(Utils.convertSpToPixel(16, this));
-        mSliderDilatation.setValueLabelFormatter(new DiscreteSlider.ValueLabelFormatter() {
-
-            @Override
-            public String getLabel(int input) {
-                return Integer.toString(input);
-            }
-        });
-
-        mSliderDilatation.setCount(11);
-        mSliderDilatation.setMode(DiscreteSlider.MODE_NORMAL);
-
-        mSliderDilatation.setMinProgress(0);
-
-        mSliderDilatation.setOnValueChangedListener(new DiscreteSlider.OnValueChangedListener() {
-
-            @Override
-            public void onValueChanged(int progress, boolean fromUser) {
-                super.onValueChanged(progress, fromUser);
-                Log.i("DiscreteSlider", "Progress: " + progress + ", fromUser: " + fromUser);
-            }
-
-            @Override
-            public void onValueChanged(int minProgress, int maxProgress, boolean fromUser) {
-                super.onValueChanged(minProgress, maxProgress, fromUser);
-                Log.i("DiscreteSlider",
-                        "MinProgress: " + minProgress + ", MaxProgress: " + maxProgress +
-                                ", fromUser: " + fromUser);
-            }
-        });
-
-        mSliderDilatation.setClickable(true);
-    }
-
+//        mSliderDilatation.setThumbRadius(Utils.convertDpToPixel(6, this));
+////        mSlider.setThumbColor(0xFFD81B60);
+////        mSlider.setThumbPressedColor(0x1FD81B60);
+////
+////        mSlider.setTickMarkColor(0x3DFFFFFF);
+////        mSlider.setTickMarkInactiveColor(0x1FD81B60);
+//        mSliderDilatation.setTickMarkPatterns(
+//                Arrays.asList(new Dot(), new Dash(Utils.convertDpToPixel(1, this))));
+//
+//        mSliderDilatation.setValueLabelTextColor(Color.WHITE);
+//        mSliderDilatation.setValueLabelTextSize(Utils.convertSpToPixel(16, this));
+//        mSliderDilatation.setValueLabelFormatter(new DiscreteSlider.ValueLabelFormatter() {
+//
+//            @Override
+//            public String getLabel(int input) {
+//                return Integer.toString(input);
+//            }
+//        });
+//
+//        mSliderDilatation.setCount(11);
+//        mSliderDilatation.setMode(DiscreteSlider.MODE_NORMAL);
+//
+//        mSliderDilatation.setMinProgress(0);
+//
+//        mSliderDilatation.setOnValueChangedListener(new DiscreteSlider.OnValueChangedListener() {
+//
+//            @Override
+//            public void onValueChanged(int progress, boolean fromUser) {
+//                super.onValueChanged(progress, fromUser);
+//                Log.i("DiscreteSlider", "Progress: " + progress + ", fromUser: " + fromUser);
+//            }
+//
+//            @Override
+//            public void onValueChanged(int minProgress, int maxProgress, boolean fromUser) {
+//                super.onValueChanged(minProgress, maxProgress, fromUser);
+//                Log.i("DiscreteSlider",
+//                        "MinProgress: " + minProgress + ", MaxProgress: " + maxProgress +
+//                                ", fromUser: " + fromUser);
+//            }
+//        });
+//
+//        mSliderDilatation.setClickable(true);
+//    }
+//
     public void setUpNumberPickers(){
 
         numberPicker2.setMinValue(1);

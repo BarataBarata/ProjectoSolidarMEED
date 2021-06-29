@@ -40,219 +40,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-<!--   <ScrollView-->
-<!--       android:layout_marginTop="58dp"-->
-<!--       android:layout_width="match_parent"-->
-<!--       android:layout_height="match_parent">-->
-
-<!--       <LinearLayout-->
-<!--           android:layout_width="match_parent"-->
-<!--           android:layout_height="match_parent">-->
-
-<!--           <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--               android:id="@+id/constraintLayout"-->
-<!--               android:layout_width="match_parent"-->
-<!--               android:layout_height="669dp"-->
-<!--               android:layout_margin="4dp"-->
-<!--               app:layout_anchor="@+id/constraintLayout"-->
-<!--               app:layout_anchorGravity="center"-->
-<!--               app:layout_constraintBottom_toBottomOf="parent">-->
-
-<!--               <TextView-->
-<!--                   android:id="@+id/textView2"-->
-<!--                   android:layout_width="wrap_content"-->
-<!--                   android:layout_height="wrap_content"-->
-<!--                   android:layout_marginTop="20dp"-->
-<!--                   android:text="Idade "-->
-<!--                   android:textSize="20dp"-->
-<!--                   app:layout_constraintEnd_toEndOf="parent"-->
-<!--                   app:layout_constraintHorizontal_bias="0.08"-->
-<!--                   app:layout_constraintStart_toStartOf="parent"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/idText_nome2" />-->
-
-<!--               <TextView-->
-<!--                   android:id="@+id/textView4"-->
-<!--                   style="@style/TextAppearance.AppCompat.Medium"-->
-<!--                   android:layout_width="wrap_content"-->
-<!--                   android:layout_height="wrap_content"-->
-<!--                   android:text=" Motivos da Trasferencia "-->
-<!--                   android:textStyle="bold|italic"-->
-<!--                   app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                   app:layout_constraintEnd_toEndOf="parent"-->
-<!--                   app:layout_constraintHorizontal_bias="0.029"-->
-<!--                   app:layout_constraintStart_toStartOf="parent"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/textOrigemTrasferencia"-->
-<!--                   app:layout_constraintVertical_bias="0.504" />-->
-
-<!--               <TextView-->
-<!--                   android:id="@+id/idNumeroCama"-->
-<!--                   android:layout_width="wrap_content"-->
-<!--                   android:layout_height="wrap_content"-->
-<!--                   android:layout_marginTop="76dp"-->
-<!--                   android:text="Nº cama"-->
-<!--                   android:textSize="20dp"-->
-<!--                   app:layout_constraintEnd_toEndOf="parent"-->
-<!--                   app:layout_constraintHorizontal_bias="0.086"-->
-<!--                   app:layout_constraintStart_toStartOf="parent"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/idText_nome2" />-->
-
-<!--               <Spinner-->
-<!--                   android:id="@+id/spinner_courses2"-->
-<!--                   android:layout_width="92dp"-->
-<!--                   android:layout_height="40dp"-->
-<!--                   android:layout_marginTop="16dp"-->
-<!--                   android:layout_marginEnd="8dp"-->
-<!--                   app:layout_constraintEnd_toEndOf="parent"-->
-
-<!--                   app:layout_constraintHorizontal_bias="0.059"-->
-<!--                   app:layout_constraintStart_toEndOf="@+id/textView2"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/idText_nome2" />-->
-
-<!--               <Spinner-->
-<!--                   android:id="@+id/spinner_courses3"-->
-<!--                   android:layout_width="87dp"-->
-<!--                   android:layout_height="39dp"-->
-<!--                   android:layout_marginStart="64dp"-->
-<!--                   android:layout_marginTop="67dp"-->
-<!--                   android:layout_marginEnd="8dp"-->
-<!--                   app:layout_constraintEnd_toEndOf="parent"-->
-<!--                   app:layout_constraintHorizontal_bias="0.124"-->
-<!--                   app:layout_constraintStart_toEndOf="@+id/textView2"-->
-<!--                   app:layout_constraintStart_toStartOf="@+id/idNumeroCama"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/idText_nome2" />-->
-
-<!--               <EditText-->
-<!--                   android:id="@+id/idText_nome"-->
-<!--                   android:layout_width="match_parent"-->
-<!--                   android:layout_height="wrap_content"-->
-<!--                   android:layout_marginStart="16dp"-->
-<!--                   android:layout_marginTop="46dp"-->
-<!--                   android:layout_marginEnd="16dp"-->
-<!--                   android:ems="10"-->
-<!--                   android:hint="Nome"-->
-<!--                   android:inputType="textMultiLine"-->
-<!--                   app:layout_constraintEnd_toEndOf="parent"-->
-<!--                   app:layout_constraintHorizontal_bias="0.0"-->
-<!--                   app:layout_constraintStart_toStartOf="parent"-->
-<!--                   app:layout_constraintTop_toTopOf="parent" />-->
-
-
-<!--               <EditText-->
-<!--                   android:id="@+id/idText_nome2"-->
-<!--                   android:layout_width="match_parent"-->
-<!--                   android:layout_height="wrap_content"-->
-<!--                   android:layout_marginStart="16dp"-->
-<!--                   android:layout_marginTop="28dp"-->
-<!--                   android:layout_marginEnd="16dp"-->
-<!--                   android:ems="10"-->
-<!--                   android:gravity="start|top"-->
-<!--                   android:hint="Apelido"-->
-<!--                   android:inputType="textMultiLine"-->
-<!--                   app:layout_constraintHorizontal_bias="0.0"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/idText_nome" />-->
-
-
-<!--               <TextView-->
-<!--                   android:id="@+id/textView"-->
-<!--                   android:layout_width="121dp"-->
-<!--                   android:layout_height="23dp"-->
-<!--                   android:layout_marginTop="144dp"-->
-<!--                   android:text="Dilatação :"-->
-<!--                   android:textSize="19dp"-->
-<!--                   android:textStyle="bold"-->
-<!--                   app:layout_constraintEnd_toEndOf="parent"-->
-<!--                   app:layout_constraintHorizontal_bias="0.056"-->
-<!--                   app:layout_constraintStart_toStartOf="parent"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/idText_nome2" />-->
-
-<!--               <TextView-->
-<!--                   android:id="@+id/textseekbar"-->
-<!--                   android:layout_width="96dp"-->
-<!--                   android:layout_height="29dp"-->
-<!--                   android:layout_marginTop="144dp"-->
-<!--                   android:gravity="center"-->
-<!--                   android:text="0"-->
-<!--                   android:textSize="25dp"-->
-<!--                   android:textStyle="bold"-->
-<!--                   app:layout_constraintEnd_toEndOf="parent"-->
-<!--                   app:layout_constraintHorizontal_bias="0.902"-->
-<!--                   app:layout_constraintStart_toStartOf="parent"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/idText_nome2" />-->
-
-<!--               <SeekBar-->
-<!--                   android:id="@+id/seekBar"-->
-<!--                   android:layout_width="250dp"-->
-<!--                   android:layout_height="14dp"-->
-<!--                   android:layout_marginTop="16dp"-->
-<!--                   android:max="20"-->
-<!--                   android:progress="1"-->
-<!--                   android:scaleX="2"-->
-<!--                   android:scaleY="2"-->
-<!--                   app:layout_constraintEnd_toEndOf="parent"-->
-<!--                   app:layout_constraintHorizontal_bias="0.497"-->
-<!--                   app:layout_constraintStart_toStartOf="parent"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/textView" />-->
-
-
-<!--               <androidx.appcompat.widget.AppCompatCheckBox-->
-<!--                   android:id="@+id/opTrasferencia"-->
-<!--                   style="@style/TextAppearance.AppCompat.Caption"-->
-<!--                   android:layout_width="wrap_content"-->
-<!--                   android:layout_height="30dp"-->
-<!--                   android:layout_alignParentBottom="true"-->
-<!--                   android:layout_marginTop="72dp"-->
-<!--                   android:backgroundTint="@color/white"-->
-<!--                   android:onClick="transferencia"-->
-<!--                   android:text="Registar dados de transferência"-->
-<!--                   android:textColor="#536DFE"-->
-<!--                   android:textStyle="italic"-->
-<!--                   app:layout_constraintEnd_toEndOf="parent"-->
-<!--                   app:layout_constraintHorizontal_bias="0.078"-->
-<!--                   app:layout_constraintStart_toStartOf="parent"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/seekBar" />-->
-
-<!--               <TextView-->
-<!--                   android:textStyle="bold|italic"-->
-<!--                   android:id="@+id/textOrigemTrasferencia"-->
-<!--                   style="@style/TextAppearance.AppCompat.Medium"-->
-<!--                   android:layout_width="wrap_content"-->
-<!--                   android:layout_height="wrap_content"-->
-<!--                   android:layout_marginStart="16dp"-->
-<!--                   android:layout_marginTop="28dp"-->
-<!--                   android:text="Origem da Trasferencia : "-->
-<!--                   app:layout_constraintStart_toStartOf="parent"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/opTrasferencia" />-->
-
-<!--               <Spinner-->
-<!--                   android:id="@+id/spinner_courses"-->
-<!--                   android:layout_width="wrap_content"-->
-<!--                   android:layout_height="0dp"-->
-<!--                   android:layout_marginStart="8dp"-->
-<!--                   android:layout_marginTop="28dp"-->
-<!--                   android:layout_marginEnd="8dp"-->
-<!--                   app:layout_constraintEnd_toEndOf="@+id/textOrigemTrasferencia"-->
-<!--                   app:layout_constraintHorizontal_bias="0.0"-->
-<!--                   app:layout_constraintStart_toStartOf="@+id/textOrigemTrasferencia"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/textOrigemTrasferencia" />-->
-
-<!--               <Spinner-->
-<!--                   android:id="@+id/spinner_courses4"-->
-<!--                   android:layout_width="wrap_content"-->
-<!--                   android:layout_height="0dp"-->
-<!--                   android:layout_marginStart="8dp"-->
-<!--                   android:layout_marginTop="100dp"-->
-<!--                   android:layout_marginEnd="8dp"-->
-<!--                   app:layout_constraintEnd_toEndOf="@+id/textOrigemTrasferencia"-->
-<!--                   app:layout_constraintHorizontal_bias="0.0"-->
-<!--                   app:layout_constraintStart_toStartOf="@+id/textOrigemTrasferencia"-->
-<!--                   app:layout_constraintTop_toBottomOf="@+id/textOrigemTrasferencia" />-->
-<!--           </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--       </LinearLayout>-->
-
-<!--   </ScrollView>-->
-
-
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
@@ -362,86 +149,57 @@
                     app:layout_constraintStart_toStartOf="@+id/textView"
                     app:layout_constraintTop_toBottomOf="@+id/numberPickerTwo" />
 
-                <hearsilent.discreteslider.DiscreteSlider
+                <com.google.android.material.slider.Slider
                     android:id="@+id/dilatation"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_width="0dp"
                     android:layout_height="600dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:paddingLeft="0dp"
                     android:paddingTop="40dp"
                     android:paddingRight="0dp"
-                    app:ds_count="21"
-                    app:ds_inactiveTrackColor="#CAF4CC"
-                    app:ds_maxProgress="10"
-                    app:ds_minProgress="0"
-                    app:ds_mode="normal"
-                    app:ds_progressOffset="0"
-                    app:ds_thumbColor="@color/purple_500"
-                    app:ds_thumbPressedColor="#80E4F8E4"
-                    app:ds_thumbRadius="6dp"
-                    app:ds_tickMarkColor="#3DFFFFFF"
-                    app:ds_tickMarkDashLength="1dp"
-                    app:ds_tickMarkInactiveColor="@color/teal_200"
-                    app:ds_tickMarkPatterns="dot,dash"
-                    app:ds_trackColor="@color/purple_500"
-                    app:ds_trackWidth="4dp"
-                    app:ds_valueLabelMode="showOnPressHold"
-                    app:ds_valueLabelTextColor="#FFF"
-                    app:ds_valueLabelTextSize="16sp"
-                    app:layout_constraintEnd_toEndOf="@+id/textView2"
-                    app:layout_constraintStart_toStartOf="@+id/textView2"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textPara" />
 
                 <TextView
                     android:id="@+id/textPara"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:text="Opções de paridade (PARA)"
                     app:layout_constraintEnd_toEndOf="@+id/dilatation"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/dilatation"
-                    app:layout_constraintTop_toBottomOf="@+id/dilatation" />
+                    app:layout_constraintTop_toBottomOf="@+id/spinner_gestRange" />
 
-                <hearsilent.discreteslider.DiscreteSlider
+                <com.google.android.material.slider.Slider
                     android:id="@+id/para"
-                    android:layout_width="0dp"
-                    android:layout_height="600dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:paddingLeft="0dp"
                     android:paddingTop="40dp"
                     android:paddingRight="0dp"
-                    app:ds_count="21"
-                    app:ds_inactiveTrackColor="#CAF4CC"
-                    app:ds_maxProgress="10"
-                    app:ds_minProgress="0"
-                    app:ds_mode="normal"
-                    app:ds_progressOffset="0"
-                    app:ds_thumbColor="@color/purple_500"
-                    app:ds_thumbPressedColor="#80E4F8E4"
-                    app:ds_thumbRadius="6dp"
-                    app:ds_tickMarkColor="#3DFFFFFF"
-                    app:ds_tickMarkDashLength="1dp"
-                    app:ds_tickMarkInactiveColor="@color/teal_200"
-                    app:ds_tickMarkPatterns="dot,dash"
-                    app:ds_trackColor="@color/purple_500"
-                    app:ds_trackWidth="4dp"
-                    app:ds_valueLabelMode="showOnPressHold"
-                    app:ds_valueLabelTextColor="#FFF"
-                    app:ds_valueLabelTextSize="16sp"
-                    app:layout_constraintEnd_toEndOf="@+id/textPara"
-                    app:layout_constraintStart_toStartOf="@+id/textPara"
-                    app:layout_constraintTop_toBottomOf="@+id/textPara" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
                 <TextView
                     android:id="@+id/textView3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_width="337dp"
+                    android:layout_height="21dp"
+                    android:layout_marginTop="16dp"
                     android:text="Idade gestacional"
                     app:layout_constraintEnd_toEndOf="@+id/para"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -452,9 +210,10 @@
                     android:id="@+id/spinner_gestRange"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="@+id/textView3"
-                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/textView3"
                     app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -462,11 +221,11 @@
                     android:id="@+id/switch1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:text="Transferido"
-                    app:layout_constraintEnd_toEndOf="@+id/spinner_gestRange"
-                    app:layout_constraintStart_toStartOf="@+id/spinner_gestRange"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_gestRange" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dilatation" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
