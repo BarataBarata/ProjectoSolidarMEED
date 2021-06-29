@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.Max;
+import com.mobsandgeeks.saripaar.annotation.Min;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import java.util.List;
@@ -52,8 +54,10 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private TextView textApelido;
 
     private DatePickerDialog.OnDateSetListener dateSetListener;
+
     private NumberPicker numberPicker1;
     private NumberPicker numberPicker2;
+
     private Spinner spinner;
 
     private Validator validator;
@@ -62,12 +66,24 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
+
+        initView();
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
+//        readDisplayStateValues();
+//        saveOriginalNoteValues();
+}
+
+    private void initView() {
+
         numberPicker1 = findViewById(R.id.numberPickerTwo);
         numberPicker2 = findViewById(R.id.numberPickerOne);
-        setUpNumberPickers();
-
-        readDisplayStateValues();
-        saveOriginalNoteValues();
+        textApelido = findViewById(R.id.txtSurname);
+        txtNameParturient = findViewById(R.id.txtName);
+        numberPicker1 = findViewById(R.id.numberPickerOne);
+        numberPicker2 = findViewById(R.id.numberPickerTwo);
 
         spinner = findViewById(R.id.spinner_gestRange);
         List<GestatinalRange> list = DBManager.getInstance().getGestatinalRange();
@@ -75,9 +91,9 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapterGesta);
 
-        validator = new Validator(this);
-        validator.setValidationListener(this);
-}
+        setUpNumberPickers();
+
+    }
 
     @Override
     protected void onPostCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -104,15 +120,15 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     }
 
     private void readDisplayStateValues() {
-        Intent intent =getIntent();
-        int position=intent.getIntExtra(NOTE_POSITION,POSITION_NOT_SET);
-        isNewnote =position==POSITION_NOT_SET;
-
-        if (isNewnote){
-            createNewNote();
-        }else {
-            mNote = DataManager.getInstance().getNotes().get(position);
-        }
+//        Intent intent =getIntent();
+//        int position=intent.getIntExtra(NOTE_POSITION,POSITION_NOT_SET);
+//        isNewnote =position==POSITION_NOT_SET;
+//
+//        if (isNewnote){
+//            createNewNote();
+//        }else {
+//            mNote = DataManager.getInstance().getNotes().get(position);
+//        }
     }
 
     private void createNewNote() {
@@ -195,6 +211,37 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
     public void registar(View view) {
         validator.validate();
+
+//        if(numberPicker1.getValue()<1 || numberPicker1.getValue() > 6){
+//            numberPicker1.setError("Error");
+//        }
+
+    }
+
+    public void setUpNumberPickers(){
+
+        numberPicker1.setMinValue(1);
+        numberPicker1.setMaxValue(5);
+        numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
+            }
+        });
+
+        numberPicker2.setMinValue(0);
+        numberPicker2.setMaxValue(9);
+        numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
+            }
+        });
+    }
+
+
+    @Override
+    public void onValidationSucceeded() {
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setTitle("REGISTO");
         dialog.setMessage(" Deseja registar um Parturiente ?");
@@ -205,11 +252,6 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                textApelido = (TextView)findViewById(R.id.txtSurname);
-                txtNameParturient = (TextView)findViewById(R.id.txtName);
-                numberPicker1 = (NumberPicker) findViewById(R.id.numberPickerOne);
-                numberPicker2 = (NumberPicker) findViewById(R.id.numberPickerTwo);
-
                 Parturient parturient = new Parturient();
                 parturient.setId(DBManager.getInstance().getTotalPaturient());
                 parturient.setName(txtNameParturient.getText().toString());
@@ -217,7 +259,6 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
                 String age = numberPicker1.getValue()+ ""+numberPicker2.getValue();
                 parturient.setAge(Integer.parseInt(age));
-
 //
 //                parturient.setGestatinalRange((GestatinalRange) spinner.getSelectedItem());
 //                parturient.setPara(para.getProgress());
@@ -243,84 +284,6 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
         dialog.create();
         dialog.show();
-
-
-    }
-
-//    private void setUpDilationSlider() {
-//        mSliderDilatation.setTrackWidth(Utils.convertDpToPixel(4, this));
-////        mSlider.setTrackColor(0xFFD81B60);
-////        mSlider.setInactiveTrackColor(0x3DD81B60);
-//
-//        mSliderDilatation.setThumbRadius(Utils.convertDpToPixel(6, this));
-////        mSlider.setThumbColor(0xFFD81B60);
-////        mSlider.setThumbPressedColor(0x1FD81B60);
-////
-////        mSlider.setTickMarkColor(0x3DFFFFFF);
-////        mSlider.setTickMarkInactiveColor(0x1FD81B60);
-//        mSliderDilatation.setTickMarkPatterns(
-//                Arrays.asList(new Dot(), new Dash(Utils.convertDpToPixel(1, this))));
-//
-//        mSliderDilatation.setValueLabelTextColor(Color.WHITE);
-//        mSliderDilatation.setValueLabelTextSize(Utils.convertSpToPixel(16, this));
-//        mSliderDilatation.setValueLabelFormatter(new DiscreteSlider.ValueLabelFormatter() {
-//
-//            @Override
-//            public String getLabel(int input) {
-//                return Integer.toString(input);
-//            }
-//        });
-//
-//        mSliderDilatation.setCount(11);
-//        mSliderDilatation.setMode(DiscreteSlider.MODE_NORMAL);
-//
-//        mSliderDilatation.setMinProgress(0);
-//
-//        mSliderDilatation.setOnValueChangedListener(new DiscreteSlider.OnValueChangedListener() {
-//
-//            @Override
-//            public void onValueChanged(int progress, boolean fromUser) {
-//                super.onValueChanged(progress, fromUser);
-//                Log.i("DiscreteSlider", "Progress: " + progress + ", fromUser: " + fromUser);
-//            }
-//
-//            @Override
-//            public void onValueChanged(int minProgress, int maxProgress, boolean fromUser) {
-//                super.onValueChanged(minProgress, maxProgress, fromUser);
-//                Log.i("DiscreteSlider",
-//                        "MinProgress: " + minProgress + ", MaxProgress: " + maxProgress +
-//                                ", fromUser: " + fromUser);
-//            }
-//        });
-//
-//        mSliderDilatation.setClickable(true);
-//    }
-//
-    public void setUpNumberPickers(){
-
-        numberPicker2.setMinValue(1);
-        numberPicker2.setMaxValue(5);
-        numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
-            }
-        });
-
-        numberPicker1.setMinValue(0);
-        numberPicker1.setMaxValue(9);
-        numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
-            }
-        });
-    }
-
-
-    @Override
-    public void onValidationSucceeded() {
-        Toast.makeText(this, "We got it right!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
