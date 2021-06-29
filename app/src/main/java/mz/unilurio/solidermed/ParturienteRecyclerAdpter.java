@@ -78,13 +78,11 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         public final TextView txtTime;
         public final TextView txtNameParturient;
         public final TextView textCircle;
-        public final TextView txtDetails;
         public View buttonViewOption;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtDetails=(TextView)itemView.findViewById(R.id.txtDetails2);
             textCircle=(TextView)itemView.findViewById(R.id.textCircle);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTimeParturiente);

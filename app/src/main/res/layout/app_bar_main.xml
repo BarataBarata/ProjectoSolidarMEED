@@ -21,14 +21,6 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/Theme.Projecto_S.PopupOverlay" >
 
-            <TextView
-                android:textStyle="bold"
-                style="@style/TextAppearance.AppCompat.Large"
-                android:background="?attr/colorPrimary"
-                android:id="@+id/titleMenu"
-                android:text="Menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
