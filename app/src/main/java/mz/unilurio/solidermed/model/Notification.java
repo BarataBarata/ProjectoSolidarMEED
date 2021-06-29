@@ -20,7 +20,7 @@ public final class Notification implements Parcelable {
     private Date nextNotifier;
 
     public Notification(){
-        System.out.println(" ---------- Alert Fired! ------------");
+
     }
 
     public Notification(int color, String message, Date time, boolean isOpen, DeliveryService deliveryService) {

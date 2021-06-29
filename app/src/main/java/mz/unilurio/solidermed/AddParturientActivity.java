@@ -8,9 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,18 +18,10 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Arrays;
 import java.util.List;
-
-//import hearsilent.discreteslider.Dash;
-//import hearsilent.discreteslider.DiscreteSlider;
-//import hearsilent.discreteslider.Dot;
-//import hearsilent.discreteslider.libs.Utils;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.GestatinalRange;
 import mz.unilurio.solidermed.model.Parturient;
-
 
 public class AddParturientActivity extends AppCompatActivity {
 
@@ -47,25 +37,19 @@ public class AddParturientActivity extends AppCompatActivity {
     private String originalNoteTitle;
     private String originalNoteText;
     private TextView txtNameParturient;
-    private TextView textApelido;
-    private DatePickerDialog.OnDateSetListener dateSetListener;
-    private TextView textIdadeSelect;
 
-    //private DiscreteSlider mSliderDilatation;
+
+    private TextView textApelido;
+
+    private DatePickerDialog.OnDateSetListener dateSetListener;
     private NumberPicker numberPicker1;
     private NumberPicker numberPicker2;
     private Spinner spinner;
-    //private DiscreteSlider para;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
-
-      //  mSliderDilatation = findViewById(R.id.dilatation);
-//        setUpDilationSlider();
-
         numberPicker1 = findViewById(R.id.numberPickerTwo);
         numberPicker2 = findViewById(R.id.numberPickerOne);
         setUpNumberPickers();
@@ -78,9 +62,7 @@ public class AddParturientActivity extends AppCompatActivity {
         ArrayAdapter<GestatinalRange> adapterGesta = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
         adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapterGesta);
-
-        //para = findViewById(R.id.para);
-    }
+}
 
     @Override
     protected void onPostCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -99,45 +81,11 @@ public class AddParturientActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public boolean onPreparePanel(int featureId, @Nullable @org.jetbrains.annotations.Nullable View view, @NonNull @NotNull Menu menu) {
-//        return super.onPreparePanel(featureId, view, menu);
-//    }
-
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        if(isCancel){
-//            if(isNewnote) {
-//                DataManager.getInstance().removeNote(mNotePosition);
-//            }else {
-//                storePreviousNoteValues();
-//            }
-//        }else {
-//            saveNote();
-//        }
-//    }
-
     private void storePreviousNoteValues() {
         CourseInfo course=DataManager.getInstance().getCourse(moriginalNoteCoursesId1);
         mNote.setCourse(course);
         mNote.setTitle(originalNoteTitle);
         mNote.setText(originalNoteText);
-    }
-
-    private void saveNote() {
-//        mNote.setCourse((CourseInfo) spinnerHospitais.getSelectedItem());
-//        mNote.setTitle(textNoteTitle.getText().toString());
-//        mNote.setText(text_note_text.getText().toString());
-
-    }
-
-    private void displayNote(Spinner spinnerCourses, EditText text_note_text, EditText textNoteTitle) {
-        List<CourseInfo> courses=DataManager.getInstance().getCourses();
-        text_note_text.setText(mNote.getText());
-        textNoteTitle.setText(mNote.getTitle());
-        int courseIndex=courses.indexOf(mNote.getCourse());
-        spinnerCourses.setSelection(courseIndex);
     }
 
     private void readDisplayStateValues() {
@@ -157,8 +105,6 @@ public class AddParturientActivity extends AppCompatActivity {
         mNotePosition = dm.createNewNote();
         mNote=dm.getNotes().get(mNotePosition);
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
