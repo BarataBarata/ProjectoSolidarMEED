@@ -18,12 +18,18 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+
 import java.util.List;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.GestatinalRange;
 import mz.unilurio.solidermed.model.Parturient;
 
-public class AddParturientActivity extends AppCompatActivity {
+public class AddParturientActivity extends AppCompatActivity implements Validator.ValidationListener {
 
     public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
     public static final int POSITION_NOT_SET = -1;
@@ -36,15 +42,21 @@ public class AddParturientActivity extends AppCompatActivity {
     private String moriginalNoteCoursesId1;
     private String originalNoteTitle;
     private String originalNoteText;
+
+    @NotEmpty
+    @Length(min = 3, max = 10)
     private TextView txtNameParturient;
 
-
+    @NotEmpty
+    @Length(min = 3, max = 10)
     private TextView textApelido;
 
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private NumberPicker numberPicker1;
     private NumberPicker numberPicker2;
     private Spinner spinner;
+
+    private Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +74,9 @@ public class AddParturientActivity extends AppCompatActivity {
         ArrayAdapter<GestatinalRange> adapterGesta = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
         adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapterGesta);
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
 }
 
     @Override
@@ -179,7 +194,7 @@ public class AddParturientActivity extends AppCompatActivity {
     }
 
     public void registar(View view) {
-
+        validator.validate();
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setTitle("REGISTO");
         dialog.setMessage(" Deseja registar um Parturiente ?");
@@ -303,4 +318,22 @@ public class AddParturientActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onValidationSucceeded() {
+        Toast.makeText(this, "We got it right!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+            // Display error messages
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }
