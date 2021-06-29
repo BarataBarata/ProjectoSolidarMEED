@@ -45,6 +45,7 @@ dependencies {
 
 //    implementation 'org.adw.library:discrete-seekbar:1.0.1'
     implementation 'com.github.hearsilent:DiscreteSlider:1.2.1'
+    implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
 
     // testImplementation 'org.junit.jupiter:junit-jupiter'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

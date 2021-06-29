@@ -41,7 +41,8 @@ public class DBManager {
     }
 
     private void initializeParurientes() {
-       addParturiente(new Parturient(totalPaturient, "Ds", "Two", 20));
+       addParturiente(new Parturient(totalPaturient, "Julia", "Nanomavia", 20));
+       addParturiente(new Parturient(totalPaturient, "Camilita", "Manobi", 18));
     }
 
     private void initializeCamas() {
@@ -85,21 +86,26 @@ public class DBManager {
     }
 
     private void initializeEmergencyPersonnels(){
-//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
+        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel3());
+        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel1(){
-        return new EmergencyMedicalPersonnel("Saide", "Saide", "849288877");
+        return new EmergencyMedicalPersonnel("Saide", "Nilfero", "849288877");
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel2(){
-        return new EmergencyMedicalPersonnel("Felermino", "Ali", "846689637");
+        return new EmergencyMedicalPersonnel("Felermino", "Rumbi", "846689637");
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel3(){
         return new EmergencyMedicalPersonnel("Felermino", "Ali", "864293652");
+    }
+
+    private EmergencyMedicalPersonnel initializeEmergencyPersonnel4(){
+        return new EmergencyMedicalPersonnel("Ussimane", "Killer Wazy", "847759422");
     }
 
     private void initializeQueue(){
