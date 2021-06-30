@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="35dp"
+                        android:layout_marginStart="34dp"
                         android:layout_marginTop="516dp"
                         android:text="Origem da Trasferencia :"
                         android:textStyle="bold|normal" />
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="36dp"
+                        android:layout_marginStart="34dp"
                         android:layout_marginTop="563dp"
                         android:text="Motivo da Trasferencia: "
                         android:textStyle="bold|normal" />
@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="32dp"
+                        android:layout_marginStart="34dp"
                         android:layout_marginTop="224dp"
                         android:text="Idade da Parturiente:"
                         android:textStyle="bold|normal" />
@@ -147,7 +147,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="31dp"
+                        android:layout_marginStart="34dp"
                         android:layout_marginTop="259dp"
                         android:text="Dilatacao Actual :"
                         android:textStyle="bold|normal" />
@@ -157,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="32dp"
+                        android:layout_marginStart="34dp"
                         android:layout_marginTop="294dp"
                         android:text="Opções de Paridade :"
                         android:textStyle="bold|normal" />
@@ -168,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="33dp"
+                        android:layout_marginStart="34dp"
                         android:layout_marginTop="331dp"
                         android:text="Idade gestacional :"
                         android:textStyle="bold|normal" />
@@ -190,7 +190,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="33dp"
+                        android:layout_marginStart="34dp"
                         android:layout_marginTop="400dp"
                         android:text="Hora  Atual :"
                         android:textStyle="bold|normal" />

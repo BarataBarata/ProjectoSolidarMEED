@@ -16,6 +16,8 @@ public class DBManager {
 
     private List<Notification> notifications = new ArrayList<>();
     private List<Parturient> parturients = new ArrayList<>();
+    private List<String> listOpcoesTrasferencia = new ArrayList<>();
+    private List<String> listOpcoesUnidadeSanitaria = new ArrayList<>();
     static private List<Integer> colors = new ArrayList<Integer>();
     static private List<Integer> idades = new ArrayList<Integer>();
     static private List<Integer> camas = new ArrayList<Integer>();
@@ -29,6 +31,8 @@ public class DBManager {
         if(ourInstance == null) {
             ourInstance = new DBManager();
             ourInstance.initializeColor();
+            ourInstance.initalizeListOpcoesTrasferencia();
+            ourInstance.initalizeListOpcoesUnidadeSanitaria ();
             ourInstance.initializeIdade();
             ourInstance.initializeCamas();
             ourInstance.initializeNotifications();
@@ -38,6 +42,45 @@ public class DBManager {
             ourInstance.initializeGestationalRanre();
         }
         return ourInstance;
+    }
+
+    private void initalizeListOpcoesTrasferencia() {
+        this.listOpcoesTrasferencia.add("Hemorragia anteparto, com suspeita de placenta previa");
+        this.listOpcoesTrasferencia.add("Hemorragia anteparto, com suspeita de deslocamento prematuro da placenta normalmente inserida");
+        this.listOpcoesTrasferencia.add("Hemorragia anteparto, com suspeita de ruptura uterina");
+        this.listOpcoesTrasferencia.add("Suspeita de ruptura uterina pré-termo de membranas");
+        this.listOpcoesTrasferencia.add("Trabalho de parto arrastado");
+        this.listOpcoesTrasferencia.add("Pre-eclampsia");
+        this.listOpcoesTrasferencia.add("Eclampsia");
+        this.listOpcoesTrasferencia.add("Parto pre-termo");
+        this.listOpcoesTrasferencia.add("Sofrimento fetal");
+        this.listOpcoesTrasferencia.add("Homorragia anteparto, com suspeita de placenta previa");
+        this.listOpcoesTrasferencia.add("Outros");
+    }
+
+    private void initalizeListOpcoesUnidadeSanitaria() {
+        this.listOpcoesUnidadeSanitaria.add("Hospital Distrital de Chiúre");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Catapua");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Ocua");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Chiúre Velho");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Mmala");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Marera");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Mazeze");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Muege");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Nakoto");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Namogeliua");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Samora Machel");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Bilibiza");
+
+
+    }
+
+    public List<String> getListOpcoesUnidadeSanitaria() {
+        return listOpcoesUnidadeSanitaria;
+    }
+
+    public List<String> getListOpcoesTrasferencia() {
+        return listOpcoesTrasferencia;
     }
 
     private void initializeParurientes() {

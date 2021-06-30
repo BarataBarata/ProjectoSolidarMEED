@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,10 +78,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
+        
         recyclerParturientes = findViewById(R.id.recyclerVieParturiente);
         tabLayout=(TabLayout)findViewById(R.id.tabLayout);
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -89,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     recyclerItems.setVisibility(View.VISIBLE);
                     recyclerParturientes.setVisibility(View.INVISIBLE);
                  }else {
+                
+                    
+                    
                     recyclerItems.setVisibility(View.INVISIBLE);
                     recyclerParturientes.setVisibility(View.VISIBLE);
 //                    displayParturientes();
@@ -131,12 +135,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         initializeDisplayContent();
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem menuItem=menu.findItem(R.id.app_bar_search);
+        SearchView searchView=(SearchView)menuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                parturienteRecyclerAdpter.getFilter().filter(newText);
+                //displayParturiente();
+                return false;
+            }
+        });
         return true;
     }
 
@@ -206,14 +226,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public void initializeteDisplayContextParturientes() {
-        recyclerItems = (RecyclerView)findViewById(R.id.recyclerVieParturiente);
-        parturienteLinearLayoutManager = new LinearLayoutManager(this);
-        List<Parturient> parturients= DBManager.getInstance().getParturients();
-        parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(this,parturients);
-        recyclerItems.setLayoutManager(parturienteLinearLayoutManager);
-        recyclerItems.setAdapter(parturienteRecyclerAdpter);
-    }
+//    public void initializeteDisplayContextParturientes() {
+//        recyclerItems = (RecyclerView)findViewById(R.id.recyclerVieParturiente);
+//        parturienteLinearLayoutManager = new LinearLayoutManager(this);
+//        List<Parturient> parturients= DBManager.getInstance().getParturients();
+//        parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(this,parturients);
+//        recyclerItems.setLayoutManager(parturienteLinearLayoutManager);
+//        recyclerItems.setAdapter(parturienteRecyclerAdpter);
+//    }
 
 
 
@@ -251,8 +271,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         parturienteLinearLayoutManager = new LinearLayoutManager(this);
         List<Parturient> parturients= DBManager.getInstance().getParturients();
         parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(this,parturients);
-        recyclerParturientes.setAdapter(parturienteRecyclerAdpter);
         recyclerParturientes.setLayoutManager(parturienteLinearLayoutManager);
+        recyclerParturientes.setAdapter(parturienteRecyclerAdpter);
 //        selectNavigationMenuItem(R.id.id_notificacao);
     }
 
@@ -417,7 +437,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.putExtra("id",notification.getId());
         PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
-        NotificationManager noti2ficationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0,builder.build());
 
 
