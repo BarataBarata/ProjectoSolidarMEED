@@ -1,11 +1,14 @@
 package mz.unilurio.solidermed.model;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+
+import mz.unilurio.solidermed.utils.Helper;
 
 public class Queue {
 
@@ -21,7 +24,7 @@ public class Queue {
     }
 
     public void nofify(){
-
+        Log.i("Queue.notify", Helper.format(Calendar.getInstance().getTime())+": notify method called");
         this.notifications = new ArrayList<>();
         for (Observer ob:observers) {
             if(ob.fireAlert()){

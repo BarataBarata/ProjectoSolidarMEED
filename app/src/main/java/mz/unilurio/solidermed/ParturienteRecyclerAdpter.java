@@ -2,12 +2,11 @@ package mz.unilurio.solidermed;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,29 +16,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.DBManager;
-import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
 
-public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteRecyclerAdpter.ViewHolder>{
+public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteRecyclerAdpter.ViewHolder> implements Filterable {
 
     private final Context context;
-    private List<Parturient> parturientes;
+    private List<Parturient> originalListParturientes;
+    private List<Parturient> auxListParturientes;
     private final LayoutInflater layoutInflater;
 
     public void updateList(List<Parturient>list){
-        parturientes=new ArrayList<>();
-        parturientes.addAll(list);
+        originalListParturientes =new ArrayList<>();
+        originalListParturientes.addAll(list);
         notifyDataSetChanged();
     }
 
     public ParturienteRecyclerAdpter(Context context, List<Parturient> parturients) {
         this.context = context;
+        this.auxListParturientes =new ArrayList<>(parturients);
         layoutInflater = LayoutInflater.from(context);
-        this.parturientes = parturients;
+        this.originalListParturientes = parturients;
     }
 
     public  String oUpperFirstCase(String string){
@@ -56,7 +57,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Parturient parturient =  parturientes.get(position);
+        Parturient parturient =  originalListParturientes.get(position);
         holder.currentPosition = position;
         //holder.cardView.setCardBackgroundColor(parturient.getColour());
         holder.textCircle.setText((DBManager.getInstance().getParturients().get(position).getName().charAt(0)+"").toUpperCase());
@@ -69,8 +70,45 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
 
     @Override
     public int getItemCount() {
-        return parturientes.size();
+        return originalListParturientes.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<Parturient>list =new ArrayList<>();
+
+            if(constraint.toString().isEmpty()){
+                System.out.println("lista vazia");
+                list.addAll(auxListParturientes);
+            }else{
+                for(Parturient parturient:auxListParturientes){
+                    System.out.println("ESPERE");
+                    if(parturient.getName().toLowerCase().contains(constraint.toString().toLowerCase())){
+                        list.add(parturient);
+                        System.out.println(parturient.getName());
+                    }
+                }
+            }
+
+            FilterResults filterResults=new FilterResults();
+            filterResults.values=list;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            originalListParturientes.clear();
+            originalListParturientes.addAll((Collection<? extends Parturient>) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public int currentPosition;

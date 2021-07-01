@@ -16,19 +16,24 @@ public class DBManager {
 
     private List<Notification> notifications = new ArrayList<>();
     private List<Parturient> parturients = new ArrayList<>();
+    private List<String> listOpcoesTrasferencia = new ArrayList<>();
+    private List<String> listOpcoesUnidadeSanitaria = new ArrayList<>();
     static private List<Integer> colors = new ArrayList<Integer>();
     static private List<Integer> idades = new ArrayList<Integer>();
     static private List<Integer> camas = new ArrayList<Integer>();
     private Queue queue;
     private List<EmergencyMedicalPersonnel> emergencyMedicalPersonnels = new ArrayList<>();
-    private int totalPaturient=1;
+    public int totalPaturient=1;
     private List<GestatinalRange> ranges;
+    private List<DeliveryService> deliveryServices = new ArrayList<>();
 
 
     public static DBManager getInstance() {
         if(ourInstance == null) {
             ourInstance = new DBManager();
             ourInstance.initializeColor();
+            ourInstance.initalizeListOpcoesTrasferencia();
+            ourInstance.initalizeListOpcoesUnidadeSanitaria ();
             ourInstance.initializeIdade();
             ourInstance.initializeCamas();
             ourInstance.initializeNotifications();
@@ -38,6 +43,45 @@ public class DBManager {
             ourInstance.initializeGestationalRanre();
         }
         return ourInstance;
+    }
+
+    private void initalizeListOpcoesTrasferencia() {
+        this.listOpcoesTrasferencia.add("Hemorragia anteparto, com suspeita de placenta previa");
+        this.listOpcoesTrasferencia.add("Hemorragia anteparto, com suspeita de deslocamento prematuro da placenta normalmente inserida");
+        this.listOpcoesTrasferencia.add("Hemorragia anteparto, com suspeita de ruptura uterina");
+        this.listOpcoesTrasferencia.add("Suspeita de ruptura uterina pré-termo de membranas");
+        this.listOpcoesTrasferencia.add("Trabalho de parto arrastado");
+        this.listOpcoesTrasferencia.add("Pre-eclampsia");
+        this.listOpcoesTrasferencia.add("Eclampsia");
+        this.listOpcoesTrasferencia.add("Parto pre-termo");
+        this.listOpcoesTrasferencia.add("Sofrimento fetal");
+        this.listOpcoesTrasferencia.add("Homorragia anteparto, com suspeita de placenta previa");
+        this.listOpcoesTrasferencia.add("Outros");
+    }
+
+    private void initalizeListOpcoesUnidadeSanitaria() {
+        this.listOpcoesUnidadeSanitaria.add("Hospital Distrital de Chiúre");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Catapua");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Ocua");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Chiúre Velho");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Mmala");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Marera");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Mazeze");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Muege");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Nakoto");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Namogeliua");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Samora Machel");
+        this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Bilibiza");
+
+
+    }
+
+    public List<String> getListOpcoesUnidadeSanitaria() {
+        return listOpcoesUnidadeSanitaria;
+    }
+
+    public List<String> getListOpcoesTrasferencia() {
+        return listOpcoesTrasferencia;
     }
 
     private void initializeParurientes() {
@@ -92,6 +136,9 @@ public class DBManager {
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
     }
 
+    private EmergencyMedicalPersonnel initializeEmergencyPersonnel5(){
+        return new EmergencyMedicalPersonnel("Rosario", "Ap", "848180712");
+    }
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel1(){
         return new EmergencyMedicalPersonnel("Saide", "Nilfero", "849288877");
     }
@@ -105,43 +152,41 @@ public class DBManager {
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel4(){
+
         return new EmergencyMedicalPersonnel("Ussimane", "Killer Wazy", "847759422");
     }
 
     private void initializeQueue(){
-        List<DeliveryService> list = new ArrayList<>();
 
         for (Parturient p: getParturients()){
-            list.add(InitializeDeliveryService(p, 6));
+            deliveryServices.add(InitializeDeliveryService(p, 6));
         }
 
         Queue queue = new Queue();
 
-        for (DeliveryService ds: list){
-
-            Calendar calendar = Calendar.getInstance();
-            Date current = calendar.getTime();
-            Measure measure = new Measure(current, 4);
-            calendar.add(Calendar.MINUTE, 5);
-            Date after = calendar.getTime();
-
-            ds.setFireble(new FireMockAlert(after, ds));
+        for (DeliveryService ds: deliveryServices){
+//            Calendar calendar = Calendar.getInstance();
+//            Date current = calendar.getTime();
+//            Measure measure = new Measure(current, 4);
+//            calendar.add(Calendar.MINUTE, 5);
+//            Date after = calendar.getTime();
+//
+//            ds.setFireble(new FireMockAlert(after, ds));
             queue.register(ds);
         }
         this.queue = queue;
     }
 
     public void updateQueue(int dilatation){
-        List<DeliveryService> list = new ArrayList<>();
 
-        for (Parturient p: getParturients()){
-            list.add(InitializeDeliveryService(p, dilatation));
-        }
+        Parturient p = this.getParturients().get(totalPaturient-2);
+        System.out.println(p + "ïndex ---------------------------"+this.totalPaturient);
+        deliveryServices.add(InitializeDeliveryService(p, dilatation));
+        System.out.println();
 
         Queue queue = new Queue();
 
-        for (DeliveryService ds: list){
-
+        for (DeliveryService ds: deliveryServices){
             Calendar calendar = Calendar.getInstance();
             Date current = calendar.getTime();
             Measure measure = new Measure(current, dilatation);

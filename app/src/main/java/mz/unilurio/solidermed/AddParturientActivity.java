@@ -19,13 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.material.slider.Slider;
+
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
-import com.mobsandgeeks.saripaar.annotation.Max;
-import com.mobsandgeeks.saripaar.annotation.Min;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+
 
 import java.util.List;
 import mz.unilurio.solidermed.model.DBManager;
@@ -34,7 +35,8 @@ import mz.unilurio.solidermed.model.Parturient;
 
 public class AddParturientActivity extends AppCompatActivity implements Validator.ValidationListener {
 
-    public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
+
+public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
     public static final int POSITION_NOT_SET = -1;
     private static final String TAG = "Date";
     private Toolbar binding;
@@ -45,6 +47,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private String moriginalNoteCoursesId1;
     private String originalNoteTitle;
     private String originalNoteText;
+
 
     private Slider para;
     private Slider mSliderDilatation;
@@ -63,6 +66,11 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private NumberPicker numberPicker2;
 
     private Spinner spinner;
+    private Spinner spinnerSanitaria;
+    private Spinner spinnerTrasferencia;
+    private TextView textSanitario;
+    private TextView textTrasferencia;
+    private boolean show;
 
     private Validator validator;
 
@@ -70,8 +78,11 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
+        textSanitario = (TextView)findViewById(R.id.textSanitario);
+        textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
 
         initView();
+        invisible();
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -97,6 +108,19 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapterGesta);
 
+
+        spinnerSanitaria = findViewById(R.id.spinner_gestRangeSanitaria);
+        List<String> listSanitaria = DBManager.getInstance().getListOpcoesUnidadeSanitaria();
+        ArrayAdapter<String> adapterSanitaria = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listSanitaria);
+        adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinnerSanitaria.setAdapter( adapterSanitaria);
+        setUpNumberPickers();
+
+        spinnerTrasferencia = findViewById(R.id.spinner_gestRangeTrasferencia);
+        List<String> listTrasferencia = DBManager.getInstance().getListOpcoesTrasferencia();
+        ArrayAdapter<String> adapterTrasferencia = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listTrasferencia);
+        adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinnerTrasferencia.setAdapter( adapterTrasferencia );
         setUpNumberPickers();
 
     }
@@ -193,34 +217,37 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
     public void transferencia(View view) {
 
-//        if(show){
-//            motivoText = findViewById(R.id.textView4);
-//            textOrigem = findViewById(R.id.textOrigemTrasferencia);
-//            spinner = findViewById(R.id.spinner_courses);
-//            motivoText.setVisibility(View.VISIBLE);
-//            textOrigem.setVisibility(View.VISIBLE);
-//            spinner.setVisibility(View.VISIBLE);
-//            spinner4.setVisibility(View.VISIBLE);
-//            show=false;
-//        }else{
-//            motivoText = findViewById(R.id.textView4);
-//            textOrigem = findViewById(R.id.textOrigemTrasferencia);
-//            spinner = findViewById(R.id.spinner_courses);
-//            editText.setVisibility(View.INVISIBLE);
-//            textOrigem.setVisibility(View.INVISIBLE);
-//            spinner.setVisibility(View.INVISIBLE);
-//            spinner4.setVisibility(View.INVISIBLE);
-//            show=true;
-//        }
+       if(show){
+               spinnerSanitaria.setVisibility(View.INVISIBLE);
+               spinnerTrasferencia.setVisibility(View.INVISIBLE);
+               textSanitario.setVisibility(View.INVISIBLE);
+               textTrasferencia.setVisibility(View.INVISIBLE);
+               show =false;
+        }else{
+
+           spinnerSanitaria.setVisibility(View.VISIBLE);
+           spinnerTrasferencia.setVisibility(View.VISIBLE);
+           textSanitario.setVisibility(View.VISIBLE);
+           textTrasferencia.setVisibility(View.VISIBLE);
+           show=true;
+        }
 
     }
+
+    public void invisible(){
+        spinnerSanitaria.setVisibility(View.INVISIBLE);
+        spinnerTrasferencia.setVisibility(View.INVISIBLE);
+        textSanitario.setVisibility(View.INVISIBLE);
+        textTrasferencia.setVisibility(View.INVISIBLE);
+    }
+
 
     public void registar(View view) {
         validator.validate();
 
 //        if(numberPicker1.getValue()<1 || numberPicker1.getValue() > 6){
 //            numberPicker1.setError("Error");
-//        }
+////        }
 
     }
 
@@ -246,7 +273,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     }
 
 
-    @Override
+    //@Override
     public void onValidationSucceeded() {
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setTitle("REGISTO");
@@ -274,8 +301,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
                 Intent intent = new Intent(AddParturientActivity.this, MainActivity.class);
                 startActivity(intent);
-//                DBManager.getInstance().addParturiente(txtNameParturient.getText().toString(),textApelido.getText().toString(), (Integer) spinnerIdade.getSelectedItem(),true,String.valueOf(dilatacaseekBar),new Date(),(Integer) spinnerCama.getSelectedItem());
-//                Toast.makeText(getApplicationContext()," Parturiente Registado com sucesso",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext()," Parturiente Registado com sucesso",Toast.LENGTH_LONG).show();
 
 
             }
