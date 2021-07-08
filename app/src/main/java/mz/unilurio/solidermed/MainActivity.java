@@ -72,27 +72,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NotificationManagerCompat notificationManager;
     private TextView textNotificacao;
     private Timer timer;
+    private TextView textSeacher;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        
+
         recyclerParturientes = findViewById(R.id.recyclerVieParturiente);
         tabLayout=(TabLayout)findViewById(R.id.tabLayout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                textSeacher = findViewById(R.id.app_bar_search);
+                textSeacher.setVisibility(View.INVISIBLE);
                 if(tab.getPosition()==0){
                     displayNotifications();
                     recyclerItems.setVisibility(View.VISIBLE);
                     recyclerParturientes.setVisibility(View.INVISIBLE);
                  }else {
-                
-                    
-                    
+
+                    textSeacher.setVisibility(View.VISIBLE);
                     recyclerItems.setVisibility(View.INVISIBLE);
                     recyclerParturientes.setVisibility(View.VISIBLE);
 //                    displayParturientes();
@@ -135,13 +136,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         initializeDisplayContent();
-
-
+        textSeacher = findViewById(R.id.app_bar_search);
+        if(textSeacher!=null){
+            textSeacher.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem menuDefinition=menu.findItem(R.id.idDefinicoes);
+
+        menuDefinition.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+                return false;
+            }
+        });
+
+
         MenuItem menuItem=menu.findItem(R.id.app_bar_search);
         SearchView searchView=(SearchView)menuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -157,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
+
         return true;
     }
 
@@ -170,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //
 //        return super.onCreateOptionsMenu(menu);
 //    }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NotNull MenuItem item) {
@@ -388,6 +405,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     String composeMessage = "";
                     for (Notification n : notifications) {
+
+                        Log.i("CompareTime",  Helper.format(Calendar.getInstance().getTime()) + ">" + Helper.format(n.getNextNotifier()));
                         if (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())) {
 //                            composeMessage += n.getMessage()+"\n";
                             composeMessage += n.getDeliveryService().getParturient().getName() + " "+n.getDeliveryService().getParturient().getSurname() +", ";
@@ -420,6 +439,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             smsManager.sendTextMessage(phoneNumber, null, message, null, null);
 //            Toast.makeText(this, "Message is sent", Toast.LENGTH_SHORT);
         } catch (Exception e) {
+            Log.i("EXPECTION SMS", e.getMessage());
 //            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
         }
     }

@@ -1,20 +1,24 @@
 package mz.unilurio.solidermed;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +32,10 @@ import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.GestatinalRange;
 import mz.unilurio.solidermed.model.Parturient;
@@ -37,17 +44,6 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
 
 public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
-    public static final int POSITION_NOT_SET = -1;
-    private static final String TAG = "Date";
-    private Toolbar binding;
-    private NoteInfo mNote;
-    private boolean isNewnote;
-    private int mNotePosition;
-    private boolean isCancel;
-    private String moriginalNoteCoursesId1;
-    private String originalNoteTitle;
-    private String originalNoteText;
-
 
     private Slider para;
     private Slider mSliderDilatation;
@@ -61,7 +57,7 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
     private TextView textApelido;
 
     private DatePickerDialog.OnDateSetListener dateSetListener;
-
+    private ProgressDialog progressBar;
     private NumberPicker numberPicker1;
     private NumberPicker numberPicker2;
 
@@ -73,6 +69,7 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
     private boolean show;
 
     private Validator validator;
+    private boolean optionRegist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,19 +77,106 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         setContentView(R.layout.activity_add_mother);
         textSanitario = (TextView)findViewById(R.id.textSanitario);
         textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
-
         initView();
         invisible();
-
         validator = new Validator(this);
         validator.setValidationListener(this);
+        viewNumber();
+        viewnumber2();
 
-//        readDisplayStateValues();
-//        saveOriginalNoteValues();
 }
 
-    private void initView() {
+    private void viewnumber2() {
+        para.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
+                setColor((int)value);
+            }
 
+            private void setAllColor(){
+                TextView textNumber;
+                textNumber=findViewById(R.id.id01);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id11);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id21);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id31);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id41);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id51);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id61);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id71);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id81);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id91);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id101);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+            }
+
+            private void setColor(int value) {
+                TextView textNumber;
+                switch (value){
+                    case 0:{setAllColor();textNumber=findViewById(R.id.id01);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 1: {setAllColor();textNumber=findViewById(R.id.id11);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 2: {setAllColor();textNumber=findViewById(R.id.id21);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 3: {setAllColor();textNumber=findViewById(R.id.id31);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 4: {setAllColor();textNumber=findViewById(R.id.id41);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 5: {setAllColor();textNumber=findViewById(R.id.id51);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 6: {setAllColor();textNumber=findViewById(R.id.id61);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 7: {setAllColor();textNumber=findViewById(R.id.id71);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 8: {setAllColor();textNumber=findViewById(R.id.id81);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 9: {setAllColor();textNumber=findViewById(R.id.id91);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 10: {setAllColor();textNumber=findViewById(R.id.id101);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+
+                }
+
+            }
+        });
+
+    }
+
+    private void viewNumber() {
+
+        mSliderDilatation.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
+                setColor((int)value);
+            }
+
+            private void setAllColor(){
+                TextView textNumber;
+                textNumber=findViewById(R.id.id0);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id1);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id2);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id3);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id4);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id5);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id6);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id7);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id8);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id9);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+                textNumber=findViewById(R.id.id10);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
+            }
+
+            private void setColor(int value) {
+                TextView textNumber;
+                switch (value){
+                    case 0:{setAllColor();textNumber=findViewById(R.id.id0);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 1: {setAllColor();textNumber=findViewById(R.id.id1);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 2: {setAllColor();textNumber=findViewById(R.id.id2);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 3: {setAllColor();textNumber=findViewById(R.id.id3);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 4: {setAllColor();textNumber=findViewById(R.id.id4);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 5: {setAllColor();textNumber=findViewById(R.id.id5);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 6: {setAllColor();textNumber=findViewById(R.id.id6);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 7: {setAllColor();textNumber=findViewById(R.id.id7);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 8: {setAllColor();textNumber=findViewById(R.id.id8);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 9: {setAllColor();textNumber=findViewById(R.id.id9);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+                    case 10: {setAllColor();textNumber=findViewById(R.id.id10);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
+
+                }
+
+
+            }
+        });
+
+    }
+
+    private void initView() {
         numberPicker1 = findViewById(R.id.numberPickerTwo);
         numberPicker2 = findViewById(R.id.numberPickerOne);
         textApelido = findViewById(R.id.txtSurname);
@@ -132,40 +216,6 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
         }
     }
-    private void saveOriginalNoteValues() {
-        if(isNewnote){
-            return;
-        }
-        moriginalNoteCoursesId1 = mNote.getCourse().getCourseId();
-        originalNoteTitle = mNote.getTitle();
-        originalNoteText = mNote.getText();
-
-    }
-
-    private void storePreviousNoteValues() {
-        CourseInfo course=DataManager.getInstance().getCourse(moriginalNoteCoursesId1);
-        mNote.setCourse(course);
-        mNote.setTitle(originalNoteTitle);
-        mNote.setText(originalNoteText);
-    }
-
-    private void readDisplayStateValues() {
-//        Intent intent =getIntent();
-//        int position=intent.getIntExtra(NOTE_POSITION,POSITION_NOT_SET);
-//        isNewnote =position==POSITION_NOT_SET;
-//
-//        if (isNewnote){
-//            createNewNote();
-//        }else {
-//            mNote = DataManager.getInstance().getNotes().get(position);
-//        }
-    }
-
-    private void createNewNote() {
-        DataManager dm=DataManager.getInstance();
-        mNotePosition = dm.createNewNote();
-        mNote=dm.getNotes().get(mNotePosition);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -190,28 +240,7 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         return super.onOptionsItemSelected(item);
     }
 
-//    private void moveNext() {
-//        saveNote();
-//        ++mNotePosition;
-//        mNote=DataManager.getInstance().getNotes().get(mNotePosition);
-//        saveOriginalNoteValues();
-//        displayNote(spinnerHospitais, text_note_text, textNoteTitle);
-//        invalidateOptionsMenu();
-//    }
-
-//    private void sendEmail() {
-//        CourseInfo course=(CourseInfo) spinnerHospitais.getSelectedItem();
-//        String subject=textNoteTitle.getText().toString();
-//        String text="checkout what I learned in the pluralsight courses\""+course.getTitle() + "\"\n" +text_note_text.getText();
-//        Intent intent =new Intent(Intent.ACTION_SEND);
-//        intent.setType("");
-//        intent.putExtra(Intent.EXTRA_SUBJECT,subject);
-//        intent.putExtra(Intent.EXTRA_TEXT,text);
-//        startActivity(intent);
-//    }
-
     public void finish(View view) {
-        isCancel = true;
         finish();
     }
 
@@ -243,13 +272,33 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
 
     public void registar(View view) {
-        validator.validate();
-
-//        if(numberPicker1.getValue()<1 || numberPicker1.getValue() > 6){
-//            numberPicker1.setError("Error");
-////        }
-
+        //validator.validate();
+        onValidationSucceeded();
     }
+
+
+
+    public void validationError() {
+        optionRegist = true;
+        optionRegist = verificatioNull(optionRegist, txtNameParturient);
+        optionRegist = verificatioNull(optionRegist, textApelido);
+    }
+
+
+    public boolean  verificatioNull(boolean option, TextView textOption){
+
+        if(!option){
+            return false;
+        }
+        if(textOption.getText().toString().equals("")){
+            textOption.setError("Preenche o campo");
+            return  false;
+        }
+        return true;
+    }
+
+
+
 
     public void setUpNumberPickers(){
 
@@ -272,8 +321,7 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         });
     }
 
-
-    //@Override
+    @Override
     public void onValidationSucceeded() {
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setTitle("REGISTO");
@@ -285,26 +333,46 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Parturient parturient = new Parturient();
-                parturient.setId(DBManager.getInstance().getTotalPaturient());
-                parturient.setName(txtNameParturient.getText().toString());
-                parturient.setSurname(textApelido.getText().toString());
+                validationError();
+                if(optionRegist ) {
+                    progressBar();
+                    Parturient parturient = new Parturient();
+                    parturient.setId(DBManager.getInstance().getTotalPaturient());
+                    parturient.setName(txtNameParturient.getText().toString());
+                    parturient.setSurname(textApelido.getText().toString());
 
-                String age = numberPicker1.getValue()+ ""+numberPicker2.getValue();
-                parturient.setAge(Integer.parseInt(age));
+                    String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
+                    parturient.setAge(Integer.parseInt(age));
 
-                parturient.setGestatinalRange((GestatinalRange) spinner.getSelectedItem());
-                parturient.setPara((int)para.getValue());
+                    parturient.setGestatinalRange((GestatinalRange) spinner.getSelectedItem());
+                    parturient.setPara((int) para.getValue());
 
-                DBManager.getInstance().addParturiente(parturient);
-                DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
+                    DBManager.getInstance().addParturiente(parturient);
+                    DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
 
-                Intent intent = new Intent(AddParturientActivity.this, MainActivity.class);
-                startActivity(intent);
-                Toast.makeText(getApplicationContext()," Parturiente Registado com sucesso",Toast.LENGTH_LONG).show();
 
+                    Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
+                }
 
             }
+
+            private void progressBar() {
+                     progressBar=new ProgressDialog(AddParturientActivity.this);
+                     progressBar.setTitle("Aguarde");
+                     progressBar.setMessage("Registando...");
+                     progressBar.show();
+
+                     new Handler().postDelayed(new Thread() {
+                         @Override
+                         public void run() {
+                             progressBar.dismiss();
+                             Intent intent = new Intent(AddParturientActivity.this, MainActivity.class);
+                             startActivity(intent);
+                         }
+                     },Long.parseLong("900"));
+            }
+
+
         });
         dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             @Override

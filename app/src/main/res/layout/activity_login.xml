@@ -57,7 +57,7 @@
                 android:hint=" Nome :"
                 android:textColorHint="#0D653A"
                 app:counterEnabled="true"
-                app:counterMaxLength="15"
+                app:counterMaxLength="40"
                 app:endIconMode="clear_text"
                 app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
                 app:layout_constraintEnd_toEndOf="parent"

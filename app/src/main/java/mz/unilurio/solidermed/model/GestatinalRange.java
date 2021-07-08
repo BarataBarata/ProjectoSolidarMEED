@@ -3,7 +3,7 @@ package mz.unilurio.solidermed.model;
 public enum GestatinalRange {
     MENORQUE28SEMANAS{
         public String toString(){
-            return "<28 Semanas";
+            return "> 28 Semanas";
         }
     },
     ENTRE28E31SEMANAS{

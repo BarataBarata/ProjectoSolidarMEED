@@ -31,7 +31,7 @@ public final class Notification implements Parcelable {
         this.deliveryService = deliveryService;
         this.id = getId();
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, Notification.FIVE_INTERVAL);
+        calendar.add(Calendar.MINUTE, Notification.TWO_INTERVAL);
         this.nextNotifier = calendar.getTime();
     }
 

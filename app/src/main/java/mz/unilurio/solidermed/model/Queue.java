@@ -24,7 +24,6 @@ public class Queue {
     }
 
     public void nofify(){
-        Log.i("Queue.notify", Helper.format(Calendar.getInstance().getTime())+": notify method called");
         this.notifications = new ArrayList<>();
         for (Observer ob:observers) {
             if(ob.fireAlert()){

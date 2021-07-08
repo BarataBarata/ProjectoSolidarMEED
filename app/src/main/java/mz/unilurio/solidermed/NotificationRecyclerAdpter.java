@@ -1,7 +1,9 @@
 package mz.unilurio.solidermed;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +22,7 @@ import java.util.List;
 
 import mz.unilurio.solidermed.model.Notification;
 
-public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder>{
+public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder> {
 
     private final Context context;
     private List<Notification> notifications;
@@ -65,11 +67,11 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.item1:
-                                //handle menu1 click
-                                return true;
-                            case R.id.item2:
-                                //handle menu2 click
+
+                            case R.id.atendimento:{
+                                Intent intent = new Intent(context, Atendimento.class);
+                                context.startActivity(intent);
+                            }
                                 return true;
                             case R.id.item3:
                                 //handle menu3 click
@@ -112,10 +114,26 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, DadosPessoais.class);
-                    intent.putExtra("id", currentPosition+"");
-                    context.startActivity(intent);
-                }
+                        ProgressDialog progressBar;
+                        progressBar=new ProgressDialog(context);
+                        progressBar.setTitle("Aguarde");
+                        progressBar.setMessage("processando...");
+                        progressBar.show();
+
+                        new Handler().postDelayed(new Thread() {
+                            @Override
+                            public void run() {
+                                progressBar.dismiss();
+                                Intent intent = new Intent(context, DadosPessoais.class);
+                                intent.putExtra("id", currentPosition+"");
+                                context.startActivity(intent);
+                            }
+                        },Long.parseLong("400"));
+                    }
+
+
+
+
             });
         }
 

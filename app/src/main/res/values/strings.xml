@@ -13,7 +13,7 @@
     <string name="title_activity_note"></string>
     <string name="Note">Note</string>
     <string name="Courses">Courses</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Definições</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
