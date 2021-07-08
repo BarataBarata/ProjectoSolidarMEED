@@ -386,6 +386,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            activity.progressBar.setVisibility(View.INVISIBLE);
 
             // Stuff that updates the UI
+
             Queue queue = DBManager.getInstance().getQueue();
             queue.nofify();
             List<Notification> notifications = queue.getNotifications();
