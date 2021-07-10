@@ -406,9 +406,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     String composeMessage = "";
                     for (Notification n : notifications) {
-
-                        Log.i("CompareTime",  Helper.format(Calendar.getInstance().getTime()) + ">" + Helper.format(n.getNextNotifier()));
-                        if (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())) {
+                        boolean timePassed = false;
+                        if (notificationTriggered.containsKey(n.getId())){
+                            Log.i("CompareTime",  "Next SMS will be send on: " + Helper.format(notificationTriggered.get(n.getId()).getNextNotifier()));
+                            timePassed = Calendar.getInstance().getTime().after(notificationTriggered.get(n.getId()).getNextNotifier());
+                        }
+                        if (!notificationTriggered.containsKey(n.getId()) || timePassed) {
 //                            composeMessage += n.getMessage()+"\n";
                             composeMessage += n.getDeliveryService().getParturient().getName() + " "+n.getDeliveryService().getParturient().getSurname() +", ";
                             notificationTriggered.put(n.getId(), n);
