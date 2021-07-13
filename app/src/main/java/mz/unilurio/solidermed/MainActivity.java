@@ -101,11 +101,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        nomeHospitalExtra = new Hospitais().getTitleHospital();
         textNomeHospital = findViewById(R.id.idCentroSaudeTitle);
-        if(!nomeHospitalExtra.equals("")) {
-            textNomeHospital.setText(nomeHospitalExtra);
+        if(getIntent().getStringExtra("nomeHospital")!=null) {
+            textNomeHospital.setText(getIntent().getStringExtra("nomeHospital"));
         }else{
             textNomeHospital.setText("Centro de Saude de Chiure");
         }

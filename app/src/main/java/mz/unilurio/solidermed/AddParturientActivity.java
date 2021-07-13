@@ -70,15 +70,14 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
     private Validator validator;
     private boolean optionRegist;
+    private String nome="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
 
-
-        String nome=getIntent().getStringExtra("nome");
-        if(!nome.isEmpty()){
+        if(getIntent().getStringExtra("nome")!=null){
             TextView textNome=findViewById(R.id.txtName);
             TextView textApelido=findViewById(R.id.txtSurname);
             textNome.setText( getIntent().getStringExtra("nome"));

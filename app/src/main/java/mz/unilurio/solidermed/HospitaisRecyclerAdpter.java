@@ -141,8 +141,8 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
                     @Override
                     public void run() {
                         progressBar.dismiss();
-                        new Hospitais().setTitleHospital(hospitais.get(currentPosition).getNomeHospital());
                         Intent intent = new Intent(context, MainActivity.class);
+                        intent.putExtra("nomeHospital",hospitais.get(currentPosition).getNomeHospital()+"");
                         context.startActivity(intent);
                     }
                 },Long.parseLong("400"));
