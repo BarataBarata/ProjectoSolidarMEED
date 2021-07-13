@@ -75,6 +75,16 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
+
+
+        String nome=getIntent().getStringExtra("nome");
+        if(!nome.isEmpty()){
+            TextView textNome=findViewById(R.id.txtName);
+            TextView textApelido=findViewById(R.id.txtSurname);
+            textNome.setText( getIntent().getStringExtra("nome"));
+            textApelido.setText( getIntent().getStringExtra("apelido"));
+        }
+
         textSanitario = (TextView)findViewById(R.id.textSanitario);
         textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
         initView();
@@ -96,42 +106,11 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         para.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
-                setColor((int)value);
+                TextView textNumber=findViewById(R.id.id1);
+                textNumber.setText((int)para.getValue()+"");
             }
 
-            private void setAllColor(){
-                TextView textNumber;
-                textNumber=findViewById(R.id.id01);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id11);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id21);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id31);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id41);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id51);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id61);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id71);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id81);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id91);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id101);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-            }
 
-            private void setColor(int value) {
-                TextView textNumber;
-                switch (value){
-                    case 0:{setAllColor();textNumber=findViewById(R.id.id01);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 1: {setAllColor();textNumber=findViewById(R.id.id11);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 2: {setAllColor();textNumber=findViewById(R.id.id21);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 3: {setAllColor();textNumber=findViewById(R.id.id31);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 4: {setAllColor();textNumber=findViewById(R.id.id41);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 5: {setAllColor();textNumber=findViewById(R.id.id51);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 6: {setAllColor();textNumber=findViewById(R.id.id61);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 7: {setAllColor();textNumber=findViewById(R.id.id71);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 8: {setAllColor();textNumber=findViewById(R.id.id81);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 9: {setAllColor();textNumber=findViewById(R.id.id91);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 10: {setAllColor();textNumber=findViewById(R.id.id101);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-
-                }
-
-            }
         });
 
     }
@@ -141,42 +120,8 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         mSliderDilatation.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
-                setColor((int)value);
-            }
-
-            private void setAllColor(){
-                TextView textNumber;
-                textNumber=findViewById(R.id.id0);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id1);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id2);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id3);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id4);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id5);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id6);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id7);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id8);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id9);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-                textNumber=findViewById(R.id.id10);textNumber.setBackgroundColor(Color.WHITE);textNumber.setTextColor(Color.BLACK);
-            }
-
-            private void setColor(int value) {
-                TextView textNumber;
-                switch (value){
-                    case 0:{setAllColor();textNumber=findViewById(R.id.id0);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 1: {setAllColor();textNumber=findViewById(R.id.id1);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 2: {setAllColor();textNumber=findViewById(R.id.id2);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 3: {setAllColor();textNumber=findViewById(R.id.id3);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 4: {setAllColor();textNumber=findViewById(R.id.id4);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 5: {setAllColor();textNumber=findViewById(R.id.id5);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 6: {setAllColor();textNumber=findViewById(R.id.id6);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 7: {setAllColor();textNumber=findViewById(R.id.id7);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 8: {setAllColor();textNumber=findViewById(R.id.id8);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 9: {setAllColor();textNumber=findViewById(R.id.id9);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-                    case 10: {setAllColor();textNumber=findViewById(R.id.id10);textNumber.setBackgroundColor(Color.GREEN);textNumber.setTextColor(Color.WHITE);break;}
-
-                }
-
-
+                TextView textNumber=findViewById(R.id.id0);
+                textNumber.setText((int)mSliderDilatation.getValue()+"");
             }
         });
 
@@ -279,7 +224,6 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
     public void registar(View view) {
         validator.validate();
-        //onValidationSucceeded();
     }
 
 
@@ -329,6 +273,8 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
     @Override
     public void onValidationSucceeded() {
+
+
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setTitle("REGISTO");
         dialog.setMessage(" Deseja registar um Parturiente ?");
@@ -397,9 +343,10 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         for (ValidationError error : errors) {
             View view = error.getView();
             String message = error.getCollatedErrorMessage(this);
+
             // Display error messages
             if (view instanceof EditText) {
-                ((EditText) view).setError(message);
+                ((EditText) view).setError("Preenche o Campo");
             } else {
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             }

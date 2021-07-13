@@ -9,6 +9,7 @@ import java.util.List;
 
 public class DBManager {
 
+
     private static DBManager ourInstance = null;
 
     private List<Notification> initNotifications = new ArrayList<>();
@@ -163,25 +164,25 @@ public class DBManager {
 
     private void initializeEmergencyPersonnels(){
 //        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
-//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
-//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel3());
-        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
+        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
+        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel3());
+//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel5(){
         return new EmergencyMedicalPersonnel("Rosario", "Ap", "845740722");
     }
-//    private EmergencyMedicalPersonnel initializeEmergencyPersonnel1(){
-//        return new EmergencyMedicalPersonnel("Saide", "Nilfero", "849288877");
-//    }
-//
-//    private EmergencyMedicalPersonnel initializeEmergencyPersonnel2(){
-//        return new EmergencyMedicalPersonnel("Felermino", "Rumbi", "846689637");
-//    }
-//
-//    private EmergencyMedicalPersonnel initializeEmergencyPersonnel3(){
-//        return new EmergencyMedicalPersonnel("Felermino", "Ali", "864293652");
-//    }
+    private EmergencyMedicalPersonnel initializeEmergencyPersonnel1(){
+        return new EmergencyMedicalPersonnel("Saide", "Nilfero", "849288877");
+    }
+
+    private EmergencyMedicalPersonnel initializeEmergencyPersonnel2(){
+        return new EmergencyMedicalPersonnel("Felermino", "Rumbi", "846689637");
+    }
+
+    private EmergencyMedicalPersonnel initializeEmergencyPersonnel3(){
+        return new EmergencyMedicalPersonnel("Felermino", "Ali", "864293652");
+    }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel4(){
 

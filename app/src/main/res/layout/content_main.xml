@@ -22,21 +22,21 @@
             android:id="@+id/idItemNotificaco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notificações" />
+            android:text="Alerta" />
 
 
         <com.google.android.material.tabs.TabItem
-            android:icon="@drawable/mulhergravidabom2"
+            android:icon="@drawable/atendidos"
             android:id="@+id/idItemParturiente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Parturientes" />
+            android:text="Atendidos" />
         <com.google.android.material.tabs.TabItem
-            android:icon="@drawable/atendidos"
+            android:icon="@drawable/mulhergravidabom2"
             android:id="@+id/idAtendidos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Atendidos" />
+            android:text="Parturientes" />
     </com.google.android.material.tabs.TabLayout>
 
 
@@ -66,32 +66,6 @@
 <!--        app:layout_constraintTop_toTopOf="parent"-->
 <!--        app:navGraph="@navigation/mobile_navigation" />-->
 
-<!--    <ImageView-->
-<!--        android:id="@+id/alertaNotification"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:src="@drawable/notification"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.331" />-->
-
-<!--    <TextView-->
-<!--        style="@style/TextAppearance.AppCompat.Medium"-->
-<!--        android:textStyle="italic|bold"-->
-<!--        android:id="@+id/textView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:gravity="center"-->
-<!--        android:text="Sem Notificações"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/alertaNotification" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

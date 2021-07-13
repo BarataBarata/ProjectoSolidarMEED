@@ -74,7 +74,7 @@ import mz.unilurio.solidermed.utils.Helper;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String FRAGMENT_TAG = "bssbbs";
+
     TabLayout tabLayout;
     private AppBarConfiguration mAppBarConfiguration;
     private RecyclerView recyclerItems;
@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NotificationRecyclerAdpter notificationRecyclerAdapter;
     private ParturienteRecyclerAdpter parturienteRecyclerAdpter;
     private HashMap<String, Notification> notificationTriggered = new HashMap<String, Notification>();
-//    private GridLayoutManager coursesLayoutManager;
-//    private CourseRecyclerAdapter courseRecyclerAdapter;
     private NotificationManagerCompat notificationManager;
     private TextView textNotificacao;
     private Timer timer;
@@ -248,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -259,40 +256,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-//    public void initializeteDisplayContextParturientes() {
-//        recyclerItems = (RecyclerView)findViewById(R.id.recyclerVieParturiente);
-//        parturienteLinearLayoutManager = new LinearLayoutManager(this);
-//        List<Parturient> parturients= DBManager.getInstance().getParturients();
-//        parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(this,parturients);
-//        recyclerItems.setLayoutManager(parturienteLinearLayoutManager);
-//        recyclerItems.setAdapter(parturienteRecyclerAdpter);
-//    }
-
-
-
     private void initializeDisplayContent() {
-//        recyclerItems = findViewById(R.id.list_notes);
-//
-//        notificationLayoutManager = new LinearLayoutManager(this);
-//        List<Notification> notifications = DBManager.getInstance().getEmptyNotifications();
-//        notificationRecyclerAdapter = new NotificationRecyclerAdpter(this, notifications);
-//
-//        displayNotifications();
-//        NotificationThread thread = new NotificationThread(this);
-//        new Thread(thread).start();
-//        ThreadTimer threadTimer = new ThreadTimer(this);
-//        timer = new Timer();
-//        timer.schedule(threadTimer, 0, 100000); // 1 minute
-
         setRepeatingAsyncTask(this);
     }
 
-//    private void displayCourses() {
-//        recyclerItems.setAdapter(courseRecyclerAdapter);
-//        recyclerItems.setLayoutManager(coursesLayoutManager);
-//        selectNavigationMenuItem(R.id.nav_courses);
-//    }
 
 
     @Override
@@ -301,43 +268,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void displayNotifications() {
-//        notifications=DBManager.getInstance().getNotifications();
-//        if(!notifications.isEmpty()) {
-//            recyclerItems.findViewById(R.id.list_notes);
-//            notificationLayoutManager = new LinearLayoutManager(this);
-//            notificationRecyclerAdapter = new NotificationRecyclerAdpter(this, notifications);
-//            recyclerItems.setLayoutManager(notificationLayoutManager);
-//            recyclerItems.setAdapter(notificationRecyclerAdapter);
-//        }
-        //selectNavigationMenuItem(R.id.id_Home);
-    }
-
-
-
-
-    private void displayParturiente() {
-//        recyclerParturientes=findViewById(R.id.recyclerVieParturiente);
-//        parturienteLinearLayoutManager = new LinearLayoutManager(this);
-//        List<Parturient> parturients= DBManager.getInstance().getParturients();
-//        parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(null,parturients);
-//        recyclerParturientes.setLayoutManager(parturienteLinearLayoutManager);
-//        recyclerParturientes.setAdapter(parturienteRecyclerAdpter);
-////        selectNavigationMenuItem(R.id.id_notificacao);
-    }
-
-    private void displayParturientes() {
-       // recyclerParturientes=findViewById(R.id.recyclerVieParturiente);
-         // initializeteDisplayContextParturientes();
-       // recyclerParturientes.setAdapter(parturienteRecyclerAdpter);
-        //recyclerParturientes.setLayoutManager(parturienteLinearLayoutManager);
-        //selectNavigationMenuItem(R.id.id_parturientes);
- }
-
-    private void selectNavigationMenuItem(int id) {
-
-//        menu.findItem(R.id.nav_note).setCheckable(true);
-    }
 
     @Override
     public void onResume() {
@@ -417,13 +347,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (activity == null || activity.isFinishing()) {
                 return;
             }
-//            recyclerView.findViewById(R.id.list_notes);
-//            Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
-//            activity.progressBar.setProgress(0);
-//            activity.progressBar.setVisibility(View.INVISIBLE);
 
             // Stuff that updates the UI
-
 
 
             Queue queue = DBManager.getInstance().getQueue();
@@ -434,7 +359,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 System.out.println("------------"+notification.getDeliveryService()+"");
                 DBManager.getInstance().addNewNotification(notification);
             }
-            //updadeNotifiction();
 
 
             // Send SMS
@@ -444,9 +368,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     String composeMessage = "";
                     for (Notification n : notifications) {
-
-                        Log.i("CompareTime",  Helper.format(Calendar.getInstance().getTime()) + ">" + Helper.format(n.getNextNotifier()));
-                        if (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())) {
+                        boolean timePassed = false;
+                        if (notificationTriggered.containsKey(n.getId())){
+                            Log.i("CompareTime",  "Next SMS will be send on: " + Helper.format(notificationTriggered.get(n.getId()).getNextNotifier()));
+                            timePassed = Calendar.getInstance().getTime().after(notificationTriggered.get(n.getId()).getNextNotifier());
+                        }
+                        if (!notificationTriggered.containsKey(n.getId()) || timePassed) {
 //                            composeMessage += n.getMessage()+"\n";
                             composeMessage += n.getDeliveryService().getParturient().getName() + " "+n.getDeliveryService().getParturient().getSurname() +", ";
                             notificationTriggered.put(n.getId(), n);
@@ -469,26 +396,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void updadeNotifiction(){
-        System.out.println("eee");
-
-        Parturient parturient=new Parturient();
-        parturient.setAge(45);
-        parturient.setName("ddddddd");
-        parturient.setId(4);
-        parturient.setPara(8);
-        parturient.setSurname("dddddddddddddd");
-        parturient.setNumeroCama(4);
-        parturient.setReason("5");
-        DBManager.getInstance().addParturiente(parturient);
-        DBManager.getInstance().initializeNotifications();
-           /// adapte = new PageAdapder(getSupportFragmentManager(),3 , 3);
-//        ParturientesFragment fragment=new ParturientesFragment();
-//        fragment.onPause();
-        pager.getAdapter().notifyDataSetChanged();
-
-
-    }
 
     private void sendSMS(String phoneNumber, String message) {
         phoneNumber = phoneNumber.trim();
@@ -541,7 +448,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                  startActivity(intent);
              }
          },Long.parseLong("400"));
-
 
     }
 

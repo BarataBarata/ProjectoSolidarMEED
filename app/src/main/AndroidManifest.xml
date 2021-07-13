@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projecto_S"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".HospitaisActivity" android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
         <activity
             android:name=".AddUserNurseActivity"
@@ -27,11 +28,7 @@
         <activity
             android:name=".Login"
             android:theme="@style/Theme.Projecto_S.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".DadosPessoais"
@@ -44,7 +41,12 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Projecto_S.NoActionBar" />
+            android:theme="@style/Theme.Projecto_S.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

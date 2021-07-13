@@ -1,11 +1,14 @@
 package mz.unilurio.solidermed;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,12 +54,14 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = layoutInflater.inflate(R.layout.item_parturientes_list, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         Parturient parturient =  originalListParturientes.get(position);
         holder.currentPosition = position;
         //holder.cardView.setCardBackgroundColor(parturient.getColour());
@@ -66,6 +71,45 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         holder.txtNameParturient.setText(oUpperFirstCase(DBManager.getInstance().getParturients().get(position).getName())+ " "+oUpperFirstCase(DBManager.getInstance().getParturients().get(position).getSurname()));
         //holder.txtDetails.setText("idade: "+DBManager.getInstance().getParturients().get(position).getAge());
         //holder.txtDetails.setText("idade: "+parturient.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ parturient.getDeliveryService().getMeasure().peek().getInitialDilatation()+"  |  Nº de cama: 3");
+
+        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //creating a popup menu
+                Context mCtx = null;
+                PopupMenu popup = new PopupMenu(context.getContext(), holder.buttonViewOption);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.options_menu_parturiente);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.idEditar:{
+                                Intent intent = new Intent(context.getContext(),AddParturientActivity.class);
+                                intent.putExtra("nome", DBManager.getInstance().getParturients().get(position).getName()+"");
+                                intent.putExtra("apelido", DBManager.getInstance().getParturients().get(position).getSurname()+"");
+                                context.startActivity(intent);
+                            }
+                            return true;
+                            case R.id.item3:
+                                //handle menu3 click
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
+            }
+        });
+
+
+
+
     }
 
     @Override
@@ -85,11 +129,9 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
             List<Parturient>list =new ArrayList<>();
 
             if(constraint.toString().isEmpty()){
-                System.out.println("lista vazia");
                 list.addAll(auxListParturientes);
             }else{
                 for(Parturient parturient:auxListParturientes){
-                    System.out.println("ESPERE");
                     if(parturient.getName().toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(parturient);
                         System.out.println(parturient.getName());
@@ -119,13 +161,14 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         public View buttonViewOption;
 
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textCircle=(TextView)itemView.findViewById(R.id.textCircle);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTimeParturiente);
             txtNameParturient = (TextView) itemView.findViewById(R.id.txtNamePartur);
-            buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptions);
+            buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsParturiente);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 
             itemView.setOnClickListener(new View.OnClickListener() {

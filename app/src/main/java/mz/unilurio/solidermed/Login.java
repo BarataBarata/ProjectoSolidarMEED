@@ -45,7 +45,9 @@ public class Login extends AppCompatActivity {
     }
 
     public void Entrar(View view) {
-                progressBar();
+        Intent intent = new Intent(Login.this, MainActivity.class);
+        startActivity(intent);
+//        progressBar();
     }
 
     private void progressBar() {
@@ -59,15 +61,16 @@ public class Login extends AppCompatActivity {
                 progressBar.dismiss();
                 String email=textEmail.getEditText().getText().toString();
                 String password=textPassword.getEditText().getText().toString();
-//
-//                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
-//
-//                    auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                        @Override
-//                        public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+
+
+                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
+
+                    auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
 //                            if(task.isSuccessful()){
-//                                startActivity(new Intent(Login.this, MainActivity.class));
-//
+                                Intent intent = new Intent(Login.this, MainActivity.class);
+                                startActivity(intent);
 //                            }else {
 //                                String erro=task.getException().getMessage();
 //                                textAlerta.setText("Email ou Senha Incorreto");
@@ -78,7 +81,11 @@ public class Login extends AppCompatActivity {
 //                    });
 //
 //                }
-                startActivity(new Intent(Login.this, MainActivity.class));
+
+                        }
+                    });
+
+                }
             }
         },Long.parseLong("900"));
     }
