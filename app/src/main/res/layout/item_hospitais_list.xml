@@ -7,11 +7,11 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
+        android:layout_height="80dp"
+
         app:cardUseCompatPadding="true"
         app:contentPadding="16dp">
 
@@ -20,49 +20,38 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_marginTop="16dp"
-                android:textStyle="bold"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:gravity="center"
                 android:id="@+id/textCircle"
-                android:background="@drawable/circulo"
-                android:layout_width="48dp"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="39dp"
+                android:layout_height="41dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/hospital"
+                android:gravity="center"
+                android:text="C"
                 android:textColor="@color/white"
                 android:textSize="20dp"
-                android:text="C"
-                android:layout_height="48dp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/txtTimeParturiente"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="11:41 - 19, Junho"
-                android:textAlignment="viewEnd"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
+                android:textSize="16dp"
+                android:textColor="@color/purple_700"
                 android:id="@+id/txtNamePartur"
                 android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_below="@id/txtTimeParturiente"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="20dp"
-                android:text="Júlia Namovartacha"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Hospital de Chiure"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                app:layout_constraintEnd_toEndOf="@+id/txtTimeParturiente"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textCircle"
-                app:layout_constraintTop_toBottomOf="@+id/txtTimeParturiente" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.6" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 </FrameLayout>

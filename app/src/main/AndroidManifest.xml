@@ -5,17 +5,24 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:name=".model.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Projecto_S">
+        android:theme="@style/Theme.Projecto_S"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".HospitaisActivity" android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
+        <activity
+            android:name=".AddUserNurseActivity"
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
+        <activity
+            android:name=".NurseActivity"
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
         <activity android:name=".Atendimento" />
         <activity
             android:name=".Login"

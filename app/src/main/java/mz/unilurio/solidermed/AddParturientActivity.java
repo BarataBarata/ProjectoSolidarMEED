@@ -85,6 +85,12 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         viewnumber2();
 
 }
+   public int getBackgroundColor(){
+        return Color.WHITE;
+   }
+    public int getTextColor(){
+        return Color.BLACK;
+    }
 
     private void viewnumber2() {
         para.addOnChangeListener(new Slider.OnChangeListener() {
@@ -272,8 +278,8 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
 
     public void registar(View view) {
-        //validator.validate();
-        onValidationSucceeded();
+        validator.validate();
+        //onValidationSucceeded();
     }
 
 

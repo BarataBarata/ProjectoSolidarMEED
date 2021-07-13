@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public final class Notification implements Parcelable {
-    public static final int TWO_INTERVAL = 2;
+    public static final int TWO_INTERVAL = 1;
     public static final int FIVE_INTERVAL = 5;
     public static final int TEN_INTERVAL = 10;
     private String id;

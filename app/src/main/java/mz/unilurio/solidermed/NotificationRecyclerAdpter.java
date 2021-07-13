@@ -21,17 +21,18 @@ import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.ui.fragments.NotificationFragment;
 
 public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder> {
 
-    private final Context context;
+    private final NotificationFragment  context;
     private List<Notification> notifications;
     private final LayoutInflater layoutInflater;
 
 
-    public NotificationRecyclerAdpter(Context context, List<Notification> notifications) {
+    public NotificationRecyclerAdpter(NotificationFragment context, List<Notification> notifications) {
         this.context = context;
-        layoutInflater = LayoutInflater.from(context);
+        layoutInflater = LayoutInflater.from(context.getContext());
         this.notifications = notifications;
     }
 
@@ -59,7 +60,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
                 //creating a popup menu
                 Context mCtx = null;
-                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
+                PopupMenu popup = new PopupMenu(context.getContext(), holder.buttonViewOption);
                 //inflating menu from xml resource
                 popup.inflate(R.menu.options_menu);
                 //adding click listener
@@ -69,7 +70,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                         switch (item.getItemId()) {
 
                             case R.id.atendimento:{
-                                Intent intent = new Intent(context, Atendimento.class);
+                                Intent intent = new Intent(context.getContext(), Atendimento.class);
                                 context.startActivity(intent);
                             }
                                 return true;
@@ -107,7 +108,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.txtNameParturient);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.txtNamePartur);
             txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
             buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptions);
 
@@ -115,7 +116,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                 @Override
                 public void onClick(View v) {
                         ProgressDialog progressBar;
-                        progressBar=new ProgressDialog(context);
+                        progressBar=new ProgressDialog(context.getContext());
                         progressBar.setTitle("Aguarde");
                         progressBar.setMessage("processando...");
                         progressBar.show();
@@ -124,7 +125,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                             @Override
                             public void run() {
                                 progressBar.dismiss();
-                                Intent intent = new Intent(context, DadosPessoais.class);
+                                Intent intent = new Intent(context.getContext(), DadosPessoais.class);
                                 intent.putExtra("id", currentPosition+"");
                                 context.startActivity(intent);
                             }

@@ -7,20 +7,21 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import mz.unilurio.solidermed.CourseInfo;
-import mz.unilurio.solidermed.ModuleInfo;
-
 public class DBManager {
 
     private static DBManager ourInstance = null;
 
+    private List<Notification> initNotifications = new ArrayList<>();
+    private List<Hospitais> hospitais= new ArrayList<>();
     private List<Notification> notifications = new ArrayList<>();
     private List<Parturient> parturients = new ArrayList<>();
     private List<String> listOpcoesTrasferencia = new ArrayList<>();
     private List<String> listOpcoesUnidadeSanitaria = new ArrayList<>();
+    private List<UserNurse>userNurseList=new ArrayList<>();
     static private List<Integer> colors = new ArrayList<Integer>();
     static private List<Integer> idades = new ArrayList<Integer>();
     static private List<Integer> camas = new ArrayList<Integer>();
+
     private Queue queue;
     private List<EmergencyMedicalPersonnel> emergencyMedicalPersonnels = new ArrayList<>();
     public int totalPaturient=1;
@@ -41,8 +42,39 @@ public class DBManager {
             ourInstance.initializeQueue();
             ourInstance.initializeEmergencyPersonnels();
             ourInstance.initializeGestationalRanre();
+            ourInstance.initHospitais();
+            ourInstance.initializeInfermeira();
         }
         return ourInstance;
+    }
+
+    private void initializeInfermeira() {
+        this.userNurseList.add(new UserNurse("Salima Mario","123","1"));
+        this.userNurseList.add(new UserNurse("Fatima Armando","124","2"));
+        this.userNurseList.add(new UserNurse("Maria Mario","123","1"));
+        this.userNurseList.add(new UserNurse("Carla Armando","124","2"));
+    }
+
+    public List<UserNurse> getUserNurseList() {
+        return userNurseList;
+    }
+
+    private void initHospitais() {
+        Hospitais hospitais=new Hospitais();
+
+        this.hospitais.add(new Hospitais("Centro de Saude de Resta","1"));
+        this.hospitais.add(new Hospitais("Centro de Saude de Restawanha","1"));
+        this.hospitais.add(new Hospitais("Centro de Saude de Namina","1"));
+        this.hospitais.add(new Hospitais("Centro de Saude de Congo","1"));
+        this.hospitais.add(new Hospitais("Centro de Saude de Rex","1"));
+        this.hospitais.add(new Hospitais("Centro de Saude de Macomia","1"));
+        this.hospitais.add(new Hospitais("Centro de Saude de Rast","1"));
+        this.hospitais.add(new Hospitais("Centro de Saude de Reslp","1"));
+
+    }
+
+    public List<Hospitais> getHospitais() {
+        return hospitais;
     }
 
     private void initalizeListOpcoesTrasferencia() {
@@ -130,26 +162,26 @@ public class DBManager {
     }
 
     private void initializeEmergencyPersonnels(){
-        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
-        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
-        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel3());
+//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
+//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
+//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel3());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel5(){
-        return new EmergencyMedicalPersonnel("Rosario", "Ap", "848180712");
+        return new EmergencyMedicalPersonnel("Rosario", "Ap", "845740722");
     }
-    private EmergencyMedicalPersonnel initializeEmergencyPersonnel1(){
-        return new EmergencyMedicalPersonnel("Saide", "Nilfero", "849288877");
-    }
-
-    private EmergencyMedicalPersonnel initializeEmergencyPersonnel2(){
-        return new EmergencyMedicalPersonnel("Felermino", "Rumbi", "846689637");
-    }
-
-    private EmergencyMedicalPersonnel initializeEmergencyPersonnel3(){
-        return new EmergencyMedicalPersonnel("Felermino", "Ali", "864293652");
-    }
+//    private EmergencyMedicalPersonnel initializeEmergencyPersonnel1(){
+//        return new EmergencyMedicalPersonnel("Saide", "Nilfero", "849288877");
+//    }
+//
+//    private EmergencyMedicalPersonnel initializeEmergencyPersonnel2(){
+//        return new EmergencyMedicalPersonnel("Felermino", "Rumbi", "846689637");
+//    }
+//
+//    private EmergencyMedicalPersonnel initializeEmergencyPersonnel3(){
+//        return new EmergencyMedicalPersonnel("Felermino", "Ali", "864293652");
+//    }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel4(){
 
@@ -223,17 +255,24 @@ public class DBManager {
         return ds;
     }
 
-    private void initializeNotifications() {
-        notifications.add(initializeNotification1());
-        notifications.add(initializeNotification2());
+    public void initializeNotifications() {
+        initNotifications.add(initializeNotification1());
+        initNotifications.add(initializeNotification2());
+    }
 
+    public void addNewNotification(Notification notification){
+        notifications.add(notification);
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
     }
 
     public Queue getQueue(){
         return this.queue;
     }
-    public List<Notification> getNotifications() {
-        return notifications;
+    public List<Notification> getInitNotifications() {
+        return initNotifications;
     }
 
     public List<Notification> getEmptyNotifications() {

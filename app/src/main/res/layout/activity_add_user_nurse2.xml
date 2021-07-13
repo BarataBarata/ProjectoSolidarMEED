@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:openDrawer="start"
+    tools:context=".AddUserNurseActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/scrollView3"
+        app:layout_anchorGravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Projecto_S.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
+
+            <ImageView
+                android:onClick="finish"
+                android:src="@drawable/back_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:text="Infermeiras"
+                android:textColor="@color/white" />
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab3"
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="#08C368"
+        app:srcCompat="@drawable/registo_parturiente" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginTop="55dp"
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="736dp"
+        app:layout_anchor="@+id/scrollView3"
+        app:layout_anchorGravity="center">
+
+
+        <TextView
+            android:textColor="@color/purple_700"
+            android:id="@+id/textInfermeira"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=" Registar Dados da Infermeira"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/imageView3"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="369dp"
+            android:layout_height="89dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/nurse"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.394"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:textColor="@color/purple_700"
+            android:id="@+id/textInfermeira2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text=" Adicionar Privilegios"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/text_not_title"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/text_not_title"
+            app:layout_constraintTop_toBottomOf="@+id/text_not_title" />
+
+        <EditText
+            android:id="@+id/text_not_title"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Nome Completo"
+            android:inputType="textMultiLine"
+            app:layout_constraintEnd_toEndOf="@+id/textInfermeira"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toStartOf="@+id/textInfermeira"
+            app:layout_constraintTop_toBottomOf="@+id/textInfermeira" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_marginTop="24dp"
+            android:text="Adicionar Infermeira"
+            app:layout_constraintStart_toStartOf="@+id/textInfermeira2"
+            app:layout_constraintTop_toBottomOf="@+id/textInfermeira2" />
+
+        <CheckBox
+            android:id="@+id/checkbox2"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_marginTop="16dp"
+            android:text="Verificar a hora de Alerta para o parto"
+            app:layout_constraintEnd_toEndOf="@+id/checkbox3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/checkbox3"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox3" />
+
+        <CheckBox
+            android:id="@+id/checkbox4"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_marginTop="56dp"
+            android:text="Registar dados de saida"
+            app:layout_constraintEnd_toEndOf="@+id/checkbox3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/checkbox3"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox3" />
+
+        <CheckBox
+            android:id="@+id/checkbox5"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_marginTop="100dp"
+            android:text="Registar dados de entrada"
+            app:layout_constraintEnd_toEndOf="@+id/checkbox4"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/checkbox4"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox3" />
+
+        <CheckBox
+            android:id="@+id/checkbox3"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_marginTop="12dp"
+            android:text="Remover Infermeira "
+            app:layout_constraintEnd_toEndOf="@+id/checkbox"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/checkbox"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox" />
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="124dp"
+            android:text="Receber Menssagens e Notificações de parto"
+            android:textStyle="normal|italic"
+            app:layout_constraintEnd_toEndOf="@+id/checkbox2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/checkbox2"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox2" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

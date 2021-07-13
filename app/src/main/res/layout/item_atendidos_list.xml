@@ -63,6 +63,19 @@
                 app:layout_constraintStart_toEndOf="@+id/textCircle"
                 app:layout_constraintTop_toBottomOf="@+id/txtTimeParturiente" />
 
+            <ImageView
+
+                android:id="@+id/imageView5"
+                android:layout_width="31dp"
+                android:layout_height="31dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/txtTimeParturiente"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/txtNamePartur"
+                app:layout_constraintTop_toTopOf="@+id/txtNamePartur"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/atendido" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>

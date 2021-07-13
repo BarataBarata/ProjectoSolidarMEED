@@ -5,13 +5,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/id_notificacao"
-            android:icon="@drawable/notification"
-            android:title="@string/Notificacoes" />
+            android:id="@+id/id_addInfermeira"
+            android:icon="@drawable/nurses"
+            android:title="@string/Enfermeiras" />
         <item
-            android:id="@+id/id_parturientes"
-            android:icon="@drawable/mulhergravidabom2"
-            android:title="@string/Parturientes" />
+            android:id="@+id/id_centroDeSaude"
+            android:icon="@drawable/hospital"
+            android:title="@string/Hospitais" />
         <item
             android:id="@+id/id_out"
             android:icon="@drawable/sair_do_sistema"

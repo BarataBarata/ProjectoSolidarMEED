@@ -21,11 +21,11 @@ import java.util.List;
 
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Parturient;
-import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
+import mz.unilurio.solidermed.ui.fragments.AtendidosFragment;
 
-public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteRecyclerAdpter.ViewHolder> implements Filterable {
+public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyclerAdpter.ViewHolder> implements Filterable {
 
-    private final ParturientesFragment context;
+    private final AtendidosFragment context;
     private List<Parturient> originalListParturientes;
     private List<Parturient> auxListParturientes;
     private final LayoutInflater layoutInflater;
@@ -36,7 +36,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         notifyDataSetChanged();
     }
 
-    public ParturienteRecyclerAdpter(ParturientesFragment context, List<Parturient> parturients) {
+    public AtendidosRecyclerAdpter(AtendidosFragment context, List<Parturient> parturients) {
         this.context = context;
         this.auxListParturientes =new ArrayList<>(parturients);
         layoutInflater = LayoutInflater.from(context.getContext());
@@ -51,7 +51,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_parturientes_list, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_atendidos_list, parent, false);
         return new ViewHolder(view);
     }
 

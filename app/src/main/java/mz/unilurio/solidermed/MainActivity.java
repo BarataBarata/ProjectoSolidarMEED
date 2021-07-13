@@ -1,9 +1,12 @@
 package mz.unilurio.solidermed;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,53 +18,68 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
+import mz.unilurio.solidermed.model.GestatinalRange;
+import mz.unilurio.solidermed.model.Hospitais;
 import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.PageAdapder;
 import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.model.Queue;
+import mz.unilurio.solidermed.ui.fragments.NotificationFragment;
+import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
 import mz.unilurio.solidermed.utils.Helper;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String FRAGMENT_TAG = "bssbbs";
     TabLayout tabLayout;
     private AppBarConfiguration mAppBarConfiguration;
     private RecyclerView recyclerItems;
     private RecyclerView recyclerParturientes;
-
+    private static int currentPositionPager=0;
     private LinearLayoutManager notificationLayoutManager;
     private LinearLayoutManager parturienteLinearLayoutManager;
     private NotificationRecyclerAdpter notificationRecyclerAdapter;
@@ -73,32 +91,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView textNotificacao;
     private Timer timer;
     private TextView textSeacher;
-
+    private boolean visible;
+    private ViewPager pager;
+    private static List<Notification> notifications=new ArrayList<>();
+    private PagerAdapter adapte;
+    private TextView textNomeHospital;
+    private String nomeHospitalExtra="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        nomeHospitalExtra = new Hospitais().getTitleHospital();
+        textNomeHospital = findViewById(R.id.idCentroSaudeTitle);
+        if(!nomeHospitalExtra.equals("")) {
+            textNomeHospital.setText(nomeHospitalExtra);
+        }else{
+            textNomeHospital.setText("Centro de Saude de Chiure");
+        }
         recyclerParturientes = findViewById(R.id.recyclerVieParturiente);
+        recyclerItems=findViewById(R.id.list_notes);
+        textSeacher=findViewById(R.id.app_bar_search);
         tabLayout=(TabLayout)findViewById(R.id.tabLayout);
+        //tabLayout.removeTabAt(0);
+        pager=findViewById(R.id.viewpager);
+        adapte =new PageAdapder(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,tabLayout.getTabCount());
+        pager.setAdapter(adapte);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                textSeacher = findViewById(R.id.app_bar_search);
-                textSeacher.setVisibility(View.INVISIBLE);
-                if(tab.getPosition()==0){
-                    displayNotifications();
-                    recyclerItems.setVisibility(View.VISIBLE);
-                    recyclerParturientes.setVisibility(View.INVISIBLE);
-                 }else {
-
-                    textSeacher.setVisibility(View.VISIBLE);
-                    recyclerItems.setVisibility(View.INVISIBLE);
-                    recyclerParturientes.setVisibility(View.VISIBLE);
-//                    displayParturientes();
-                    displayParturiente();
-                }
+                pager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -110,7 +136,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
+
         });
+        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         notificationManager=NotificationManagerCompat.from(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -136,16 +164,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         initializeDisplayContent();
-        textSeacher = findViewById(R.id.app_bar_search);
-        if(textSeacher!=null){
-            textSeacher.setVisibility(View.INVISIBLE);
-        }
+
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem menuDefinition=menu.findItem(R.id.idDefinicoes);
+        //MenuItem m=menu.findItem(R.id.app_bar_search);
+        //m.setVisible(visible);
 
         menuDefinition.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -175,33 +207,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        MenuItem item=menu.findItem(R.id.app_bar_search2);
-//        SearchView searchView=(SearchView)item.getActionView();
-//        searchView.setQueryHint(" Iniciar a Busca...");
-//
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
-
-
     @Override
     public boolean onNavigationItemSelected(@NotNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.id_notificacao) {
-
-            displayNotifications();
-        } else if (id == R.id.id_parturientes) {
-
-              displayParturientes();
-//            displayCourses();
+        if (id == R.id.id_addInfermeira) {
+               startActivity(new Intent(MainActivity.this, NurseActivity.class));
         }
-        else if (id == R.id.id_out) {
+        if (id == R.id.id_centroDeSaude) {
+            startActivity(new Intent(MainActivity.this, HospitaisActivity.class));
+        }
+        if (id == R.id.id_out) {
 
             if (id == R.id.id_out){
 
@@ -277,32 +294,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        selectNavigationMenuItem(R.id.nav_courses);
 //    }
 
-    private void displayNotifications() {
 
-        recyclerItems.setAdapter(notificationRecyclerAdapter);
-        recyclerItems.setLayoutManager(notificationLayoutManager);
-        selectNavigationMenuItem(R.id.id_notificacao);
+    @Override
+    protected void onPause() {
+        super.onPause();
+
     }
 
+    private void displayNotifications() {
+//        notifications=DBManager.getInstance().getNotifications();
+//        if(!notifications.isEmpty()) {
+//            recyclerItems.findViewById(R.id.list_notes);
+//            notificationLayoutManager = new LinearLayoutManager(this);
+//            notificationRecyclerAdapter = new NotificationRecyclerAdpter(this, notifications);
+//            recyclerItems.setLayoutManager(notificationLayoutManager);
+//            recyclerItems.setAdapter(notificationRecyclerAdapter);
+//        }
+        //selectNavigationMenuItem(R.id.id_Home);
+    }
+
+
+
+
     private void displayParturiente() {
-        parturienteLinearLayoutManager = new LinearLayoutManager(this);
-        List<Parturient> parturients= DBManager.getInstance().getParturients();
-        parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(this,parturients);
-        recyclerParturientes.setLayoutManager(parturienteLinearLayoutManager);
-        recyclerParturientes.setAdapter(parturienteRecyclerAdpter);
-//        selectNavigationMenuItem(R.id.id_notificacao);
+//        recyclerParturientes=findViewById(R.id.recyclerVieParturiente);
+//        parturienteLinearLayoutManager = new LinearLayoutManager(this);
+//        List<Parturient> parturients= DBManager.getInstance().getParturients();
+//        parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(null,parturients);
+//        recyclerParturientes.setLayoutManager(parturienteLinearLayoutManager);
+//        recyclerParturientes.setAdapter(parturienteRecyclerAdpter);
+////        selectNavigationMenuItem(R.id.id_notificacao);
     }
 
     private void displayParturientes() {
-//          initializeteDisplayContextParturientes();
-//        recyclerItems.setAdapter(parturienteRecyclerAdpter);
-//        recyclerItems.setLayoutManager(parturienteLinearLayoutManager);
-//        //selectNavigationMenuItem(R.id.id_parturientes);
-    }
+       // recyclerParturientes=findViewById(R.id.recyclerVieParturiente);
+         // initializeteDisplayContextParturientes();
+       // recyclerParturientes.setAdapter(parturienteRecyclerAdpter);
+        //recyclerParturientes.setLayoutManager(parturienteLinearLayoutManager);
+        //selectNavigationMenuItem(R.id.id_parturientes);
+ }
 
     private void selectNavigationMenuItem(int id) {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        Menu menu = navigationView.getMenu();
+
 //        menu.findItem(R.id.nav_note).setCheckable(true);
     }
 
@@ -323,8 +356,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            AsyncTaskNotification task = new AsyncTaskNotification(activity);
+                            System.out.println(" ola barata cheguwi...");
 
+                            AsyncTaskNotification task = new AsyncTaskNotification(activity);
                             task.execute();
                         } catch (Exception e) {
                             // error, do something
@@ -337,6 +371,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         timer.schedule(task, 0, 60*1000);  // interval of one minute
 
     }
+
 
     public class AsyncTaskNotification extends AsyncTask<String, String, String> {
         final String TAG = "AsyncTaskNotification.java";
@@ -357,6 +392,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             activity.recyclerItems = activity.findViewById(R.id.list_notes);
 //            activity.progressBar.setVisibility(View.VISIBLE);
+
         }
         @Override
         protected String doInBackground(String... integers) {
@@ -381,23 +417,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (activity == null || activity.isFinishing()) {
                 return;
             }
+//            recyclerView.findViewById(R.id.list_notes);
 //            Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
 //            activity.progressBar.setProgress(0);
 //            activity.progressBar.setVisibility(View.INVISIBLE);
 
             // Stuff that updates the UI
 
+
+
             Queue queue = DBManager.getInstance().getQueue();
             queue.nofify();
-            List<Notification> notifications = queue.getNotifications();
+            notifications = queue.getNotifications();
 
-            activity.notificationRecyclerAdapter = new NotificationRecyclerAdpter(activity, notifications);
-            activity.recyclerItems = recyclerView;
-            activity.recyclerItems.setAdapter( new NotificationRecyclerAdpter(activity, notifications));
-            activity.notificationLayoutManager = new LinearLayoutManager(activity);
+            for(Notification notification:notifications){
+                System.out.println("------------"+notification.getDeliveryService()+"");
+                DBManager.getInstance().addNewNotification(notification);
+            }
+            //updadeNotifiction();
 
-            activity.recyclerItems.setLayoutManager(activity.notificationLayoutManager);
-            selectNavigationMenuItem(R.id.nav_note);
 
             // Send SMS
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -429,6 +467,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }
+    }
+
+    private void updadeNotifiction(){
+        System.out.println("eee");
+
+        Parturient parturient=new Parturient();
+        parturient.setAge(45);
+        parturient.setName("ddddddd");
+        parturient.setId(4);
+        parturient.setPara(8);
+        parturient.setSurname("dddddddddddddd");
+        parturient.setNumeroCama(4);
+        parturient.setReason("5");
+        DBManager.getInstance().addParturiente(parturient);
+        DBManager.getInstance().initializeNotifications();
+           /// adapte = new PageAdapder(getSupportFragmentManager(),3 , 3);
+//        ParturientesFragment fragment=new ParturientesFragment();
+//        fragment.onPause();
+        pager.getAdapter().notifyDataSetChanged();
+
+
     }
 
     private void sendSMS(String phoneNumber, String message) {
@@ -463,6 +522,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
+
+
+
+     public void centroSaude(View view) {
+
+         ProgressDialog progressBar;
+         progressBar=new ProgressDialog(MainActivity.this);
+         progressBar.setTitle("Aguarde");
+         progressBar.setMessage("processando...");
+         progressBar.show();
+
+         new Handler().postDelayed(new Thread() {
+             @Override
+             public void run() {
+                 progressBar.dismiss();
+                 Intent intent = new Intent(MainActivity.this, HospitaisActivity.class);
+                 startActivity(intent);
+             }
+         },Long.parseLong("400"));
+
+
+    }
+
 
 
 }
