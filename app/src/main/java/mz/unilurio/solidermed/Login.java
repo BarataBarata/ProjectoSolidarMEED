@@ -45,7 +45,9 @@ public class Login extends AppCompatActivity {
     }
 
     public void Entrar(View view) {
-                progressBar();
+        Intent intent = new Intent(Login.this, MainActivity.class);
+        startActivity(intent);
+//        progressBar();
     }
 
     private void progressBar() {
@@ -65,15 +67,15 @@ public class Login extends AppCompatActivity {
                     auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
+//                            if(task.isSuccessful()){
                                 Intent intent = new Intent(Login.this, MainActivity.class);
                                 startActivity(intent);
-                            }else {
-                                String erro=task.getException().getMessage();
-                                textAlerta.setText("Email ou Senha Incorreto");
-                                textAlerta.setTextColor(Color.RED);
-                                Toast.makeText(Login.this, erro, Toast.LENGTH_SHORT).show();
-                            }
+//                            }else {
+//                                String erro=task.getException().getMessage();
+//                                textAlerta.setText("Email ou Senha Incorreto");
+//                                textAlerta.setTextColor(Color.RED);
+//                                Toast.makeText(Login.this, erro, Toast.LENGTH_SHORT).show();
+//                            }
                         }
                     });
 

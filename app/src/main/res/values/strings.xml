@@ -34,4 +34,7 @@
     <string name="Parturientes">parturientes</string>
     <string name="Notificacoes">notificacoes</string>
     <string name="sair">sair</string>
+    <string name="title_activity_notification_tab">NotificationTabActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>

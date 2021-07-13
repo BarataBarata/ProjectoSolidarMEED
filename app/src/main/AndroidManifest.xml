@@ -5,26 +5,22 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:name=".model.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Projecto_S">
+        android:theme="@style/Theme.Projecto_S"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
         <activity android:name=".Atendimento" />
         <activity
             android:name=".Login"
             android:theme="@style/Theme.Projecto_S.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".DadosPessoais"
@@ -37,7 +33,12 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Projecto_S.NoActionBar" />
+            android:theme="@style/Theme.Projecto_S.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

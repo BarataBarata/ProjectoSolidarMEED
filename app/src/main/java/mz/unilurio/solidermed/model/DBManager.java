@@ -12,6 +12,7 @@ import mz.unilurio.solidermed.ModuleInfo;
 
 public class DBManager {
 
+
     private static DBManager ourInstance = null;
 
     private List<Notification> notifications = new ArrayList<>();
@@ -130,10 +131,10 @@ public class DBManager {
     }
 
     private void initializeEmergencyPersonnels(){
-        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
+//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel3());
-        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
+//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel5(){
