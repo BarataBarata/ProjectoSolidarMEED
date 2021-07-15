@@ -13,8 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projecto_S"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".HospitaisActivity" android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
+        <activity android:name=".TrasferenciaActivity"></activity>
+        <activity
+            android:name=".HospitaisActivity"
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
         <activity
             android:name=".AddUserNurseActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
@@ -30,6 +32,7 @@
             android:theme="@style/Theme.Projecto_S.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -44,9 +47,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Projecto_S.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
     </application>
 
 </manifest>

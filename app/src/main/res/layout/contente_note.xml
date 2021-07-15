@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <Spinner
-        android:id="@+id/spinner_courses"
+        android:id="@+id/destinoTrasferenciaX"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -26,7 +26,7 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_courses"  android:layout_width="match_parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/destinoTrasferenciaX"  android:layout_width="match_parent"/>
 
     <EditText
         android:id="@+id/text_not_text"

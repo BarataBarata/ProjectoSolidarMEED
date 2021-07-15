@@ -57,7 +57,7 @@
             android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:background="#2579D8"
+            android:background="#1BBC09"
             app:layout_constraintBottom_toTopOf="@+id/recyclerVieHospitais"
             app:layout_constraintCircleRadius="@dimen/cardview_default_radius"
             app:layout_constraintEnd_toEndOf="parent"

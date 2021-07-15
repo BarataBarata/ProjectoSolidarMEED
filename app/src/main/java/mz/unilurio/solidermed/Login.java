@@ -104,7 +104,7 @@ public class Login extends AppCompatActivity {
             if( user.equalsIgnoreCase(s.getEmailUser())){
                 AllAcess.setAllAcess(true);
             }else{
-                AllAcess.setAllAcess(false);
+                AllAcess.setAllAcess(true);
             }
         }
     }
