@@ -6,6 +6,9 @@
         android:id="@+id/idEditar"
         android:title="Editar" />
     <item
+        android:id="@+id/transferir"
+        android:title="Trasferir" />
+    <item
         android:id="@+id/item3"
         android:title="Cancelar" />
 </menu>

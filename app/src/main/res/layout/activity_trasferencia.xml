@@ -3,67 +3,160 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".TrasferenciaActivity"
+    >
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Projecto_S.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="finish"
+            android:src="@drawable/back_24" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="Trasferir"
+            android:textColor="@color/white" />
+    </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
     <Spinner
         android:id="@+id/destinoTrasferenciaX"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/apelidoParturienteTrasferenciaX"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/text_not_text"
-        app:layout_constraintTop_toBottomOf="@+id/text_not_text" />
+        app:layout_constraintStart_toStartOf="@+id/apelidoParturienteTrasferenciaX"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Spinner
         android:id="@+id/motivosTrasferenciaX"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="@+id/destinoTrasferenciaX"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/destinoTrasferenciaX"
-        app:layout_constraintTop_toBottomOf="@+id/destinoTrasferenciaX" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <EditText
-        android:hint="Nome Parturiente"
-        android:id="@+id/text_not_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:id="@+id/nomeParturienteTrasferenciaX"
+        android:layout_width="339dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="Nome Parturiente"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintHorizontal_bias="0.378"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <EditText
-        android:hint="Apelido"
-        android:id="@+id/text_not_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/apelidoParturienteTrasferenciaX"
+        android:layout_width="345dp"
+        android:layout_height="46dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="Apelido"
         android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="@+id/text_not_title"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/text_not_title"
-        app:layout_constraintTop_toBottomOf="@+id/text_not_title" />
+        app:layout_constraintEnd_toEndOf="@+id/nomeParturienteTrasferenciaX"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="@+id/nomeParturienteTrasferenciaX"
+        app:layout_constraintTop_toBottomOf="@+id/nomeParturienteTrasferenciaX" />
 
     <TextView
         android:id="@+id/textView4"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
         android:text="Opcoes De Trasferencia"
         android:textStyle="bold|normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Destino DaTrasferencia"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="@+id/apelidoParturienteTrasferenciaX"
+        app:layout_constraintHorizontal_bias="0.004"
+        app:layout_constraintStart_toStartOf="@+id/apelidoParturienteTrasferenciaX"
+        app:layout_constraintTop_toBottomOf="@+id/apelidoParturienteTrasferenciaX" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Motivos Da Trasferencia"
+        android:textStyle="italic|bold"
+        app:layout_constraintEnd_toEndOf="@+id/destinoTrasferenciaX"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/destinoTrasferenciaX"
+        app:layout_constraintTop_toBottomOf="@+id/destinoTrasferenciaX" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="72dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:srcCompat="@drawable/gravidadownload" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab2"
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="#08C368"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.997"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="87dp" />
+        app:layout_constraintVertical_bias="0.992"
+        app:srcCompat="@drawable/trasferencia" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

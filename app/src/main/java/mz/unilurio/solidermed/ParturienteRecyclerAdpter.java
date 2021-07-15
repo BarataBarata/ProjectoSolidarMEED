@@ -92,6 +92,11 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                                context.startActivity(intent);
                             }
                             return true;
+                            case R.id.transferir:
+                                Intent intent = new Intent(context.getContext(),TrasferenciaActivity.class);
+                                intent.putExtra("idParturiente", position+"");
+                                context.startActivity(intent);
+                                return true;
                             case R.id.item3:
                                 //handle menu3 click
                                 return true;

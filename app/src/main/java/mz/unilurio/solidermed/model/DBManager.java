@@ -100,7 +100,7 @@ public class DBManager {
     }
 
     private void initalizeListMotivosTrasferencia() {
-        this.listMotivosTrasferencia.add("> Hemorragia anteparto, com suspeita de placenta previa");
+        this.listMotivosTrasferencia.add("Hemorragia anteparto, com suspeita de placenta previa");
         this.listMotivosTrasferencia.add("Hemorragia anteparto, com suspeita de deslocamento prematuro da placenta normalmente inserida");
         this.listMotivosTrasferencia.add("Hemorragia anteparto, com suspeita de ruptura uterina");
         this.listMotivosTrasferencia.add("Suspeita de ruptura uterina pré-termo de membranas");
@@ -114,7 +114,7 @@ public class DBManager {
     }
 
     private void initalizeListOpcoesUnidadeSanitaria() {
-        this.listOpcoesUnidadeSanitaria.add("> Hospital Distrital de Chiúre");
+        this.listOpcoesUnidadeSanitaria.add("Hospital Distrital de Chiúre");
         this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Catapua");
         this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Ocua");
         this.listOpcoesUnidadeSanitaria.add("Centro de saúde de Chiúre Velho");

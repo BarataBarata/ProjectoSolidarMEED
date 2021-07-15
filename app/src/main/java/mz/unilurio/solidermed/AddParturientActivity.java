@@ -206,14 +206,14 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         spinnerSanitaria = findViewById(R.id.spinner_gestRangeSanitaria);
         List<String> listSanitaria = DBManager.getInstance().getListOpcoesUnidadeSanitaria();
         ArrayAdapter<String> adapterSanitaria = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listSanitaria);
-        adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        adapterSanitaria.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerSanitaria.setAdapter( adapterSanitaria);
         setUpNumberPickers();
 
         spinnerTrasferencia = findViewById(R.id.spinner_gestRangeTrasferencia);
         List<String> listTrasferencia = DBManager.getInstance().getListMotivosTrasferencia();
         ArrayAdapter<String> adapterTrasferencia = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listTrasferencia);
-        adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        adapterTrasferencia.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerTrasferencia.setAdapter( adapterTrasferencia );
         setUpNumberPickers();
 

@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/text_not_title"
+        android:id="@+id/nomeParturienteTrasferenciaX"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/destinoTrasferenciaX"  android:layout_width="match_parent"/>
 
     <EditText
-        android:id="@+id/text_not_text"
+        android:id="@+id/apelidoParturienteTrasferenciaX"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -38,7 +38,7 @@
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="@+id/text_not_title"
-        app:layout_constraintStart_toStartOf="@+id/text_not_title"
-        app:layout_constraintTop_toBottomOf="@+id/text_not_title" />
+        app:layout_constraintEnd_toEndOf="@+id/nomeParturienteTrasferenciaX"
+        app:layout_constraintStart_toStartOf="@+id/nomeParturienteTrasferenciaX"
+        app:layout_constraintTop_toBottomOf="@+id/nomeParturienteTrasferenciaX" />
 </androidx.constraintlayout.widget.ConstraintLayout>
