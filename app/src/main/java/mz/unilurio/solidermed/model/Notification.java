@@ -99,7 +99,7 @@ public final class Notification implements Parcelable {
     }
 
     public String getId() {
-        return this.deliveryService.getParturient().getId() + ""+ (""+color).replace("-", "");
+        return this.deliveryService.getParturient().getId()+"";
     }
 
     public Date getNextNotifier() {

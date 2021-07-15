@@ -11,12 +11,13 @@ public class DBManager {
 
 
     private static DBManager ourInstance = null;
-
+    private List<UserDoctor> userDoctorList=new ArrayList<>();
     private List<Notification> initNotifications = new ArrayList<>();
+    private List<String> listIdadeGestacional=new ArrayList<>();
     private List<Hospitais> hospitais= new ArrayList<>();
     private List<Notification> notifications = new ArrayList<>();
     private List<Parturient> parturients = new ArrayList<>();
-    private List<String> listOpcoesTrasferencia = new ArrayList<>();
+    private List<String> listMotivosTrasferencia = new ArrayList<>();
     private List<String> listOpcoesUnidadeSanitaria = new ArrayList<>();
     private List<UserNurse>userNurseList=new ArrayList<>();
     static private List<Integer> colors = new ArrayList<Integer>();
@@ -25,17 +26,17 @@ public class DBManager {
 
     private Queue queue;
     private List<EmergencyMedicalPersonnel> emergencyMedicalPersonnels = new ArrayList<>();
-    public int totalPaturient=1;
+    public int totalPaturient=0;
     private List<GestatinalRange> ranges;
     private List<DeliveryService> deliveryServices = new ArrayList<>();
-
 
     public static DBManager getInstance() {
         if(ourInstance == null) {
             ourInstance = new DBManager();
             ourInstance.initializeColor();
-            ourInstance.initalizeListOpcoesTrasferencia();
+            ourInstance.initalizeListMotivosTrasferencia();
             ourInstance.initalizeListOpcoesUnidadeSanitaria ();
+            ourInstance.initializeDoctor();
             ourInstance.initializeIdade();
             ourInstance.initializeCamas();
             ourInstance.initializeNotifications();
@@ -45,15 +46,35 @@ public class DBManager {
             ourInstance.initializeGestationalRanre();
             ourInstance.initHospitais();
             ourInstance.initializeInfermeira();
+            ourInstance.initializeIdadeGestacional();
         }
         return ourInstance;
     }
 
+    private void initializeDoctor() {
+        this.userDoctorList.add(new UserDoctor("mario","1234",1));
+    }
+
+    private void initializeIdadeGestacional() {
+             this.listIdadeGestacional.add("28 Semanas");
+             this.listIdadeGestacional.add("entre 28 a 31 Semanas");
+             this.listIdadeGestacional.add("entre 32 a 36 Semanas");
+             this.listIdadeGestacional.add("36 Semanas");
+    }
+
+    public List<UserDoctor> getUserDoctorList() {
+        return userDoctorList;
+    }
+
+    public List<String> getListIdadeGestacional() {
+        return listIdadeGestacional;
+    }
+
     private void initializeInfermeira() {
-        this.userNurseList.add(new UserNurse("Salima Mario","123","1"));
-        this.userNurseList.add(new UserNurse("Fatima Armando","124","2"));
-        this.userNurseList.add(new UserNurse("Maria Mario","123","1"));
-        this.userNurseList.add(new UserNurse("Carla Armando","124","2"));
+        this.userNurseList.add(new UserNurse("Salima","123","1"));
+        this.userNurseList.add(new UserNurse("Fatima","124","2"));
+        this.userNurseList.add(new UserNurse("Maria","124","1"));
+        this.userNurseList.add(new UserNurse("Carla","128","2"));
     }
 
     public List<UserNurse> getUserNurseList() {
@@ -78,18 +99,18 @@ public class DBManager {
         return hospitais;
     }
 
-    private void initalizeListOpcoesTrasferencia() {
-        this.listOpcoesTrasferencia.add("> Hemorragia anteparto, com suspeita de placenta previa");
-        this.listOpcoesTrasferencia.add("Hemorragia anteparto, com suspeita de deslocamento prematuro da placenta normalmente inserida");
-        this.listOpcoesTrasferencia.add("Hemorragia anteparto, com suspeita de ruptura uterina");
-        this.listOpcoesTrasferencia.add("Suspeita de ruptura uterina pré-termo de membranas");
-        this.listOpcoesTrasferencia.add("Trabalho de parto arrastado");
-        this.listOpcoesTrasferencia.add("Pre-eclampsia");
-        this.listOpcoesTrasferencia.add("Eclampsia");
-        this.listOpcoesTrasferencia.add("Parto pre-termo");
-        this.listOpcoesTrasferencia.add("Sofrimento fetal");
-        this.listOpcoesTrasferencia.add("Homorragia anteparto, com suspeita de placenta previa");
-        this.listOpcoesTrasferencia.add("Outros");
+    private void initalizeListMotivosTrasferencia() {
+        this.listMotivosTrasferencia.add("> Hemorragia anteparto, com suspeita de placenta previa");
+        this.listMotivosTrasferencia.add("Hemorragia anteparto, com suspeita de deslocamento prematuro da placenta normalmente inserida");
+        this.listMotivosTrasferencia.add("Hemorragia anteparto, com suspeita de ruptura uterina");
+        this.listMotivosTrasferencia.add("Suspeita de ruptura uterina pré-termo de membranas");
+        this.listMotivosTrasferencia.add("Trabalho de parto arrastado");
+        this.listMotivosTrasferencia.add("Pre-eclampsia");
+        this.listMotivosTrasferencia.add("Eclampsia");
+        this.listMotivosTrasferencia.add("Parto pre-termo");
+        this.listMotivosTrasferencia.add("Sofrimento fetal");
+        this.listMotivosTrasferencia.add("Homorragia anteparto, com suspeita de placenta previa");
+        this.listMotivosTrasferencia.add("Outros");
     }
 
     private void initalizeListOpcoesUnidadeSanitaria() {
@@ -113,8 +134,8 @@ public class DBManager {
         return listOpcoesUnidadeSanitaria;
     }
 
-    public List<String> getListOpcoesTrasferencia() {
-        return listOpcoesTrasferencia;
+    public List<String> getListMotivosTrasferencia() {
+        return listMotivosTrasferencia;
     }
 
     private void initializeParurientes() {

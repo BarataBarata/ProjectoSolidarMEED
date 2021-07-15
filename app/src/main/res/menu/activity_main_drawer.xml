@@ -9,10 +9,6 @@
             android:icon="@drawable/nurses"
             android:title="@string/Enfermeiras" />
         <item
-            android:id="@+id/id_centroDeSaude"
-            android:icon="@drawable/hospital"
-            android:title="@string/Hospitais" />
-        <item
             android:id="@+id/id_out"
             android:icon="@drawable/sair_do_sistema"
             android:title="@string/sair" />

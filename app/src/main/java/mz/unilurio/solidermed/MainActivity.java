@@ -59,6 +59,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mz.unilurio.solidermed.model.AllAcess;
+import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 import mz.unilurio.solidermed.model.GestatinalRange;
@@ -73,7 +75,6 @@ import mz.unilurio.solidermed.utils.Helper;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
 
     TabLayout tabLayout;
     private AppBarConfiguration mAppBarConfiguration;
@@ -95,11 +96,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PagerAdapter adapte;
     private TextView textNomeHospital;
     private String nomeHospitalExtra="";
-
+    private NotificationManagerCompat notificationManagerCompat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        notificationManagerCompat=NotificationManagerCompat.from(this);
 
         textNomeHospital = findViewById(R.id.idCentroSaudeTitle);
         if(getIntent().getStringExtra("nomeHospital")!=null) {
@@ -121,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 pager.setCurrentItem(tab.getPosition());
+
+                popNotification(new Notification());
             }
 
             @Override
@@ -211,9 +215,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.id_addInfermeira) {
                startActivity(new Intent(MainActivity.this, NurseActivity.class));
         }
-        if (id == R.id.id_centroDeSaude) {
-            startActivity(new Intent(MainActivity.this, HospitaisActivity.class));
-        }
+
         if (id == R.id.id_out) {
 
             if (id == R.id.id_out){
@@ -300,7 +302,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
     public class AsyncTaskNotification extends AsyncTask<String, String, String> {
         final String TAG = "AsyncTaskNotification.java";
 
@@ -358,7 +359,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 DBManager.getInstance().addNewNotification(notification);
             }
 
-
             // Send SMS
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
@@ -408,23 +408,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
         }
     }
-
+    private static int k;
     private void popNotification(Notification notification) {
 
-        NotificationCompat.Builder builder=new NotificationCompat.Builder(MainActivity.this)
-                .setSmallIcon(R.drawable.mulhergravidabom2)
-                .setContentTitle("Alerta").setColor(Color.GREEN)
-                .setContentText(notification.getMessage())
-                .setAutoCancel(true);
+        Intent activitIntent=new Intent(this,MainActivity.class);
+        PendingIntent contxtIntent=PendingIntent.getActivity(this,0,activitIntent,0);
+        android.app.Notification notification1=new NotificationCompat.Builder(this, App.CHANNEL_1_ID)
+                         .setSmallIcon(R.drawable.mulhergravidabom2)
+                         .setContentTitle("Alerta")
+                         .setColor(Color.GREEN)
+                         .setAutoCancel(true)
+                         .setContentText(notification.getMessage())
+                         .setPriority(NotificationCompat.PRIORITY_HIGH)
+                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(contxtIntent)
+                  .build();
+          notificationManagerCompat.notify(Integer.parseInt(notification.getId()),notification1);
 
-        Intent intent=new Intent(MainActivity.this,DadosPessoais.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        intent.putExtra("id",notification.getId());
-        PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pendingIntent);
-        NotificationManager notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0,builder.build());
-
+//
+//        NotificationCompat.Builder builder=new NotificationCompat.Builder(MainActivity.this)
+//                .setSmallIcon(R.drawable.mulhergravidabom2)
+//                .setContentTitle("Alerta").setColor(Color.GREEN)
+//                .setContentText("notification.getMessage()")
+//                .setAutoCancel(true);
+//
+//        Intent intent=new Intent(MainActivity.this,DadosPessoais.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+//        intent.putExtra("id",notification.getId());
+//        PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+//        builder.setContentIntent(pendingIntent);
+//        NotificationManager notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.notify(0,builder.build());
+//
 
     }
 
@@ -432,20 +447,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
      public void centroSaude(View view) {
 
-         ProgressDialog progressBar;
-         progressBar=new ProgressDialog(MainActivity.this);
-         progressBar.setTitle("Aguarde");
-         progressBar.setMessage("processando...");
-         progressBar.show();
+         if(new AllAcess().isAllAcess()) {
+             ProgressDialog progressBar;
+             progressBar = new ProgressDialog(MainActivity.this);
+             progressBar.setTitle("Aguarde");
+             progressBar.setMessage("processando...");
+             progressBar.show();
 
-         new Handler().postDelayed(new Thread() {
-             @Override
-             public void run() {
-                 progressBar.dismiss();
-                 Intent intent = new Intent(MainActivity.this, HospitaisActivity.class);
-                 startActivity(intent);
-             }
-         },Long.parseLong("400"));
+             new Handler().postDelayed(new Thread() {
+                 @Override
+                 public void run() {
+                     progressBar.dismiss();
+                     Intent intent = new Intent(MainActivity.this, HospitaisActivity.class);
+                     startActivity(intent);
+                 }
+             }, Long.parseLong("400"));
+         }
 
     }
 

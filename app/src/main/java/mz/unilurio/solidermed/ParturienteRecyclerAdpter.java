@@ -88,9 +88,8 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                         switch (item.getItemId()) {
                             case R.id.idEditar:{
                                 Intent intent = new Intent(context.getContext(),AddParturientActivity.class);
-                                intent.putExtra("nome", DBManager.getInstance().getParturients().get(position).getName()+"");
-                                intent.putExtra("apelido", DBManager.getInstance().getParturients().get(position).getSurname()+"");
-                                context.startActivity(intent);
+                                intent.putExtra("idParturiente", position+"");
+                               context.startActivity(intent);
                             }
                             return true;
                             case R.id.item3:

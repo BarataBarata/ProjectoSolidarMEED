@@ -9,7 +9,6 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -18,8 +17,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +33,7 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.DBManager;
@@ -66,23 +66,20 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
     private Spinner spinnerTrasferencia;
     private TextView textSanitario;
     private TextView textTrasferencia;
-    private boolean show;
+
+    private boolean parturienteTransferido;
+    private boolean isEdit;
+    private Parturient parturient;
 
     private Validator validator;
     private boolean optionRegist;
     private String nome="";
+    private Switch swit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
-
-        if(getIntent().getStringExtra("nome")!=null){
-            TextView textNome=findViewById(R.id.txtName);
-            TextView textApelido=findViewById(R.id.txtSurname);
-            textNome.setText( getIntent().getStringExtra("nome"));
-            textApelido.setText( getIntent().getStringExtra("apelido"));
-        }
 
         textSanitario = (TextView)findViewById(R.id.textSanitario);
         textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
@@ -93,13 +90,11 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         viewNumber();
         viewnumber2();
 
+        if(getIntent().getStringExtra("idParturiente")!=null){
+            editParturiente(Integer.parseInt(getIntent().getStringExtra("idParturiente")));
+        }
+
 }
-   public int getBackgroundColor(){
-        return Color.WHITE;
-   }
-    public int getTextColor(){
-        return Color.BLACK;
-    }
 
     private void viewnumber2() {
         para.addOnChangeListener(new Slider.OnChangeListener() {
@@ -108,15 +103,18 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
                 TextView textNumber=findViewById(R.id.id1);
                 textNumber.setText((int)para.getValue()+"");
             }
-
-
         });
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void viewNumber() {
 
-        mSliderDilatation.addOnChangeListener(new Slider.OnChangeListener() {
+        mSliderDilatation.addOnChangeListener(new Slider.OnChangeListener(){
             @Override
             public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
                 TextView textNumber=findViewById(R.id.id0);
@@ -126,19 +124,81 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
     }
 
+
+    public void editParturiente(int idParturiente){
+        int numberPick1;
+        int numberPick2;
+        String idade="";
+        isEdit=true;
+        parturient=DBManager.getInstance().getParturients().get(idParturiente);
+        txtNameParturient.setText(parturient.getName());
+        textApelido.setText(parturient.getSurname());
+        idade=String.valueOf(parturient.getAge());
+        numberPick1=Integer.parseInt(idade.charAt(0)+"");
+        numberPick2=Integer.parseInt(idade.charAt(1)+"");
+        numberPicker1.setValue(numberPick1);
+        numberPicker2.setValue(numberPick2);
+        para.setValue(parturient.getPara());
+        mSliderDilatation.setValue((int)Float.parseFloat(parturient.getReason()));
+        spinner.setSelection(getPositionIdadeGestacional(parturient.getGestatinalRange()));
+        parturienteTransferido=true;
+        if(parturient.isTransfered()){
+            swit.setChecked(true);
+            invisibleView();
+            spinnerSanitaria.setSelection(getPositionISanitaria(parturient.getOrigemTransferencia()));
+            spinnerTrasferencia.setSelection(getPositionMotivosTrasferencia(parturient.getMotivosDaTrasferencia()));
+        }
+    }
+
+
+
+    int getPositionISanitaria(String sanitaria){
+        int index=0;
+        for(String list:DBManager.getInstance().getListOpcoesUnidadeSanitaria()){
+            if(list.equals(sanitaria)){
+                return index;
+            }
+            index++;
+        }
+        return  0;
+    }
+
+    int getPositionIdadeGestacional(String idadeGestacional){
+        int index=0;
+            for(String list:DBManager.getInstance().getListIdadeGestacional()){
+                if(list.equals(idadeGestacional)){
+                    return index;
+                }
+                index++;
+            }
+             return  0;
+    }
+
+    int getPositionMotivosTrasferencia(String origem){
+        int index=0;
+        for(String list:DBManager.getInstance().getListMotivosTrasferencia()){
+            if(list.equals(origem)){
+                return index;
+            }
+            index++;
+        }
+        return  0;
+    }
+
     private void initView() {
-        numberPicker1 = findViewById(R.id.numberPickerTwo);
-        numberPicker2 = findViewById(R.id.numberPickerOne);
+//        numberPicker1 = findViewById(R.id.numberPickerTwo);
+//        numberPicker2 = findViewById(R.id.numberPickerOne);
         textApelido = findViewById(R.id.txtSurname);
         txtNameParturient = findViewById(R.id.txtName);
         numberPicker1 = findViewById(R.id.numberPickerOne);
         numberPicker2 = findViewById(R.id.numberPickerTwo);
         para = findViewById(R.id.para);
         mSliderDilatation = findViewById(R.id.dilatation);
+        swit = findViewById(R.id.switch1);
 
         spinner = findViewById(R.id.spinner_gestRange);
-        List<GestatinalRange> list = DBManager.getInstance().getGestatinalRange();
-        ArrayAdapter<GestatinalRange> adapterGesta = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
+        List<String> list = DBManager.getInstance().getListIdadeGestacional();
+        ArrayAdapter<String> adapterGesta = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
         adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapterGesta);
 
@@ -151,7 +211,7 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         setUpNumberPickers();
 
         spinnerTrasferencia = findViewById(R.id.spinner_gestRangeTrasferencia);
-        List<String> listTrasferencia = DBManager.getInstance().getListOpcoesTrasferencia();
+        List<String> listTrasferencia = DBManager.getInstance().getListMotivosTrasferencia();
         ArrayAdapter<String> adapterTrasferencia = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listTrasferencia);
         adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerTrasferencia.setAdapter( adapterTrasferencia );
@@ -172,6 +232,7 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         getMenuInflater().inflate(R.menu.note, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -194,21 +255,29 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         finish();
     }
 
-    public void transferencia(View view) {
 
-       if(show){
+
+    public void invisibleView(){
+        spinnerSanitaria.setVisibility(View.VISIBLE);
+        spinnerTrasferencia.setVisibility(View.VISIBLE);
+        textSanitario.setVisibility(View.VISIBLE);
+        textTrasferencia.setVisibility(View.VISIBLE);
+    }
+
+    public void transferencia(View view) {
+       if(parturienteTransferido){
                spinnerSanitaria.setVisibility(View.INVISIBLE);
                spinnerTrasferencia.setVisibility(View.INVISIBLE);
                textSanitario.setVisibility(View.INVISIBLE);
                textTrasferencia.setVisibility(View.INVISIBLE);
-               show =false;
+               parturienteTransferido =false;
         }else{
 
            spinnerSanitaria.setVisibility(View.VISIBLE);
            spinnerTrasferencia.setVisibility(View.VISIBLE);
            textSanitario.setVisibility(View.VISIBLE);
            textTrasferencia.setVisibility(View.VISIBLE);
-           show=true;
+           parturienteTransferido =true;
         }
 
     }
@@ -246,9 +315,6 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         return true;
     }
 
-
-
-
     public void setUpNumberPickers(){
 
         numberPicker1.setMinValue(1);
@@ -281,31 +347,48 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         dialog.setIcon(getDrawable(R.drawable.icon_registo));
 
         dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
                 validationError();
-                if(optionRegist ) {
                     progressBar();
-                    Parturient parturient = new Parturient();
+                    if(!isEdit){
+                        parturient = new Parturient();
+                    }
+
                     parturient.setId(DBManager.getInstance().getTotalPaturient());
                     parturient.setName(txtNameParturient.getText().toString());
                     parturient.setSurname(textApelido.getText().toString());
 
                     String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
                     parturient.setAge(Integer.parseInt(age));
+                    parturient.setTime(new Date());
 
-                    parturient.setGestatinalRange((GestatinalRange) spinner.getSelectedItem());
+                    parturient.setGestatinalRange(spinner.getSelectedItem()+"");
                     parturient.setPara((int) para.getValue());
+                    parturient.setReason(mSliderDilatation.getValue()+"");
 
-                    DBManager.getInstance().addParturiente(parturient);
+                    if(parturienteTransferido){
+                       parturient.setTransfered(true);
+                       parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
+                       parturient.setOrigemTransferencia(spinnerSanitaria.getSelectedItem().toString());
+                    }else {
+                        parturient.setTransfered(false);
+                    }
+
+                     if(!isEdit){
+                        DBManager.getInstance().addParturiente(parturient);
+                     }
+
                     DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
+                    swit.setChecked(false);
+
 
 
                     Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
                 }
 
-            }
 
             private void progressBar() {
                      progressBar=new ProgressDialog(AddParturientActivity.this);

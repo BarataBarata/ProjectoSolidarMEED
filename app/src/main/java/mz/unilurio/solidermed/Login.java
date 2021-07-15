@@ -26,6 +26,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
+import mz.unilurio.solidermed.model.AllAcess;
+import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.UserDoctor;
+
 public class Login extends AppCompatActivity {
     ProgressDialog progressBar;
     FirebaseAuth auth;
@@ -45,9 +51,11 @@ public class Login extends AppCompatActivity {
     }
 
     public void Entrar(View view) {
+        String email=textEmail.getEditText().getText().toString();
+        verificaUser(email);
         Intent intent = new Intent(Login.this, MainActivity.class);
         startActivity(intent);
-//        progressBar();
+         // progressBar();
     }
 
     private void progressBar() {
@@ -59,9 +67,9 @@ public class Login extends AppCompatActivity {
             @Override
             public void run() {
                 progressBar.dismiss();
+
                 String email=textEmail.getEditText().getText().toString();
                 String password=textPassword.getEditText().getText().toString();
-
 
                 if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
 
@@ -69,8 +77,8 @@ public class Login extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
 //                            if(task.isSuccessful()){
-                                Intent intent = new Intent(Login.this, MainActivity.class);
-                                startActivity(intent);
+                            Intent intent = new Intent(Login.this, MainActivity.class);
+                            startActivity(intent);
 //                            }else {
 //                                String erro=task.getException().getMessage();
 //                                textAlerta.setText("Email ou Senha Incorreto");
@@ -88,5 +96,16 @@ public class Login extends AppCompatActivity {
                 }
             }
         },Long.parseLong("900"));
+    }
+
+    public  void  verificaUser(String user){
+
+        for (UserDoctor s:DBManager.getInstance().getUserDoctorList()) {
+            if( user.equalsIgnoreCase(s.getEmailUser())){
+                AllAcess.setAllAcess(true);
+            }else{
+                AllAcess.setAllAcess(false);
+            }
+        }
     }
 }

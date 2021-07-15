@@ -11,11 +11,14 @@ public class Parturient implements Parcelable {
     private String surname;
     private int age;
     private int para;
-    private GestatinalRange gestatinalRange;
+    private String gestatinalRange;
     private Date time;
     private boolean isTransfered;
     private String reason;
     private int numeroCama;
+    private  String origemTransferencia;
+    private  String motivosDaTrasferencia;
+
 
     public Parturient(){}
 
@@ -187,7 +190,23 @@ public class Parturient implements Parcelable {
 //        }
 //    }
 
-    public GestatinalRange getGestatinalRange() { return gestatinalRange; }
+    public String getGestatinalRange() { return gestatinalRange; }
 
-    public void setGestatinalRange(GestatinalRange gestatinalRange) { this.gestatinalRange = gestatinalRange; }
+    public void setGestatinalRange(String gestatinalRange) { this.gestatinalRange = gestatinalRange; }
+
+    public String getOrigemTransferencia() {
+        return origemTransferencia;
+    }
+
+    public void setOrigemTransferencia(String origemTransferencia) {
+        this.origemTransferencia = origemTransferencia;
+    }
+
+    public String getMotivosDaTrasferencia() {
+        return motivosDaTrasferencia;
+    }
+
+    public void setMotivosDaTrasferencia(String motivosDaTrasferencia) {
+        this.motivosDaTrasferencia = motivosDaTrasferencia;
+    }
 }
