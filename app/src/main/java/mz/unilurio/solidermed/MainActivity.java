@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NotificationManagerCompat notificationManager;
     private TextView textNotificacao;
     private Timer timer;
+    private static int id;
     private TextView textSeacher;
     private boolean visible;
     private ViewPager pager;
@@ -123,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 pager.setCurrentItem(tab.getPosition());
-
-                popNotification(new Notification());
             }
 
             @Override
@@ -408,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
         }
     }
-    private static int k;
+
     private void popNotification(Notification notification) {
 
         Intent activitIntent=new Intent(this,MainActivity.class);
