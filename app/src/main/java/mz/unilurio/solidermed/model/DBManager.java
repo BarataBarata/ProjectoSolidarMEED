@@ -139,8 +139,28 @@ public class DBManager {
     }
 
     private void initializeParurientes() {
-       addParturiente(new Parturient(totalPaturient, "Julia", "Nanomavia", 20));
-       addParturiente(new Parturient(totalPaturient, "Camilita", "Manobi", 18));
+        Parturient parturient=new Parturient();
+        parturient.setName("Catia");
+        parturient.setSurname("Fatima");
+        parturient.setTime(new Date());
+        parturient.setReason("4");
+        parturient.setOrigemTransferencia("Centro de Chiure");
+        parturient.setMotivosDaTrasferencia("Mal posicao do Feto");
+        parturient.setPara(8);
+        parturient.setId(1);
+        parturient.setTransfered(true);
+        parturient.setAge(35);
+       addParturiente(parturient);
+        Parturient parturient2=new Parturient();
+        parturient2.setName("Julia");
+        parturient2.setSurname("Amelia");
+        parturient2.setTime(new Date());
+        parturient2.setReason("8");
+        parturient2.setPara(9);
+        parturient2.setId(0);
+        parturient2.setTransfered(false);
+        parturient2.setAge(45);
+        addParturiente(parturient2);
     }
 
     private void initializeCamas() {
