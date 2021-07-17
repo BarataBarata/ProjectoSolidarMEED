@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -17,20 +19,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.ui.fragments.NotificationFragment;
 
-public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder> {
+public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder> implements Filterable {
 
     private final Context context;
+    private  List<Notification>auxListNotificacao;
     private List<Notification> notifications;
     private final LayoutInflater layoutInflater;
 
         public NotificationRecyclerAdpter(Context context, List<Notification> notifications) {
         this.context = context;
+        this.auxListNotificacao =new ArrayList<>(notifications);
         layoutInflater = LayoutInflater.from(context);
         this.notifications = notifications;
     }
@@ -92,6 +99,42 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
     public int getItemCount() {
         return notifications.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<Notification>list =new ArrayList<>();
+
+            if(constraint.toString().isEmpty()){
+                list.addAll(auxListNotificacao);
+            }else{
+                for(Notification notification:auxListNotificacao){
+                    if(notification.getDeliveryService().getParturient().getName().toLowerCase().contains(constraint.toString().toLowerCase())){
+                        list.add(notification);
+                        System.out.println(notification.getDeliveryService().getParturient().getName());
+                    }
+                }
+            }
+
+            FilterResults filterResults=new FilterResults();
+            filterResults.values=list;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            notifications.clear();
+            notifications.addAll((Collection<? extends Notification>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public int currentPosition;

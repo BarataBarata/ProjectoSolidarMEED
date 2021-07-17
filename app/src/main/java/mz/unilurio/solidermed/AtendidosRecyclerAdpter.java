@@ -86,11 +86,9 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
             List<Parturient>list =new ArrayList<>();
 
             if(constraint.toString().isEmpty()){
-                System.out.println("lista vazia");
                 list.addAll(auxListParturientes);
             }else{
                 for(Parturient parturient:auxListParturientes){
-                    System.out.println("ESPERE");
                     if(parturient.getName().toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(parturient);
                         System.out.println(parturient.getName());

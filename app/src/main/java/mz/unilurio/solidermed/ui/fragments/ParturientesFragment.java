@@ -71,14 +71,9 @@ public class ParturientesFragment extends Fragment {
         super.onResume();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Parturient> parturients= DBManager.getInstance().getParturients();
-        recyclerView.setAdapter(new ParturienteRecyclerAdpter( getContext(),parturients));
-    }
+        recyclerView.setAdapter(new ParturienteRecyclerAdpter(getContext(),parturients));
 
-    @Override
-    public void onPause() {
-        super.onPause();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

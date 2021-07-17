@@ -66,12 +66,21 @@ public class AtendidosFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        List<Parturient> parturients= DBManager.getInstance().getListParturientesAtendidos();
+        recyclerView.setAdapter(new AtendidosRecyclerAdpter( getContext(),parturients));
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_atendidos, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewAtendidos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<Parturient> parturients= DBManager.getInstance().getParturients();
+        List<Parturient> parturients= DBManager.getInstance().getListParturientesAtendidos();
         recyclerView.setAdapter(new AtendidosRecyclerAdpter( getContext(),parturients));
 
         return view;

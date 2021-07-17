@@ -33,10 +33,11 @@ public class DadosPessoais extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dados_pessoais);
         toolbar=findViewById(R.id.toolbarDadosPessoais);
+
+
         setSupportActionBar(toolbar);
         initialize();
         sendDade();
@@ -46,7 +47,6 @@ public class DadosPessoais extends AppCompatActivity {
     private void sendDade() {
 
         idParturiente =Integer.parseInt(getIntent().getStringExtra("id"));
-        System.out.println(idParturiente+"   hhhhhhhhhhhhf");
         nomeParturiente.setText(DBManager.getInstance().getParturients().get(idParturiente).getName());
         idadeParturiente.setText(DBManager.getInstance().getParturients().get(idParturiente).getAge()+"");
         dilatacaoParturiente.setText(DBManager.getInstance().getParturients().get(idParturiente).getReason()+"");

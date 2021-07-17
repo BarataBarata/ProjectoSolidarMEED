@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private LinearLayoutManager notificationLayoutManager;
     private LinearLayoutManager parturienteLinearLayoutManager;
     private NotificationRecyclerAdpter notificationRecyclerAdapter;
+    private AtendidosRecyclerAdpter atendidosRecyclerAdpter;
     private ParturienteRecyclerAdpter  parturienteRecyclerAdpter;
     private HashMap<String, Notification> notificationTriggered = new HashMap<String, Notification>();
     private NotificationManagerCompat notificationManager;
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static int id;
     private TextView textSeacher;
     private boolean visible;
+    private static int opcoesSeacher;
     private ViewPager pager;
     private static List<Notification> notifications=new ArrayList<>();
     private PagerAdapter adapte;
@@ -102,8 +104,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         notificationManagerCompat=NotificationManagerCompat.from(this);
-        parturienteRecyclerAdpter=null;
         textNomeHospital = findViewById(R.id.idCentroSaudeTitle);
         if(getIntent().getStringExtra("nomeHospital")!=null) {
             textNomeHospital.setText(getIntent().getStringExtra("nomeHospital"));
@@ -122,14 +125,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 pager.setCurrentItem(tab.getPosition());
-
+                opcoesSeacher=tab.getPosition();
                 switch (tab.getPosition()){
                     case 0: displayNotification();break;
                     case 1: displayAtendidos(); break;
                     case 2: displayParturiente();break;
                 }
-
-
             }
 
             @Override
@@ -176,9 +177,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         RecyclerView recyclerView;
         recyclerView =findViewById(R.id.recyclerViewAtendidos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Parturient> parturients= DBManager.getInstance().getParturients();
-        recyclerView.setAdapter(new AtendidosRecyclerAdpter( this,parturients));
-
+        List<Parturient> parturients= DBManager.getInstance().getListParturientesAtendidos();
+        atendidosRecyclerAdpter=new AtendidosRecyclerAdpter( this,parturients);
+        recyclerView.setAdapter(atendidosRecyclerAdpter);
     }
 
     private void displayNotification() {
@@ -186,7 +187,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView = findViewById(R.id.list_notes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Notification> notifications= DBManager.getInstance().getNotifications();
-        recyclerView.setAdapter(new NotificationRecyclerAdpter( this, notifications));
+        notificationRecyclerAdapter=new NotificationRecyclerAdpter( this, notifications);
+        recyclerView.setAdapter(notificationRecyclerAdapter);
     }
 
     public void displayParturiente(){
@@ -196,7 +198,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         List<Parturient> parturients= DBManager.getInstance().getParturients();
         parturienteRecyclerAdpter=new ParturienteRecyclerAdpter( this,parturients);
         recyclerView.setAdapter(parturienteRecyclerAdpter);
-
     }
 
     @Override
@@ -223,7 +224,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                parturienteRecyclerAdpter.getFilter().filter(newText);
+                switch (opcoesSeacher){
+                    case 0: notificationRecyclerAdapter.getFilter().filter(newText);break;
+                    case 1: atendidosRecyclerAdpter.getFilter().filter(newText);break;
+                    case 2: parturienteRecyclerAdpter.getFilter().filter(newText);break;
+                }
                 return false;
             }
         });
@@ -311,10 +316,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            System.out.println(" ola barata cheguwi...");
 
                             AsyncTaskNotification task = new AsyncTaskNotification(activity);
                             task.execute();
+                            displayNotification();
                         } catch (Exception e) {
                             // error, do something
                         }
@@ -335,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         AsyncTaskNotification(MainActivity activity) {
             activityWeakReference = new WeakReference<MainActivity>(activity);
-            recyclerView = (RecyclerView) activity.findViewById(R.id.list_notes);
+            //recyclerView = (RecyclerView) activity.findViewById(R.id.list_notes);
         }
         @Override
         protected void onPreExecute() {
@@ -344,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (activity == null || activity.isFinishing()) {
                 return;
             }
-            activity.recyclerItems = activity.findViewById(R.id.list_notes);
+            //activity.recyclerItems = activity.findViewById(R.id.list_notes);
 //            activity.progressBar.setVisibility(View.VISIBLE);
 
         }
@@ -383,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 System.out.println("------------"+notification.getDeliveryService()+"");
                 DBManager.getInstance().addNewNotification(notification);
             }
-             displayNotification();
+
 
             // Send SMS
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -413,11 +418,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }
 
+
                 } else {
                     requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
                 }
             }
+
         }
+
+
     }
 
 
@@ -428,10 +437,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try {
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-//            Toast.makeText(this, "Message is sent", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Message is sent", Toast.LENGTH_SHORT);
         } catch (Exception e) {
             Log.i("EXPECTION SMS", e.getMessage());
-//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
         }
     }
 

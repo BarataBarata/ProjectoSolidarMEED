@@ -11,6 +11,7 @@ public class DBManager {
 
 
     private static DBManager ourInstance = null;
+    private List<Parturient>listParturientesAtendidos=new ArrayList<>();
     private List<UserDoctor> userDoctorList=new ArrayList<>();
     private List<Notification> initNotifications = new ArrayList<>();
     private List<String> listIdadeGestacional=new ArrayList<>();
@@ -47,8 +48,42 @@ public class DBManager {
             ourInstance.initHospitais();
             ourInstance.initializeInfermeira();
             ourInstance.initializeIdadeGestacional();
+            ourInstance.initializeParturientesAtendidos();
         }
         return ourInstance;
+    }
+
+    private void initializeParturientesAtendidos() {
+        Parturient parturient=new Parturient();
+        parturient.setName("Catia");
+        parturient.setSurname("Fatima");
+        parturient.setTime(new Date());
+        parturient.setReason("4");
+        parturient.setOrigemTransferencia("Centro de Chiure");
+        parturient.setMotivosDaTrasferencia("Mal posicao do Feto");
+        parturient.setPara(8);
+        parturient.setId(1);
+        parturient.setTransfered(true);
+        parturient.setAge(35);
+        addParturienteAtendido(parturient);
+        Parturient parturient2=new Parturient();
+        parturient2.setName("Julia");
+        parturient2.setSurname("Amelia");
+        parturient2.setTime(new Date());
+        parturient2.setReason("8");
+        parturient2.setPara(9);
+        parturient2.setId(0);
+        parturient2.setTransfered(false);
+        parturient2.setAge(45);
+        addParturienteAtendido(parturient2);
+    }
+
+    public List<Parturient> getListParturientesAtendidos() {
+        return listParturientesAtendidos;
+    }
+
+    public void addParturienteAtendido(Parturient parturient){
+        this.listParturientesAtendidos.add(parturient);
     }
 
     private void initializeDoctor() {
