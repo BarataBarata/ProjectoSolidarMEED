@@ -28,7 +28,6 @@ public class PageAdapder extends FragmentStatePagerAdapter {
             case 1:
                 return new AtendidosFragment();
 
-
             default:  return new ParturientesFragment();
         }
     }

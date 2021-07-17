@@ -1,5 +1,6 @@
 package mz.unilurio.solidermed;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,7 @@ import mz.unilurio.solidermed.ui.fragments.AtendidosFragment;
 
 public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyclerAdpter.ViewHolder> implements Filterable {
 
-    private final AtendidosFragment context;
+    private final Context context;
     private List<Parturient> originalListParturientes;
     private List<Parturient> auxListParturientes;
     private final LayoutInflater layoutInflater;
@@ -36,10 +37,10 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
         notifyDataSetChanged();
     }
 
-    public AtendidosRecyclerAdpter(AtendidosFragment context, List<Parturient> parturients) {
+    public AtendidosRecyclerAdpter(Context context, List<Parturient> parturients) {
         this.context = context;
         this.auxListParturientes =new ArrayList<>(parturients);
-        layoutInflater = LayoutInflater.from(context.getContext());
+        layoutInflater = LayoutInflater.from(context);
         this.originalListParturientes = parturients;
     }
 
@@ -131,7 +132,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context.getContext(), DadosPessoais.class);
+                    Intent intent = new Intent(context, DadosPessoais.class);
                     intent.putExtra("id", currentPosition+"");
                     context.startActivity(intent);
                 }

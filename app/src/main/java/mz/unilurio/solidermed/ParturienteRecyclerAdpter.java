@@ -28,21 +28,16 @@ import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
 
 public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteRecyclerAdpter.ViewHolder> implements Filterable {
 
-    private final ParturientesFragment context;
+    private final Context context;
     private List<Parturient> originalListParturientes;
     private List<Parturient> auxListParturientes;
     private final LayoutInflater layoutInflater;
 
-    public void updateList(List<Parturient>list){
-        originalListParturientes =new ArrayList<>();
-        originalListParturientes.addAll(list);
-        notifyDataSetChanged();
-    }
 
-    public ParturienteRecyclerAdpter(ParturientesFragment context, List<Parturient> parturients) {
+    public ParturienteRecyclerAdpter(Context context, List<Parturient> parturients) {
         this.context = context;
         this.auxListParturientes =new ArrayList<>(parturients);
-        layoutInflater = LayoutInflater.from(context.getContext());
+        layoutInflater = LayoutInflater.from(context);
         this.originalListParturientes = parturients;
     }
 
@@ -78,7 +73,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
 
                 //creating a popup menu
                 Context mCtx = null;
-                PopupMenu popup = new PopupMenu(context.getContext(), holder.buttonViewOption);
+                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
                 //inflating menu from xml resource
                 popup.inflate(R.menu.options_menu_parturiente);
                 //adding click listener
@@ -87,13 +82,13 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.idEditar:{
-                                Intent intent = new Intent(context.getContext(),AddParturientActivity.class);
+                                Intent intent = new Intent(context,AddParturientActivity.class);
                                 intent.putExtra("idParturiente", position+"");
                                context.startActivity(intent);
                             }
                             return true;
                             case R.id.transferir:
-                                Intent intent = new Intent(context.getContext(),TrasferenciaActivity.class);
+                                Intent intent = new Intent(context,TrasferenciaActivity.class);
                                 intent.putExtra("idParturiente", position+"");
                                 context.startActivity(intent);
                                 return true;
@@ -178,7 +173,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context.getContext(), DadosPessoais.class);
+                    Intent intent = new Intent(context, DadosPessoais.class);
                     intent.putExtra("id", currentPosition+"");
                     context.startActivity(intent);
                 }
@@ -192,4 +187,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         DateFormat dateFormat = new SimpleDateFormat("hh:mm - dd, MMM");
         return dateFormat.format(date);
     }
+
+
+
 }

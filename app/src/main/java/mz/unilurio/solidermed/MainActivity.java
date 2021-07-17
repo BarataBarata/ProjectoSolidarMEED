@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private LinearLayoutManager notificationLayoutManager;
     private LinearLayoutManager parturienteLinearLayoutManager;
     private NotificationRecyclerAdpter notificationRecyclerAdapter;
-    private ParturienteRecyclerAdpter parturienteRecyclerAdpter;
+    private ParturienteRecyclerAdpter  parturienteRecyclerAdpter;
     private HashMap<String, Notification> notificationTriggered = new HashMap<String, Notification>();
     private NotificationManagerCompat notificationManager;
     private TextView textNotificacao;
@@ -103,18 +103,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         notificationManagerCompat=NotificationManagerCompat.from(this);
-
+        parturienteRecyclerAdpter=null;
         textNomeHospital = findViewById(R.id.idCentroSaudeTitle);
         if(getIntent().getStringExtra("nomeHospital")!=null) {
             textNomeHospital.setText(getIntent().getStringExtra("nomeHospital"));
         }else{
             textNomeHospital.setText("Centro de Saude de Chiure");
         }
-        recyclerParturientes = findViewById(R.id.recyclerVieParturiente);
-        recyclerItems=findViewById(R.id.list_notes);
-        textSeacher=findViewById(R.id.app_bar_search);
+
+
         tabLayout=(TabLayout)findViewById(R.id.tabLayout);
-        //tabLayout.removeTabAt(0);
         pager=findViewById(R.id.viewpager);
         adapte =new PageAdapder(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,tabLayout.getTabCount());
         pager.setAdapter(adapte);
@@ -124,6 +122,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 pager.setCurrentItem(tab.getPosition());
+
+                switch (tab.getPosition()){
+                    case 0: displayNotification();break;
+                    case 1: displayAtendidos(); break;
+                    case 2: displayParturiente();break;
+                }
+
+
             }
 
             @Override
@@ -166,9 +172,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
+    private void displayAtendidos() {
+        RecyclerView recyclerView;
+        recyclerView =findViewById(R.id.recyclerViewAtendidos);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        List<Parturient> parturients= DBManager.getInstance().getParturients();
+        recyclerView.setAdapter(new AtendidosRecyclerAdpter( this,parturients));
+
+    }
+
+    private void displayNotification() {
+        RecyclerView recyclerView;
+        recyclerView = findViewById(R.id.list_notes);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        List<Notification> notifications= DBManager.getInstance().getNotifications();
+        recyclerView.setAdapter(new NotificationRecyclerAdpter( this, notifications));
+    }
+
+    public void displayParturiente(){
+        RecyclerView recyclerView;
+        recyclerView = findViewById(R.id.recyclerVieParturiente);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        List<Parturient> parturients= DBManager.getInstance().getParturients();
+        parturienteRecyclerAdpter=new ParturienteRecyclerAdpter( this,parturients);
+        recyclerView.setAdapter(parturienteRecyclerAdpter);
+
     }
 
     @Override
@@ -185,8 +213,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
-
-
         MenuItem menuItem=menu.findItem(R.id.app_bar_search);
         SearchView searchView=(SearchView)menuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -198,13 +224,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onQueryTextChange(String newText) {
                 parturienteRecyclerAdpter.getFilter().filter(newText);
-                //displayParturiente();
                 return false;
             }
         });
 
         return true;
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NotNull MenuItem item) {
@@ -357,6 +383,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 System.out.println("------------"+notification.getDeliveryService()+"");
                 DBManager.getInstance().addNewNotification(notification);
             }
+             displayNotification();
 
             // Send SMS
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

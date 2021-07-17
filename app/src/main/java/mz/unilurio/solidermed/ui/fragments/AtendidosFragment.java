@@ -72,7 +72,7 @@ public class AtendidosFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewAtendidos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Parturient> parturients= DBManager.getInstance().getParturients();
-        recyclerView.setAdapter(new AtendidosRecyclerAdpter( this,parturients));
+        recyclerView.setAdapter(new AtendidosRecyclerAdpter( getContext(),parturients));
 
         return view;
     }

@@ -1,71 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HospitaisActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarDadosPessoais"
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Projecto_S.AppBarOverlay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:onClick="finish"
-            android:src="@drawable/back_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_marginStart="30dp"
-            android:textColor="@color/white"
-            android:text= "Hospitais Distritais de Cabo Delgado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:background="#DDE4EC"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerVieHospitais"
-        app:layout_constraintCircleRadius="@dimen/cardview_default_radius"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarDadosPessoais"
-        app:layout_constraintVertical_bias="0.0"
-        app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/seacherHospital"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="18dp"
-            android:title="Search"
-            app:actionViewClass="android.widget.SearchView"
-            app:showAsAction="collapseActionView">
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
 
-        </androidx.appcompat.widget.SearchView>
+            <ImageView
+                android:onClick="finish"
+                android:src="@drawable/back_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-    </androidx.appcompat.widget.Toolbar>
+            <TextView
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:text="Hospitais"
+                android:textColor="@color/white" />
+        </androidx.appcompat.widget.Toolbar>
 
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/seacherInfermeira"
+        android:gravity="center"
+        app:iconifiedByDefault="false"
+        android:layout_marginTop="55dp"
+        app:queryHint="Pesquisar..."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerVieHospitais"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="110dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -73,4 +61,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_hospitais_list" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

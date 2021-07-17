@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import mz.unilurio.solidermed.MainActivity;
 import mz.unilurio.solidermed.ParturienteRecyclerAdpter;
 import mz.unilurio.solidermed.R;
 import mz.unilurio.solidermed.model.DBManager;
@@ -70,7 +71,7 @@ public class ParturientesFragment extends Fragment {
         super.onResume();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Parturient> parturients= DBManager.getInstance().getParturients();
-        recyclerView.setAdapter(new ParturienteRecyclerAdpter( this,parturients));
+        recyclerView.setAdapter(new ParturienteRecyclerAdpter( getContext(),parturients));
     }
 
     @Override
@@ -78,21 +79,16 @@ public class ParturientesFragment extends Fragment {
         super.onPause();
     }
 
-    public void updade(){
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<Parturient> parturients= DBManager.getInstance().getParturients();
-        recyclerView.setAdapter(new ParturienteRecyclerAdpter( this,parturients));
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_parturientes, container, false);
         recyclerView = view.findViewById(R.id.recyclerVieParturiente);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Parturient> parturients= DBManager.getInstance().getParturients();
-        recyclerView.setAdapter(new ParturienteRecyclerAdpter( this,parturients));
-
+        recyclerView.setAdapter(new ParturienteRecyclerAdpter(getContext(),parturients));
         return view;
     }
 }

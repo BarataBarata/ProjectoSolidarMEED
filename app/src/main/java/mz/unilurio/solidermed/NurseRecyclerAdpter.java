@@ -1,14 +1,13 @@
 package mz.unilurio.solidermed;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -16,23 +15,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.Hospitais;
 import mz.unilurio.solidermed.model.UserNurse;
 
-public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpter.ViewHolder> {
+public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpter.ViewHolder> implements Filterable {
     NurseActivity context;
-    private List<UserNurse> userNurses;
+    private List<UserNurse> auxListNurse;
+    private List<UserNurse> originalListNurse;
     private final LayoutInflater layoutInflater;
 
 
     public NurseRecyclerAdpter(NurseActivity context, List<UserNurse> nurses) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
-        this.userNurses = nurses;
+        this.originalListNurse = nurses;
     }
+
+
 
     @NonNull
     @Override
@@ -43,7 +47,7 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        UserNurse userNurse =  userNurses.get(position);
+        UserNurse userNurse =  originalListNurse.get(position);
         holder.currentPosition = position;
         holder.txtNameParturient.setText(userNurse.getNomeNurse());
 //
@@ -83,8 +87,44 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
     }
     @Override
     public int getItemCount() {
-        return userNurses.size();
+        return originalListNurse.size();
     }
+
+
+    @Override
+    public Filter getFilter() {
+        return null;
+    }
+
+    Filter filter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            System.out.println(" barata");
+            List<UserNurse>list =new ArrayList<>();
+
+            if(constraint.toString().isEmpty()){
+                list.addAll(auxListNurse);
+            }else{
+                for(UserNurse hospitais: auxListNurse){
+                    if(hospitais.getNomeNurse().toLowerCase().contains(constraint.toString().toLowerCase())){
+                        list.add(hospitais);
+                    }
+                }
+            }
+
+            FilterResults filterResults=new FilterResults();
+            filterResults.values=list;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            originalListNurse.clear();
+            originalListNurse.addAll((Collection<? extends UserNurse>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public int currentPosition;

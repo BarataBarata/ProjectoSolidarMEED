@@ -35,7 +35,7 @@ public class NotificationFragment extends Fragment {
         super.onResume();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Notification> notifications= DBManager.getInstance().getNotifications();
-        recyclerView.setAdapter(new NotificationRecyclerAdpter( this, notifications));
+        recyclerView.setAdapter(new NotificationRecyclerAdpter( getContext(), notifications));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class NotificationFragment extends Fragment {
         recyclerView = view.findViewById(R.id.list_notes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Notification> notifications= DBManager.getInstance().getNotifications();
-        recyclerView.setAdapter(new NotificationRecyclerAdpter( this, notifications));
+        recyclerView.setAdapter(new NotificationRecyclerAdpter( getContext(), notifications));
 
         return view;
     }

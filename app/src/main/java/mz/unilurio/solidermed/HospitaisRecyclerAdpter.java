@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,21 +18,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.Hospitais;
+import mz.unilurio.solidermed.model.Parturient;
 
-public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyclerAdpter.ViewHolder> {
+public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyclerAdpter.ViewHolder> implements Filterable {
     HospitaisActivity  context;
-    private List<Hospitais> hospitais;
+    private List<Hospitais> auxListHospital;
+    private List<Hospitais> originalListHospital;
     private final LayoutInflater layoutInflater;
 
 
-    public HospitaisRecyclerAdpter(HospitaisActivity context, List<Hospitais> hospitais) {
+    public HospitaisRecyclerAdpter(HospitaisActivity context, List<Hospitais> originalListHospital) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
-        this.hospitais = hospitais;
+        this.originalListHospital = originalListHospital;
     }
 
     @NonNull
@@ -42,7 +48,7 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Hospitais hospitais1 =  hospitais.get(position);
+        Hospitais hospitais1 =  originalListHospital.get(position);
         holder.currentPosition = position;
         holder.txtNameParturient.setText(hospitais1.getNomeHospital());
 //
@@ -82,8 +88,43 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
     }
     @Override
     public int getItemCount() {
-        return hospitais.size();
+        return originalListHospital.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<Hospitais>list =new ArrayList<>();
+
+            if(constraint.toString().isEmpty()){
+                list.addAll(auxListHospital);
+            }else{
+                for(Hospitais hospitais: auxListHospital){
+                    if(hospitais.getNomeHospital().toLowerCase().contains(constraint.toString().toLowerCase())){
+                        list.add(hospitais);
+                    }
+                }
+            }
+
+            FilterResults filterResults=new FilterResults();
+            filterResults.values=list;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            originalListHospital.clear();
+            originalListHospital.addAll((Collection<? extends Hospitais>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public int currentPosition;
@@ -123,7 +164,7 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
 
         androidx.appcompat.app.AlertDialog.Builder dialog=new androidx.appcompat.app.AlertDialog.Builder(context);
         dialog.setTitle("Centro de Saude");
-        dialog.setMessage(" Carregar dados do "+hospitais.get(currentPosition).getNomeHospital()+" ?");
+        dialog.setMessage(" Carregar dados do "+ originalListHospital.get(currentPosition).getNomeHospital()+" ?");
         dialog.setCancelable(false);
         dialog.setIcon((R.drawable.hospital));
 
@@ -142,7 +183,7 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
                     public void run() {
                         progressBar.dismiss();
                         Intent intent = new Intent(context, MainActivity.class);
-                        intent.putExtra("nomeHospital",hospitais.get(currentPosition).getNomeHospital()+"");
+                        intent.putExtra("nomeHospital", originalListHospital.get(currentPosition).getNomeHospital()+"");
                         context.startActivity(intent);
                     }
                 },Long.parseLong("400"));

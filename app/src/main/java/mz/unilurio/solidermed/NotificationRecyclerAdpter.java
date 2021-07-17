@@ -25,14 +25,13 @@ import mz.unilurio.solidermed.ui.fragments.NotificationFragment;
 
 public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder> {
 
-    private final NotificationFragment  context;
+    private final Context context;
     private List<Notification> notifications;
     private final LayoutInflater layoutInflater;
 
-
-    public NotificationRecyclerAdpter(NotificationFragment context, List<Notification> notifications) {
+        public NotificationRecyclerAdpter(Context context, List<Notification> notifications) {
         this.context = context;
-        layoutInflater = LayoutInflater.from(context.getContext());
+        layoutInflater = LayoutInflater.from(context);
         this.notifications = notifications;
     }
 
@@ -60,7 +59,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
                 //creating a popup menu
                 Context mCtx = null;
-                PopupMenu popup = new PopupMenu(context.getContext(), holder.buttonViewOption);
+                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
                 //inflating menu from xml resource
                 popup.inflate(R.menu.options_menu);
                 //adding click listener
@@ -70,7 +69,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                         switch (item.getItemId()) {
 
                             case R.id.atendimento:{
-                                Intent intent = new Intent(context.getContext(), Atendimento.class);
+                                Intent intent = new Intent(context, Atendimento.class);
                                 context.startActivity(intent);
                             }
                                 return true;
@@ -116,7 +115,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                 @Override
                 public void onClick(View v) {
                         ProgressDialog progressBar;
-                        progressBar=new ProgressDialog(context.getContext());
+                        progressBar=new ProgressDialog(context);
                         progressBar.setTitle("Aguarde");
                         progressBar.setMessage("processando...");
                         progressBar.show();
@@ -125,7 +124,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                             @Override
                             public void run() {
                                 progressBar.dismiss();
-                                Intent intent = new Intent(context.getContext(), DadosPessoais.class);
+                                Intent intent = new Intent(context, DadosPessoais.class);
                                 intent.putExtra("id", notifications.get(currentPosition).getId()+"");
                                 context.startActivity(intent);
                             }
