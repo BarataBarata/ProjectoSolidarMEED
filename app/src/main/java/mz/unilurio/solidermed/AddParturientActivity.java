@@ -43,7 +43,7 @@ import mz.unilurio.solidermed.model.Parturient;
 public class AddParturientActivity extends AppCompatActivity implements Validator.ValidationListener {
 
 
-public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
+    public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
     private Slider para;
     private Slider mSliderDilatation;
@@ -69,6 +69,7 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
     private boolean parturienteTransferido;
     private boolean isEdit;
+    private static  int newidParturiente=4;// por inicializacao
     private Parturient parturient;
 
     private Validator validator;
@@ -102,7 +103,7 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
         }
 
-}
+    }
 
     private void viewnumber2() {
         para.addOnChangeListener(new Slider.OnChangeListener() {
@@ -132,28 +133,29 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
     }
 
-    public void editParturiente(Parturient parturient){
+    public void editParturiente(Parturient ediParturient){
         int numberPick1;
         int numberPick2;
         String idade="";
         isEdit=true;
-        txtNameParturient.setText(parturient.getName());
-        textApelido.setText(parturient.getSurname());
-        idade=String.valueOf(parturient.getAge());
+        txtNameParturient.setText(ediParturient.getName());
+        textApelido.setText(ediParturient.getSurname());
+        idade=String.valueOf(ediParturient.getAge());
         numberPick1=Integer.parseInt(idade.charAt(0)+"");
         numberPick2=Integer.parseInt(idade.charAt(1)+"");
         numberPicker1.setValue(numberPick1);
         numberPicker2.setValue(numberPick2);
-        para.setValue(parturient.getPara());
-        mSliderDilatation.setValue((int)Float.parseFloat(parturient.getReason()));
-        spinner.setSelection(getPositionIdadeGestacional(parturient.getGestatinalRange()));
+        para.setValue(ediParturient.getPara());
+        mSliderDilatation.setValue((int)Float.parseFloat(ediParturient.getReason()));
+        spinner.setSelection(getPositionIdadeGestacional(ediParturient.getGestatinalRange()));
         parturienteTransferido=true;
-        if(parturient.isTransfered()){
+        if(ediParturient.isTransfered()){
             swit.setChecked(true);
             invisibleView();
-            spinnerSanitaria.setSelection(getPositionISanitaria(parturient.getOrigemTransferencia()));
-            spinnerTrasferencia.setSelection(getPositionMotivosTrasferencia(parturient.getMotivosDaTrasferencia()));
+            spinnerSanitaria.setSelection(getPositionISanitaria(ediParturient.getOrigemTransferencia()));
+            spinnerTrasferencia.setSelection(getPositionMotivosTrasferencia(ediParturient.getMotivosDaTrasferencia()));
         }
+        parturient=ediParturient;
     }
 
     int getPositionISanitaria(String sanitaria){
@@ -169,13 +171,13 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
     int getPositionIdadeGestacional(String idadeGestacional){
         int index=0;
-            for(String list:DBManager.getInstance().getListIdadeGestacional()){
-                if(list.equals(idadeGestacional)){
-                    return index;
-                }
-                index++;
+        for(String list:DBManager.getInstance().getListIdadeGestacional()){
+            if(list.equals(idadeGestacional)){
+                return index;
             }
-             return  0;
+            index++;
+        }
+        return  0;
     }
 
     int getPositionMotivosTrasferencia(String origem){
@@ -269,19 +271,19 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
     }
 
     public void transferencia(View view) {
-       if(parturienteTransferido){
-               spinnerSanitaria.setVisibility(View.INVISIBLE);
-               spinnerTrasferencia.setVisibility(View.INVISIBLE);
-               textSanitario.setVisibility(View.INVISIBLE);
-               textTrasferencia.setVisibility(View.INVISIBLE);
-               parturienteTransferido =false;
+        if(parturienteTransferido){
+            spinnerSanitaria.setVisibility(View.INVISIBLE);
+            spinnerTrasferencia.setVisibility(View.INVISIBLE);
+            textSanitario.setVisibility(View.INVISIBLE);
+            textTrasferencia.setVisibility(View.INVISIBLE);
+            parturienteTransferido =false;
         }else{
 
-           spinnerSanitaria.setVisibility(View.VISIBLE);
-           spinnerTrasferencia.setVisibility(View.VISIBLE);
-           textSanitario.setVisibility(View.VISIBLE);
-           textTrasferencia.setVisibility(View.VISIBLE);
-           parturienteTransferido =true;
+            spinnerSanitaria.setVisibility(View.VISIBLE);
+            spinnerTrasferencia.setVisibility(View.VISIBLE);
+            textSanitario.setVisibility(View.VISIBLE);
+            textTrasferencia.setVisibility(View.VISIBLE);
+            parturienteTransferido =true;
         }
 
     }
@@ -356,58 +358,54 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
             public void onClick(DialogInterface dialog, int which) {
 
                 validationError();
-                    progressBar();
-                    if(!isEdit){
-                        parturient = new Parturient();
-                    }
-
-                    parturient.setId(DBManager.getInstance().getTotalPaturient());
-                    parturient.setName(txtNameParturient.getText().toString());
-                    parturient.setSurname(textApelido.getText().toString());
-
-                    String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
-                    parturient.setAge(Integer.parseInt(age));
-                    parturient.setTime(new Date());
-
-                    parturient.setGestatinalRange(spinner.getSelectedItem()+"");
-                    parturient.setPara((int) para.getValue());
-                    parturient.setReason(mSliderDilatation.getValue()+"");
-
-                    if(parturienteTransferido){
-                       parturient.setTransfered(true);
-                       parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
-                       parturient.setOrigemTransferencia(spinnerSanitaria.getSelectedItem().toString());
-                    }else {
-                        parturient.setTransfered(false);
-                    }
-
-                     if(!isEdit){
-                        DBManager.getInstance().addParturiente(parturient);
-                     }
-
-                    DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
-                    swit.setChecked(false);
-
-
-
-                    Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
+                progressBar();
+                if(!isEdit){
+                    parturient = new Parturient();
+                    parturient.setId(++newidParturiente);
                 }
+                parturient.setName(txtNameParturient.getText().toString());
+                parturient.setSurname(textApelido.getText().toString());
+
+                String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
+                parturient.setAge(Integer.parseInt(age));
+                parturient.setTime(new Date());
+
+                parturient.setGestatinalRange(spinner.getSelectedItem()+"");
+                parturient.setPara((int) para.getValue());
+                parturient.setReason(mSliderDilatation.getValue()+"");
+
+                if(parturienteTransferido){
+                    parturient.setTransfered(true);
+                    parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
+                    parturient.setOrigemTransferencia(spinnerSanitaria.getSelectedItem().toString());
+                }else {
+                    parturient.setTransfered(false);
+                }
+
+                if(!isEdit){
+                    DBManager.getInstance().addParturiente(parturient);
+                }
+
+                DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
+                swit.setChecked(false);
+                Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
+            }
 
 
             private void progressBar() {
-                     progressBar=new ProgressDialog(AddParturientActivity.this);
-                     progressBar.setTitle("Aguarde");
-                     progressBar.setMessage("Registando...");
-                     progressBar.show();
+                progressBar=new ProgressDialog(AddParturientActivity.this);
+                progressBar.setTitle("Aguarde");
+                progressBar.setMessage("Registando...");
+                progressBar.show();
 
-                     new Handler().postDelayed(new Thread() {
-                         @Override
-                         public void run() {
-                             progressBar.dismiss();
-                             Intent intent = new Intent(AddParturientActivity.this, MainActivity.class);
-                             startActivity(intent);
-                         }
-                     },Long.parseLong("900"));
+                new Handler().postDelayed(new Thread() {
+                    @Override
+                    public void run() {
+                        progressBar.dismiss();
+                        Intent intent = new Intent(AddParturientActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                },Long.parseLong("900"));
             }
 
 

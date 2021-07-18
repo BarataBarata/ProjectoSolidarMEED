@@ -59,7 +59,7 @@
                         app:layout_constraintHorizontal_bias="0.498"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/gravidadownload" />
+                        app:srcCompat="@drawable/mulhergravidabom2" />
 
                     <TextView
                         android:id="@+id/textTituloParturiente2"

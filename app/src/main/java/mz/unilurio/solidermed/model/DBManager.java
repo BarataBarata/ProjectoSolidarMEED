@@ -206,6 +206,16 @@ public class DBManager {
         parturient3.setTransfered(false);
         parturient3.setAge(45);
         addParturiente(parturient3);
+        Parturient parturient4=new Parturient();
+        parturient4.setName("Maria");
+        parturient4.setSurname("Mira");
+        parturient4.setTime(new Date());
+        parturient4.setReason("8");
+        parturient4.setPara(9);
+        parturient4.setId(4);
+        parturient4.setTransfered(false);
+        parturient4.setAge(45);
+        addParturiente(parturient4);
     }
 
     private void initializeCamas() {
@@ -389,7 +399,7 @@ public class DBManager {
     }
 
     public void addParturiente(Parturient parturient){
-            this.parturients.add(parturient);
+        this.parturients.add(parturient);
             totalPaturient++;
     }
 

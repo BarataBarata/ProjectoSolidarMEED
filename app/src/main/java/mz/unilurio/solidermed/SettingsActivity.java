@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceFragmentCompat;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -13,6 +14,11 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
+
+        EditTextPreference editTextPreference=new EditTextPreference(new SettingsActivity());
+        editTextPreference.getText();
+
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
