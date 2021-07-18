@@ -33,6 +33,7 @@ public class ParturientesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ParturienteRecyclerAdpter parturienteRecyclerAdpter;
 
     public ParturientesFragment() {
         // Required empty public constructor
@@ -67,12 +68,17 @@ public class ParturientesFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        parturienteRecyclerAdpter.getFilter().filter("");
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Parturient> parturients= DBManager.getInstance().getParturients();
         recyclerView.setAdapter(new ParturienteRecyclerAdpter(getContext(),parturients));
-
     }
 
     @Override
@@ -83,7 +89,8 @@ public class ParturientesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerVieParturiente);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Parturient> parturients= DBManager.getInstance().getParturients();
-        recyclerView.setAdapter(new ParturienteRecyclerAdpter(getContext(),parturients));
+        parturienteRecyclerAdpter = new ParturienteRecyclerAdpter(getContext(),parturients);
+        recyclerView.setAdapter(parturienteRecyclerAdpter);
         return view;
     }
 }

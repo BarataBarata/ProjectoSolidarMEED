@@ -33,6 +33,7 @@ public class AtendidosFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private AtendidosRecyclerAdpter atendidosRecyclerAdpter;
 
     public AtendidosFragment() {
         // Required empty public constructor
@@ -66,6 +67,12 @@ public class AtendidosFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        atendidosRecyclerAdpter.getFilter().filter("");
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -81,7 +88,8 @@ public class AtendidosFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewAtendidos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Parturient> parturients= DBManager.getInstance().getListParturientesAtendidos();
-        recyclerView.setAdapter(new AtendidosRecyclerAdpter( getContext(),parturients));
+        atendidosRecyclerAdpter = new AtendidosRecyclerAdpter( getContext(),parturients);
+        recyclerView.setAdapter(atendidosRecyclerAdpter);
 
         return view;
     }

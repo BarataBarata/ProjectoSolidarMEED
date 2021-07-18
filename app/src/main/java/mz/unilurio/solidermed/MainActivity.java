@@ -177,8 +177,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         RecyclerView recyclerView;
         recyclerView =findViewById(R.id.recyclerViewAtendidos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Parturient> parturients= DBManager.getInstance().getListParturientesAtendidos();
-        atendidosRecyclerAdpter=new AtendidosRecyclerAdpter( this,parturients);
+        List<Parturient> atendidos= DBManager.getInstance().getListParturientesAtendidos();
+        atendidosRecyclerAdpter=new AtendidosRecyclerAdpter( this,atendidos);
         recyclerView.setAdapter(atendidosRecyclerAdpter);
     }
 
@@ -295,7 +295,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
 
@@ -477,12 +476,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //
 
     }
-
-
-
      public void centroSaude(View view) {
-
-         if(new AllAcess().isAllAcess()) {
              ProgressDialog progressBar;
              progressBar = new ProgressDialog(MainActivity.this);
              progressBar.setTitle("Aguarde");
@@ -497,7 +491,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                      startActivity(intent);
                  }
              }, Long.parseLong("400"));
-         }
 
     }
 

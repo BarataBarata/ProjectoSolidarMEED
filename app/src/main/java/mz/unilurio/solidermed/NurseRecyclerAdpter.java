@@ -32,6 +32,7 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
 
     public NurseRecyclerAdpter(NurseActivity context, List<UserNurse> nurses) {
         this.context = context;
+        this.auxListNurse=new ArrayList<>(nurses);
         layoutInflater = LayoutInflater.from(context);
         this.originalListNurse = nurses;
     }
@@ -93,7 +94,7 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
 
     @Override
     public Filter getFilter() {
-        return null;
+        return filter;
     }
 
     Filter filter=new Filter() {

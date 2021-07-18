@@ -21,8 +21,8 @@ import mz.unilurio.solidermed.model.UserNurse;
 
 public class NurseActivity extends AppCompatActivity {
      private RecyclerView view;
-     LinearLayoutManager nurseLinearLayoutManager;
-    private NurseRecyclerAdpter nurseRecyclerAdpter;
+    private    LinearLayoutManager nurseLinearLayoutManager;
+    private NurseRecyclerAdpter nurseRecyclerAdpter1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +30,6 @@ public class NurseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nurse);
         initializeteDisplayContextNurses();
 
-
-        view = findViewById(R.id.listaInfermeira);
-
-        List<UserNurse> userNurses= DBManager.getInstance().getUserNurseList();
-        NurseRecyclerAdpter nurseRecyclerAdpter= new NurseRecyclerAdpter(this,userNurses);
-        view.setAdapter(nurseRecyclerAdpter);
         SearchView searchView=(SearchView)findViewById(R.id.seacherInfermeira);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -45,8 +39,7 @@ public class NurseActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                nurseRecyclerAdpter.getFilter().filter(newText);
-
+                nurseRecyclerAdpter1.getFilter().filter(newText);
                 return false;
             }
         });
@@ -64,13 +57,20 @@ public class NurseActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        nurseRecyclerAdpter1.getFilter().filter("");
+    }
+
     public void initializeteDisplayContextNurses(){
         view = (RecyclerView)findViewById(R.id.listaInfermeira);
         nurseLinearLayoutManager = new LinearLayoutManager(this);
         List<UserNurse> userNurses= DBManager.getInstance().getUserNurseList();
-        NurseRecyclerAdpter nurseRecyclerAdpter= new NurseRecyclerAdpter(this,userNurses);
+        nurseRecyclerAdpter1 = new NurseRecyclerAdpter(this,userNurses);
         view.setLayoutManager(nurseLinearLayoutManager);
-        view.setAdapter(nurseRecyclerAdpter);
+        view.setAdapter(nurseRecyclerAdpter1);
     }
 
     public void finish(View view) {

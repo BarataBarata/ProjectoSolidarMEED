@@ -31,11 +31,6 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
     private List<Parturient> auxListParturientes;
     private final LayoutInflater layoutInflater;
 
-    public void updateList(List<Parturient>list){
-        originalListParturientes =new ArrayList<>();
-        originalListParturientes.addAll(list);
-        notifyDataSetChanged();
-    }
 
     public AtendidosRecyclerAdpter(Context context, List<Parturient> parturients) {
         this.context = context;
@@ -61,10 +56,10 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
         Parturient parturient =  originalListParturientes.get(position);
         holder.currentPosition = position;
         //holder.cardView.setCardBackgroundColor(parturient.getColour());
-        holder.textCircle.setText((DBManager.getInstance().getParturients().get(position).getName().charAt(0)+"").toUpperCase());
+        holder.textCircle.setText((parturient.getName().charAt(0)+"").toUpperCase());
         //  holder.textCircle.setBackgroundTintList(DBManager.getInstance().getColors().get(countColor++));
         //holder.txtTime.setText(format(DBManager.getInstance().getParturients().get(position).getTime()));
-        holder.txtNameParturient.setText(oUpperFirstCase(DBManager.getInstance().getParturients().get(position).getName())+ " "+oUpperFirstCase(DBManager.getInstance().getParturients().get(position).getSurname()));
+        holder.txtNameParturient.setText(oUpperFirstCase(parturient.getName())+ " "+oUpperFirstCase(parturient.getSurname()));
         //holder.txtDetails.setText("idade: "+DBManager.getInstance().getParturients().get(position).getAge());
         //holder.txtDetails.setText("idade: "+parturient.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ parturient.getDeliveryService().getMeasure().peek().getInitialDilatation()+"  |  Nº de cama: 3");
     }
@@ -95,7 +90,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
                     }
                 }
             }
-
+            System.out.println(list.toString());
             FilterResults filterResults=new FilterResults();
             filterResults.values=list;
             return filterResults;
@@ -131,7 +126,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, DadosPessoais.class);
-                    intent.putExtra("id", currentPosition+"");
+                    intent.putExtra("id", +originalListParturientes.get(currentPosition).getId()+"");
                     context.startActivity(intent);
                 }
             });

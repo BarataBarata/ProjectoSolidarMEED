@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.Parturient;
 
 public class DadosPessoais extends AppCompatActivity {
     Toolbar toolbar;
@@ -29,39 +30,45 @@ public class DadosPessoais extends AppCompatActivity {
     TextView motivosTrasferenciaParturiente;
     private TextView textApelido;
     private TextView textDilatacaoInicial;
+    private Parturient parturient;
     private RelativeLayout relativeShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dados_pessoais);
+
         toolbar=findViewById(R.id.toolbarDadosPessoais);
-
-
-        setSupportActionBar(toolbar);
         initialize();
-        sendDade();
+
+        idParturiente =Integer.parseInt(getIntent().getStringExtra("id"));
+        for(Parturient parturient:DBManager.getInstance().getParturients()){
+            if(parturient.getId()==idParturiente){
+                sendDade(parturient);
+               break;
+            }
+        }
+        setSupportActionBar(toolbar);
 
     }
 
-    private void sendDade() {
-
-        idParturiente =Integer.parseInt(getIntent().getStringExtra("id"));
-        nomeParturiente.setText(DBManager.getInstance().getParturients().get(idParturiente).getName());
-        idadeParturiente.setText(DBManager.getInstance().getParturients().get(idParturiente).getAge()+"");
-        dilatacaoParturiente.setText(DBManager.getInstance().getParturients().get(idParturiente).getReason()+"");
+    private void sendDade(Parturient parturient) {
+        nomeParturiente.setText(parturient.getName());
+        idadeParturiente.setText(parturient.getAge()+"");
+        dilatacaoParturiente.setText(parturient.getReason()+"");
         horaActualDaParturiente.setText(format(new Date()));
-        idadeDeParidadeDaParturiente.setText(DBManager.getInstance().getParturients().get(idParturiente).getPara()+"");
-        idadeGestacionalDaParturiente.setText( DBManager.getInstance().getParturients().get(idParturiente).getGestatinalRange()+"");
-        if(DBManager.getInstance().getParturients().get(idParturiente).getTime()!=null)
-        horaEntradaDaParturiente.setText(format(DBManager.getInstance().getParturients().get(idParturiente).getTime()));
-        nomeParturiente.setText(DBManager.getInstance().getParturients().get(idParturiente).getName());
-        textApelido.setText(DBManager.getInstance().getParturients().get(idParturiente).getSurname());
-        textDilatacaoInicial.setText(DBManager.getInstance().getParturients().get(idParturiente).getReason());
+        idadeDeParidadeDaParturiente.setText(parturient.getPara()+"");
+        idadeGestacionalDaParturiente.setText( parturient.getGestatinalRange()+"");
 
-        if(DBManager.getInstance().getParturients().get(idParturiente).isTransfered()){
-            motivosTrasferenciaParturiente.setText(DBManager.getInstance().getParturients().get(idParturiente).getMotivosDaTrasferencia()+"");
-            origemTrasferenciaParturiente.setText(DBManager.getInstance().getParturients().get(idParturiente).getOrigemTransferencia());
+        if(parturient.getTime()!=null)
+            horaEntradaDaParturiente.setText(format(parturient.getTime()));
+        nomeParturiente.setText(parturient.getName());
+        textApelido.setText(parturient.getSurname());
+        textDilatacaoInicial.setText(parturient.getReason());
+
+        if(parturient.isTransfered()){
+            motivosTrasferenciaParturiente.setText(parturient.getMotivosDaTrasferencia()+"");
+            origemTrasferenciaParturiente.setText(parturient.getOrigemTransferencia());
             relativeShow.setVisibility(View.VISIBLE);
         }else {
             relativeShow.setVisibility(View.INVISIBLE);

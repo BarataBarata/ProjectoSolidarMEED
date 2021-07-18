@@ -19,6 +19,7 @@ import mz.unilurio.solidermed.model.Notification;
 
 public class NotificationFragment extends Fragment {
    RecyclerView recyclerView;
+    private NotificationRecyclerAdpter notificationRecyclerAdpter;
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -28,6 +29,7 @@ public class NotificationFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        notificationRecyclerAdpter.getFilter().filter("");
     }
 
     @Override
@@ -45,7 +47,8 @@ public class NotificationFragment extends Fragment {
         recyclerView = view.findViewById(R.id.list_notes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<Notification> notifications= DBManager.getInstance().getNotifications();
-        recyclerView.setAdapter(new NotificationRecyclerAdpter( getContext(), notifications));
+        notificationRecyclerAdpter = new NotificationRecyclerAdpter( getContext(), notifications);
+        recyclerView.setAdapter(notificationRecyclerAdpter);
 
         return view;
     }

@@ -60,7 +60,7 @@ public class DBManager {
         parturient.setTime(new Date());
         parturient.setReason("4");
         parturient.setOrigemTransferencia("Centro de Chiure");
-        parturient.setMotivosDaTrasferencia("Mal posicao do Feto");
+        parturient.setMotivosDaTrasferencia("Problema com o Feto");
         parturient.setPara(8);
         parturient.setId(1);
         parturient.setTransfered(true);
@@ -72,7 +72,7 @@ public class DBManager {
         parturient2.setTime(new Date());
         parturient2.setReason("8");
         parturient2.setPara(9);
-        parturient2.setId(0);
+        parturient2.setId(2);
         parturient2.setTransfered(false);
         parturient2.setAge(45);
         addParturienteAtendido(parturient2);
@@ -192,10 +192,20 @@ public class DBManager {
         parturient2.setTime(new Date());
         parturient2.setReason("8");
         parturient2.setPara(9);
-        parturient2.setId(0);
+        parturient2.setId(2);
         parturient2.setTransfered(false);
         parturient2.setAge(45);
         addParturiente(parturient2);
+        Parturient parturient3=new Parturient();
+        parturient3.setName("kusia");
+        parturient3.setSurname("Mira");
+        parturient3.setTime(new Date());
+        parturient3.setReason("8");
+        parturient3.setPara(9);
+        parturient3.setId(3);
+        parturient3.setTransfered(false);
+        parturient3.setAge(45);
+        addParturiente(parturient3);
     }
 
     private void initializeCamas() {

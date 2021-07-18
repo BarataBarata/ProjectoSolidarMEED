@@ -19,6 +19,7 @@ public class TrasferenciaActivity extends AppCompatActivity {
     private TextView textApelido;
     private Spinner spinnerDestino;
     private Spinner spinnerMotivo;
+    private int idParturiente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +29,15 @@ public class TrasferenciaActivity extends AppCompatActivity {
         initialize();
 
         if(getIntent().getStringExtra("idParturiente")!=null){
-            Parturient parturient= DBManager.getInstance().getParturients().get(Integer.parseInt(getIntent().getStringExtra("idParturiente")));
-            textNome.setText(parturient.getName());
-            textApelido.setText(parturient.getSurname());
+            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
+
+            for(Parturient parturient: DBManager.getInstance().getParturients()){
+                if(parturient.getId()==idParturiente){
+                    textNome.setText(parturient.getName());
+                    textApelido.setText(parturient.getSurname());
+                    break;
+                }
+            }
         }
 
         List<String> listSanitaria = DBManager.getInstance().getListOpcoesUnidadeSanitaria();

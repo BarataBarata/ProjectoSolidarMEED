@@ -1,12 +1,12 @@
 package mz.unilurio.solidermed;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.SearchView;
 
 import java.util.List;
 
@@ -17,20 +17,40 @@ public class HospitaisActivity extends AppCompatActivity {
 
     private RecyclerView view;
     private LinearLayoutManager hospitaisLinearLayoutManager;
+    private HospitaisRecyclerAdpter hospitaisRecyclerAdpter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hospitais);
-
         initializeteDisplayContextHospitais();
+
+        SearchView searchView =(SearchView) findViewById(R.id.seacherHospital);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                hospitaisRecyclerAdpter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
-        public void initializeteDisplayContextHospitais() {
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hospitaisRecyclerAdpter.getFilter().filter("");
+    }
+
+    public void initializeteDisplayContextHospitais() {
         view = (RecyclerView)findViewById(R.id.recyclerVieHospitais);
         hospitaisLinearLayoutManager = new LinearLayoutManager(this);
         List<Hospitais> hospitais= DBManager.getInstance().getHospitais();
-        HospitaisRecyclerAdpter hospitaisRecyclerAdpter= new  HospitaisRecyclerAdpter(this,hospitais);
+        hospitaisRecyclerAdpter = new  HospitaisRecyclerAdpter(this,hospitais);
         view.setLayoutManager(hospitaisLinearLayoutManager);
         view.setAdapter(hospitaisRecyclerAdpter);
     }

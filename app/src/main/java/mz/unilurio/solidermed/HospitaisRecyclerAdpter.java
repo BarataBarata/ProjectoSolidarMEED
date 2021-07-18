@@ -35,6 +35,7 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
 
     public HospitaisRecyclerAdpter(HospitaisActivity context, List<Hospitais> originalListHospital) {
         this.context = context;
+        this.auxListHospital=new ArrayList<>(originalListHospital);
         layoutInflater = LayoutInflater.from(context);
         this.originalListHospital = originalListHospital;
     }

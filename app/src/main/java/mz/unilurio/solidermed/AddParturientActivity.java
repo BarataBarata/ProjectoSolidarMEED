@@ -75,6 +75,7 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
     private boolean optionRegist;
     private String nome="";
     private Switch swit;
+    private int idParturiente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,14 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
         viewnumber2();
 
         if(getIntent().getStringExtra("idParturiente")!=null){
-            editParturiente(Integer.parseInt(getIntent().getStringExtra("idParturiente")));
+            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
+            for(Parturient parturient: DBManager.getInstance().getParturients()){
+                if(parturient.getId()==idParturiente){
+                    editParturiente(parturient);
+                    break;
+                }
+            }
+
         }
 
 }
@@ -124,13 +132,11 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
     }
 
-
-    public void editParturiente(int idParturiente){
+    public void editParturiente(Parturient parturient){
         int numberPick1;
         int numberPick2;
         String idade="";
         isEdit=true;
-        parturient=DBManager.getInstance().getParturients().get(idParturiente);
         txtNameParturient.setText(parturient.getName());
         textApelido.setText(parturient.getSurname());
         idade=String.valueOf(parturient.getAge());
@@ -149,8 +155,6 @@ public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
             spinnerTrasferencia.setSelection(getPositionMotivosTrasferencia(parturient.getMotivosDaTrasferencia()));
         }
     }
-
-
 
     int getPositionISanitaria(String sanitaria){
         int index=0;
