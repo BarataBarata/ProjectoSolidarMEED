@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import com.google.android.material.slider.Slider;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
@@ -37,11 +39,11 @@ import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.DBManager;
-import mz.unilurio.solidermed.model.GestatinalRange;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class AddParturientActivity extends AppCompatActivity implements Validator.ValidationListener {
-
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
@@ -67,7 +69,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private TextView textSanitario;
     private TextView textTrasferencia;
 
-    private boolean parturienteTransferido;
+    private boolean isTrasferencia;
     private boolean isEdit;
     private static  int newidParturiente=4;// por inicializacao
     private Parturient parturient;
@@ -82,6 +84,11 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
+        firebaseDatabase=FirebaseDatabase.getInstance();
+
+
+
+
 
         textSanitario = (TextView)findViewById(R.id.textSanitario);
         textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
@@ -148,8 +155,9 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         para.setValue(ediParturient.getPara());
         mSliderDilatation.setValue((int)Float.parseFloat(ediParturient.getReason()));
         spinner.setSelection(getPositionIdadeGestacional(ediParturient.getGestatinalRange()));
-        parturienteTransferido=true;
+        isTrasferencia =false;
         if(ediParturient.isTransfered()){
+            isTrasferencia =true;
             swit.setChecked(true);
             invisibleView();
             spinnerSanitaria.setSelection(getPositionISanitaria(ediParturient.getOrigemTransferencia()));
@@ -271,19 +279,20 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     }
 
     public void transferencia(View view) {
-        if(parturienteTransferido){
+
+        if(isTrasferencia){
             spinnerSanitaria.setVisibility(View.INVISIBLE);
             spinnerTrasferencia.setVisibility(View.INVISIBLE);
             textSanitario.setVisibility(View.INVISIBLE);
             textTrasferencia.setVisibility(View.INVISIBLE);
-            parturienteTransferido =false;
+            isTrasferencia =false;
         }else{
 
             spinnerSanitaria.setVisibility(View.VISIBLE);
             spinnerTrasferencia.setVisibility(View.VISIBLE);
             textSanitario.setVisibility(View.VISIBLE);
             textTrasferencia.setVisibility(View.VISIBLE);
-            parturienteTransferido =true;
+            isTrasferencia =true;
         }
 
     }
@@ -345,10 +354,24 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     @Override
     public void onValidationSucceeded() {
 
+        String isAlertEdit="Editar dados ?";
+        String isSimbleRegister="Deseja registar um Parturiente ?";
+        String isEditar="EDITAR";
+        String isRegistar="REGISTAR";
+        String mensagem;
+        String mensagemTitle;
+
+        if(isEdit){
+            mensagemTitle=isEditar;
+            mensagem=isAlertEdit;
+        }else{
+            mensagem=isSimbleRegister;
+            mensagemTitle=isRegistar;
+        }
 
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
-        dialog.setTitle("REGISTO");
-        dialog.setMessage(" Deseja registar um Parturiente ?");
+        dialog.setTitle(mensagemTitle);
+        dialog.setMessage(mensagem);
         dialog.setCancelable(false);
         dialog.setIcon(getDrawable(R.drawable.icon_registo));
 
@@ -374,17 +397,26 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
                 parturient.setPara((int) para.getValue());
                 parturient.setReason(mSliderDilatation.getValue()+"");
 
-                if(parturienteTransferido){
+                if(isTrasferencia){
                     parturient.setTransfered(true);
                     parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
                     parturient.setOrigemTransferencia(spinnerSanitaria.getSelectedItem().toString());
                 }else {
                     parturient.setTransfered(false);
+                    parturient.setMotivosDaTrasferencia(null);
+                    parturient.setOrigemTransferencia(null);
                 }
 
                 if(!isEdit){
                     DBManager.getInstance().addParturiente(parturient);
+                    databaseReference=firebaseDatabase.getReference("Parturiente");
+                    databaseReference.child(parturient.getId()+"").setValue(parturient);
                 }
+                if(isEdit){
+                    databaseReference=firebaseDatabase.getReference("Parturiente");
+                    databaseReference.child(parturient.getId()+"").setValue(parturient);
+                }
+
 
                 DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
                 swit.setChecked(false);

@@ -23,6 +23,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -33,11 +35,13 @@ import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.UserDoctor;
 
 public class Login extends AppCompatActivity {
-    ProgressDialog progressBar;
-    FirebaseAuth auth;
-    TextInputLayout textEmail;
-    TextInputLayout textPassword;
+    private ProgressDialog progressBar;
+    private FirebaseAuth auth;
+    private TextInputLayout textEmail;
+    private TextInputLayout textPassword;
     private TextView textAlerta;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +52,17 @@ public class Login extends AppCompatActivity {
         textPassword=findViewById(R.id.id_input_password);
         auth = FirebaseAuth.getInstance();
 
+
+
     }
 
     public void Entrar(View view) {
-        String email=textEmail.getEditText().getText().toString();
-        verificaUser(email);
-        Intent intent = new Intent(Login.this, MainActivity.class);
-        startActivity(intent);
-         // progressBar();
+        //String email=textEmail.getEditText().getText().toString();
+        //verificaUser(email);
+        startActivity( new Intent(Login.this, MainActivity.class));
+       // (intent);
+       // auth = FirebaseAuth.getInstance();
+       // progressBar();
     }
 
     private void progressBar() {
@@ -70,32 +77,27 @@ public class Login extends AppCompatActivity {
 
                 String email=textEmail.getEditText().getText().toString();
                 String password=textPassword.getEditText().getText().toString();
-
+                System.out.println(email+"         "+password);
                 if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
 
                     auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-//                            if(task.isSuccessful()){
+                           if(task.isSuccessful()){
                             Intent intent = new Intent(Login.this, MainActivity.class);
                             startActivity(intent);
-//                            }else {
-//                                String erro=task.getException().getMessage();
-//                                textAlerta.setText("Email ou Senha Incorreto");
-//                                textAlerta.setTextColor(Color.RED);
-//                                Toast.makeText(Login.this, erro, Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-//
-//                }
-
+                            }else {
+                                String erro=task.getException().getMessage();
+                                textAlerta.setText("Email ou Senha Incorreto");
+                                textAlerta.setTextColor(Color.RED);
+                                Toast.makeText(Login.this, erro, Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
 
                 }
             }
-        },Long.parseLong("900"));
+        }, Long.parseLong("900"));
     }
 
     public  void  verificaUser(String user){

@@ -29,7 +29,6 @@ public class NotificationFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        notificationRecyclerAdpter.getFilter().filter("");
     }
 
     @Override

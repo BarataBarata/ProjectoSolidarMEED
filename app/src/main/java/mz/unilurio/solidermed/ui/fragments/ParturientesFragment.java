@@ -70,7 +70,6 @@ public class ParturientesFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        parturienteRecyclerAdpter.getFilter().filter("");
     }
 
     @Override

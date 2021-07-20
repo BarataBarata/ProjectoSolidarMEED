@@ -69,7 +69,6 @@ public class AtendidosFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        atendidosRecyclerAdpter.getFilter().filter("");
     }
 
     @Override

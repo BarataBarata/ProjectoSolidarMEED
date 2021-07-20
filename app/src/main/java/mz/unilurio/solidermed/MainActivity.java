@@ -33,6 +33,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static int id;
     private TextView textSeacher;
     private boolean visible;
-    private static int opcoesSeacher;
+    private static int opcoesSeacher=0;
     private ViewPager pager;
     private static List<Notification> notifications=new ArrayList<>();
     private PagerAdapter adapte;
@@ -201,39 +202,54 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+          int id=item.getItemId();
+
+          if(id==R.id.app_bar_search){
+             Intent intent=new Intent(MainActivity.this,PesquisaActivity.class);
+             intent.putExtra("seacher",opcoesSeacher+"");
+             startActivity(intent);
+          }
+        return true;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem menuDefinition=menu.findItem(R.id.idDefinicoes);
         //MenuItem m=menu.findItem(R.id.app_bar_search);
         //m.setVisible(visible);
 
+
+
+
         menuDefinition.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+                startActivity(new Intent(MainActivity.this,SettingActivity.class));
                 return false;
             }
         });
-        MenuItem menuItem=menu.findItem(R.id.app_bar_search);
-        SearchView searchView=(SearchView)menuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                switch (opcoesSeacher){
-                    case 0: notificationRecyclerAdapter.getFilter().filter(newText);break;
-                    case 1: atendidosRecyclerAdpter.getFilter().filter(newText);break;
-                    case 2: parturienteRecyclerAdpter.getFilter().filter(newText);break;
-                }
-                return false;
-            }
-        });
-
-        return true;
+//        MenuItem menuItem=menu.findItem(R.id.app_bar_search);
+//        SearchView searchView=(SearchView)menuItem.getActionView();
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                switch (opcoesSeacher){
+//                    case 0: notificationRecyclerAdapter.getFilter().filter(newText);break;
+//                    case 1: atendidosRecyclerAdpter.getFilter().filter(newText);break;
+//                    case 2: parturienteRecyclerAdpter.getFilter().filter(newText);break;
+//                }
+//                return false;
+//            }
+//        });
+//
+  return true;
     }
 
 
@@ -329,6 +345,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         timer.schedule(task, 0, 60*1000);  // interval of one minute
 
+    }
+
+    public void setting(MenuItem item) {
+        startActivity(new Intent(MainActivity.this,SettingActivity.class));
     }
 
     public class AsyncTaskNotification extends AsyncTask<String, String, String> {

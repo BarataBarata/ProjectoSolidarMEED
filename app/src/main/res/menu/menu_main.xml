@@ -5,6 +5,7 @@
     <item
         android:id="@+id/idDefinicoes"
         android:icon="@drawable/definicoes"
+        android:onClick="setting"
         android:title="Definições"
         app:showAsAction="collapseActionView" />
     <item
@@ -16,6 +17,5 @@
         android:id="@+id/app_bar_search"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="Search"
-        app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView" />
+        app:showAsAction="always" />
 </menu>
