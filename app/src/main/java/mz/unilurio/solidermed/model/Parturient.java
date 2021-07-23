@@ -2,11 +2,15 @@ package mz.unilurio.solidermed.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 
 import java.util.Date;
+import java.util.Timer;
 
 public class Parturient implements Parcelable {
     private int id;
+    private Date horaEntrada;
+    private Date horaAlerta;
     private String name;
     private String surname;
     private int age;
@@ -20,8 +24,10 @@ public class Parturient implements Parcelable {
     private  String motivosDaTrasferencia;
 
 
-    public Parturient(){}
 
+
+
+    public Parturient(){}
 
     public Parturient(int id, String name, String surname, int age) {
         this.id = id;
@@ -35,17 +41,6 @@ public class Parturient implements Parcelable {
         this.surname = surname;
         this.age = age;
     }
-
-//    public Parturient(String name, String surname, int age)throws IllegalArgumentException{
-//        this.name = name;
-//        this.surname = surname;
-//        if((age < 12) || (age > 50)){
-//            throw new IllegalArgumentException("A idade deve estar compreendida entre os 12 e os 50 anos");
-//        }else{
-//            this.age = age;
-//        }
-//    }
-
     public Date getTime() {
         return time;
     }
@@ -64,19 +59,21 @@ public class Parturient implements Parcelable {
         this.numeroCama=numeroCama;
     }
 
-//    public Parturient(String name, String surname, int age, boolean isTransfered, String reason, Date time,int numeroCama) throws  IllegalArgumentException{
-//        this.name = name;
-//        this.time = time;
-//        this.surname = surname;
-//        if((age < 12) || age > 50){
-//            throw new IllegalArgumentException("A idade deve estar compreendida entre os 12 e os 50 anos");
-//        }else {
-//            this.age = age;
-//        }
-//        this.isTransfered = isTransfered;
-//        this.reason = reason;
-//        this.numeroCama=numeroCama;
-//    }
+    public Date getHoraEntrada() {
+        return horaEntrada;
+    }
+
+    public void setHoraEntrada(Date horaEntrada) {
+        this.horaEntrada = horaEntrada;
+    }
+
+    public Date getHoraAlerta() {
+        return horaAlerta;
+    }
+
+    public void setHoraAlerta(Date horaAlerta) {
+        this.horaAlerta = horaAlerta;
+    }
 
     public int getNumeroCama() {
         return numeroCama;

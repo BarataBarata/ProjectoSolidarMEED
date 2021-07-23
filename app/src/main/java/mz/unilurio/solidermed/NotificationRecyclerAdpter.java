@@ -25,8 +25,6 @@ import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.Notification;
-import mz.unilurio.solidermed.model.Parturient;
-import mz.unilurio.solidermed.ui.fragments.NotificationFragment;
 
 public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder> implements Filterable {
 
@@ -150,7 +148,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.txtNamePartur);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.idSetting);
             txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
             buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptions);
 

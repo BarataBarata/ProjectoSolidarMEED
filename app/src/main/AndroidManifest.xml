@@ -13,7 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projecto_S"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PesquisaActivity" android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
+        <activity android:name=".EditContactActivity"></activity>
+        <activity
+            android:name=".ContactActivity"
+            android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
+        <activity
+            android:name=".PesquisaActivity"
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
         <activity
             android:name=".SettingActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />

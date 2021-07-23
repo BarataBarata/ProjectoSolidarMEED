@@ -52,8 +52,8 @@
 
                     <ImageView
                         android:id="@+id/imageView2"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="38dp"
+                        android:layout_height="40dp"
                         android:layout_marginTop="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.498"
@@ -351,7 +351,9 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="181dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginTop="19dp">
 
 
                             <TextView
@@ -437,208 +439,29 @@
                                 app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toEndOf="@+id/origemTrasferencia3"
                                 app:layout_constraintTop_toBottomOf="@+id/origemTrasferenciak" />
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
                     </RelativeLayout>
 
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fabEdit"
+                        style="@style/TextAppearance.AppCompat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:backgroundTint="#08C368"
+                        android:layout_marginTop="640dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.954"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.659"
+                        app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--                    <RelativeLayout-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="674dp">-->
-
-
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/textView21"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="34dp"-->
-                <!--                            android:layout_marginTop="516dp"-->
-                <!--                            android:text="Origem da Trasferencia :"-->
-                <!--                            android:textStyle="bold|normal" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/textView23"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="34dp"-->
-                <!--                            android:layout_marginTop="563dp"-->
-                <!--                            android:text="Motivo da Trasferencia: "-->
-                <!--                            android:textStyle="bold|normal" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/IdMotivosTrasferencia"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="224dp"-->
-                <!--                            android:layout_marginTop="559dp"-->
-                <!--                            android:text="Motivo da Trasferencia" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/idOrigemTrasferencia"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="223dp"-->
-                <!--                            android:layout_marginTop="514dp"-->
-                <!--                            android:text="Origem da Trasferencia" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/textView17"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="34dp"-->
-                <!--                            android:layout_marginTop="224dp"-->
-                <!--                            android:text="Idade da Parturiente:"-->
-                <!--                            android:textStyle="bold|normal" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/textView19"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="34dp"-->
-                <!--                            android:layout_marginTop="259dp"-->
-                <!--                            android:text="Dilatacao Actual :"-->
-                <!--                            android:textStyle="bold|normal" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="34dp"-->
-                <!--                            android:layout_marginTop="294dp"-->
-                <!--                            android:text="Opções de Paridade :"-->
-                <!--                            android:textStyle="bold|normal" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/textView5"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="34dp"-->
-                <!--                            android:layout_marginTop="331dp"-->
-                <!--                            android:text="Idade gestacional :"-->
-                <!--                            android:textStyle="bold|normal" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/textView25"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="34dp"-->
-                <!--                            android:layout_marginTop="366dp"-->
-                <!--                            android:text="Hora de Entrada :"-->
-                <!--                            android:textStyle="bold|normal" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/textView27"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="34dp"-->
-                <!--                            android:layout_marginTop="400dp"-->
-                <!--                            android:text="Hora  Atual :"-->
-                <!--                            android:textStyle="bold|normal" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/idNomeParturiente"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="221dp"-->
-                <!--                            android:layout_marginTop="184dp"-->
-                <!--                            android:text="Nome da Parturiente :" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/idIdadeParturiente"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="222dp"-->
-                <!--                            android:layout_marginTop="218dp"-->
-                <!--                            android:text="Idade da Parturiente" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/idDilatacaoActual"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="223dp"-->
-                <!--                            android:layout_marginTop="257dp"-->
-                <!--                            android:text="Nome da Parturiente :" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/idOpcoesDeParidade"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="224dp"-->
-                <!--                            android:layout_marginTop="295dp"-->
-                <!--                            android:text="opcoes de paridade" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/idIdadeGestacional"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="225dp"-->
-                <!--                            android:layout_marginTop="330dp"-->
-                <!--                            android:text="idade gestacional" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/idHoraEntrada"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="226dp"-->
-                <!--                            android:layout_marginTop="364dp"-->
-                <!--                            android:text="14:52:25pm" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/idHoraActual"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentTop="true"-->
-                <!--                            android:layout_marginStart="224dp"-->
-                <!--                            android:layout_marginTop="397dp"-->
-                <!--                            android:text="15:56:5pm" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/textTituloParturiente"-->
-                <!--                            style="@style/Widget.AppCompat.TextView.SpinnerItem"-->
-                <!--                            android:layout_width="0dp"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:layout_below="@id/imageView2"-->
-                <!--                            android:layout_alignParentStart="true"-->
-                <!--                            android:layout_alignParentEnd="true"-->
-                <!--                            android:layout_marginTop="369dp"-->
-                <!--                            android:gravity="center"-->
-                <!--                            android:text="Informacoes de Trasferencia"-->
-                <!--                            android:textSize="16dp"-->
-                <!--                            android:textStyle="normal|bold" />-->
-                <!--                    </RelativeLayout>-->
 
 
             </RelativeLayout>

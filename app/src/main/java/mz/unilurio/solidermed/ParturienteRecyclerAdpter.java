@@ -22,9 +22,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Parturient;
-import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
 
 public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteRecyclerAdpter.ViewHolder> implements Filterable {
 
@@ -59,14 +57,11 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
 
         Parturient parturient =  originalListParturientes.get(position);
         holder.currentPosition = position;
-        //holder.cardView.setCardBackgroundColor(parturient.getColour());
+        holder.txtTime.setText(format2(parturient.getTime()));
         holder.textCircle.setText((parturient.getName().charAt(0)+"").toUpperCase());
-        //  holder.textCircle.setBackgroundTintList(DBManager.getInstance().getColors().get(countColor++));
-        //holder.txtTime.setText(format(DBManager.getInstance().getParturients().get(position).getTime()));
+        holder.horaEntrada.setText("Entrada : "+format(parturient.getHoraEntrada())+" PM");
+        holder.horaAlerta.setText("Tempo Alerta : "+format(parturient.getHoraAlerta())+" PM");
         holder.txtNameParturient.setText(oUpperFirstCase(parturient.getName())+ " "+oUpperFirstCase(parturient.getSurname()));
-        //holder.txtDetails.setText("idade: "+DBManager.getInstance().getParturients().get(position).getAge());
-        //holder.txtDetails.setText("idade: "+parturient.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ parturient.getDeliveryService().getMeasure().peek().getInitialDilatation()+"  |  Nº de cama: 3");
-
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,19 +150,25 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     public class ViewHolder extends RecyclerView.ViewHolder {
         public int currentPosition;
         public final CardView cardView;
+        public final TextView horaAlerta;
+        public final TextView horaEntrada;
         public final TextView txtTime;
         public final TextView txtNameParturient;
         public final TextView textCircle;
+
         public View buttonViewOption;
 
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            horaEntrada=(TextView)itemView.findViewById(R.id.idHoraEntrada);
+            horaAlerta=(TextView) itemView.findViewById(R.id.idHoraAlerta);
             textCircle=(TextView)itemView.findViewById(R.id.textCircle);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTimeParturiente);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.txtNamePartur);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.idSetting);
             buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsParturiente);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 
@@ -185,9 +186,12 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     }
 
     private String format(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm - dd, MMM");
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm");
         return dateFormat.format(date);
     }
-
+    private String format2(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm-yyyy-MM-dd ");
+        return dateFormat.format(date);
+    }
 
 }

@@ -86,10 +86,6 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         setContentView(R.layout.activity_add_mother);
         firebaseDatabase=FirebaseDatabase.getInstance();
 
-
-
-
-
         textSanitario = (TextView)findViewById(R.id.textSanitario);
         textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
         initView();
@@ -392,7 +388,8 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
                 String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
                 parturient.setAge(Integer.parseInt(age));
                 parturient.setTime(new Date());
-
+                parturient.setHoraAlerta(new Date());
+                parturient.setHoraEntrada(new Date());
                 parturient.setGestatinalRange(spinner.getSelectedItem()+"");
                 parturient.setPara((int) para.getValue());
                 parturient.setReason(mSliderDilatation.getValue()+"");
@@ -434,8 +431,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
                     @Override
                     public void run() {
                         progressBar.dismiss();
-                        Intent intent = new Intent(AddParturientActivity.this, MainActivity.class);
-                        startActivity(intent);
+                         finish();
                     }
                 },Long.parseLong("900"));
             }

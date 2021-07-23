@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#E6F1E6"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-
         app:cardUseCompatPadding="true"
         app:contentPadding="16dp">
 
@@ -22,12 +21,12 @@
             <TextView
                 android:id="@+id/textCircle"
                 style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="39dp"
-                android:layout_height="41dp"
+                android:layout_width="46dp"
+                android:layout_height="49dp"
                 android:layout_marginTop="1dp"
                 android:background="@drawable/hospitallist"
                 android:gravity="center"
-                android:text="C"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 android:textStyle="bold"
@@ -38,7 +37,7 @@
             <TextView
                 android:textSize="16dp"
                 android:textColor="@color/purple_700"
-                android:id="@+id/txtNamePartur"
+                android:id="@+id/idSetting"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

@@ -4,12 +4,26 @@ public class EmergencyMedicalPersonnel {
     private String name;
     private String surname;
     private String contact;
+    private int id;
 
 
-    public EmergencyMedicalPersonnel(String name, String surname, String contact) {
+    public EmergencyMedicalPersonnel(String name, String surname, String contact, int id) {
         this.name = name;
         this.surname = surname;
         this.contact = contact;
+        this.id=id;
+    }
+
+    public EmergencyMedicalPersonnel() {
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

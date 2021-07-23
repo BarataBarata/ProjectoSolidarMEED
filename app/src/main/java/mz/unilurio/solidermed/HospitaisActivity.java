@@ -25,7 +25,7 @@ public class HospitaisActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hospitais);
         initializeteDisplayContextHospitais();
 
-        SearchView searchView =(SearchView) findViewById(R.id.seacherHospital);
+        SearchView searchView =(SearchView) findViewById(R.id.seacherContact);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

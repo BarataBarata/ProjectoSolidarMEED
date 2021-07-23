@@ -20,9 +20,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Parturient;
-import mz.unilurio.solidermed.ui.fragments.AtendidosFragment;
 
 public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyclerAdpter.ViewHolder> implements Filterable {
 
@@ -118,7 +116,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
             textCircle=(TextView)itemView.findViewById(R.id.textCircle);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTimeParturiente);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.txtNamePartur);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.idSetting);
             buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptions);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 

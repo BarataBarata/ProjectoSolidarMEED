@@ -41,7 +41,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/seacherHospital"
+        android:id="@+id/seacherContact"
         android:gravity="center"
         app:iconifiedByDefault="false"
         android:layout_marginTop="55dp"

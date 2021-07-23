@@ -7,12 +7,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import mz.unilurio.solidermed.R;
+
 public class DBManager {
 
 
     private static DBManager ourInstance = null;
     private List<Parturient>listParturientesAtendidos=new ArrayList<>();
     private List<UserDoctor> userDoctorList=new ArrayList<>();
+    private List<Settings> settingsList=new ArrayList<>();
     private List<Notification> initNotifications = new ArrayList<>();
     private List<String> listIdadeGestacional=new ArrayList<>();
     private List<Hospitais> hospitais= new ArrayList<>();
@@ -24,6 +27,7 @@ public class DBManager {
     static private List<Integer> colors = new ArrayList<Integer>();
     static private List<Integer> idades = new ArrayList<Integer>();
     static private List<Integer> camas = new ArrayList<Integer>();
+    private static int idEmergencyMedicalPersonnel=5;
 
     private Queue queue;
     private List<EmergencyMedicalPersonnel> emergencyMedicalPersonnels = new ArrayList<>();
@@ -43,6 +47,7 @@ public class DBManager {
             ourInstance.initializeNotifications();
             ourInstance.initializeParurientes();
             ourInstance.initializeQueue();
+            ourInstance.initializeSettings();
             ourInstance.initializeEmergencyPersonnels();
             ourInstance.initializeGestationalRanre();
             ourInstance.initHospitais();
@@ -51,6 +56,15 @@ public class DBManager {
             ourInstance.initializeParturientesAtendidos();
         }
         return ourInstance;
+    }
+
+    private void initializeSettings() {
+        this.settingsList.add(new Settings("Notificacao",1, R.drawable.notification_setting));
+        this.settingsList.add(new Settings("Hora",2,R.drawable.timer_settings));
+    }
+
+    public List<Settings> getSettingsList() {
+        return settingsList;
     }
 
     private void initializeParturientesAtendidos() {
@@ -177,6 +191,8 @@ public class DBManager {
         Parturient parturient=new Parturient();
         parturient.setName("Catia");
         parturient.setSurname("Fatima");
+        parturient.setHoraEntrada(new Date());
+        parturient.setHoraAlerta(new Date());
         parturient.setTime(new Date());
         parturient.setReason("4");
         parturient.setOrigemTransferencia("Centro de Chiure");
@@ -192,6 +208,8 @@ public class DBManager {
         parturient2.setTime(new Date());
         parturient2.setReason("8");
         parturient2.setPara(9);
+        parturient2.setHoraEntrada(new Date());
+        parturient2.setHoraAlerta(new Date());
         parturient2.setId(2);
         parturient2.setTransfered(false);
         parturient2.setAge(45);
@@ -202,6 +220,8 @@ public class DBManager {
         parturient3.setTime(new Date());
         parturient3.setReason("8");
         parturient3.setPara(9);
+        parturient3.setHoraEntrada(new Date());
+        parturient3.setHoraAlerta(new Date());
         parturient3.setId(3);
         parturient3.setTransfered(false);
         parturient3.setAge(45);
@@ -212,6 +232,8 @@ public class DBManager {
         parturient4.setTime(new Date());
         parturient4.setReason("8");
         parturient4.setPara(9);
+        parturient4.setHoraEntrada(new Date());
+        parturient4.setHoraAlerta(new Date());
         parturient4.setId(4);
         parturient4.setTransfered(false);
         parturient4.setAge(45);
@@ -257,33 +279,43 @@ public class DBManager {
     public List<EmergencyMedicalPersonnel> getEmergencyMedicalPersonnels() {
         return emergencyMedicalPersonnels;
     }
+    public void addEmergencyMedicalPersonnels(EmergencyMedicalPersonnel emergencyMedicalPersonnel){
+        emergencyMedicalPersonnel.setId(++idEmergencyMedicalPersonnel);
+        this.emergencyMedicalPersonnels.add(emergencyMedicalPersonnel);
+}
+
 
     private void initializeEmergencyPersonnels(){
-//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
+        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel3());
-//        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
+        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
     }
 
+    public void addContact(EmergencyMedicalPersonnel emergencyMedicalPersonnel){
+           this.emergencyMedicalPersonnels.add(emergencyMedicalPersonnel);
+    }
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel5(){
-        return new EmergencyMedicalPersonnel("Rosario", "Ap", "845740722");
+        return new EmergencyMedicalPersonnel("Rosario", "Ap", "845740722",1);
     }
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel1(){
-        return new EmergencyMedicalPersonnel("Saide", "Nilfero", "849288877");
+        return new EmergencyMedicalPersonnel("Saide", "Nilfero", "849288877",2);
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel2(){
-        return new EmergencyMedicalPersonnel("Felermino", "Rumbi", "846689637");
+        return new EmergencyMedicalPersonnel("Felerminosds", "Rumbi", "846689637",3);
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel3(){
-        return new EmergencyMedicalPersonnel("Felermino", "Ali", "864293652");
+        return new EmergencyMedicalPersonnel("Felermino", "Ali", "864293652",4);
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel4(){
 
-        return new EmergencyMedicalPersonnel("Ussimane", "Killer Wazy", "847759422");
+        return new EmergencyMedicalPersonnel("Ussimane", "Killer Wazy", "847759422",5);
     }
+
+
 
     private void initializeQueue(){
 

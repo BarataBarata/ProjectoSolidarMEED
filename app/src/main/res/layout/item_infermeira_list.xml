@@ -16,14 +16,14 @@
         app:contentPadding="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="55dp">
+            android:layout_width="387dp"
+            android:layout_height="63dp">
 
             <TextView
                 android:id="@+id/textCircle"
                 style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="35dp"
-                android:layout_height="40dp"
+                android:layout_width="51dp"
+                android:layout_height="46dp"
                 android:layout_marginTop="1dp"
                 android:background="@drawable/nurse2"
                 android:gravity="center"
@@ -57,23 +57,13 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:text="hora de entrada: 8:30:52"
                 android:textSize="12dp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView6"
-                app:layout_constraintHorizontal_bias="0.038"
                 app:layout_constraintStart_toEndOf="@+id/textCircle"
                 app:layout_constraintTop_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="@id/txtNameParturInfer" />
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="0dp"
-                android:layout_height="7dp"
-                android:src="@drawable/active"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/txtNameParturInfer"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -3,11 +3,14 @@ package mz.unilurio.solidermed;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,6 +53,17 @@ public class DadosPessoais extends AppCompatActivity {
         }
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = findViewById(R.id.fabEdit);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(DadosPessoais.this, AddParturientActivity.class);
+                intent.putExtra("idParturiente",idParturiente+"");
+                 startActivity(intent);
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+            }
+        });
     }
 
     private void sendDade(Parturient parturient) {

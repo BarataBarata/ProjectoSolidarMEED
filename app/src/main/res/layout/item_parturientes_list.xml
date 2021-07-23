@@ -18,6 +18,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+
             <TextView
                 android:id="@+id/textViewOptionsParturiente"
                 android:layout_width="32dp"
@@ -32,10 +34,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/txtNamePartur"
+                app:layout_constraintStart_toStartOf="@+id/idSetting"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.939" />
-
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:layout_marginTop="16dp"
@@ -68,7 +69,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/txtNamePartur"
+                android:id="@+id/idSetting"
                 android:layout_width="0dp"
                 android:layout_height="24dp"
                 android:layout_below="@id/txtTimeParturiente"
@@ -81,6 +82,37 @@
                 app:layout_constraintStart_toEndOf="@+id/textCircle"
                 app:layout_constraintTop_toBottomOf="@+id/txtTimeParturiente" />
 
+
+            <TextView
+                android:textStyle="normal"
+                android:id="@+id/idHoraEntrada"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Entrada : 10:59 h"
+                android:textSize="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.227"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/idSetting" />
+
+            <TextView
+                android:textStyle="normal"
+                android:textSize="15dp"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:id="@+id/idHoraAlerta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Tempo Restante :1:25 h"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.26"
+                app:layout_constraintStart_toEndOf="@+id/idHoraEntrada"
+                app:layout_constraintTop_toBottomOf="@+id/idSetting" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 </FrameLayout>

@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.Hospitais;
-import mz.unilurio.solidermed.model.Parturient;
 
 public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyclerAdpter.ViewHolder> implements Filterable {
     HospitaisActivity  context;
@@ -141,7 +140,7 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
 
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.txtNamePartur);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.idSetting);
             txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
             buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptions);
 
