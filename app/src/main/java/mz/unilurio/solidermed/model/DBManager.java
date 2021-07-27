@@ -29,7 +29,7 @@ public class DBManager {
     static private List<Integer> camas = new ArrayList<Integer>();
     private static int idEmergencyMedicalPersonnel=5;
 
-    private Queue queue;
+    private Queue queue=new Queue();
     private List<EmergencyMedicalPersonnel> emergencyMedicalPersonnels = new ArrayList<>();
     public int totalPaturient=0;
     private List<GestatinalRange> ranges;
@@ -44,9 +44,9 @@ public class DBManager {
             ourInstance.initializeDoctor();
             ourInstance.initializeIdade();
             ourInstance.initializeCamas();
-            ourInstance.initializeNotifications();
+            //ourInstance.initializeNotifications();
             ourInstance.initializeParurientes();
-            ourInstance.initializeQueue();
+            //ourInstance.initializeQueue();
             ourInstance.initializeSettings();
             ourInstance.initializeEmergencyPersonnels();
             ourInstance.initializeGestationalRanre();
@@ -98,6 +98,7 @@ public class DBManager {
 
     public void addParturienteAtendido(Parturient parturient){
         this.listParturientesAtendidos.add(parturient);
+
     }
 
     private void initializeDoctor() {
@@ -191,8 +192,6 @@ public class DBManager {
         Parturient parturient=new Parturient();
         parturient.setName("Catia");
         parturient.setSurname("Fatima");
-        parturient.setHoraEntrada(new Date());
-        parturient.setHoraAlerta(new Date());
         parturient.setTime(new Date());
         parturient.setReason("4");
         parturient.setOrigemTransferencia("Centro de Chiure");
@@ -201,43 +200,45 @@ public class DBManager {
         parturient.setId(1);
         parturient.setTransfered(true);
         parturient.setAge(35);
-       addParturiente(parturient);
-        Parturient parturient2=new Parturient();
-        parturient2.setName("Julia");
-        parturient2.setSurname("Amelia");
-        parturient2.setTime(new Date());
-        parturient2.setReason("8");
-        parturient2.setPara(9);
-        parturient2.setHoraEntrada(new Date());
-        parturient2.setHoraAlerta(new Date());
-        parturient2.setId(2);
-        parturient2.setTransfered(false);
-        parturient2.setAge(45);
-        addParturiente(parturient2);
-        Parturient parturient3=new Parturient();
-        parturient3.setName("kusia");
-        parturient3.setSurname("Mira");
-        parturient3.setTime(new Date());
-        parturient3.setReason("8");
-        parturient3.setPara(9);
-        parturient3.setHoraEntrada(new Date());
-        parturient3.setHoraAlerta(new Date());
-        parturient3.setId(3);
-        parturient3.setTransfered(false);
-        parturient3.setAge(45);
-        addParturiente(parturient3);
-        Parturient parturient4=new Parturient();
-        parturient4.setName("Maria");
-        parturient4.setSurname("Mira");
-        parturient4.setTime(new Date());
-        parturient4.setReason("8");
-        parturient4.setPara(9);
-        parturient4.setHoraEntrada(new Date());
-        parturient4.setHoraAlerta(new Date());
-        parturient4.setId(4);
-        parturient4.setTransfered(false);
-        parturient4.setAge(45);
-        addParturiente(parturient4);
+        addQueueAndDeliveryService(parturient);
+
+        //addQueueAndDeliveryService(parturient);
+//        Parturient parturient2=new Parturient();
+//        parturient2.setName("Julia");
+//        parturient2.setSurname("Amelia");
+//        parturient2.setTime(new Date());
+//        parturient2.setReason("8");
+//        parturient2.setPara(9);
+//        parturient2.setHoraEntrada(new Date());
+//        parturient2.setHoraAlerta(new Date());
+//        parturient2.setId(2);
+//        parturient2.setTransfered(false);
+//        parturient2.setAge(45);
+//        addParturiente(parturient2);
+//        Parturient parturient3=new Parturient();
+//        parturient3.setName("kusia");
+//        parturient3.setSurname("Mira");
+//        parturient3.setTime(new Date());
+//        parturient3.setReason("8");
+//        parturient3.setPara(9);
+//        parturient3.setHoraEntrada(new Date());
+//        parturient3.setHoraAlerta(new Date());
+//        parturient3.setId(3);
+//        parturient3.setTransfered(false);
+//        parturient3.setAge(45);
+//        addParturiente(parturient3);
+//        Parturient parturient4=new Parturient();
+//        parturient4.setName("Maria");
+//        parturient4.setSurname("Mira");
+//        parturient4.setTime(new Date());
+//        parturient4.setReason("8");
+//        parturient4.setPara(9);
+//        parturient4.setHoraEntrada(new Date());
+//        parturient4.setHoraAlerta(new Date());
+//        parturient4.setId(4);
+//        parturient4.setTransfered(false);
+//        parturient4.setAge(45);
+//        addParturiente(parturient4);
     }
 
     private void initializeCamas() {
@@ -263,13 +264,13 @@ public class DBManager {
     private void initializeColor() {
         this.colors.add(Color.TRANSPARENT);
         this.colors.add(Color.CYAN);
-        this.colors.add(Color.DKGRAY);
-        this.colors.add(Color.GREEN);
-        this.colors.add(Color.YELLOW);
-        this.colors.add(Color.LTGRAY);
-        this.colors.add(Color.RED);
-        this.colors.add(Color.BLACK);
-        this.colors.add(Color.MAGENTA);
+//        this.colors.add(Color.DKGRAY);
+//        this.colors.add(Color.GREEN);
+//        this.colors.add(Color.YELLOW);
+//        this.colors.add(Color.LTGRAY);
+//        this.colors.add(Color.RED);
+//        this.colors.add(Color.BLACK);
+//        this.colors.add(Color.MAGENTA);
     }
 
     public static List<Integer> getColors() {
@@ -303,7 +304,7 @@ public class DBManager {
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel2(){
-        return new EmergencyMedicalPersonnel("Felerminosds", "Rumbi", "846689637",3);
+        return new EmergencyMedicalPersonnel("Felermino", "Rumbi", "846689637",3);
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel3(){
@@ -315,82 +316,92 @@ public class DBManager {
         return new EmergencyMedicalPersonnel("Ussimane", "Killer Wazy", "847759422",5);
     }
 
-
+    public  void addQueueAndDeliveryService(Parturient parturient){
+        DeliveryService ds;
+        ds=InitializeDeliveryService(parturient, (int)Float.parseFloat(parturient.getReason()));
+        this.parturients.add(parturient);
+        deliveryServices.add(ds);
+        ds.setFireble(new FireMockAlert(null, ds));
+        queue.register(ds);
+    }
 
     private void initializeQueue(){
 
         for (Parturient p: getParturients()){
-            deliveryServices.add(InitializeDeliveryService(p, 6));
+            deliveryServices.add(InitializeDeliveryService(p, Integer.parseInt(p.getReason())));
         }
 
-        Queue queue = new Queue();
+//        Queue queue = new Queue();
+//
+//        for (DeliveryService ds: deliveryServices){
+////            Calendar calendar = Calendar.getInstance();
+////            Date current = calendar.getTime();
+////            Measure measure = new Measure(current, 4);
+////            calendar.add(Calendar.MINUTE, 5);
+////            Date after = calendar.getTime();
+////
+////            ds.setFireble(new FireMockAlert(after, ds));
+//            queue.register(ds);
+//        }
+//        this.queue = queue;
+    }
 
-        for (DeliveryService ds: deliveryServices){
+    public void updateQueue(int dilatation){
+//
+//        Parturient p = this.getParturients().get(totalPaturient-2);
+//        System.out.println(p + "ïndex ---------------------------"+this.totalPaturient);
+//        deliveryServices.add(InitializeDeliveryService(p, dilatation));
+//        System.out.println();
+//
+//        Queue queue = new Queue();
+//
+//        for (DeliveryService ds: deliveryServices){
 //            Calendar calendar = Calendar.getInstance();
 //            Date current = calendar.getTime();
-//            Measure measure = new Measure(current, 4);
+//            Measure measure = new Measure(current, dilatation);
 //            calendar.add(Calendar.MINUTE, 5);
 //            Date after = calendar.getTime();
 //
 //            ds.setFireble(new FireMockAlert(after, ds));
-            queue.register(ds);
-        }
-        this.queue = queue;
-    }
-
-    public void updateQueue(int dilatation){
-
-        Parturient p = this.getParturients().get(totalPaturient-2);
-        System.out.println(p + "ïndex ---------------------------"+this.totalPaturient);
-        deliveryServices.add(InitializeDeliveryService(p, dilatation));
-        System.out.println();
-
-        Queue queue = new Queue();
-
-        for (DeliveryService ds: deliveryServices){
-            Calendar calendar = Calendar.getInstance();
-            Date current = calendar.getTime();
-            Measure measure = new Measure(current, dilatation);
-            calendar.add(Calendar.MINUTE, 5);
-            Date after = calendar.getTime();
-
-            ds.setFireble(new FireMockAlert(after, ds));
-            queue.register(ds);
-        }
-        this.queue = queue;
+//            queue.register(ds);
+//        }
+//        this.queue = queue;
     }
 
     private DeliveryService InitializeDeliveryService(Parturient p, int dilatation) {
         Date current = Calendar.getInstance().getTime();
         Measure measure = new Measure(current, dilatation);
+        p.setHoraEntrada(current);
+        p.setHoraAlerta(measure.getPredictedExpulsionHour());
+        System.out.println("lllllllllllllllllllllllllll : "+measure.getPredictedExpulsionHour());
         return new DeliveryService(p, measure);
     }
+//
+//    private DeliveryService InitializeDeliveryService2() {
+//        Parturient p = new Parturient("Ds", "Two", 20);
+//        p.setId(2);
+//        Calendar calendar = Calendar.getInstance();
+//
+//        Date current = calendar.getTime();
+//        Measure measure = new Measure(current, 4);
+//
+//        calendar.add(Calendar.MINUTE, 5);
+//        Date after = calendar.getTime();
+//
+//        DeliveryService ds = new DeliveryService(p,measure);
+//
+//        ds.setFireble(new FireMockAlert(after, ds));
+//
+//        return ds;
+//    }
 
-    private DeliveryService InitializeDeliveryService2() {
-        Parturient p = new Parturient("Ds", "Two", 20);
-        p.setId(2);
-        Calendar calendar = Calendar.getInstance();
+//    public void initializeNotifications() {
+//        initNotifications.add(initializeNotification1());
+//        initNotifications.add(initializeNotification2());
+//    }
 
-        Date current = calendar.getTime();
-        Measure measure = new Measure(current, 4);
-
-        calendar.add(Calendar.MINUTE, 5);
-        Date after = calendar.getTime();
-
-        DeliveryService ds = new DeliveryService(p,measure);
-
-        ds.setFireble(new FireMockAlert(after, ds));
-
-        return ds;
-    }
-
-    public void initializeNotifications() {
-        initNotifications.add(initializeNotification1());
-        initNotifications.add(initializeNotification2());
-    }
-
-    public void addNewNotification(Notification notification){
-        notifications.add(notification);
+    public void addNewNotification(List<Notification >notification){
+        notifications.addAll(notification);
     }
 
     public List<Notification> getNotifications() {
@@ -428,11 +439,6 @@ public class DBManager {
 
         Notification notification = new Notification(Color.rgb(248, 215,218), "Message ...", Calendar.getInstance().getTime(), true, ds);
         return notification;
-    }
-
-    public void addParturiente(Parturient parturient){
-        this.parturients.add(parturient);
-            totalPaturient++;
     }
 
     public List<Parturient> getParturients() {

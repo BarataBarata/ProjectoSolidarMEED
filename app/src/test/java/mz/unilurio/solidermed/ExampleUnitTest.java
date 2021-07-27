@@ -82,29 +82,23 @@ public class ExampleUnitTest {
         Date current = Calendar.getInstance().getTime();
         Measure measure = new Measure(current, 4);
         DeliveryService ds = new DeliveryService(bibo,measure);
-
         assertFalse(ds.fireAlert());
 
     }
 
     @Test
     public void fireAlertTrue(){
-
         Parturient bibo = new Parturient("Bibo", "Bubu", 20);
         Calendar calendar = Calendar.getInstance();
-
         Date current = calendar.getTime();
+        System.out.println(" hora atual : "+current);
         Measure measure = new Measure(current, 4);
-
-        calendar.add(Calendar.MINUTE, 5);
+        calendar.add(Calendar.MINUTE, 2);
         Date after = calendar.getTime();
-
+        System.out.println(" hora esperado : "+after);
         DeliveryService ds = new DeliveryService(bibo,measure);
-
         ds.setFireble(new FireMockAlert(after, ds));
-
-
+        System.out.println("resultados : "+ds.fireAlert());
         assertTrue(ds.fireAlert());
-
     }
 }

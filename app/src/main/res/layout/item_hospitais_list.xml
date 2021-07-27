@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+        android:id="@+id/card_viewHospitol"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         app:cardUseCompatPadding="true"

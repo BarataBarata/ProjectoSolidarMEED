@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -71,7 +70,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
     private boolean isTrasferencia;
     private boolean isEdit;
-    private static  int newidParturiente=4;// por inicializacao
+    private static  int newidParturiente=1;// por inicializacao
     private Parturient parturient;
 
     private Validator validator;
@@ -99,6 +98,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
             idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
             for(Parturient parturient: DBManager.getInstance().getParturients()){
                 if(parturient.getId()==idParturiente){
+                    isEdit=true;
                     editParturiente(parturient);
                     break;
                 }
@@ -140,7 +140,8 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         int numberPick1;
         int numberPick2;
         String idade="";
-        isEdit=true;
+
+        // ENVIANDO 0S DADOS PARA OS CAMPOS//
         txtNameParturient.setText(ediParturient.getName());
         textApelido.setText(ediParturient.getSurname());
         idade=String.valueOf(ediParturient.getAge());
@@ -151,16 +152,22 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         para.setValue(ediParturient.getPara());
         mSliderDilatation.setValue((int)Float.parseFloat(ediParturient.getReason()));
         spinner.setSelection(getPositionIdadeGestacional(ediParturient.getGestatinalRange()));
-        isTrasferencia =false;
+        isTrasferencia =false; /////
+
         if(ediParturient.isTransfered()){
             isTrasferencia =true;
             swit.setChecked(true);
-            invisibleView();
+            visibility();
             spinnerSanitaria.setSelection(getPositionISanitaria(ediParturient.getOrigemTransferencia()));
             spinnerTrasferencia.setSelection(getPositionMotivosTrasferencia(ediParturient.getMotivosDaTrasferencia()));
+        }else {
+            swit.setChecked(false);
+            inVisibility();
         }
+
         parturient=ediParturient;
     }
+
 
     int getPositionISanitaria(String sanitaria){
         int index=0;
@@ -267,12 +274,19 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
 
 
-    public void invisibleView(){
+    public void visibility(){
         spinnerSanitaria.setVisibility(View.VISIBLE);
         spinnerTrasferencia.setVisibility(View.VISIBLE);
         textSanitario.setVisibility(View.VISIBLE);
         textTrasferencia.setVisibility(View.VISIBLE);
     }
+    public void inVisibility(){
+        spinnerSanitaria.setVisibility(View.INVISIBLE);
+        spinnerTrasferencia.setVisibility(View.INVISIBLE);
+        textSanitario.setVisibility(View.INVISIBLE);
+        textTrasferencia.setVisibility(View.INVISIBLE);
+    }
+
 
     public void transferencia(View view) {
 
@@ -283,14 +297,12 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
             textTrasferencia.setVisibility(View.INVISIBLE);
             isTrasferencia =false;
         }else{
-
             spinnerSanitaria.setVisibility(View.VISIBLE);
             spinnerTrasferencia.setVisibility(View.VISIBLE);
             textSanitario.setVisibility(View.VISIBLE);
             textTrasferencia.setVisibility(View.VISIBLE);
             isTrasferencia =true;
         }
-
     }
 
     public void invisible(){
@@ -302,9 +314,87 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
 
     public void registar(View view) {
-        validator.validate();
+
+        if(isEdit){
+            editParturiente();
+        }else{
+            validator.validate(); // novo registo
+        }
     }
 
+    public  void editParturiente(){
+
+        String mensagem="Editar dados ?";
+        String mensagemTitle="EDITAR";;
+
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setTitle(mensagemTitle);
+        dialog.setMessage(mensagem);
+        dialog.setCancelable(false);
+        dialog.setIcon(getDrawable(R.drawable.edit_contact));
+
+        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                validationError();
+                progressBar();
+                parturient.setName(txtNameParturient.getText().toString());
+                parturient.setSurname(textApelido.getText().toString());
+
+                String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
+                parturient.setAge(Integer.parseInt(age));
+                parturient.setTime(new Date());
+                parturient.setGestatinalRange(spinner.getSelectedItem()+"");
+                parturient.setPara((int) para.getValue());
+                parturient.setReason(mSliderDilatation.getValue()+"");
+
+                if(isTrasferencia){
+                    parturient.setTransfered(true);
+                    parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
+                    parturient.setOrigemTransferencia(spinnerSanitaria.getSelectedItem().toString());
+                }else {
+                    parturient.setTransfered(false);
+                    parturient.setMotivosDaTrasferencia(null);
+                    parturient.setOrigemTransferencia(null);
+                }
+                    databaseReference=firebaseDatabase.getReference("Parturiente");
+                    databaseReference.child(parturient.getId()+"").setValue(parturient);
+
+                //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
+                Toast.makeText(getApplicationContext(), " Parturiente Editado com sucesso", Toast.LENGTH_LONG).show();
+            }
+
+
+            private void progressBar() {
+                progressBar=new ProgressDialog(AddParturientActivity.this);
+                progressBar.setTitle("Aguarde");
+                progressBar.setMessage("Registando...");
+                progressBar.show();
+
+                new Handler().postDelayed(new Thread() {
+                    @Override
+                    public void run() {
+                        progressBar.dismiss();
+                        finish();
+                    }
+                },Long.parseLong("900"));
+            }
+
+
+        });
+        dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext()," Operacao Cancelada",Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        dialog.create();
+        dialog.show();
+    }
 
 
     public void validationError() {
@@ -350,20 +440,9 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     @Override
     public void onValidationSucceeded() {
 
-        String isAlertEdit="Editar dados ?";
-        String isSimbleRegister="Deseja registar um Parturiente ?";
-        String isEditar="EDITAR";
-        String isRegistar="REGISTAR";
-        String mensagem;
-        String mensagemTitle;
+        String mensagem="Deseja registar um Parturiente ?";
+        String mensagemTitle="REGISTAR";
 
-        if(isEdit){
-            mensagemTitle=isEditar;
-            mensagem=isAlertEdit;
-        }else{
-            mensagem=isSimbleRegister;
-            mensagemTitle=isRegistar;
-        }
 
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setTitle(mensagemTitle);
@@ -378,18 +457,16 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
                 validationError();
                 progressBar();
-                if(!isEdit){
-                    parturient = new Parturient();
-                    parturient.setId(++newidParturiente);
-                }
+
+                parturient = new Parturient();
+                parturient.setId(++newidParturiente);
+
                 parturient.setName(txtNameParturient.getText().toString());
                 parturient.setSurname(textApelido.getText().toString());
 
                 String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
                 parturient.setAge(Integer.parseInt(age));
                 parturient.setTime(new Date());
-                parturient.setHoraAlerta(new Date());
-                parturient.setHoraEntrada(new Date());
                 parturient.setGestatinalRange(spinner.getSelectedItem()+"");
                 parturient.setPara((int) para.getValue());
                 parturient.setReason(mSliderDilatation.getValue()+"");
@@ -404,18 +481,11 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
                     parturient.setOrigemTransferencia(null);
                 }
 
-                if(!isEdit){
-                    DBManager.getInstance().addParturiente(parturient);
+                    DBManager.getInstance().addQueueAndDeliveryService(parturient);
                     databaseReference=firebaseDatabase.getReference("Parturiente");
                     databaseReference.child(parturient.getId()+"").setValue(parturient);
-                }
-                if(isEdit){
-                    databaseReference=firebaseDatabase.getReference("Parturiente");
-                    databaseReference.child(parturient.getId()+"").setValue(parturient);
-                }
 
-
-                DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
+                //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
                 swit.setChecked(false);
                 Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
             }

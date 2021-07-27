@@ -55,6 +55,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -171,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         initializeDisplayContent();
-
     }
 
     private void displayAtendidos() {
@@ -306,8 +306,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setRepeatingAsyncTask(this);
     }
 
-
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -317,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume() {
         super.onResume();
-        setRepeatingAsyncTask(this);
+        //setRepeatingAsyncTask(this);
     }
 
     private void setRepeatingAsyncTask(MainActivity activity) {
@@ -331,10 +329,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-
-                            AsyncTaskNotification task = new AsyncTaskNotification(activity);
-                            task.execute();
+                            updadeAndSeacherNotifications();
                             displayNotification();
+                            displayParturiente();
                         } catch (Exception e) {
                             // error, do something
                         }
@@ -343,111 +340,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
 
-        timer.schedule(task, 0, 60*1000);  // interval of one minute
-
+        timer.schedule(task, 0, 1000);  // interval of one minute
     }
 
     public void setting(MenuItem item) {
         startActivity(new Intent(MainActivity.this,SettingActivity.class));
     }
 
-    public class AsyncTaskNotification extends AsyncTask<String, String, String> {
-        final String TAG = "AsyncTaskNotification.java";
+    public void updadeAndSeacherNotifications(){
 
-        private WeakReference<MainActivity> activityWeakReference;
-        private RecyclerView recyclerView;
+        Queue queue = DBManager.getInstance().getQueue();
+        queue.nofify();
+        notifications = queue.getNotifications();
 
-        AsyncTaskNotification(MainActivity activity) {
-            activityWeakReference = new WeakReference<MainActivity>(activity);
-            //recyclerView = (RecyclerView) activity.findViewById(R.id.list_notes);
-        }
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            MainActivity activity = activityWeakReference.get();
-            if (activity == null || activity.isFinishing()) {
-                return;
-            }
-            //activity.recyclerItems = activity.findViewById(R.id.list_notes);
-//            activity.progressBar.setVisibility(View.VISIBLE);
+        // Send SMS
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+                List<EmergencyMedicalPersonnel> eP = DBManager.getInstance().getEmergencyMedicalPersonnels();
 
-        }
-        @Override
-        protected String doInBackground(String... integers) {
+                String composeMessage = "";
+                for (Notification n : notifications) {
+                    boolean timePassed = false;
+                    if (notificationTriggered.containsKey(n.getId())){
+                        Log.i("CompareTime",  "Next SMS will be send on: " + Helper.format(notificationTriggered.get(n.getId()).getNextNotifier()));
+                        timePassed = Calendar.getInstance().getTime().after(notificationTriggered.get(n.getId()).getNextNotifier());
+                    }
 
-            return "Finished!";
-        }
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-            MainActivity activity = activityWeakReference.get();
-            if (activity == null || activity.isFinishing()) {
-                return;
-            }
-//            activity.recyclerItems = activity.findViewById(R.id.list_notes);
-//            activity.progressBar.setProgress(values[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            MainActivity activity = activityWeakReference.get();
-            if (activity == null || activity.isFinishing()) {
-                return;
-            }
-
-            // Stuff that updates the UI
-
-
-            Queue queue = DBManager.getInstance().getQueue();
-            queue.nofify();
-            notifications = queue.getNotifications();
-
-            for(Notification notification:notifications){
-                System.out.println("------------"+notification.getDeliveryService()+"");
-                DBManager.getInstance().addNewNotification(notification);
-            }
-
-
-            // Send SMS
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
-                    List<EmergencyMedicalPersonnel> eP = DBManager.getInstance().getEmergencyMedicalPersonnels();
-
-                    String composeMessage = "";
-                    for (Notification n : notifications) {
-                        boolean timePassed = false;
-                        if (notificationTriggered.containsKey(n.getId())){
-                            Log.i("CompareTime",  "Next SMS will be send on: " + Helper.format(notificationTriggered.get(n.getId()).getNextNotifier()));
-                            timePassed = Calendar.getInstance().getTime().after(notificationTriggered.get(n.getId()).getNextNotifier());
-                        }
-                        if (!notificationTriggered.containsKey(n.getId()) || timePassed) {
+                    if (!notificationTriggered.containsKey(n.getId()) || timePassed) {
 //                            composeMessage += n.getMessage()+"\n";
-                            composeMessage += n.getDeliveryService().getParturient().getName() + " "+n.getDeliveryService().getParturient().getSurname() +", ";
-                            notificationTriggered.put(n.getId(), n);
-                            popNotification(n);
-                        }
+                        composeMessage += n.getDeliveryService().getParturient().getName() + " "+n.getDeliveryService().getParturient().getSurname() +", ";
+                        notificationTriggered.put(n.getId(), n);
+                        popNotification(n);
+                        DBManager.getInstance().addNewNotification(notifications);
                     }
-
-                    if(!composeMessage.isEmpty()){
-                        for (EmergencyMedicalPersonnel e : eP) {
-                            String message = "ATENÇÃO ALERTA VERMELHO: A(s) parturiente(s) "+composeMessage+" necessita(m) de cuidados médicos";
-                            Log.i("AsyncTask", Helper.format(Calendar.getInstance().getTime())+": sending SMS to " + e.getContact() + " Message: " + message);
-                            sendSMS(e.getContact(), message);
-                        }
-                    }
-
-
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
                 }
-            }
 
+                if(!composeMessage.isEmpty()){
+                    for (EmergencyMedicalPersonnel e : eP) {
+                        String message = "ATENÇÃO ALERTA VERMELHO: A(s) parturiente(s) "+composeMessage+" necessita(m) de cuidados médicos";
+                        Log.i("AsyncTask", Helper.format(Calendar.getInstance().getTime())+": sending SMS to " + e.getContact() + " Message: " + message);
+                        sendSMS(e.getContact(), message);
+                    }
+                }
+            } else {
+                requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
+            }
         }
 
 
-    }
-
+        }
 
     private void sendSMS(String phoneNumber, String message) {
         phoneNumber = phoneNumber.trim();

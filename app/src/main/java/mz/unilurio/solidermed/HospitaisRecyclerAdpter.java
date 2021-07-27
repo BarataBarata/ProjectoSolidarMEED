@@ -3,6 +3,7 @@ package mz.unilurio.solidermed;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Hospitais;
 
 public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyclerAdpter.ViewHolder> implements Filterable {
@@ -51,6 +53,7 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
         Hospitais hospitais1 =  originalListHospital.get(position);
         holder.currentPosition = position;
         holder.txtNameParturient.setText(hospitais1.getNomeHospital());
+
 //
 //        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -138,7 +141,7 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cardView = (CardView) itemView.findViewById(R.id.card_view);
+            cardView = (CardView) itemView.findViewById(R.id.card_viewHospitol);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
             txtNameParturient = (TextView) itemView.findViewById(R.id.idSetting);
             txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);

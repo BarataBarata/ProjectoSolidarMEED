@@ -55,7 +55,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/txtTimeParturiente"
+                android:id="@+id/txtTimeParturienteS"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="8dp"
@@ -72,19 +72,19 @@
                 android:id="@+id/idSetting"
                 android:layout_width="0dp"
                 android:layout_height="24dp"
-                android:layout_below="@id/txtTimeParturiente"
+                android:layout_below="@id/txtTimeParturienteS"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="20dp"
                 android:text="Júlia Namovartacha"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                app:layout_constraintEnd_toEndOf="@+id/txtTimeParturiente"
+                app:layout_constraintEnd_toEndOf="@+id/txtTimeParturienteS"
                 app:layout_constraintStart_toEndOf="@+id/textCircle"
-                app:layout_constraintTop_toBottomOf="@+id/txtTimeParturiente" />
+                app:layout_constraintTop_toBottomOf="@+id/txtTimeParturienteS" />
 
 
             <TextView
-                android:textStyle="normal"
+                android:textStyle="bold"
                 android:id="@+id/idHoraEntrada"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
@@ -98,20 +98,29 @@
                 app:layout_constraintTop_toBottomOf="@+id/idSetting" />
 
             <TextView
-                android:textStyle="normal"
+                android:textStyle="bold"
                 android:textSize="15dp"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:id="@+id/idHoraAlerta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Tempo Restante :1:25 h"
+                android:text="Restante :1:25 h"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.26"
                 app:layout_constraintStart_toEndOf="@+id/idHoraEntrada"
                 app:layout_constraintTop_toBottomOf="@+id/idSetting" />
 
-
+            <ImageView
+                android:id="@+id/tempoAcabado"
+                android:layout_width="28dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/textViewOptionsParturiente"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toEndOf="@+id/idHoraAlerta"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

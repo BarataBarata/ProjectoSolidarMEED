@@ -16,10 +16,13 @@ public class FireMockAlert implements Fireble{
     @Override
     public boolean fire() {
         Measure measure = this.ds.getMeasure().peek();
-        // ver igual tambem
-        if(currentHour.after(measure.getPredictedExpulsionHour()) && !ds.isExpulsed()){
+        if((Calendar.getInstance().getTime()+"").equals(measure.getPredictedExpulsionHour()+"") && !ds.isExpulsed()){
             return true;
         }
         return false;
+    }
+    private String format(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        return dateFormat.format(date);
     }
 }

@@ -25,7 +25,7 @@ public class Queue {
 
     public void nofify(){
         this.notifications = new ArrayList<>();
-        for (Observer ob:observers) {
+        for (Observer ob:observers){
             if(ob.fireAlert()){
                 Notification notification = new Notification();
                 notification.setColour(Color.rgb(248, 215,218));
@@ -40,6 +40,7 @@ public class Queue {
                 notification.setNextNotifier(calendar.getTime());
 //                notification
                 this.notifications.add(notification);
+                ((DeliveryService) ob).setExpulsed(true);
             }
         }
 

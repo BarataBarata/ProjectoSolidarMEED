@@ -17,7 +17,7 @@ public class FireAlert implements Fireble{
         Date currentHour = Calendar.getInstance().getTime();
         // ver igual tambem
         if(currentHour.after(measure.getPredictedExpulsionHour()) && !ds.isExpulsed()){
-            return true;
+         return true;
         }
         return false;
     }
