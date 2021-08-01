@@ -34,6 +34,7 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -102,12 +103,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView textNomeHospital;
     private String nomeHospitalExtra="";
     private NotificationManagerCompat notificationManagerCompat;
+    private FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        fab = findViewById(R.id.fab);
+        fab.setVisibility(View.INVISIBLE);
         notificationManagerCompat=NotificationManagerCompat.from(this);
         textNomeHospital = findViewById(R.id.idCentroSaudeTitle);
         if(getIntent().getStringExtra("nomeHospital")!=null) {
@@ -129,9 +133,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 pager.setCurrentItem(tab.getPosition());
                 opcoesSeacher=tab.getPosition();
                 switch (tab.getPosition()){
-                    case 0: displayNotification();break;
-                    case 1: displayAtendidos(); break;
-                    case 2: displayParturiente();break;
+                    case 0: { displayNotification();fab.setVisibility(View.INVISIBLE);break; }
+                    case 1: {displayAtendidos(); fab.setVisibility(View.INVISIBLE);break;}
+                    case 2: {displayParturiente();fab.setVisibility(View.VISIBLE);break;}
                 }
             }
 
@@ -152,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,8 +223,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem menuDefinition=menu.findItem(R.id.idDefinicoes);
         //MenuItem m=menu.findItem(R.id.app_bar_search);
         //m.setVisible(visible);
-
-
 
 
         menuDefinition.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -331,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         try {
                             updadeAndSeacherNotifications();
                             displayNotification();
-                            displayParturiente();
                         } catch (Exception e) {
                             // error, do something
                         }
@@ -348,39 +349,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void updadeAndSeacherNotifications(){
-
         Queue queue = DBManager.getInstance().getQueue();
         queue.nofify();
         notifications = queue.getNotifications();
-
-        // Send SMS
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
                 List<EmergencyMedicalPersonnel> eP = DBManager.getInstance().getEmergencyMedicalPersonnels();
 
-                String composeMessage = "";
-                for (Notification n : notifications) {
-                    boolean timePassed = false;
-                    if (notificationTriggered.containsKey(n.getId())){
-                        Log.i("CompareTime",  "Next SMS will be send on: " + Helper.format(notificationTriggered.get(n.getId()).getNextNotifier()));
-                        timePassed = Calendar.getInstance().getTime().after(notificationTriggered.get(n.getId()).getNextNotifier());
-                    }
+                    for (Notification n : notifications) {
+                        System.out.println(" -------------------------------------------- size hash: " + notificationTriggered.size());
+                        if (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())) {
+                            popNotification(n);
+                            //popNotification(n);
+                            for (EmergencyMedicalPersonnel e : eP) {
+                                System.out.println("sending SMS to " + e.getContact() + " Message: " + n.getMessage());
+                                sendSMS(e.getContact(), n.getMessage());
+                            }
+                            DBManager.getInstance().addNewNotification(notifications);
+                            notificationTriggered.put(n.getId(), n);
+                        } else {
+                            System.out.println(" ------------------------------------------------- notification " + n.getId() + " not trrigeer " + (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())));
+                        }
 
-                    if (!notificationTriggered.containsKey(n.getId()) || timePassed) {
-//                            composeMessage += n.getMessage()+"\n";
-                        composeMessage += n.getDeliveryService().getParturient().getName() + " "+n.getDeliveryService().getParturient().getSurname() +", ";
-                        notificationTriggered.put(n.getId(), n);
-                        popNotification(n);
-                        DBManager.getInstance().addNewNotification(notifications);
-                    }
-                }
-
-                if(!composeMessage.isEmpty()){
-                    for (EmergencyMedicalPersonnel e : eP) {
-                        String message = "ATENÇÃO ALERTA VERMELHO: A(s) parturiente(s) "+composeMessage+" necessita(m) de cuidados médicos";
-                        Log.i("AsyncTask", Helper.format(Calendar.getInstance().getTime())+": sending SMS to " + e.getContact() + " Message: " + message);
-                        sendSMS(e.getContact(), message);
-                    }
                 }
             } else {
                 requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
@@ -388,6 +378,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
+
+//        // Send SMS
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+//                List<EmergencyMedicalPersonnel> eP = DBManager.getInstance().getEmergencyMedicalPersonnels();
+//
+//                String composeMessage = "";
+//                for (Notification n : notifications) {
+//                    boolean timePassed = false;
+//                    if (notificationTriggered.containsKey(n.getId())){
+//                        Log.i("CompareTime",  "Next SMS will be send on: " + Helper.format(notificationTriggered.get(n.getId()).getNextNotifier()));
+//                        timePassed = Calendar.getInstance().getTime().after(notificationTriggered.get(n.getId()).getNextNotifier());
+//                    }
+//
+//                    if (!notificationTriggered.containsKey(n.getId()) || timePassed) {
+////                            composeMessage += n.getMessage()+"\n";
+//                        composeMessage += n.getDeliveryService().getParturient().getName() + " "+n.getDeliveryService().getParturient().getSurname() +", ";
+//                        notificationTriggered.put(n.getId(), n);
+//                        popNotification(n);
+//                        DBManager.getInstance().addNewNotification(notifications);
+//                    }
+//                }
+//
+//                if(!composeMessage.isEmpty()){
+//                    for (EmergencyMedicalPersonnel e : eP) {
+//                        String message = "ATENÇÃO ALERTA VERMELHO: A(s) parturiente(s) "+composeMessage+" necessita(m) de cuidados médicos";
+//                        Log.i("AsyncTask", Helper.format(Calendar.getInstance().getTime())+": sending SMS to " + e.getContact() + " Message: " + message);
+//                        sendSMS(e.getContact(), message);
+//                    }
+//                }
+//            } else {
+//                requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
+//            }
+//        }
         }
 
     private void sendSMS(String phoneNumber, String message) {
@@ -398,6 +422,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNumber, null, message, null, null);
             Toast.makeText(this, "Message is sent", Toast.LENGTH_SHORT);
+
         } catch (Exception e) {
             Log.i("EXPECTION SMS", e.getMessage());
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
@@ -452,7 +477,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                      startActivity(intent);
                  }
              }, Long.parseLong("400"));
-
     }
 
 

@@ -43,7 +43,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_note_list, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_notification_list, parent, false);
         return new ViewHolder(view);
     }
 
@@ -54,8 +54,8 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
         holder.cardView.setCardBackgroundColor(notification.getColour());
         holder.txtTime.setText(format(notification.getTime()));
-        holder.txtNameParturient.setText(notification.getDeliveryService().getParturient().getName()+ " "+notification.getDeliveryService().getParturient().getSurname());
-        holder.txtDetails.setText("idade: "+notification.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ notification.getDeliveryService().getMeasure().peek().getInitialDilatation());
+        holder.txtNameParturient.setText(oUpperFirstCase(notification.getDeliveryService().getParturient().getName())+ " "+oUpperFirstCase(notification.getDeliveryService().getParturient().getSurname()));
+        holder.txtDetails.setText("Idade : "+notification.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ notification.getDeliveryService().getMeasure().peek().getInitialDilatation());
 
 
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +75,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
                             case R.id.atendimento:{
                                 Intent intent = new Intent(context, Atendimento.class);
+                                intent.putExtra("idParturiente",notifications.get(position).getId());
                                 context.startActivity(intent);
                             }
                                 return true;
@@ -115,7 +116,6 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                 for(Notification notification:auxListNotificacao){
                     if(notification.getDeliveryService().getParturient().getName().toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(notification);
-                        System.out.println(notification.getDeliveryService().getParturient().getName());
                     }
                 }
             }
@@ -146,11 +146,11 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cardView = (CardView) itemView.findViewById(R.id.card_view);
-            txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.idSetting);
-            txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
-            buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptions);
+            txtDetails=(TextView)itemView.findViewById(R.id.idContactoMedico);
+            cardView = (CardView) itemView.findViewById(R.id.card_viewNotification);
+            txtTime = (TextView) itemView.findViewById(R.id.idHoraAlertaNotification);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.txt_NomeParturienteNotification);
+            buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptionsNotification);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,6 +184,11 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
     private String format(Date date){
         DateFormat dateFormat = new SimpleDateFormat("hh:mm - dd, MMM");
         return dateFormat.format(date);
+    }
+
+    public  String oUpperFirstCase(String string){
+        String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
+        return  auxString;
     }
 
 

@@ -27,19 +27,19 @@
             android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:background="@color/white"
+            android:background="#FDFEFF"
             app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
             <ImageView
-                android:src="@drawable/hospital"
+                android:src="@drawable/hospitallist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:textStyle="bold"
                 android:id="@+id/idCentroSaudeTitle"
                 android:onClick="centroSaude"
-                android:textStyle="bold"
                 style="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#F8595656"
+                android:textColor="#6D706D"
                 android:text="Centro de saude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

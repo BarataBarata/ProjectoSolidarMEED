@@ -99,7 +99,7 @@ public class SettingsRecyclerAdpter extends RecyclerView.Adapter<SettingsRecycle
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtNameSetting = (TextView) itemView.findViewById(R.id.idSetting);
+            txtNameSetting = (TextView) itemView.findViewById(R.id.idEnfermeiro);
             imageSetting=(ImageView)itemView.findViewById(R.id.idImagenConfiguration);
 
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -30,6 +30,7 @@
                 android:src="@drawable/back_24" />
 
             <TextView
+                android:textStyle="bold"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,6 +74,7 @@
                     android:ems="10"
                     android:hint="Nome"
                     android:inputType="textMultiLine"
+                    android:textSize="15dp"
                     app:errorEnabled="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -88,6 +90,7 @@
                     android:gravity="start|top"
                     android:hint="Apelido"
                     android:inputType="textMultiLine"
+                    android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="@+id/txtName"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/txtName"
@@ -98,13 +101,13 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="368dp"
                     android:layout_height="22dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:text="Idade"
                     android:textAlignment="center"
+                    android:textSize="14dp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/txtSurname"
-                    app:layout_constraintHorizontal_bias="0.333"
-                    app:layout_constraintStart_toStartOf="@+id/txtSurname"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtSurname" />
 
                 <NumberPicker
@@ -136,14 +139,14 @@
                     android:id="@+id/textView2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:text="Dilatação cervical"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/textView"
-                    app:layout_constraintStart_toStartOf="@+id/textView"
-                    app:layout_constraintTop_toBottomOf="@+id/numberPickerTwo"
+                    app:layout_constraintEnd_toEndOf="parent"
 
-                    />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/numberPickerTwo" />
 
 
                 <!--                <LinearLayout-->
@@ -194,6 +197,7 @@
                     android:id="@+id/textPara"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:text="Opções de paridade (PARA)"
                     android:textStyle="bold"
@@ -205,19 +209,17 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayoutPara"
                     android:layout_width="0dp"
-                    android:layout_height="47dp"
-
-                    app:layout_constraintEnd_toEndOf="@+id/textPara"
-
-                    app:layout_constraintStart_toStartOf="@+id/textPara"
-                    app:layout_constraintTop_toBottomOf="@+id/textPara"
-                    >
+                    android:layout_height="44dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/id1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textPara">
 
 
                     <com.google.android.material.slider.Slider
                         android:id="@+id/para"
-                        android:layout_width="313dp"
-                        android:layout_height="52dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:paddingLeft="0dp"
@@ -226,27 +228,13 @@
                         android:stepSize="1"
                         android:valueFrom="0"
                         android:valueTo="15"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <TextView
-                        android:id="@+id/id1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_textview"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textColor="@android:color/white"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toEndOf="@+id/para"
-                        tools:ignore="MissingConstraints" />
-
-
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="0dp"
@@ -329,10 +317,10 @@
                     app:layout_constraintTop_toBottomOf="@+id/spinner_gestRange" />
 
                 <ProgressBar
-                    android:visibility="invisible"
                     android:id="@+id/prgressBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toTopOf="@+id/switch1"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="-16dp" />
@@ -341,17 +329,16 @@
                     android:id="@+id/constraintLayout2"
                     android:layout_width="0dp"
                     android:layout_height="47dp"
-                    android:layout_marginTop="0dp"
-                    app:layout_constraintEnd_toEndOf="@+id/textView2"
-                    app:layout_constraintStart_toStartOf="@+id/textView2"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/id0"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView2">
 
 
                     <com.google.android.material.slider.Slider
                         android:id="@+id/dilatation"
-                        android:layout_width="313dp"
-                        android:layout_height="52dp"
-
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:paddingLeft="0dp"
@@ -360,24 +347,10 @@
                         android:stepSize="1"
                         android:valueFrom="0"
                         android:valueTo="10"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/id0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_textview"
-                        android:gravity="center"
-                        android:text="  0  "
-                        android:textColor="@android:color/white"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toEndOf="@+id/dilatation"
-                        tools:ignore="MissingConstraints" />
-
-
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
@@ -387,6 +360,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Registo de Parturiente"
+                    android:textSize="14dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.497"
@@ -402,6 +376,41 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/mulhergravidabom2" />
+
+                <TextView
+                    android:id="@+id/id1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/rounded_textview"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.583"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/id0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/rounded_textview"
+                    android:gravity="center"
+                    android:text="  0  "
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.496"
+                    tools:ignore="MissingConstraints" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -148,7 +148,6 @@ public class EmergencyMedicalPersonnelRecyclerAdpter extends RecyclerView.Adapte
         public final TextView txtNameMedico;
         public final TextView textContact;
         public final TextView textApelido;
-        public final TextView txtDetails;
         public View buttonViewOption;
         public  final ImageView imageEditarContact;
         public  final ImageView imageDelete;
@@ -157,13 +156,12 @@ public class EmergencyMedicalPersonnelRecyclerAdpter extends RecyclerView.Adapte
             super(itemView);
             textApelido=(TextView) itemView.findViewById(R.id.idApelidoEditContact);
             imageDelete=(ImageView)itemView.findViewById(R.id.idDelete);
-            imageEditarContact=(ImageView)itemView.findViewById(R.id.idEdit);
-            textContact=(TextView)itemView.findViewById(R.id.idContact);
+            imageEditarContact=(ImageView)itemView.findViewById(R.id.idEditContacto);
+            textContact=(TextView)itemView.findViewById(R.id.idContactoMedico);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtNameMedico = (TextView) itemView.findViewById(R.id.idSetting);
-            txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
-            buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptions);
+            txtNameMedico = (TextView) itemView.findViewById(R.id.idEditContactoMedico);
+            buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptionsNotification);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

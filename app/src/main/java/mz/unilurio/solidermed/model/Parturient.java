@@ -18,6 +18,7 @@ public class Parturient implements Parcelable {
     private String gestatinalRange;
     private Date time;
     private boolean isTransfered;
+    private boolean disparo;
     private String reason;
     private int numeroCama;
     private  String origemTransferencia;
@@ -34,6 +35,14 @@ public class Parturient implements Parcelable {
         this.name = name;
         this.surname = surname;
         this.age = age;
+    }
+
+    public boolean isDisparo() {
+        return disparo;
+    }
+
+    public void setDisparo(boolean disparo) {
+        this.disparo = disparo;
     }
 
     public Parturient(String name, String surname, int age) {

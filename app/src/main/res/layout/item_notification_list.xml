@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_viewNotification"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/fragment_parturientes">
+    android:layout_marginTop="6dp"
+    tools:showIn="@layout/fragment_notificacao">
 
     <RelativeLayout
-        android:layout_marginStart="16dp"
+        android:id="@+id/idRelativeNotification"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_below="@id/idHoraEntrada"
+        <ImageView
+            android:layout_marginStart="4dp"
+            android:layout_below="@id/idHoraAlertaNotification"
             android:id="@+id/txt_icon"
-            android:layout_width="48dp"
-            android:gravity="center"
-            android:textSize="27dp"
-            android:textColor="@color/purple_500"
-            android:layout_height="48dp"
-            tools:text="P"/>
-
+            android:background="@drawable/notification_alert"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            />
 
         <TextView
-
-            android:id="@+id/textViewOptionsParturiente"
+            android:id="@+id/textViewOptionsNotification"
             android:layout_width="30dp"
             android:layout_height="40dp"
             android:layout_alignTop="@id/txt_icon"
@@ -38,14 +39,14 @@
             android:textColor="#0C0000" />
 
         <TextView
-            android:id="@+id/idEditContactoMedico"
+            android:id="@+id/txt_NomeParturienteNotification"
             android:ellipsize="marquee"
             android:singleLine="true"
-            android:layout_toLeftOf="@id/textViewOptionsParturiente"
+            android:layout_toLeftOf="@id/textViewOptionsNotification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/txt_icon"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="30dp"
             android:layout_toEndOf="@id/txt_icon"
             android:textColor="@color/CorParturient"
@@ -56,18 +57,19 @@
             android:id="@+id/idContactoMedico"
             android:singleLine="true"
             android:ellipsize="marquee"
-            android:layout_toLeftOf="@id/textViewOptionsParturiente"
-            android:layout_below="@id/idEditContactoMedico"
-            android:layout_alignStart="@id/idEditContactoMedico"
+            android:layout_toLeftOf="@id/textViewOptionsNotification"
+            android:layout_below="@id/txt_NomeParturienteNotification"
+            android:layout_alignStart="@id/txt_NomeParturienteNotification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/CorParturient"
             android:textSize="14sp"
-            android:text="Alerta Disparado"/>
+            android:text="Idade e Hora de entrada"/>
         <TextView
+            android:layout_marginEnd="16dp"
             android:singleLine="true"
             android:ellipsize="marquee"
-            android:id="@+id/idHoraEntrada"
+            android:id="@+id/idHoraAlertaNotification"
             android:layout_width="wrap_content"
             android:textColor="@color/CorParturient"
             android:layout_alignParentTop="true"

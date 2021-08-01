@@ -3,7 +3,6 @@ package mz.unilurio.solidermed;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Hospitais;
 
 public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyclerAdpter.ViewHolder> implements Filterable {
@@ -131,21 +129,17 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public int currentPosition;
-        public final CardView cardView;
         public final TextView txtTime;
         public final TextView txtNameParturient;
-        public final TextView txtDetails;
+
         public View buttonViewOption;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cardView = (CardView) itemView.findViewById(R.id.card_viewHospitol);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.idSetting);
-            txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
-            buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptions);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.txt_idHospitais);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

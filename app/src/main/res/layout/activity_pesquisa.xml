@@ -21,14 +21,13 @@
             android:src="@drawable/back_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
         <TextView
-            android:textSize="23dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_marginStart="30dp"
             android:textColor="@color/white"
-            android:text= "Pesquisa..."
+            android:text= "Pesquisa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -39,7 +38,7 @@
         android:id="@+id/seacherOllParturiente"
         android:gravity="center"
         app:iconifiedByDefault="false"
-        app:queryHint="Pesquisar..."
+        app:queryHint=" Procurar uma parturiente..."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

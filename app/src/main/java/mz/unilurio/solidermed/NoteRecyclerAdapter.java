@@ -34,7 +34,7 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
     @NotNull
     @Override
     public ViewHolter onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-       View itemView =layoutInflater.inflate(R.layout.item_note_list,parent,false);
+       View itemView =layoutInflater.inflate(R.layout.item_notification_list,parent,false);
         return new ViewHolter(itemView);
     }
 
@@ -60,7 +60,7 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
         public ViewHolter(@NonNull @NotNull View itemView) {
             super(itemView);
             textCourses = (TextView)itemView.findViewById(R.id.txtTime);
-            textTitle = (TextView)itemView.findViewById(R.id.idSetting);
+            textTitle = (TextView)itemView.findViewById(R.id.idEnfermeiro);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

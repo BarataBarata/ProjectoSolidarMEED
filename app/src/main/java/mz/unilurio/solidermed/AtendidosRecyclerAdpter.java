@@ -116,8 +116,8 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
             textCircle=(TextView)itemView.findViewById(R.id.textCircle);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTimeParturiente);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.idSetting);
-            buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptions);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.idEnfermeiro);
+            buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsNotification);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 
             itemView.setOnClickListener(new View.OnClickListener() {

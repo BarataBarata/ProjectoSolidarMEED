@@ -4,11 +4,5 @@
 
     <item
         android:id="@+id/idDesativar"
-        android:title="Editar" />
-    <item
-        android:id="@+id/transferir"
-        android:title="Trasferir" />
-    <item
-        android:id="@+id/item3"
-        android:title="Cancelar" />
+        android:title="Desativar" />
 </menu>

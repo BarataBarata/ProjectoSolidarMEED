@@ -37,6 +37,7 @@ public class ContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+
         SearchView searchView = (SearchView) findViewById(R.id.seacherContact);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

@@ -44,8 +44,8 @@ public class DBManager {
             ourInstance.initializeDoctor();
             ourInstance.initializeIdade();
             ourInstance.initializeCamas();
-            //ourInstance.initializeNotifications();
-            ourInstance.initializeParurientes();
+            ourInstance.initializeNotifications();
+            //ourInstance.initializeParurientes();
             //ourInstance.initializeQueue();
             ourInstance.initializeSettings();
             ourInstance.initializeEmergencyPersonnels();
@@ -53,14 +53,14 @@ public class DBManager {
             ourInstance.initHospitais();
             ourInstance.initializeInfermeira();
             ourInstance.initializeIdadeGestacional();
-            ourInstance.initializeParturientesAtendidos();
+            ///ourInstance.initializeParturientesAtendidos();
         }
         return ourInstance;
     }
 
     private void initializeSettings() {
-        this.settingsList.add(new Settings("Notificacao",1, R.drawable.notification_setting));
-        this.settingsList.add(new Settings("Hora",2,R.drawable.timer_settings));
+        this.settingsList.add(new Settings("Editar, Eliminar e Adicionar Contacto",1, R.drawable.notification_setting));
+        this.settingsList.add(new Settings("Definicoes de intervalo de Tempo de Alerta",2,R.drawable.timer_settings));
     }
 
     public List<Settings> getSettingsList() {
@@ -121,10 +121,10 @@ public class DBManager {
     }
 
     private void initializeInfermeira() {
-        this.userNurseList.add(new UserNurse("Salima","123","1"));
-        this.userNurseList.add(new UserNurse("Fatima","124","2"));
-        this.userNurseList.add(new UserNurse("Maria","124","1"));
-        this.userNurseList.add(new UserNurse("Carla","128","2"));
+        this.userNurseList.add(new UserNurse("Salima","Sara","123","1","845740722"));
+        this.userNurseList.add(new UserNurse("Fatima","Joao","124","2","845740722"));
+        this.userNurseList.add(new UserNurse("Maria","Fito","124","3","845740722"));
+        this.userNurseList.add(new UserNurse("Carla","Dario","128","4","845740722"));
     }
 
     public List<UserNurse> getUserNurseList() {
@@ -132,17 +132,18 @@ public class DBManager {
     }
 
     private void initHospitais() {
-        Hospitais hospitais=new Hospitais();
-
-        this.hospitais.add(new Hospitais("Centro de Saude de Resta","1"));
-        this.hospitais.add(new Hospitais("Centro de Saude de Restawanha","1"));
-        this.hospitais.add(new Hospitais("Centro de Saude de Namina","1"));
-        this.hospitais.add(new Hospitais("Centro de Saude de Congo","1"));
-        this.hospitais.add(new Hospitais("Centro de Saude de Rex","1"));
-        this.hospitais.add(new Hospitais("Centro de Saude de Macomia","1"));
-        this.hospitais.add(new Hospitais("Centro de Saude de Rast","1"));
-        this.hospitais.add(new Hospitais("Centro de Saude de Reslp","1"));
-
+        this.hospitais.add(new Hospitais("Hospital Distrital de Chiúre","1"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Catapua","2"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Ocua","3"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Chiúre Velho","4"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Mmala","5"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Marera","6"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Mazeze","7"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Muege","8"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Nakoto","9"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Namogeliua","10"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Samora Machel","11"));
+        this.hospitais.add(new Hospitais("Centro de saúde de Bilibiza","12"));
     }
 
     public List<Hospitais> getHospitais() {
@@ -286,8 +287,7 @@ public class DBManager {
 }
 
 
-    private void initializeEmergencyPersonnels(){
-        emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
+    private void initializeEmergencyPersonnels(){ emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel3());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
@@ -373,7 +373,6 @@ public class DBManager {
         Measure measure = new Measure(current, dilatation);
         p.setHoraEntrada(current);
         p.setHoraAlerta(measure.getPredictedExpulsionHour());
-        System.out.println("lllllllllllllllllllllllllll : "+measure.getPredictedExpulsionHour());
         return new DeliveryService(p, measure);
     }
 //
@@ -395,10 +394,10 @@ public class DBManager {
 //        return ds;
 //    }
 
-//    public void initializeNotifications() {
+    public void initializeNotifications() {
 //        initNotifications.add(initializeNotification1());
 //        initNotifications.add(initializeNotification2());
-//    }
+    }
 
     public void addNewNotification(List<Notification >notification){
         notifications.addAll(notification);

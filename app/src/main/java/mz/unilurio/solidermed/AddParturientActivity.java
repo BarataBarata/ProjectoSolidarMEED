@@ -2,12 +2,14 @@ package mz.unilurio.solidermed;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -36,6 +38,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Parturient;
@@ -72,12 +76,14 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private boolean isEdit;
     private static  int newidParturiente=1;// por inicializacao
     private Parturient parturient;
+    private static int contTimer=60;
 
     private Validator validator;
     private boolean optionRegist;
     private String nome="";
     private Switch swit;
     private int idParturiente;
+    private TextView textContTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -456,7 +462,6 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
             public void onClick(DialogInterface dialog, int which) {
 
                 validationError();
-                progressBar();
 
                 parturient = new Parturient();
                 parturient.setId(++newidParturiente);
@@ -481,14 +486,21 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
                     parturient.setOrigemTransferencia(null);
                 }
 
-                    DBManager.getInstance().addQueueAndDeliveryService(parturient);
-                    databaseReference=firebaseDatabase.getReference("Parturiente");
-                    databaseReference.child(parturient.getId()+"").setValue(parturient);
+                   if(!isExistParturiente(parturient)){
+                       DBManager.getInstance().addQueueAndDeliveryService(parturient);
+                       databaseReference=firebaseDatabase.getReference("Parturiente");
+                       databaseReference.child(parturient.getId()+"").setValue(parturient);
+                       progressBar();
+                       Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
+
+                   }else {
+                       alertaParturienteExist();
+                   }
 
                 //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
                 swit.setChecked(false);
-                Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
             }
+
 
 
             private void progressBar() {
@@ -520,7 +532,40 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         dialog.show();
     }
 
-    @Override
+
+
+
+    public void alertaParturienteExist(){
+
+        String mensagem="A parturiente "+oUpperFirstCase(parturient.getName())+" "+oUpperFirstCase(parturient.getSurname())+" ja foi registada...";
+
+
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setTitle("Alerta");
+        dialog.setMessage(mensagem);
+        dialog.setCancelable(false);
+        dialog.setIcon(getDrawable(R.drawable.error));
+
+        dialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        dialog.setNegativeButton("", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        dialog.create();
+        dialog.show();
+    }
+
+
+
+
+        @Override
     public void onValidationFailed(List<ValidationError> errors) {
         for (ValidationError error : errors) {
             View view = error.getView();
@@ -533,5 +578,20 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    public boolean isExistParturiente(Parturient newParturient){
+           List<Parturient> list=DBManager.getInstance().getParturients();
+           for(Parturient parturientSeacher:list){
+               if(parturientSeacher.getName().equalsIgnoreCase(newParturient.getName())&&
+                    parturientSeacher.getSurname().equalsIgnoreCase(newParturient.getSurname())){
+                    return true;
+               }
+           }
+        return false;
+    }
+    public  String oUpperFirstCase(String string){
+        String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
+        return  auxString;
     }
 }

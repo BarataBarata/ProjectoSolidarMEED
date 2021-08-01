@@ -1,94 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#E6F1E6"
     android:layout_height="wrap_content"
-    tools:context=".ContactActivity"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_contact">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+    <RelativeLayout
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="16dp">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/txt_icon"
+            android:background="@drawable/list_contacto"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            />
+
+
+        <TextView
+            android:layout_toLeftOf="@id/idEditContacto"
+            android:id="@+id/idEditContactoMedico"
+            android:ellipsize="marquee"
+            android:singleLine="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/txt_icon"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="80dp"
+            android:layout_toEndOf="@id/txt_icon"
+            android:textColor="@color/CorParturient"
+            android:textSize="17sp"
+            tools:text="Nome do medico" />
+        <TextView
+            android:layout_marginTop="4dp"
+            android:id="@+id/idContactoMedico"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:layout_below="@id/idEditContactoMedico"
+            android:layout_alignStart="@id/idEditContactoMedico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/CorParturient"
+            android:textSize="14sp"
+            android:text="845740722"/>
 
-            <TextView
-                android:id="@+id/textCircle"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="46dp"
-                android:layout_height="49dp"
-                android:layout_marginTop="1dp"
-                android:background="@drawable/iconperson"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_alignTop="@id/idEditContactoMedico"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/idDelete"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:srcCompat="@drawable/delete" />
 
-            <TextView
-                android:id="@+id/idSetting"
-                android:layout_width="123dp"
-                android:layout_height="22dp"
-                android:layout_marginStart="8dp"
-                android:gravity="center"
-                android:text="Doctor Masuricio"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/purple_700"
-                android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.009"
-                app:layout_constraintStart_toEndOf="@+id/textCircle"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.533" />
+        <ImageView
+            android:id="@+id/idEditContacto"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toLeftOf="@id/idDelete"
+            app:srcCompat="@drawable/edit_contact" />
 
-            <TextView
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:id="@+id/idContact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="841549769"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.131"
-                app:layout_constraintStart_toEndOf="@+id/idSetting"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.523" />
+    </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/idEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.862"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/edit_contact" />
 
-            <ImageView
-                android:id="@+id/idDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/idEdit"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/delete" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-</FrameLayout>
+</androidx.cardview.widget.CardView>

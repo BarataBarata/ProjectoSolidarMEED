@@ -54,7 +54,7 @@ public class TrasferenciaActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        textNome = findViewById(R.id.nomeParturienteTrasferenciaX);
+        textNome = findViewById(R.id.idNomeParturienteDadosSaida);
         textApelido = findViewById(R.id.apelidoParturienteTrasferenciaX);
         spinnerDestino = findViewById(R.id.destinoTrasferenciaX);
         spinnerMotivo = findViewById(R.id.motivosTrasferenciaX);

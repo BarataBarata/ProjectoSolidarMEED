@@ -11,29 +11,23 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabItem
-            android:icon="@drawable/notification_alert"
-            android:id="@+id/idItemNotificaco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Alerta" />
 
-
         <com.google.android.material.tabs.TabItem
-            android:icon="@drawable/atendidos"
-            android:id="@+id/idItemParturiente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Atendidos" />
+
         <com.google.android.material.tabs.TabItem
-            android:icon="@drawable/mulhergravidabom2"
-            android:id="@+id/idAtendidos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Parturientes" />
@@ -41,14 +35,13 @@
 
 
     <LinearLayout
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="45dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
-            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
