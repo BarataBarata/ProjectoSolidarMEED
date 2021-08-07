@@ -2,9 +2,10 @@ package mz.unilurio.solidermed.model;
 
 public class Privilegios {
 
-    private  boolean addUserNurse;
-    private  boolean removeUserNurse;
-    private  boolean viewTimerChildbirth;
+    private  static boolean viewAll;
+    private  static boolean addUserNurse;
+    private  static boolean removeUserNurse;
+    private  static boolean viewTimerChildbirth;
 
     public boolean isAddUserNurse() {
         return addUserNurse;
@@ -20,6 +21,14 @@ public class Privilegios {
 
     public void setRemoveUserNurse(boolean removeUserNurse) {
         this.removeUserNurse = removeUserNurse;
+    }
+
+    public boolean isViewAll() {
+        return viewAll;
+    }
+
+    public void setViewAll(boolean viewAll) {
+        this.viewAll = viewAll;
     }
 
     public boolean isViewTimerChildbirth() {

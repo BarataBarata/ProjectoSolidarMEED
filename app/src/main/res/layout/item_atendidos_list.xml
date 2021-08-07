@@ -1,92 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/fragment_atendidos">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+    <RelativeLayout
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="16dp">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:layout_below="@id/idHoraSaida"
+            android:id="@+id/txt_iconName"
+            android:layout_width="48dp"
+            android:gravity="center"
+            android:textSize="27dp"
+            android:textColor="@color/purple_500"
+            android:layout_height="48dp"
+            tools:text="P"/>
+
+
+        <TextView
+
+            android:id="@+id/textViewOptionsParturiente"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@id/txt_iconName"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:text="&#8942;"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="#0C0000" />
+
+        <TextView
+            android:id="@+id/idNomeParturienteAtendido"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_toLeftOf="@id/textViewOptionsParturiente"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/txt_iconName"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="30dp"
+            android:layout_toEndOf="@id/txt_iconName"
+            android:textColor="@color/CorParturient"
+            android:textSize="18sp"
+            tools:text="Parturiente" />
+        <TextView
+            android:layout_marginTop="6dp"
+            android:id="@+id/idContactoMedico"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:layout_toLeftOf="@id/textViewOptionsParturiente"
+            android:layout_below="@id/idNomeParturienteAtendido"
+            android:layout_alignStart="@id/idNomeParturienteAtendido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/CorParturient"
+            android:textSize="14sp"
+            android:text="Tipo Atendimendo"/>
+        <TextView
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:id="@+id/idHoraSaida"
+            android:layout_width="wrap_content"
+            android:textColor="@color/CorParturient"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            tools:text="12:40:25 Pm"/>
+    </RelativeLayout>
 
-            <TextView
-                android:layout_marginTop="16dp"
-                android:textStyle="bold"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:gravity="center"
-                android:id="@+id/textCircle"
-                android:background="@drawable/circulo"
-                android:layout_width="48dp"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:text="C"
-                android:layout_height="48dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/txtTimeParturiente"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="11:41 - 19, Junho"
-                android:textAlignment="viewEnd"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Tipo de Atendimento"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.064"
-                app:layout_constraintStart_toEndOf="@+id/textCircle"
-                app:layout_constraintTop_toBottomOf="@+id/idEnfermeiro" />
-
-            <TextView
-                android:id="@+id/idEnfermeiro"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_below="@id/txtTimeParturiente"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="20dp"
-                android:text="Júlia Namovartacha"
-                android:textAlignment="textStart"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                app:layout_constraintEnd_toEndOf="@+id/txtTimeParturiente"
-                app:layout_constraintStart_toEndOf="@+id/textCircle"
-                app:layout_constraintTop_toBottomOf="@+id/txtTimeParturiente" />
-
-            <ImageView
-
-                android:id="@+id/imageView5"
-                android:layout_width="31dp"
-                android:layout_height="31dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/txtTimeParturiente"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/idEnfermeiro"
-                app:layout_constraintTop_toTopOf="@+id/idEnfermeiro"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/atendido" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-</FrameLayout>
+</androidx.cardview.widget.CardView>

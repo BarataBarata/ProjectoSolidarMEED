@@ -38,7 +38,7 @@ public class PesquisaActivity extends AppCompatActivity {
 
 
 
-        SearchView searchView =(SearchView) findViewById(R.id.seacherOllParturiente);
+        SearchView searchView =(SearchView) findViewById(R.id.seacherValitation);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

@@ -15,6 +15,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        tools:listitem="@layout/item_parturientes_list" />
+        tools:listitem="@layout/item_atendidos_list" />
 
 </FrameLayout>

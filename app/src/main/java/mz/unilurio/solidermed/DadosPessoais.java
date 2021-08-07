@@ -70,14 +70,13 @@ public class DadosPessoais extends AppCompatActivity {
         nomeParturiente.setText(parturient.getName());
         idadeParturiente.setText(parturient.getAge()+"");
         dilatacaoParturiente.setText(parturient.getReason()+"");
-        horaActualDaParturiente.setText(format(new Date()));
         idadeDeParidadeDaParturiente.setText(parturient.getPara()+"");
         idadeGestacionalDaParturiente.setText( parturient.getGestatinalRange()+"");
 
         if(parturient.getTime()!=null)
             horaEntradaDaParturiente.setText(format(parturient.getTime()));
-        nomeParturiente.setText(parturient.getName());
-        textApelido.setText(parturient.getSurname());
+        nomeParturiente.setText(parturient.getName()+ " "+ parturient.getSurname());
+
         textDilatacaoInicial.setText(parturient.getReason());
 
         if(parturient.isTransfered()){
@@ -93,13 +92,11 @@ public class DadosPessoais extends AppCompatActivity {
     private void initialize() {
         relativeShow = findViewById(R.id.isTransferidok);
         textDilatacaoInicial = findViewById(R.id.dilatacaoInicialParturientek);
-        textApelido = findViewById(R.id.apelidoParturientek);
         nomeParturiente=(TextView)findViewById(R.id.nomeParturientek);
         idadeParturiente=(TextView)findViewById(R.id.idadeParturientek);
-        dilatacaoParturiente=(TextView)findViewById(R.id.dilatacaoAtualk);
+        dilatacaoParturiente=(TextView)findViewById(R.id.dilatacaoInicialParturientek);
         idadeDeParidadeDaParturiente=(TextView)findViewById(R.id.opcoesDeParidadek);
         idadeGestacionalDaParturiente=(TextView)findViewById(R.id.idadeGestacionalk);
-        horaActualDaParturiente=(TextView)findViewById(R.id.horaAtual);
         horaEntradaDaParturiente=(TextView)findViewById(R.id.horaEntrada);
         origemTrasferenciaParturiente=(TextView)findViewById(R.id.origemTrasferenciak);
         motivosTrasferenciaParturiente=(TextView)findViewById(R.id.motivosTrasferenciak);

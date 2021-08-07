@@ -13,47 +13,53 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projecto_S"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".EditContactActivity"></activity>
-
+        <activity
+            android:name=".ActivityChengePassword"
+            android:theme="@style/Theme.Projecto_S.NoActionBar">
+        </activity>
+        <activity
+            android:name=".ActivityValitationCode"
+            android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
+        <activity
+            android:name=".ActivitySendMenssage"
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
+        <activity
+            android:name=".ActivityViewUserSeacher"
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
+        <activity
+            android:name=".Activity_VerificarPassword"
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
+        <activity android:name=".EditContactActivity" />
         <activity
             android:name=".ContactActivity"
-            android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
-
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
         <activity
             android:name=".PesquisaActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
-
         <activity
             android:name=".SettingActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
-
         <activity
             android:name=".TrasferenciaActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
-
         <activity
             android:name=".HospitaisActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
-
         <activity
             android:name=".AddUserNurseActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
-
         <activity
             android:name=".NurseActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
-
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
-
         <activity
             android:name=".Atendimento"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
-
         <activity
             android:name=".Login"
+            android:label="@string/app_name"
             android:theme="@style/Theme.Projecto_S.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,20 +67,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".DadosPessoais"
             android:label="@string/title_activity_dados_pessoais"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
-
         <activity
             android:name=".AddParturientActivity"
             android:label="@string/title_activity_note"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
-
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
     </application>
 

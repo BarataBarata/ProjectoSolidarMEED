@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/activity_contact">
+    tools:showIn="@layout/activity_nurse">
 
     <RelativeLayout
         android:layout_marginStart="16dp"
@@ -15,24 +15,24 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/txt_icon"
-            android:background="@drawable/list_contacto"
+            android:id="@+id/txt_iconName"
+            android:background="@drawable/nurse"
             android:layout_width="48dp"
             android:layout_height="48dp"
             />
 
 
         <TextView
-            android:layout_toLeftOf="@id/idEditContacto"
-            android:id="@+id/idEditContactoMedico"
+            android:layout_toLeftOf="@id/idEditEnfermeira"
+            android:id="@+id/idEnfermeiro"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/txt_icon"
+            android:layout_alignTop="@id/txt_iconName"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="100dp"
-            android:layout_toEndOf="@id/txt_icon"
+            android:layout_toEndOf="@id/txt_iconName"
             android:textColor="@color/CorParturient"
             android:textSize="18sp"
             tools:text="Nome do medico" />
@@ -41,26 +41,37 @@
             android:id="@+id/idContactoMedico"
             android:singleLine="true"
             android:ellipsize="marquee"
-            android:layout_below="@id/idEditContactoMedico"
-            android:layout_alignStart="@id/idEditContactoMedico"
+            android:layout_below="@id/idEnfermeiro"
+            android:layout_alignStart="@id/idEnfermeiro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/CorParturient"
             android:textSize="14sp"
             android:text="845740722"/>
 
-        <ImageView
-            android:layout_alignTop="@id/idEditContactoMedico"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/idDelete"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:srcCompat="@drawable/delete" />
+
+
+        <TextView
+            android:id="@+id/textViewOptionsParturiente"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:text="&#8942;"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="#0C0000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:layout_marginEnd="20dp"
-            android:layout_toLeftOf="@id/idDelete"
-            android:id="@+id/idEditContacto"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toLeftOf="@id/textViewOptionsParturiente"
+            android:id="@+id/idEditEnfermeira"
             android:layout_width="30dp"
             android:layout_height="30dp"
             app:srcCompat="@drawable/edit_contact" />

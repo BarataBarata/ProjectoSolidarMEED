@@ -15,7 +15,7 @@
 
         <TextView
             android:layout_below="@id/idHoraEntrada"
-            android:id="@+id/txt_icon"
+            android:id="@+id/txt_iconName"
             android:layout_width="48dp"
             android:gravity="center"
             android:textSize="27dp"
@@ -29,7 +29,7 @@
             android:id="@+id/textViewOptionsParturiente"
             android:layout_width="30dp"
             android:layout_height="40dp"
-            android:layout_alignTop="@id/txt_icon"
+            android:layout_alignTop="@id/txt_iconName"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -38,16 +38,16 @@
             android:textColor="#0C0000" />
 
         <TextView
-            android:id="@+id/idEditContactoMedico"
+            android:id="@+id/idNomeParturienteAtendido"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:layout_toLeftOf="@id/textViewOptionsParturiente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/txt_icon"
+            android:layout_alignTop="@id/txt_iconName"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="30dp"
-            android:layout_toEndOf="@id/txt_icon"
+            android:layout_toEndOf="@id/txt_iconName"
             android:textColor="@color/CorParturient"
             android:textSize="18sp"
             tools:text="Parturiente" />
@@ -57,8 +57,8 @@
             android:singleLine="true"
             android:ellipsize="marquee"
             android:layout_toLeftOf="@id/textViewOptionsParturiente"
-            android:layout_below="@id/idEditContactoMedico"
-            android:layout_alignStart="@id/idEditContactoMedico"
+            android:layout_below="@id/idNomeParturienteAtendido"
+            android:layout_alignStart="@id/idNomeParturienteAtendido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/CorParturient"

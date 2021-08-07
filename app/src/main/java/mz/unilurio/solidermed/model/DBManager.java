@@ -13,6 +13,7 @@ public class DBManager {
 
 
     private static DBManager ourInstance = null;
+    private List<SeacherUser> listSeacherUser=new ArrayList<>();
     private List<Parturient>listParturientesAtendidos=new ArrayList<>();
     private List<UserDoctor> userDoctorList=new ArrayList<>();
     private List<Settings> settingsList=new ArrayList<>();
@@ -60,7 +61,8 @@ public class DBManager {
 
     private void initializeSettings() {
         this.settingsList.add(new Settings("Editar, Eliminar e Adicionar Contacto",1, R.drawable.notification_setting));
-        this.settingsList.add(new Settings("Definicoes de intervalo de Tempo de Alerta",2,R.drawable.timer_settings));
+        this.settingsList.add(new Settings("Definicoes de Tempo de Alerta",2,R.drawable.timer_settings));
+        this.settingsList.add(new Settings("Enfermeiras",3,R.drawable.nurses));
     }
 
     public List<Settings> getSettingsList() {
@@ -92,6 +94,15 @@ public class DBManager {
         addParturienteAtendido(parturient2);
     }
 
+
+    public List<SeacherUser> getListSeacherUser() {
+        return listSeacherUser;
+    }
+
+    public void addSeacherUser(SeacherUser seacherUser){
+        this.listSeacherUser.add(seacherUser);
+    }
+
     public List<Parturient> getListParturientesAtendidos() {
         return listParturientesAtendidos;
     }
@@ -102,7 +113,12 @@ public class DBManager {
     }
 
     private void initializeDoctor() {
-        this.userDoctorList.add(new UserDoctor("mario","1234",1));
+        this.userDoctorList.add(new UserDoctor("Barata Estevao Mario","123",1,"845740722"));
+        this.userDoctorList.add(new UserDoctor("Ussimane Killer Wazy","129",2,"847759422"));
+        this.userDoctorList.add(new UserDoctor("Felermino Ali","128",3,"864293652"));
+        this.userDoctorList.add(new UserDoctor("Felermino Rumbi","122",4,"846689637"));
+        this.userDoctorList.add(new UserDoctor("Saide Nilfero","138",5,"849288877"));
+
     }
 
     private void initializeIdadeGestacional() {
@@ -121,10 +137,10 @@ public class DBManager {
     }
 
     private void initializeInfermeira() {
-        this.userNurseList.add(new UserNurse("Salima","Sara","123","1","845740722"));
-        this.userNurseList.add(new UserNurse("Fatima","Joao","124","2","845740722"));
-        this.userNurseList.add(new UserNurse("Maria","Fito","124","3","845740722"));
-        this.userNurseList.add(new UserNurse("Carla","Dario","128","4","845740722"));
+        this.userNurseList.add(new UserNurse("Salima","Sara","123","1","84574072"));
+        this.userNurseList.add(new UserNurse("Fatima","Joao","124","2","84574072"));
+        this.userNurseList.add(new UserNurse("Maria","Fito","124","3","84574072"));
+        this.userNurseList.add(new UserNurse("Carla","Dario","128","4","84574072"));
     }
 
     public List<UserNurse> getUserNurseList() {
@@ -310,6 +326,9 @@ public class DBManager {
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel3(){
         return new EmergencyMedicalPersonnel("Felermino", "Ali", "864293652",4);
     }
+
+
+
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel4(){
 

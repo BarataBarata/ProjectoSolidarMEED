@@ -31,6 +31,7 @@ public class ContactActivity extends AppCompatActivity {
     private List<EmergencyMedicalPersonnel> list;
     private int tamanhoList;
     private  String seacher="";
+    private Timer timer;
 
 
     @Override
@@ -85,13 +86,10 @@ public class ContactActivity extends AppCompatActivity {
 
     }
 
-
-
-
     private void atualizacao() {
 
         handler = new Handler();
-        Timer timer = new Timer();
+        timer = new Timer();
 
         task = new TimerTask() {
             @Override
@@ -107,7 +105,7 @@ public class ContactActivity extends AppCompatActivity {
                 });
             }
         };
-        timer.schedule(task, 0, 900);  // interval of one minute
+        timer.schedule(task, 0, 500);  // interval of one minute
 
     }
 
@@ -121,6 +119,8 @@ public class ContactActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         task.cancel();
+        timer.cancel();
+
     }
 
     public void finish(View view) {

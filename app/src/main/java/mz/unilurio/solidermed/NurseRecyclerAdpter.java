@@ -155,7 +155,7 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
             super(itemView);
             imageEditar=(ImageView)itemView.findViewById(R.id.idEditEnfermeira);
             buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptionsParturiente);
-            textVcontacto=(TextView)itemView.findViewById(R.id.idContactoEnfermeiro);
+            textVcontacto=(TextView)itemView.findViewById(R.id.idContactoMedico);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
             txtNameParturient = (TextView) itemView.findViewById(R.id.idEnfermeiro);

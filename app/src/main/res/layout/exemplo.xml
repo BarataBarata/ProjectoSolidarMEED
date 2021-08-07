@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+
+
+              <androidx.appcompat.widget.Toolbar
+                  android:id="@+id/toolbarDadosPessoais"
+                  android:layout_width="match_parent"
+                  android:layout_height="?attr/actionBarSize"
+                  android:background="?attr/colorPrimary">
+
+                     <ImageView
+                         android:onClick="finish"
+                         android:src="@drawable/back_24"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"/>
+                     <TextView
+                         android:textSize="20dp"
+                         android:textStyle="bold"
+                         style="@style/TextAppearance.AppCompat.Medium"
+                         android:layout_marginStart="30dp"
+                         android:textColor="@color/white"
+                         android:text= " Recupere a Senha"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"/>
+
+              </androidx.appcompat.widget.Toolbar>
+
+              <ImageView
+                   android:id="@+id/idImagem"
+                   android:layout_marginTop="20dp"
+                   android:layout_below="@id/toolbarDadosPessoais"
+                   android:src="@drawable/mulhergravidabom2"
+                   android:layout_width="match_parent"
+                   android:layout_height="50dp"/>
+              <TextView
+                 android:textStyle="bold"
+                  android:gravity="center"
+                  android:id="@+id/txtTitleDados"
+                  android:layout_marginTop="15dp"
+                  android:layout_below="@id/idImagem"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="Informações pessoais  " />
+              <TextView
+                  android:layout_marginStart="16dp"
+                  android:text="Nome : "
+                  android:layout_marginTop="40dp"
+                  android:layout_below="@+id/txtTitleDados"
+                  android:id="@+id/txtNome"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+              <TextView
+                  android:ellipsize="marquee"
+                  android:singleLine="true"
+                  android:layout_marginStart="16dp"
+                  android:layout_marginEnd="16dp"
+                  android:layout_toEndOf="@id/txtNome"
+                  android:layout_alignTop="@id/txtNome"
+                  android:text="Barata Estevao Mario Barata"
+                  android:id="@+id/nomeParturientek"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+                  android:text="Idade da parturiente : "
+                  android:layout_marginStart="16dp"
+                  android:layout_marginTop="10dp"
+                  android:layout_below="@id/txtNome"
+                  android:id="@+id/txtIdade"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+                  android:id="@+id/idadeParturientek"
+                  android:layout_marginEnd="16dp"
+                  android:text="25 anos"
+                  android:layout_marginStart="16dp"
+                  android:layout_toEndOf="@id/txtIdade"
+                  android:layout_alignTop="@id/txtIdade"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+                  android:id="@+id/txtGestacional"
+                  android:text="Idade gestacional : "
+                  android:layout_marginTop="10dp"
+                  android:layout_marginEnd="16dp"
+                  android:layout_marginStart="16dp"
+                  android:layout_below="@id/txtIdade"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+                  android:id="@+id/idadeGestacionalk"
+                  android:layout_marginEnd="16dp"
+                  android:text="23 a 23 semanas"
+                  android:ellipsize="marquee"
+                  android:singleLine="true"
+                  android:layout_marginStart="16dp"
+                  android:layout_toEndOf="@id/txtGestacional"
+                  android:layout_alignTop="@id/txtGestacional"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+                  android:id="@+id/txtParidade"
+                  android:layout_marginTop="10dp"
+                  android:text="Opções de paridade"
+                  android:layout_marginEnd="16dp"
+                  android:layout_marginStart="16dp"
+                  android:layout_below="@id/txtGestacional"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+                  android:text="Opcoes De paridade"
+                  android:id="@+id/opcoesDeParidadek"
+                  android:layout_marginEnd="16dp"
+                  android:layout_marginStart="16dp"
+                  android:layout_toEndOf="@id/txtParidade"
+                  android:layout_alignTop="@id/txtParidade"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/txtDilatacao"
+                    android:text="Dilatação :"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_below="@id/txtParidade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+              <TextView
+                  android:text="4 cm"
+                  android:layout_toEndOf="@id/txtDilatacao"
+                  android:layout_alignTop="@id/txtDilatacao"
+                  android:id="@+id/dilatacaoInicialParturientek"
+                  android:layout_marginEnd="16dp"
+                  android:layout_marginStart="16dp"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+                  android:layout_marginStart="16dp"
+                  android:layout_marginTop="10dp"
+                  android:layout_below="@id/txtDilatacao"
+                  android:id="@+id/txtHoraEntrada"
+                  android:text="Hora de Entrada :"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+                  android:layout_marginStart="16dp"
+                  android:layout_alignTop="@id/txtHoraEntrada"
+                  android:layout_toEndOf="@id/txtHoraEntrada"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+                  android:text="12:56:56 pm"
+                  android:id="@+id/horaEntrada"
+                  android:ellipsize="marquee"
+                  android:singleLine="true"
+                  android:layout_marginEnd="16dp"
+                  android:layout_marginStart="16dp"
+                  android:layout_toEndOf="@id/txtHoraEntrada"
+                  android:layout_alignTop="@id/txtHoraEntrada"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+                  android:layout_marginTop="10dp"
+                  android:text="Hora de atendimendo :"
+                  android:layout_marginStart="16dp"
+                  android:layout_below="@id/txtHoraEntrada"
+                  android:id="@+id/idAtendimento"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+              <TextView
+
+                  android:text="14:15:25"
+                  android:ellipsize="marquee"
+                  android:singleLine="true"
+                  android:layout_marginStart="16dp"
+                  android:layout_toEndOf="@id/idAtendimento"
+                  android:layout_alignTop="@id/idAtendimento"
+                  android:id="@+id/idHoraAtendimento"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+
+              <RelativeLayout
+                  android:id="@+id/isTransferidok"
+                  android:layout_marginTop="30dp"
+                  android:layout_below="@id/idAtendimento"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+                 <TextView
+                     android:id="@+id/txtTitleTrasferencia"
+                     android:textStyle="bold"
+                     android:gravity="center"
+                     android:text="Informações de Transferência"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"/>
+                     <TextView
+                         android:text="Origem Transferência : "
+                         android:layout_marginStart="16dp"
+                         android:layout_marginTop="20dp"
+                         android:layout_below="@id/txtTitleTrasferencia"
+                         android:id="@+id/origTra"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"/>
+                     <TextView
+                         android:id="@+id/origemTrasferenciak"
+                         android:text="Origem da Trasferencia"
+                         android:layout_marginStart="16dp"
+                         android:layout_toEndOf="@id/origTra"
+                         android:ellipsize="marquee"
+                         android:singleLine="true"
+                         android:layout_alignTop="@id/origTra"
+                         android:layout_width="wrap_content"
+                         android:layout_marginEnd="16dp"
+                         android:layout_height="wrap_content"/>
+                     <TextView
+                         android:text="Motivos da Transferência :"
+                         android:layout_marginTop="10dp"
+                         android:layout_marginStart="16dp"
+                         android:layout_below="@id/origTra"
+                         android:id="@+id/idMotivo"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"/>
+                     <TextView
+                         android:ellipsize="marquee"
+                         android:singleLine="true"
+                         android:layout_marginEnd="16dp"
+                         android:text="Motivos da Trasferencia"
+                         android:layout_marginStart="16dp"
+                         android:layout_toEndOf="@id/idMotivo"
+                         android:layout_alignTop="@id/idMotivo"
+                         android:id="@+id/motivosTrasferenciak"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"/>
+
+              </RelativeLayout>
+
+       </RelativeLayout>
+
+</ScrollView>

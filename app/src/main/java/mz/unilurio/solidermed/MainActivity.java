@@ -71,6 +71,7 @@ import mz.unilurio.solidermed.model.Hospitais;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.PageAdapder;
 import mz.unilurio.solidermed.model.Parturient;
+import mz.unilurio.solidermed.model.Privilegios;
 import mz.unilurio.solidermed.model.Queue;
 import mz.unilurio.solidermed.ui.fragments.NotificationFragment;
 import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
@@ -79,7 +80,7 @@ import mz.unilurio.solidermed.utils.Helper;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    TabLayout tabLayout;
+    private TabLayout tabLayout;
     private AppBarConfiguration mAppBarConfiguration;
     private RecyclerView recyclerItems;
     private RecyclerView recyclerParturientes;
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setVisibility(View.INVISIBLE);
         notificationManagerCompat=NotificationManagerCompat.from(this);
         textNomeHospital = findViewById(R.id.idCentroSaudeTitle);
+
         if(getIntent().getStringExtra("nomeHospital")!=null) {
             textNomeHospital.setText(getIntent().getStringExtra("nomeHospital"));
         }else{
@@ -219,11 +221,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem menuDefinition=menu.findItem(R.id.idDefinicoes);
         //MenuItem m=menu.findItem(R.id.app_bar_search);
         //m.setVisible(visible);
-
+        if(!new Privilegios().isViewAll()) {
+            menuDefinition.setVisible(false);
+        }
 
         menuDefinition.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -260,9 +265,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.id_addInfermeira) {
-               startActivity(new Intent(MainActivity.this, NurseActivity.class));
-        }
 
         if (id == R.id.id_out) {
 
@@ -463,6 +465,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
      public void centroSaude(View view) {
+         if(new Privilegios().isViewAll()) {
              ProgressDialog progressBar;
              progressBar = new ProgressDialog(MainActivity.this);
              progressBar.setTitle("Aguarde");
@@ -477,6 +480,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                      startActivity(intent);
                  }
              }, Long.parseLong("400"));
+         }
     }
 
 

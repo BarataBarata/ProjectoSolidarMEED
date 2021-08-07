@@ -228,9 +228,9 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
             super(itemView);
             horaEntrada=(TextView)itemView.findViewById(R.id.idHoraEntrada);
             horaAlerta=(TextView) itemView.findViewById(R.id.idContactoMedico);
-            textCircle=(TextView)itemView.findViewById(R.id.txt_icon);
+            textCircle=(TextView)itemView.findViewById(R.id.txt_iconName);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.idEditContactoMedico);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.idNomeParturienteAtendido);
             buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsParturiente);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 

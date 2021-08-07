@@ -11,6 +11,7 @@ public class Parturient implements Parcelable {
     private int id;
     private Date horaEntrada;
     private Date horaAlerta;
+    private Date horaAtendimento;
     private String name;
     private String surname;
     private int age;
@@ -35,6 +36,14 @@ public class Parturient implements Parcelable {
         this.name = name;
         this.surname = surname;
         this.age = age;
+    }
+
+    public Date getHoraAtendimento() {
+        return horaAtendimento;
+    }
+
+    public void setHoraAtendimento(Date horaAtendimento) {
+        this.horaAtendimento = horaAtendimento;
     }
 
     public boolean isDisparo() {

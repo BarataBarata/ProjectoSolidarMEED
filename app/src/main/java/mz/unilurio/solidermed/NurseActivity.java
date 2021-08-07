@@ -7,15 +7,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 import mz.unilurio.solidermed.model.Hospitais;
 import mz.unilurio.solidermed.model.UserNurse;
 
@@ -23,6 +28,13 @@ public class NurseActivity extends AppCompatActivity {
      private RecyclerView view;
     private    LinearLayoutManager nurseLinearLayoutManager;
     private NurseRecyclerAdpter nurseRecyclerAdpter1;
+    private Handler handler;
+    private TimerTask task;
+    private List<UserNurse> auxList;
+    private List<UserNurse> list;
+    private int tamanhoList;
+    private  String seacher="";
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +51,9 @@ public class NurseActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                nurseRecyclerAdpter1.getFilter().filter(newText);
+                seacher=newText;
+                buscaAtualizacao(newText);
+                //nurseRecyclerAdpter1.getFilter().filter(newText);
                 return false;
             }
         });
@@ -57,22 +71,70 @@ public class NurseActivity extends AppCompatActivity {
         });
 
     }
+    private void atualizacao() {
+
+        handler = new Handler();
+        timer = new Timer();
+
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            initializeteDisplayContextNurses();
+                        } catch (Exception e) {
+                            // error, do something
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(task, 0, 900);  // interval of one minute
+
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        nurseRecyclerAdpter1.getFilter().filter("");
+        task.cancel();
+        timer.cancel();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        atualizacao();
     }
 
     public void initializeteDisplayContextNurses(){
+        list=DBManager.getInstance().getUserNurseList();
+        buscaAtualizacao(seacher);
         view = (RecyclerView)findViewById(R.id.listaInfermeira);
         nurseLinearLayoutManager = new LinearLayoutManager(this);
-        List<UserNurse> userNurses= DBManager.getInstance().getUserNurseList();
-        nurseRecyclerAdpter1 = new NurseRecyclerAdpter(this,userNurses);
+        nurseRecyclerAdpter1 = new NurseRecyclerAdpter(this,auxList);
         view.setLayoutManager(nurseLinearLayoutManager);
         view.setAdapter(nurseRecyclerAdpter1);
     }
 
+    public void buscaAtualizacao(String seacher){
+
+        if(seacher.isEmpty()){
+            auxList=new ArrayList<>();
+            list = DBManager.getInstance().getUserNurseList();
+            auxList.addAll(list);
+        }else {
+            auxList=new ArrayList<>();
+            for(UserNurse userNurse: list){
+                if(userNurse.getNomeNurse().toLowerCase().contains(seacher.toString().toLowerCase())){
+                    auxList.add(userNurse);
+                }
+            }
+            System.out.println(auxList.size());
+        }
+
+
+    }
     public void finish(View view) {
         finish();
     }

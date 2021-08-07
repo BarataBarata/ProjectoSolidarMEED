@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import mz.unilurio.solidermed.databinding.ActivityAddUserNurse2Binding;
 import mz.unilurio.solidermed.model.Settings;
 
 public class SettingsRecyclerAdpter extends RecyclerView.Adapter<SettingsRecyclerAdpter.ViewHolder> implements Filterable {
@@ -132,7 +133,11 @@ public class SettingsRecyclerAdpter extends RecyclerView.Adapter<SettingsRecycle
                 switch (idSetting){
 
                     case 1: {
-                        context.startActivity(new Intent(context,ContactActivity.class)); break;}
+                        context.startActivity(new Intent(context,ContactActivity.class)); break;
+                    }
+                    case 3: {
+                        context.startActivity(new Intent(context, NurseActivity.class)); break;
+                    }
                 }
 
 

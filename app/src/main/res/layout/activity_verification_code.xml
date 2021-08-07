@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ActivityValitationCode">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarDadosPessoais"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
+
+            <ImageView
+                android:onClick="finish"
+                android:src="@drawable/back_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="20dp"
+                android:textStyle="bold"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginStart="30dp"
+                android:textColor="@color/white"
+                android:text= " Confirmacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <TextView
+            android:gravity="center"
+            android:layout_marginTop="50dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_below="@id/toolbarDadosPessoais"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:id="@+id/idTitleConfirmation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_below="@id/idTitleConfirmation"
+            android:layout_marginTop="10dp"
+            android:id="@+id/seacherValitation"
+            android:gravity="center"
+            android:hint="__ __ __ __ __ __"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#FF1807"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/seacherValitation"
+            android:id="@+id/txtAlertSeacherValitation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <RelativeLayout
+            android:layout_below="@id/txtAlertSeacherValitation"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_marginTop="10dp"
+                android:id="@+id/trocarPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/botaoentrareffect"
+                android:gravity="center"
+                android:onClick="valitationUser"
+                android:text="Confirmar Codigo"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+</ScrollView>

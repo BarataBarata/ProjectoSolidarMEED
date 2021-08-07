@@ -160,7 +160,7 @@ public class EmergencyMedicalPersonnelRecyclerAdpter extends RecyclerView.Adapte
             textContact=(TextView)itemView.findViewById(R.id.idContactoMedico);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtNameMedico = (TextView) itemView.findViewById(R.id.idEditContactoMedico);
+            txtNameMedico = (TextView) itemView.findViewById(R.id.idNomeParturienteAtendido);
             buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptionsNotification);
 
             itemView.setOnClickListener(new View.OnClickListener() {

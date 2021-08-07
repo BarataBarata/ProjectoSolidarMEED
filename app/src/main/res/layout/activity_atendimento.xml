@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"/>
             <TextView
-                android:id="@+id/idNomeDadosSaida"
+                android:id="@+id/nomeParturientek"
                 android:textStyle="bold"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_marginTop="12dp"

@@ -53,13 +53,9 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Parturient parturient =  originalListParturientes.get(position);
         holder.currentPosition = position;
-        //holder.cardView.setCardBackgroundColor(parturient.getColour());
+        holder.txtHoraAtendido.setText("Saida : "+format(parturient.getHoraAtendimento()));
         holder.textCircle.setText((parturient.getName().charAt(0)+"").toUpperCase());
-        //  holder.textCircle.setBackgroundTintList(DBManager.getInstance().getColors().get(countColor++));
-        //holder.txtTime.setText(format(DBManager.getInstance().getParturients().get(position).getTime()));
         holder.txtNameParturient.setText(oUpperFirstCase(parturient.getName())+ " "+oUpperFirstCase(parturient.getSurname()));
-        //holder.txtDetails.setText("idade: "+DBManager.getInstance().getParturients().get(position).getAge());
-        //holder.txtDetails.setText("idade: "+parturient.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ parturient.getDeliveryService().getMeasure().peek().getInitialDilatation()+"  |  Nº de cama: 3");
     }
 
     @Override
@@ -105,7 +101,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
     public class ViewHolder extends RecyclerView.ViewHolder {
         public int currentPosition;
         public final CardView cardView;
-        public final TextView txtTime;
+        public final TextView txtHoraAtendido;
         public final TextView txtNameParturient;
         public final TextView textCircle;
         public View buttonViewOption;
@@ -113,10 +109,10 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textCircle=(TextView)itemView.findViewById(R.id.textCircle);
+            textCircle=(TextView)itemView.findViewById(R.id.txt_iconName);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            txtTime = (TextView) itemView.findViewById(R.id.txtTimeParturiente);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.idEnfermeiro);
+            txtHoraAtendido = (TextView) itemView.findViewById(R.id.idHoraSaida);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.idNomeParturienteAtendido);
             buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsNotification);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 

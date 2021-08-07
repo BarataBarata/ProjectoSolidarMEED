@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +27,7 @@ public class Atendimento extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atendimento);
-        textNomeParturiente= findViewById(R.id.idNomeDadosSaida);
+        textNomeParturiente= findViewById(R.id.nomeParturientek);
 
         if(getIntent().getStringExtra("idParturiente")!=null){
             idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
@@ -45,6 +44,18 @@ public class Atendimento extends AppCompatActivity {
 
     }
 
+    public void setHoraAtendimento(Parturient parturient){
+           parturient.setHoraAtendimento(new Date());
+    }
+    public void removParturiente(){
+        for(Parturient parturient: DBManager.getInstance().getParturients()){
+            if(parturient.getId()==idParturiente){
+                DBManager.getInstance().getParturients().remove(parturient);
+                break;
+            }
+        }
+
+    }
     public void removNotification(){
         for(Notification parturient: DBManager.getInstance().getNotifications()){
             if(Integer.parseInt(parturient.getId())==idParturiente){
@@ -90,7 +101,9 @@ public class Atendimento extends AppCompatActivity {
                     @Override
                     public void run() {
                         progressBar.dismiss();
+                        setHoraAtendimento(newParturient);
                         DBManager.getInstance().addParturienteAtendido(newParturient);
+                        removParturiente();
                         removNotification();
                         finish();
                     }

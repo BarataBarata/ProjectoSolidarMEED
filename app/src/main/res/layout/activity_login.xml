@@ -21,7 +21,7 @@
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="match_parent"
-                    android:layout_height="103dp"
+                    android:layout_height="80dp"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="39dp"
                     android:src="@drawable/login" />
@@ -32,7 +32,7 @@
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="22dp"
+                    android:textSize="16dp"
                     android:text="Autenticação "/>
             </RelativeLayout>
 
@@ -52,24 +52,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="240dp"
+                android:layout_marginTop="180dp"
                 android:layout_marginEnd="50dp"
-                android:hint=" Nome :"
-                android:textColorHint="#0D653A"
+                app:endIconDrawable="@drawable/partu"
+                android:hint="Usuario :"
+                app:endIconMode="password_toggle"
                 app:counterEnabled="true"
                 app:counterMaxLength="40"
-                app:endIconMode="clear_text"
                 app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/id_input_password"
@@ -77,13 +77,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="340dp"
+                android:layout_marginTop="280dp"
                 android:layout_marginEnd="50dp"
                 android:hint="Senha :"
-                android:textColorHint="#0D653A"
-
+                app:endIconTint="@color/purple_500"
+                app:counterMaxLength="30"
                 app:counterEnabled="true"
-                app:counterMaxLength="15"
                 app:endIconMode="password_toggle"
                 app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,6 +90,8 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+
+                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -104,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:gravity="center"
-                android:layout_marginTop="500dp"
+                android:layout_marginTop="440dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -114,29 +115,64 @@
 
 
                 <RelativeLayout
-                    android:layout_width="173dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <Button
                         android:onClick="Entrar"
-                        android:id="@+id/butao_entrar"
+                        android:id="@+id/trocarPassword"
                         android:textColor="@color/white"
-                        android:layout_width="173dp"
-                        android:layout_height="55dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/botaoentrareffect"
                         android:gravity="center"
                         android:text="Entrar"
-                        android:textSize="20dp" />
+                        android:textSize="14dp" />
                 </RelativeLayout>
             </LinearLayout>
+
+            <TextView
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:textColor="#EA1C0D"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/id_input_password"
+                android:id="@+id/idAlertaPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+
             <RelativeLayout
-                android:layout_marginTop="460dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/idAlertaPassword"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_marginLeft="50dp"
+                    android:id="@+id/idtxt1"
+                    android:text="Se esqueceu da senha? "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_toRightOf="@id/idtxt1"
+                    android:id="@+id/idVerificarSenha"
+                    android:ellipsize="marquee"
+                    android:onClick="confirmarPassword"
+                    android:singleLine="true"
                     android:textColor="#448AFF"
-                    android:text="Se esqueceu da senha ?"
+                    android:text="cliqui aqui "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_toRightOf="@id/idVerificarSenha"
+                    android:id="@+id/txt3"
+                    android:text="para recuperar"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </RelativeLayout>

@@ -461,44 +461,51 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                validationError();
+                if(verificationNumberName(txtNameParturient) &&
+                        verificationNumberName(textApelido)) {
 
-                parturient = new Parturient();
-                parturient.setId(++newidParturiente);
+                    validationError();
 
-                parturient.setName(txtNameParturient.getText().toString());
-                parturient.setSurname(textApelido.getText().toString());
+                    parturient = new Parturient();
+                    parturient.setId(++newidParturiente);
 
-                String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
-                parturient.setAge(Integer.parseInt(age));
-                parturient.setTime(new Date());
-                parturient.setGestatinalRange(spinner.getSelectedItem()+"");
-                parturient.setPara((int) para.getValue());
-                parturient.setReason(mSliderDilatation.getValue()+"");
+                    parturient.setName(txtNameParturient.getText().toString());
+                    parturient.setSurname(textApelido.getText().toString());
 
-                if(isTrasferencia){
-                    parturient.setTransfered(true);
-                    parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
-                    parturient.setOrigemTransferencia(spinnerSanitaria.getSelectedItem().toString());
-                }else {
-                    parturient.setTransfered(false);
-                    parturient.setMotivosDaTrasferencia(null);
-                    parturient.setOrigemTransferencia(null);
+                    String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
+                    parturient.setAge(Integer.parseInt(age));
+                    parturient.setTime(new Date());
+                    parturient.setGestatinalRange(spinner.getSelectedItem() + "");
+                    parturient.setPara((int) para.getValue());
+                    parturient.setReason(mSliderDilatation.getValue() + "");
+
+                    if (isTrasferencia) {
+                        parturient.setTransfered(true);
+                        parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
+                        parturient.setOrigemTransferencia(spinnerSanitaria.getSelectedItem().toString());
+                    } else {
+                        parturient.setTransfered(false);
+                        parturient.setMotivosDaTrasferencia(null);
+                        parturient.setOrigemTransferencia(null);
+                    }
+
+                    if (!isExistParturiente(parturient)) {
+                        DBManager.getInstance().addQueueAndDeliveryService(parturient);
+                        databaseReference = firebaseDatabase.getReference("Parturiente");
+                        databaseReference.child(parturient.getId() + "").setValue(parturient);
+                        progressBar();
+                        Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
+
+                    } else {
+                        alertaParturienteExist();
+                    }
+
+                    //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
+                    swit.setChecked(false);
+                }else{
+                    Toast.makeText(getApplicationContext(), " O Nome não pode conter números", Toast.LENGTH_LONG).show();
+
                 }
-
-                   if(!isExistParturiente(parturient)){
-                       DBManager.getInstance().addQueueAndDeliveryService(parturient);
-                       databaseReference=firebaseDatabase.getReference("Parturiente");
-                       databaseReference.child(parturient.getId()+"").setValue(parturient);
-                       progressBar();
-                       Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
-
-                   }else {
-                       alertaParturienteExist();
-                   }
-
-                //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
-                swit.setChecked(false);
             }
 
 
@@ -593,5 +600,19 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     public  String oUpperFirstCase(String string){
         String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
         return  auxString;
+    }
+
+
+    public boolean verificationNumberName(TextView txtnome){
+
+       String nome=txtnome.getText().toString();
+        for (int i = 0; i < nome.length(); i++) {
+            char i1 = nome.charAt(i);
+            if(i1 <='9' && i1 >='0'){
+                txtnome.setError("Não pode conter números");
+                return false;
+            }
+        }
+    return true;
     }
 }

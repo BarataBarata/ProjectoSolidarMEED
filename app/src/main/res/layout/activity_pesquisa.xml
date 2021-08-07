@@ -35,7 +35,7 @@
 
     <androidx.appcompat.widget.SearchView
         android:layout_marginTop="10dp"
-        android:id="@+id/seacherOllParturiente"
+        android:id="@+id/seacherValitation"
         android:gravity="center"
         app:iconifiedByDefault="false"
         app:queryHint=" Procurar uma parturiente..."

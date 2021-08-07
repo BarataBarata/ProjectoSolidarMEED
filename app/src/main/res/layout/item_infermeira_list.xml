@@ -1,98 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#E6F1E6"
     android:layout_height="wrap_content"
-    tools:context=".NurseActivity"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_nurse">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+    <RelativeLayout
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="16dp">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/txt_iconName"
+            android:background="@drawable/nurse"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            />
+
+
+        <TextView
+            android:layout_toLeftOf="@id/idEditEnfermeira"
+            android:id="@+id/idEnfermeiro"
+            android:ellipsize="marquee"
+            android:singleLine="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/txt_iconName"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="100dp"
+            android:layout_toEndOf="@id/txt_iconName"
+            android:textColor="@color/CorParturient"
+            android:textSize="18sp"
+            tools:text="Nome do medico" />
+        <TextView
+            android:layout_marginTop="6dp"
+            android:id="@+id/idContactoMedico"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:layout_below="@id/idEnfermeiro"
+            android:layout_alignStart="@id/idEnfermeiro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/CorParturient"
+            android:textSize="14sp"
+            android:text="845740722"/>
 
-            <TextView
-                android:id="@+id/textCircle"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="46dp"
-                android:layout_height="49dp"
-                android:layout_marginTop="1dp"
-                android:background="@drawable/nurse"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/idEnfermeiro"
-                android:layout_width="0dp"
-                android:layout_height="22dp"
-                android:layout_marginStart="8dp"
-                android:gravity="center"
-                android:text="Barata Barata"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/purple_700"
-                android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textCircle"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.555" />
 
-            <TextView
-                android:id="@+id/idContactoEnfermeiro"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="841549769"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/idEditEnfermeira"
-                app:layout_constraintHorizontal_bias="0.033"
-                app:layout_constraintStart_toEndOf="@+id/idEnfermeiro"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textViewOptionsParturiente"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:text="&#8942;"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="#0C0000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/idEditEnfermeira"
-                android:layout_width="27dp"
-                android:layout_height="31dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewOptionsParturiente"
-                app:layout_constraintHorizontal_bias="0.974"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.555"
-                app:srcCompat="@drawable/edit_contact" />
+        <ImageView
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toLeftOf="@id/textViewOptionsParturiente"
+            android:id="@+id/idEditEnfermeira"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
+            app:srcCompat="@drawable/edit_contact" />
 
-            <TextView
-                android:id="@+id/textViewOptionsParturiente"
-                android:layout_width="32dp"
-                android:layout_height="68dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:text="&#8942;"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textColor="#0C0000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/idEnfermeiro"
-                app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
-</FrameLayout>
+</androidx.cardview.widget.CardView>

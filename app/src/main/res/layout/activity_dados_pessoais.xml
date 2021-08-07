@@ -1,471 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".DadosPessoais">
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarDadosPessoais"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
+        android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabEdit"
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:src="@drawable/edit_contact"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="#08C368" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarDadosPessoais"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary">
+
+            <ImageView
+                android:onClick="finish"
+                android:src="@drawable/back_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="20dp"
+                android:textStyle="bold"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginStart="30dp"
+                android:textColor="@color/white"
+                android:text= "Dados da Parturiente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <ImageView
-            android:onClick="finish"
-            android:src="@drawable/back_24"
+            android:id="@+id/idImagem"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/toolbarDadosPessoais"
+            android:src="@drawable/mulhergravidabom2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+        <TextView
+            android:textStyle="bold"
+            android:gravity="center"
+            android:id="@+id/txtTitleDados"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/idImagem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Informações pessoais  " />
+        <TextView
+            android:layout_marginStart="16dp"
+            android:text="Nome : "
+            android:layout_marginTop="40dp"
+            android:layout_below="@+id/txtTitleDados"
+            android:id="@+id/txtNome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_marginStart="30dp"
-            android:textColor="@color/white"
-            android:text= "Dados Pessoais"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@id/txtNome"
+            android:layout_alignTop="@id/txtNome"
+            android:text="Barata Estevao Mario Barata"
+            android:id="@+id/nomeParturientek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="Idade da parturiente : "
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/txtNome"
+            android:id="@+id/txtIdade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/idadeParturientek"
+            android:layout_marginEnd="16dp"
+            android:text="25 anos"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/txtIdade"
+            android:layout_alignTop="@id/txtIdade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txtGestacional"
+            android:text="Idade gestacional : "
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_below="@id/txtIdade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/idadeGestacionalk"
+            android:layout_marginEnd="16dp"
+            android:text="23 a 23 semanas"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/txtGestacional"
+            android:layout_alignTop="@id/txtGestacional"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txtParidade"
+            android:layout_marginTop="10dp"
+            android:text="Opções de paridade"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_below="@id/txtGestacional"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="Opcoes De paridade"
+            android:id="@+id/opcoesDeParidadek"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/txtParidade"
+            android:layout_alignTop="@id/txtParidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/txtDilatacao"
+            android:text="Dilatação :"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_below="@id/txtParidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="4 cm"
+            android:layout_toEndOf="@id/txtDilatacao"
+            android:layout_alignTop="@id/txtDilatacao"
+            android:id="@+id/dilatacaoInicialParturientek"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/txtDilatacao"
+            android:id="@+id/txtHoraEntrada"
+            android:text="Hora de Entrada :"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_marginStart="16dp"
+            android:layout_alignTop="@id/txtHoraEntrada"
+            android:layout_toEndOf="@id/txtHoraEntrada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="12:56:56 pm"
+            android:id="@+id/horaEntrada"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/txtHoraEntrada"
+            android:layout_alignTop="@id/txtHoraEntrada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_marginTop="10dp"
+            android:text="Hora de atendimendo :"
+            android:layout_marginStart="16dp"
+            android:layout_below="@id/txtHoraEntrada"
+            android:id="@+id/idAtendimento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+
+            android:text="14:15:25"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/idAtendimento"
+            android:layout_alignTop="@id/idAtendimento"
+            android:id="@+id/idHoraAtendimento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
 
-    </androidx.appcompat.widget.Toolbar>
-
-
-        <ScrollView
-            android:id="@+id/scrollView4"
+        <RelativeLayout
+            android:id="@+id/isTransferidok"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/idAtendimento"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RelativeLayout
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txtTitleTrasferencia"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Informações de Transferência"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="Origem Transferência : "
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/txtTitleTrasferencia"
+                android:id="@+id/origTra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/origemTrasferenciak"
+                android:text="Origem da Trasferencia"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/origTra"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:layout_alignTop="@id/origTra"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="Motivos da Transferência :"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_below="@id/origTra"
+                android:id="@+id/idMotivo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:layout_marginEnd="16dp"
+                android:text="Motivos da Trasferencia"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@id/idMotivo"
+                android:layout_alignTop="@id/idMotivo"
+                android:id="@+id/motivosTrasferenciak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_anchorGravity="center">
+        </RelativeLayout>
+    </RelativeLayout>
+      <TextView
+          android:layout_marginTop="700dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="38dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.498"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/mulhergravidabom2" />
-
-                    <TextView
-                        android:id="@+id/textTituloParturiente2"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:gravity="center"
-                        android:text="Informacoes da Parturiente"
-                        android:textColor="#938989"
-                        android:textSize="20dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-                    <TextView
-                        android:id="@+id/textTituloParturiented"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="52dp"
-                        android:text="Nome"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiente2" />
-
-                    <TextView
-                        android:id="@+id/textTituloParturiented8"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Apelido"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiented" />
-
-                    <TextView
-                        android:id="@+id/textTituloParturiented9"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Idade"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiented8" />
-
-                    <TextView
-                        android:id="@+id/textTituloParturiented10"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Dilatacao Inicial :"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiented9" />
-
-                    <TextView
-                        android:id="@+id/textTituloParturiented11"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Dilatacao Atual :"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiented10" />
-
-                    <TextView
-                        android:id="@+id/textTituloParturiented12"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Idade Gestacional:"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiented11" />
-
-                    <TextView
-                        android:id="@+id/textTituloParturiented13"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Opcoes de Paridade :"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiented12" />
-
-                    <TextView
-                        android:id="@+id/textTituloParturiented14"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Hora de Entrada :"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiented13" />
-
-                    <TextView
-                        android:id="@+id/nomeParturientek"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="116dp"
-                        android:layout_marginTop="52dp"
-                        android:text="Nome Da Parturiente"
-                        android:textSize="16dp"
-
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toEndOf="@+id/textTituloParturiented"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiente2" />
-
-                    <TextView
-                        android:id="@+id/apelidoParturientek"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="104dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Apelido da Parturiente"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toEndOf="@+id/textTituloParturiented8"
-                        app:layout_constraintTop_toBottomOf="@+id/nomeParturientek" />
-
-                    <TextView
-                        android:id="@+id/idadeParturientek"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="120dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Idade da Parturiente"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toEndOf="@+id/textTituloParturiented9"
-                        app:layout_constraintTop_toBottomOf="@+id/apelidoParturientek" />
-
-                    <TextView
-                        android:id="@+id/dilatacaoInicialParturientek"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="36dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Dilatacao da Parturiente"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toEndOf="@+id/textTituloParturiented10"
-                        app:layout_constraintTop_toBottomOf="@+id/idadeParturientek" />
-
-                    <TextView
-                        android:id="@+id/dilatacaoAtualk"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Dilatacao Atual"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toEndOf="@+id/textTituloParturiented11"
-                        app:layout_constraintTop_toBottomOf="@+id/dilatacaoInicialParturientek" />
-
-                    <TextView
-                        android:id="@+id/idadeGestacionalk"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Idade Gestacional"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toEndOf="@+id/textTituloParturiented12"
-                        app:layout_constraintTop_toBottomOf="@+id/dilatacaoAtualk" />
-
-                    <TextView
-                        android:id="@+id/horaEntrada"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Hora de Entrada"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toEndOf="@+id/textTituloParturiented14"
-                        app:layout_constraintTop_toBottomOf="@+id/opcoesDeParidadek" />
-
-                    <TextView
-                        android:id="@+id/opcoesDeParidadek"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Opcoes de Paridade"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toEndOf="@+id/textTituloParturiented13"
-                        app:layout_constraintTop_toBottomOf="@+id/idadeGestacionalk" />
-
-
-                    <TextView
-                        android:id="@+id/horaAtual"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="68dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Hora Atual"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toEndOf="@+id/textTituloParturiented19"
-                        app:layout_constraintTop_toBottomOf="@+id/horaEntrada" />
-
-                    <TextView
-                        android:id="@+id/textTituloParturiented19"
-                        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imageView2"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Hora  Atual :"
-                        android:textSize="16dp"
-                        android:textStyle="normal|bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiented14" />
-
-                    <RelativeLayout
-                        android:id="@+id/isTransferidok"
-                        android:layout_width="400dp"
-                        android:layout_height="200dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textTituloParturiented19">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="181dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginTop="19dp">
-
-
-                            <TextView
-                                android:id="@+id/txtTitleTrasferencia"
-                                style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginStart="7dp"
-                                android:layout_marginTop="16dp"
-                                android:layout_marginEnd="25dp"
-                                android:gravity="center"
-                                android:text="Informacoes de Trasferencia da Trasferencia"
-                                android:textColor="#938989"
-                                android:textSize="20dp"
-                                android:textStyle="normal|bold"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/origemTrasferencia"
-                                style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/txtTitleTrasferencia"
-                                android:layout_alignParentStart="true"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginTop="24dp"
-                                android:text="Origem :"
-                                android:textStyle="normal|bold"
-                                app:layout_constraintStart_toStartOf="@+id/txtTitleTrasferencia"
-                                app:layout_constraintTop_toBottomOf="@+id/txtTitleTrasferencia" />
-
-                            <TextView
-                                android:id="@+id/origemTrasferenciak"
-                                style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/txtTitleTrasferencia"
-                                android:layout_alignEnd="@id/origemTrasferencia"
-                                android:layout_marginStart="36dp"
-                                android:layout_marginTop="24dp"
-                                android:layout_marginEnd="16dp"
-                                android:layout_toEndOf="@+id/origemTrasferencia"
-                                android:text="Origem Trasferencia"
-                                android:textStyle="normal|bold"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.02"
-                                app:layout_constraintStart_toEndOf="@+id/origemTrasferencia"
-                                app:layout_constraintTop_toBottomOf="@+id/txtTitleTrasferencia" />
-
-                            <TextView
-                                android:id="@+id/origemTrasferencia3"
-                                style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/origemTrasferencia"
-                                android:layout_alignParentStart="true"
-                                android:layout_marginTop="12dp"
-                                android:text="Motivos :"
-                                android:textStyle="normal|bold"
-                                app:layout_constraintStart_toStartOf="@+id/origemTrasferencia"
-                                app:layout_constraintTop_toBottomOf="@+id/origemTrasferenciak" />
-
-                            <TextView
-                                android:id="@+id/motivosTrasferenciak"
-                                style="@style/Widget.AppCompat.TextView.SpinnerItem"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/origemTrasferenciak"
-                                android:layout_alignEnd="@id/origemTrasferencia"
-                                android:layout_marginStart="32dp"
-                                android:layout_marginTop="12dp"
-                                android:layout_marginEnd="16dp"
-                                android:layout_toEndOf="@+id/origemTrasferencia"
-                                android:text="Motivos"
-                                android:textStyle="normal|bold"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toEndOf="@+id/origemTrasferencia3"
-                                app:layout_constraintTop_toBottomOf="@+id/origemTrasferenciak" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </RelativeLayout>
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/fabEdit"
-                        style="@style/TextAppearance.AppCompat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|end"
-                        android:backgroundTint="#08C368"
-                        android:layout_marginTop="640dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.954"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.659"
-                        app:srcCompat="@drawable/ic_baseline_edit_24" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </RelativeLayout>
-
-        </ScrollView>
-
-</LinearLayout>
+</ScrollView>
