@@ -63,8 +63,8 @@ public class ActivityValitationCode extends AppCompatActivity {
                 if(valitation.getText().toString().equals("")){
                     valitation.setError(" campo vazio");
                 }else{
-                    if(valitation.getText().toString().length()<6 || valitation.getText().toString().length()>6){
-                        textAlert.setText("O código tem 6 digitos");
+                    if(valitation.getText().toString().length()<8 || valitation.getText().toString().length()>8){
+                        textAlert.setText("O código tem 8 digitos");
                         textAlert.setTextColor(Color.RED);
                     }else {
                         if(codigoConfirmacao.equalsIgnoreCase(valitation.getText().toString())){

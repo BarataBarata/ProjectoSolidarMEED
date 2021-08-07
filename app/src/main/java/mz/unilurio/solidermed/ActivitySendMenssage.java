@@ -1,9 +1,11 @@
 package mz.unilurio.solidermed;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
@@ -12,11 +14,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Random;
+
 public class ActivitySendMenssage extends AppCompatActivity {
 
     private TextView textTitle;
     private  String numberSeacher;
-    private int codigo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +37,14 @@ public class ActivitySendMenssage extends AppCompatActivity {
         finish();
     }
 
-    public  int codigo(){
-        codigo = 452150;
-        codigo=++codigo;
-            return codigo;
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     public void CancelSendMenssage(View view) {
@@ -71,13 +78,21 @@ public class ActivitySendMenssage extends AppCompatActivity {
         progressBar.show();
 
         new Handler().postDelayed(new Thread() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
+                String codigo="";
                 progressBar.dismiss();
-                String message=" Condigo de confirmacao da Senha da aplicacao MAMA "+"-Codigo : "+codigo();
+
+                Random gerador = new Random();
+                for (int i = 0; i <8; i++) {
+                    codigo=codigo+gerador.nextInt(10);
+                }
+
+                String message=" Condigo de confirmacao da Senha da aplicacao MAMA "+"- Codigo : "+codigo;
                 sendSMS(numberSeacher,message);
                 Intent intent=new Intent(ActivitySendMenssage.this, ActivityValitationCode.class);
-                intent.putExtra("codigo",codigo+"");
+                intent.putExtra("codigo",codigo);
                 intent.putExtra("numberSeacherUser",numberSeacher);
                 startActivity(intent);
                 System.out.println(message);
