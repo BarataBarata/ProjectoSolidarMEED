@@ -1,47 +1,34 @@
 package mz.unilurio.solidermed;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,29 +40,21 @@ import androidx.viewpager.widget.ViewPager;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import mz.unilurio.solidermed.model.AllAcess;
 import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
-import mz.unilurio.solidermed.model.GestatinalRange;
-import mz.unilurio.solidermed.model.Hospitais;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.PageAdapder;
 import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.model.Privilegios;
 import mz.unilurio.solidermed.model.Queue;
-import mz.unilurio.solidermed.ui.fragments.NotificationFragment;
-import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
-import mz.unilurio.solidermed.utils.Helper;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -93,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private HashMap<String, Notification> notificationTriggered = new HashMap<String, Notification>();
     private NotificationManagerCompat notificationManager;
     private TextView textNotificacao;
+    private TextView textVerificationNull;
     private Timer timer;
     private static int id;
     private TextView textSeacher;
@@ -112,9 +92,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         fab = findViewById(R.id.fab);
-        fab.setVisibility(View.INVISIBLE);
+        fab.setVisibility(View.VISIBLE);
         notificationManagerCompat=NotificationManagerCompat.from(this);
         textNomeHospital = findViewById(R.id.idCentroSaudeTitle);
+
 
         if(getIntent().getStringExtra("nomeHospital")!=null) {
             textNomeHospital.setText(getIntent().getStringExtra("nomeHospital"));
@@ -135,9 +116,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 pager.setCurrentItem(tab.getPosition());
                 opcoesSeacher=tab.getPosition();
                 switch (tab.getPosition()){
-                    case 0: { displayNotification();fab.setVisibility(View.INVISIBLE);break; }
-                    case 1: {displayAtendidos(); fab.setVisibility(View.INVISIBLE);break;}
-                    case 2: {displayParturiente();fab.setVisibility(View.VISIBLE);break;}
+                    case 0: { displayParturiente();fab.setVisibility(View.VISIBLE);break; }
+                    case 1: {displayNotification(); fab.setVisibility(View.INVISIBLE);break;}
+                    case 2: {displayAtendidos();fab.setVisibility(View.INVISIBLE);break;}
                 }
             }
 
@@ -179,6 +160,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         initializeDisplayContent();
     }
+
+   public void verificationIsNull(){
+        textVerificationNull =findViewById(R.id.idNullResultParturiente);
+        viewNullListParturiente(textVerificationNull);
+        textVerificationNull =findViewById(R.id.idNullResultAtendimento);
+        viewNullListAtendidos(textVerificationNull);
+        textVerificationNull =findViewById(R.id.idNullResultNotification);
+        viewNullListNotification(textVerificationNull);
+   }
+
+    public void viewNullListAtendidos(TextView textView){
+
+        if(DBManager.getInstance().getListParturientesAtendidos().size()==0) {
+            textView.setVisibility(View.VISIBLE);
+        }else {
+            textView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void viewNullListParturiente(TextView textView){
+
+        if(DBManager.getInstance().getParturients().size()==0) {
+            textView.setVisibility(View.VISIBLE);
+        }else {
+            textView.setVisibility(View.INVISIBLE);
+        }
+    }
+   public void viewNullListNotification(TextView textView){
+
+       if(DBManager.getInstance().getNotifications().size()==0) {
+           textView.setVisibility(View.VISIBLE);
+       }else {
+           textView.setVisibility(View.INVISIBLE);
+       }
+   }
+
 
     private void displayAtendidos() {
         RecyclerView recyclerView;
@@ -319,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume() {
         super.onResume();
+        verificationNull();
         //setRepeatingAsyncTask(this);
     }
 
@@ -335,6 +353,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         try {
                             updadeAndSeacherNotifications();
                             displayNotification();
+                            verificationIsNull();
                         } catch (Exception e) {
                             // error, do something
                         }
@@ -346,6 +365,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         timer.schedule(task, 0, 1000);  // interval of one minute
     }
 
+    public void verificationNull(){
+
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            System.out.println("comecou");
+                            verificationIsNull();
+                        } catch (Exception e) {
+                            // error, do something
+                        }
+                    }
+                });
+            }
+        };
+
+        timer.schedule(task, 0, 800);  // interval of one minute
+    }
     public void setting(MenuItem item) {
         startActivity(new Intent(MainActivity.this,SettingActivity.class));
     }

@@ -27,11 +27,12 @@ public class ContactActivity extends AppCompatActivity {
     private EmergencyMedicalPersonnelRecyclerAdpter emergencyMedicalPersonnelRecyclerAdpter;
     private Handler handler;
     private TimerTask task;
+    private Timer timer;
     private List<EmergencyMedicalPersonnel> auxList;
     private List<EmergencyMedicalPersonnel> list;
     private int tamanhoList;
     private  String seacher="";
-    private Timer timer;
+
 
 
     @Override

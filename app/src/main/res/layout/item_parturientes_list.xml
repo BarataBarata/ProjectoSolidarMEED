@@ -15,7 +15,7 @@
 
         <TextView
             android:layout_below="@id/idHoraEntrada"
-            android:id="@+id/txt_iconName"
+            android:id="@+id/id_ImagemSettings"
             android:layout_width="48dp"
             android:gravity="center"
             android:textSize="27dp"
@@ -29,7 +29,7 @@
             android:id="@+id/textViewOptionsParturiente"
             android:layout_width="30dp"
             android:layout_height="40dp"
-            android:layout_alignTop="@id/txt_iconName"
+            android:layout_alignTop="@id/id_ImagemSettings"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -44,10 +44,10 @@
             android:layout_toLeftOf="@id/textViewOptionsParturiente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/txt_iconName"
+            android:layout_alignTop="@id/id_ImagemSettings"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="30dp"
-            android:layout_toEndOf="@id/txt_iconName"
+            android:layout_toEndOf="@id/id_ImagemSettings"
             android:textColor="@color/CorParturient"
             android:textSize="18sp"
             tools:text="Parturiente" />

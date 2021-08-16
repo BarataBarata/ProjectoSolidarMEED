@@ -44,13 +44,27 @@ public class DadosPessoais extends AppCompatActivity {
         toolbar=findViewById(R.id.toolbarDadosPessoais);
         initialize();
 
-        idParturiente =Integer.parseInt(getIntent().getStringExtra("id"));
-        for(Parturient parturient:DBManager.getInstance().getParturients()){
-            if(parturient.getId()==idParturiente){
-                sendDade(parturient);
-               break;
+
+        if(getIntent().getStringExtra("idParturiente")!=null) {
+            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
+            for (Parturient parturient : DBManager.getInstance().getParturients()) {
+                if (parturient.getId() == idParturiente) {
+                    sendDade(parturient);
+                    break;
+                }
             }
         }
+
+        if(getIntent().getStringExtra("idParturienteAtendidos")!=null) {
+            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturienteAtendidos"));
+            for (Parturient parturient : DBManager.getInstance().getListParturientesAtendidos()) {
+                if (parturient.getId() == idParturiente) {
+                    sendDade(parturient);
+                    break;
+                }
+            }
+        }
+
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fabEdit);

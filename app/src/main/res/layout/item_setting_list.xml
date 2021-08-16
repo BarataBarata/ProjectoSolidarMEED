@@ -1,49 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="#FAF7F7"
-    android:padding="2dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_setting">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+    <RelativeLayout
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:backgroundTint="#FCFFFC"
-        app:contentPadding="16dp">
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_marginTop="8dp"
-            android:id="@+id/idImagenConfiguration"
+            android:src="@drawable/timer_settings"
+            android:id="@+id/id_ImagemSettings"
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:srcCompat="@drawable/assigner" />
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textColor="@color/purple_500"
+            android:layout_height="40dp" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:id="@+id/idSettingsName"
+            android:ellipsize="marquee"
+            android:singleLine="true"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/id_ImagemSettings"
+            android:textColor="@color/CorParturient"
+            android:textSize="18sp"
+            tools:text="settings" />
 
-            <TextView
-                android:id="@+id/idEnfermeiro"
-                android:layout_width="321dp"
-                android:layout_height="26dp"
-                android:layout_marginStart="52dp"
-                android:text="setings"
-                android:textAlignment="textStart"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/purple_700"
-                android:textSize="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.666" />
+    </RelativeLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
-</FrameLayout>
+</androidx.cardview.widget.CardView>

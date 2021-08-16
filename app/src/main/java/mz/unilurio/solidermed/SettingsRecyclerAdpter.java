@@ -100,8 +100,8 @@ public class SettingsRecyclerAdpter extends RecyclerView.Adapter<SettingsRecycle
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtNameSetting = (TextView) itemView.findViewById(R.id.idEnfermeiro);
-            imageSetting=(ImageView)itemView.findViewById(R.id.idImagenConfiguration);
+            txtNameSetting = (TextView) itemView.findViewById(R.id.idSettingsName);
+            imageSetting=(ImageView)itemView.findViewById(R.id.id_ImagemSettings);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,6 +134,9 @@ public class SettingsRecyclerAdpter extends RecyclerView.Adapter<SettingsRecycle
 
                     case 1: {
                         context.startActivity(new Intent(context,ContactActivity.class)); break;
+                    }
+                    case 2: {
+                        context.startActivity(new Intent(context, TimerActivity.class)); break;
                     }
                     case 3: {
                         context.startActivity(new Intent(context, NurseActivity.class)); break;

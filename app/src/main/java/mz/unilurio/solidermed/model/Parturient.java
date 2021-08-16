@@ -1,11 +1,20 @@
 package mz.unilurio.solidermed.model;
 
+import android.os.Build;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
+import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class Parturient implements Parcelable {
     private int id;
@@ -13,6 +22,7 @@ public class Parturient implements Parcelable {
     private Date horaAlerta;
     private Date horaAtendimento;
     private String name;
+    private  int tempo=60;
     private String surname;
     private int age;
     private int para;
@@ -22,20 +32,28 @@ public class Parturient implements Parcelable {
     private boolean disparo;
     private String reason;
     private int numeroCama;
+    private boolean isStartCont;
     private  String origemTransferencia;
     private  String motivosDaTrasferencia;
+    private  String TempoRestante;
 
-
-
-
-
-    public Parturient(){}
+    public Parturient(){
+        reverseTimer(60);
+    }
 
     public Parturient(int id, String name, String surname, int age) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.age = age;
+    }
+
+    public boolean isStartCont() {
+        return isStartCont;
+    }
+
+    public void setIsRun(boolean startCont) {
+        isStartCont = startCont;
     }
 
     public Date getHoraAtendimento() {
@@ -46,11 +64,11 @@ public class Parturient implements Parcelable {
         this.horaAtendimento = horaAtendimento;
     }
 
-    public boolean isDisparo() {
+    public boolean isRun() {
         return disparo;
     }
 
-    public void setDisparo(boolean disparo) {
+    public void setRun(boolean disparo) {
         this.disparo = disparo;
     }
 
@@ -75,6 +93,14 @@ public class Parturient implements Parcelable {
         this.isTransfered = isTransfered;
         this.reason = reason;
         this.numeroCama=numeroCama;
+    }
+
+    public int getTempo() {
+        return tempo;
+    }
+
+    public void setTempo(int tempo) {
+        this.tempo = tempo;
     }
 
     public Date getHoraEntrada() {
@@ -223,5 +249,50 @@ public class Parturient implements Parcelable {
 
     public void setMotivosDaTrasferencia(String motivosDaTrasferencia) {
         this.motivosDaTrasferencia = motivosDaTrasferencia;
+    }
+
+
+    public void reverseTimer(int Seconds) {
+
+        new CountDownTimer(Seconds * 1000 + 1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+
+                int hours = seconds / (60 * 60);
+                int tempMint = (seconds - (hours * 60 * 60));
+                int minutes = tempMint / 60;
+                seconds = tempMint - (minutes * 60);
+
+                setTempoRestante(String.format("%02d", hours)
+                        + ":" + String.format("%02d", minutes)
+                        + ":" + String.format("%02d", seconds));
+            }
+
+            public void onFinish() {
+                // tv.setText("Completed");
+            }
+        }.start();
+    }
+
+
+    public String getTempoRestante() {
+        return TempoRestante;
+    }
+
+    public void setTempoRestante(String tempoRestante) {
+        TempoRestante = tempoRestante;
+    }
+    private String formatMinuto(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("mm");
+        return dateFormat.format(date);
+    }
+    private String formatSegundos(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("ss");
+        return dateFormat.format(date);
+    }
+    private String formatHoras(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh");
+        return dateFormat.format(date);
     }
 }

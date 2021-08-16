@@ -34,13 +34,9 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     private List<Parturient> originalListParturientes;
     private List<Parturient> auxListParturientes;
     private final LayoutInflater layoutInflater;
-    private Handler handler;
-    private TimerTask task;
-    public static int contTimer=60;
     private TimerTask taskMinutos;
     private Handler handlerMinutos;
-    private int subSegundos;
-    private int subMinutos;
+    int contador=0;
 
 
     public ParturienteRecyclerAdpter(Context context, List<Parturient> parturients) {
@@ -86,7 +82,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                             case R.id.idDesativar:{
                                 Intent intent = new Intent(context,AddParturientActivity.class);
                                 intent.putExtra("idParturiente", originalListParturientes.get(position).getId()+"");
-                               context.startActivity(intent);
+                                context.startActivity(intent);
                             }
                             return true;
                             case R.id.transferir:
@@ -109,61 +105,60 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         handlerMinutos = new Handler();
         Timer timerMinutos = new Timer();
 
-        if(!originalListParturientes.get(position).isDisparo()) {
+        if(!originalListParturientes.get(position).isRun()) {
 
             taskMinutos = new TimerTask() {
                 @Override
                 public void run() {
+                    System.out.println("tempo : "+originalListParturientes.get(position).getTempo());
                     handlerMinutos.post(new Runnable() {
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         public void run() {
-                                 subSegundos=retornaSegundos(position);
-                                 subMinutos=retornaMinutos(position);
-                            System.out.println("segundo "+subSegundos);
-                            try {
-                                if(subMinutos>0) {
-                                    System.out.println("minutos "+subMinutos);
-                                    holder.horaAlerta.setText("Tempo Restante : " + subMinutos + " minuto");
-                                } else {
-                                    if (subSegundos<=0) {
-                                        System.out.println("menor");
-                                        holder.horaAlerta.setText("Alerta Disparado");
-                                        originalListParturientes.get(position).setDisparo(true);
-                                        timerMinutos.cancel();
-                                        taskMinutos.cancel();
-                                    }else {
-                                        holder.horaAlerta.setText("Tempo Restante : " + subSegundos + " segundos");
-                                    }
+                          try {
+//                              contador--;
+//                              int seg  =  contador %60;
+//                              int min  =  contador /60;
+//                              int hora =  min      /60;
+//                              min %=  60;
+//                             // System.out.println(String.format("%02d:%02d:%02d",hora,min,seg));
 
+
+
+
+                                 String tempoRestante=originalListParturientes.get(position).getTempoRestante();
+                                 if(tempoRestante.equals("00:00:00")){
+                                     timerMinutos.cancel();
+                                     holder.horaAlerta.setText("Alerta Disparado");
+                                 }else {
+                                     holder.horaAlerta.setText("Tempo Restante : " + tempoRestante);
+                                 }
+
+                                } catch (Exception e) {
+                                    // error, do something
                                 }
-
-                            } catch (Exception e) {
-                                // error, do something
                             }
-                        }
                     });
                 }
             };
 
-            timerMinutos.schedule(taskMinutos, 0, 950);  // interval of one minute
+            timerMinutos.schedule(taskMinutos, 0, 1000);  // interval of one minute
         }
+
+
+//        new CountDownTimer(30000, 1000) {
+//
+//            public void onTick(long millisUntilFinished) {
+//                System.out.println("seconds remaining: " + millisUntilFinished / 1000);
+//                //here you can have your logic to set text to edittext
+//            }
+//
+//            public void onFinish() {
+//                System.out.println("terminou");
+//            }
+//
+//        }.start();
+
     }
-
-
-    public int retornaMinutos(int position){ // retorna a diferenca entre o tempo de entrada e o tempo atual
-          Date date=originalListParturientes.get(position).getHoraAlerta();
-          int minutosAlerta = Integer.parseInt(formatMinuto(date));
-          int minutosHoraAtual = Integer.parseInt(formatMinuto(new Date()));
-          return minutosAlerta - minutosHoraAtual;
-    }
-
-    public int retornaSegundos(int position){ // retorna a diferenca entre o tempo de entrada e o tempo atual
-        Date date=originalListParturientes.get(position).getHoraAlerta();
-        int segundosAlerta = Integer.parseInt(formatSegundos(date));
-        int segundosHora = Integer.parseInt(formatSegundos(new Date()));
-        return segundosAlerta - segundosHora;
-    }
-
 
     @Override
     public int getItemCount() {
@@ -199,10 +194,6 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         }
 
 
-
-
-
-
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             originalListParturientes.clear();
@@ -228,7 +219,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
             super(itemView);
             horaEntrada=(TextView)itemView.findViewById(R.id.idHoraEntrada);
             horaAlerta=(TextView) itemView.findViewById(R.id.idContactoMedico);
-            textCircle=(TextView)itemView.findViewById(R.id.txt_iconName);
+            textCircle=(TextView)itemView.findViewById(R.id.id_ImagemSettings);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtNameParturient = (TextView) itemView.findViewById(R.id.idNomeParturienteAtendido);
             buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsParturiente);
@@ -238,7 +229,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, DadosPessoais.class);
-                    intent.putExtra("id", originalListParturientes.get(currentPosition).getId()+"");
+                    intent.putExtra("idParturiente", originalListParturientes.get(currentPosition).getId()+"");
                     context.startActivity(intent);
                 }
             });
@@ -252,6 +243,10 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     }
     private String formatSegundos(Date date){
         DateFormat dateFormat = new SimpleDateFormat("ss");
+        return dateFormat.format(date);
+    }
+    private String formatHoras(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh");
         return dateFormat.format(date);
     }
     private String format(Date date){

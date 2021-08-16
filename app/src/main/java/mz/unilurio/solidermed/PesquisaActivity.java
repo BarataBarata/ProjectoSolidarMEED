@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -19,19 +20,24 @@ public class PesquisaActivity extends AppCompatActivity {
      private NotificationRecyclerAdpter notificationRecyclerAdpter;
      private AtendidosRecyclerAdpter atendidosRecyclerAdpter;
      private static int optionSeacher;
+     private  TextView textViewNullPesquisa;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pesquisa);
 
+
+        textViewNullPesquisa=findViewById(R.id.idNullResultSeacher);
+
         int seacherFragment=Integer.parseInt(getIntent().getStringExtra("seacher"));
 
         switch (seacherFragment){
-            case 0:{ displayNotification();
+            case 1:{ displayNotification();
                 optionSeacher=0;break;}
-            case 1: displayAtendidos();
+            case 2: displayAtendidos();
                 optionSeacher=1;break;
-            case 2: displayParturiente();
+            case 0: displayParturiente();
                 optionSeacher=2;break;
         }
 
@@ -58,8 +64,16 @@ public class PesquisaActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
 
+    }
+    public void viewNullListPesquisa(List list){
+
+        if(list.size()==0) {
+            textViewNullPesquisa.setVisibility(View.VISIBLE);
+        }else {
+            textViewNullPesquisa.setVisibility(View.INVISIBLE);
+        }
+    }
     public void finish(View view) {
         finish();
     }
@@ -68,6 +82,7 @@ public class PesquisaActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerVieParturienteSeacher);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Parturient> parturients= DBManager.getInstance().getParturients();
+        viewNullListPesquisa(parturients);
         parturienteRecyclerAdpter=new ParturienteRecyclerAdpter( this,parturients);
         recyclerView.setAdapter(parturienteRecyclerAdpter);
     }
@@ -77,6 +92,7 @@ public class PesquisaActivity extends AppCompatActivity {
         recyclerView =findViewById(R.id.recyclerVieParturienteSeacher);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Parturient> atendidos= DBManager.getInstance().getListParturientesAtendidos();
+        viewNullListPesquisa(atendidos);
         atendidosRecyclerAdpter=new AtendidosRecyclerAdpter( this,atendidos);
         recyclerView.setAdapter(atendidosRecyclerAdpter);
     }
@@ -86,6 +102,7 @@ public class PesquisaActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerVieParturienteSeacher);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Notification> notifications= DBManager.getInstance().getNotifications();
+        viewNullListPesquisa(notifications);
         notificationRecyclerAdpter=new NotificationRecyclerAdpter( this, notifications);
         recyclerView.setAdapter(notificationRecyclerAdpter);
     }

@@ -14,12 +14,14 @@
         android:theme="@style/Theme.Projecto_S"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".TimerActivity"
+            android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
+        <activity
             android:name=".ActivityChengePassword"
-            android:theme="@style/Theme.Projecto_S.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
         <activity
             android:name=".ActivityValitationCode"
-            android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
         <activity
             android:name=".ActivitySendMenssage"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />

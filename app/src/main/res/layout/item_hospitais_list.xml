@@ -15,7 +15,7 @@
 
         <ImageView
             android:src="@drawable/hospitallist"
-            android:id="@+id/txt_iconName"
+            android:id="@+id/id_ImagemSettings"
             android:layout_width="40dp"
             android:gravity="center"
             android:textSize="30dp"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/txt_iconName"
+            android:layout_toEndOf="@id/id_ImagemSettings"
             android:textColor="@color/CorParturient"
             android:textSize="18sp"
             tools:text="Hospitais" />

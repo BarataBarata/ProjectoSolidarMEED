@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mz.unilurio.solidermed.model.AlertParutient;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Parturient;
 
@@ -71,6 +72,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private Spinner spinnerTrasferencia;
     private TextView textSanitario;
     private TextView textTrasferencia;
+    private TextView textEditAndRegist;
 
     private boolean isTrasferencia;
     private boolean isEdit;
@@ -93,6 +95,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
         textSanitario = (TextView)findViewById(R.id.textSanitario);
         textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
+        textEditAndRegist=findViewById(R.id.txtRegisto_Edit);
         initView();
         invisible();
         validator = new Validator(this);
@@ -105,6 +108,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
             for(Parturient parturient: DBManager.getInstance().getParturients()){
                 if(parturient.getId()==idParturiente){
                     isEdit=true;
+                    textEditAndRegist.setText("Editar Parturiente");
                     editParturiente(parturient);
                     break;
                 }
@@ -468,6 +472,8 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
                     parturient = new Parturient();
                     parturient.setId(++newidParturiente);
+                    AlertParutient alertParutient=new AlertParutient(60,newidParturiente);
+                    DBManager.getInstance().addListAlertParturiente(alertParutient);
 
                     parturient.setName(txtNameParturient.getText().toString());
                     parturient.setSurname(textApelido.getText().toString());

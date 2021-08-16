@@ -166,7 +166,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                             public void run() {
                                 progressBar.dismiss();
                                 Intent intent = new Intent(context, DadosPessoais.class);
-                                intent.putExtra("id", notifications.get(currentPosition).getId()+"");
+                                intent.putExtra("idParturiente", notifications.get(currentPosition).getId()+"");
                                 context.startActivity(intent);
                             }
                         },Long.parseLong("400"));

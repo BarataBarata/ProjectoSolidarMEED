@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -34,7 +34,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.SearchView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="60dp"
         android:id="@+id/seacherValitation"
         android:gravity="center"
         app:iconifiedByDefault="false"
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="120dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -55,6 +55,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_parturientes_list" />
+    <TextView
+        android:textSize="20dp"
+        android:id="@+id/idNullResultSeacher"
+        android:visibility="invisible"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="A lista da pesquisa esta vazia"
+        android:layout_marginTop="180dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TimerActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.Projecto_S.AppBarOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
+
+            <ImageView
+                android:onClick="finish"
+                android:src="@drawable/back_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:textSize="19sp"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginStart="30dp"
+                android:text="Configuração de tempo"
+                android:textColor="@color/white" />
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <TextView
+            android:layout_marginEnd="16dp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="16dp"
+            android:text="	Definir a dilatação"
+            android:layout_below="@id/toolbar"
+            android:id="@+id/txtTitleDilatation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+           android:id="@+id/txt_titleDilatationInit"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/txtTitleDilatation"
+            android:text="Dilatação inicial : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:layout_toRightOf="@id/txt_titleDilatationInit"
+            android:layout_alignTop="@id/txt_titleDilatationInit"
+            android:layout_marginStart="14dp"
+            android:id="@+id/spinner_dilatacaoInicial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+
+         <TextView
+             android:layout_marginTop="10dp"
+             android:text="Limite da  Dilatação :"
+             android:layout_marginStart="16dp"
+             android:layout_below="@id/txt_titleDilatationInit"
+             android:id="@+id/txt_DilatationEnd"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"/>
+        <Spinner
+            android:layout_toRightOf="@id/txt_DilatationEnd"
+            android:layout_alignTop="@id/txt_DilatationEnd"
+            android:layout_marginStart="14dp"
+            android:id="@+id/spinner_dilatacaoEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:text="Máximo dilatação cervial :"
+            android:layout_marginStart="16dp"
+            android:layout_below="@id/txt_DilatationEnd"
+            android:id="@+id/txt_DilatationCervial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:layout_toRightOf="@id/txt_DilatationCervial"
+            android:layout_alignTop="@id/txt_DilatationCervial"
+            android:layout_marginStart="14dp"
+            android:id="@+id/spinner_dilatacaoCervial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:text="Opções de Paridade"
+            android:layout_marginTop="18dp"
+            android:layout_below="@id/txt_DilatationCervial"
+            android:id="@+id/idTitleOptionParidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/idTitleOptionParidade"
+            android:text="Numero maximo de Opções de Paridade"
+            android:id="@+id/txtOptionParidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:layout_toRightOf="@id/txtOptionParidade"
+            android:layout_alignTop="@id/txtOptionParidade"
+            android:layout_marginStart="14dp"
+            android:id="@+id/spinner_dilatacaoParidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/txtTilteAlerta"
+            android:text="Definir o tempo de intervalo de Alerta"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/txtOptionParidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Intervalo de alerta "
+            android:id="@+id/txtTimer"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="16dp"
+            android:layout_below="@id/txtTilteAlerta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <Spinner
+            android:layout_toRightOf="@id/txtTimer"
+            android:layout_alignTop="@id/txtTimer"
+            android:layout_marginStart="14dp"
+            android:id="@+id/spinner_Timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:layout_toRightOf="@id/spinner_Timer"
+            android:layout_alignTop="@id/spinner_Timer"
+            android:layout_marginEnd="16dp"
+            android:text="horas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+    </RelativeLayout>
+
+
+</ScrollView>

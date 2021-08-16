@@ -20,7 +20,7 @@ import mz.unilurio.solidermed.model.Parturient;
 public class Atendimento extends AppCompatActivity {
    private int idParturiente;
    private TextView textNomeParturiente;
-   private  Parturient newParturient;
+   private  Parturient newParturient=new Parturient();
     private ProgressDialog progressBar;
 
     @Override
@@ -72,11 +72,11 @@ public class Atendimento extends AppCompatActivity {
     }
 
     public  void addNewAtendido(View view){
-            editParturiente();
+            addNewParturiente();
     }
 
 
-    public  void editParturiente(){
+    public  void addNewParturiente(){
 
         String mensagem="Salvar dados ?";
         String mensagemTitle="SALVAR";;
@@ -102,6 +102,7 @@ public class Atendimento extends AppCompatActivity {
                     public void run() {
                         progressBar.dismiss();
                         setHoraAtendimento(newParturient);
+                        System.out.println("trasferencia : " +newParturient.isTransfered());
                         DBManager.getInstance().addParturienteAtendido(newParturient);
                         removParturiente();
                         removNotification();

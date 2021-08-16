@@ -3,10 +3,12 @@ package mz.unilurio.solidermed;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,6 +58,42 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
         holder.txtHoraAtendido.setText("Saida : "+format(parturient.getHoraAtendimento()));
         holder.textCircle.setText((parturient.getName().charAt(0)+"").toUpperCase());
         holder.txtNameParturient.setText(oUpperFirstCase(parturient.getName())+ " "+oUpperFirstCase(parturient.getSurname()));
+        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //creating a popup menu
+                Context mCtx = null;
+                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.options_menu_parturiente);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.idDesativar:{
+                                Intent intent = new Intent(context,AddParturientActivity.class);
+                                intent.putExtra("idParturienteAtendidos", originalListParturientes.get(position).getId()+"");
+                                context.startActivity(intent);
+                            }
+                            return true;
+                            case R.id.transferir:
+                                Intent intent = new Intent(context,TrasferenciaActivity.class);
+                                intent.putExtra("idParturienteAtendidos", originalListParturientes.get(position).getId()+"");
+                                context.startActivity(intent);
+                                return true;
+                            case R.id.item3:
+                                //handle menu3 click
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 
     @Override
@@ -109,18 +147,18 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textCircle=(TextView)itemView.findViewById(R.id.txt_iconName);
+            textCircle=(TextView)itemView.findViewById(R.id.id_ImagemSettings);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtHoraAtendido = (TextView) itemView.findViewById(R.id.idHoraSaida);
             txtNameParturient = (TextView) itemView.findViewById(R.id.idNomeParturienteAtendido);
-            buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsNotification);
+            buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsParturiente);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, DadosPessoais.class);
-                    intent.putExtra("id", +originalListParturientes.get(currentPosition).getId()+"");
+                    intent.putExtra("idParturienteAtendidos", +originalListParturientes.get(currentPosition).getId()+"");
                     context.startActivity(intent);
                 }
             });

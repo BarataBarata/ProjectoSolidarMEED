@@ -57,6 +57,7 @@ public class Login extends AppCompatActivity {
         textEmail= findViewById(R.id.id_input_nome);
         textPassword=findViewById(R.id.id_input_password);
         auth = FirebaseAuth.getInstance();
+
     }
 
     public void Entrar(View view) {

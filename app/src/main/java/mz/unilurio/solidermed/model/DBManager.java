@@ -1,4 +1,4 @@
-package mz.unilurio.solidermed.model;
+ package mz.unilurio.solidermed.model;
 
 import android.graphics.Color;
 
@@ -13,6 +13,12 @@ public class DBManager {
 
 
     private static DBManager ourInstance = null;
+    private List<Integer> integerListLimitDilatation=new ArrayList<>();
+    private List<Integer>integerListInitDilatation=new ArrayList<>();
+    private List<Integer> integerListOpcoesParidade=new ArrayList<>();
+    private List<Integer> integerListTimer=new ArrayList<>();
+    private List<Integer> integerListDilatationCervical=new ArrayList<>();
+    private List<AlertParutient> alertParutientList=new ArrayList<>();
     private List<SeacherUser> listSeacherUser=new ArrayList<>();
     private List<Parturient>listParturientesAtendidos=new ArrayList<>();
     private List<UserDoctor> userDoctorList=new ArrayList<>();
@@ -54,9 +60,87 @@ public class DBManager {
             ourInstance.initHospitais();
             ourInstance.initializeInfermeira();
             ourInstance.initializeIdadeGestacional();
+            ourInstance.initializeInitDilatation();
+            ourInstance.initializeInitDilatationLimit();
+            ourInstance.initializeDilatationCervical();
+            ourInstance.initializeOpcoesParidade();
+            ourInstance.initializeTimer();
             ///ourInstance.initializeParturientesAtendidos();
         }
         return ourInstance;
+    }
+
+    private void initializeTimer(){
+        this.integerListTimer.add(1);
+        this.integerListTimer.add(2);
+        this.integerListTimer.add(3);
+        this.integerListTimer.add(4);
+        this.integerListTimer.add(5);
+        this.integerListTimer.add(6);
+    }
+
+    public List<Integer> getIntegerListTimer() {
+        return integerListTimer;
+    }
+
+    private void initializeDilatationCervical() {
+        this.integerListDilatationCervical.add(6);
+        this.integerListDilatationCervical.add(7);
+        this.integerListDilatationCervical.add(8);
+        this.integerListDilatationCervical.add(9);
+        this.integerListDilatationCervical.add(10);
+        this.integerListDilatationCervical.add(11);
+        this.integerListDilatationCervical.add(12);
+    }
+
+    public List<Integer> getIntegerListDilatationCervical() {
+        return integerListDilatationCervical;
+    }
+
+    private void initializeOpcoesParidade() {
+        this.integerListOpcoesParidade.add(4);
+        this.integerListOpcoesParidade.add(5);
+        this.integerListOpcoesParidade.add(6);
+        this.integerListOpcoesParidade.add(7);
+        this.integerListOpcoesParidade.add(8);
+    }
+
+    public List<Integer> getIntegerListOpcoesParidade() {
+        return integerListOpcoesParidade;
+    }
+
+    private void initializeInitDilatationLimit() {
+        this.integerListLimitDilatation.add(8);
+        this.integerListLimitDilatation.add(9);
+        this.integerListLimitDilatation.add(10);
+        this.integerListLimitDilatation.add(11);
+        this.integerListLimitDilatation.add(12);
+        this.integerListLimitDilatation.add(13);
+    }
+
+    public List<Integer> getIntegerListLimitDilatation() {
+        return integerListLimitDilatation;
+    }
+
+    private void initializeInitDilatation() {
+        this.integerListInitDilatation.add(2);
+        this.integerListInitDilatation.add(3);
+        this.integerListInitDilatation.add(4);
+        this.integerListInitDilatation.add(5);
+        this.integerListInitDilatation.add(6);
+        this.integerListInitDilatation.add(7);
+    }
+
+    public List<Integer> getIntegerListInitDilatation() {
+        return integerListInitDilatation;
+    }
+
+    public List<AlertParutient> getAlertParutientList() {
+        return alertParutientList;
+    }
+
+    public void addListAlertParturiente(AlertParutient alertParutients){
+           this.alertParutientList.add(alertParutients);
     }
 
     private void initializeSettings() {
@@ -113,7 +197,7 @@ public class DBManager {
     }
 
     private void initializeDoctor() {
-        this.userDoctorList.add(new UserDoctor("Barata Estevao Mario","123",1,"845740722"));
+        this.userDoctorList.add(new UserDoctor("","",1,"845740722"));
         this.userDoctorList.add(new UserDoctor("Ussimane Killer Wazy","129",2,"847759422"));
         this.userDoctorList.add(new UserDoctor("Felermino Ali","128",3,"864293652"));
         this.userDoctorList.add(new UserDoctor("Felermino Rumbi","122",4,"846689637"));

@@ -30,6 +30,7 @@
                 android:src="@drawable/back_24" />
 
             <TextView
+                android:id="@+id/txtRegisto_Edit"
                 android:textStyle="bold"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
@@ -148,52 +149,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/numberPickerTwo" />
 
-
-                <!--                <LinearLayout-->
-                <!--                    android:id="@+id/linearLayout2"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:orientation="horizontal"-->
-
-                <!--                    -->
-                <!--                    >-->
-
-                <!--                </LinearLayout>-->
-
-
-                <!--                <TextView-->
-                <!--                    android:id="@+id/textPara"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginTop="8dp"-->
-                <!--                    android:text="Opções de paridade (PARA)"-->
-                <!--                    android:textStyle="bold"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"-->
-                <!--                    app:layout_constraintHorizontal_bias="0.0"-->
-                <!--                    app:layout_constraintStart_toStartOf="@+id/constraintLayout2"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />-->
-
-                <!--                <com.google.android.material.slider.Slider-->
-                <!--                    android:id="@+id/para"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="38dp"-->
-                <!--                    android:clickable="true"-->
-                <!--                    android:focusable="true"-->
-                <!--                    android:paddingLeft="0dp"-->
-                <!--                    android:paddingTop="40dp"-->
-                <!--                    android:paddingRight="0dp"-->
-                <!--                    android:stepSize="1"-->
-                <!--                    android:valueFrom="0"-->
-                <!--                    android:valueTo="10"-->
-                <!--                    tools:layout_editor_absoluteX="20dp"-->
-                <!--                    tools:layout_editor_absoluteY="479dp"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@+id/textPara"-->
-                <!--                    app:layout_constraintHorizontal_bias="0.0"-->
-                <!--                    app:layout_constraintStart_toStartOf="@+id/textPara"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/textPara"-->
-                <!--                    />-->
-
-                <TextView
+                   <TextView
                     android:id="@+id/textPara"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

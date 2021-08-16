@@ -24,11 +24,13 @@ public class PageAdapder extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return new NotificationFragment();
-            case 1:
-                return new AtendidosFragment();
+                return new ParturientesFragment();
 
-            default:  return new ParturientesFragment();
+            case 1:
+                return new NotificationFragment();
+
+
+            default: return new AtendidosFragment();
         }
     }
 

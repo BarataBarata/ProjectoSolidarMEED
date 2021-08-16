@@ -52,7 +52,7 @@ public class Measure {
     public void predictDilatationAndTime(){
         this.predictedDilatation = this.initialDilatation + 5;
 //        this.predictedExpulsionHour = addHoursToJavaUtilDate(this.initialHour, 5);
-        this.predictedExpulsionHour = addMinutesToJavaUtilDate(this.initialHour, 1);
+        this.predictedExpulsionHour = addHorasToJavaUtilDate(this.initialHour, 1);
     }
 
     public Date addHoursToJavaUtilDate(Date date, int hours) {
@@ -62,10 +62,10 @@ public class Measure {
         return calendar.getTime();
     }
 
-    public Date addMinutesToJavaUtilDate(Date date, int minutes) {
+    public Date addHorasToJavaUtilDate(Date date, int horas) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.MINUTE, minutes);
+        calendar.add(Calendar.MINUTE, horas);
         return calendar.getTime();
     }
 
@@ -82,5 +82,12 @@ public class Measure {
     private String format(Date date){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         return dateFormat.format(date);
+    }
+
+    public int retornaHoraFinal(int initialDilatation,int horaPredeninida){
+               if(((horaPredeninida-initialDilatation)==0) || (horaPredeninida-initialDilatation)<0){
+                   return 0;
+               }
+               return horaPredeninida-initialDilatation;
     }
 }
