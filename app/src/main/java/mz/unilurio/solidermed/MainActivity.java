@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -24,6 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -33,6 +35,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
@@ -72,11 +75,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private HashMap<String, Notification> notificationTriggered = new HashMap<String, Notification>();
     private NotificationManagerCompat notificationManager;
     private TextView textNotificacao;
+    private TextView textUserLogin;
     private TextView textVerificationNull;
     private Timer timer;
     private static int id;
     private TextView textSeacher;
     private boolean visible;
+    private String userLogin;
     private static int opcoesSeacher=0;
     private ViewPager pager;
     private static List<Notification> notifications=new ArrayList<>();
@@ -85,11 +90,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String nomeHospitalExtra="";
     private NotificationManagerCompat notificationManagerCompat;
     private FloatingActionButton fab;
+    private SharedPreferences sharedPreferences;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         fab = findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
@@ -103,6 +112,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             textNomeHospital.setText("Centro de Saude de Chiure");
         }
 
+//        if(getIntent().getStringExtra("user")!=null){
+//            System.out.println("gggggggg=================="+getIntent().getStringExtra("user"));
+//            textUserLogin.findViewById(R.id.idNameUserLogin);
+//            textUserLogin.setText(getIntent().getStringExtra(getIntent().getStringExtra("user")));
+//        }
 
         tabLayout=(TabLayout)findViewById(R.id.tabLayout);
         pager=findViewById(R.id.viewpager);
@@ -116,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 pager.setCurrentItem(tab.getPosition());
                 opcoesSeacher=tab.getPosition();
                 switch (tab.getPosition()){
-                    case 0: { displayParturiente();fab.setVisibility(View.VISIBLE);break; }
+                    case 0: {displayParturiente();fab.setVisibility(View.VISIBLE);break; }
                     case 1: {displayNotification(); fab.setVisibility(View.INVISIBLE);break;}
                     case 2: {displayAtendidos();fab.setVisibility(View.INVISIBLE);break;}
                 }
@@ -150,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -283,13 +296,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
 
-        if (id == R.id.id_out) {
+
 
             if (id == R.id.id_out){
 
                 AlertDialog.Builder builder=new AlertDialog.Builder(this);
                 builder.setMessage("Logout");
-                builder.setMessage("sair ? ");
+                builder.setMessage("Terminar a sessão ? ");
                 builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -304,7 +317,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 });
                 builder.show();
-            }
 
         }
 
@@ -351,9 +363,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            updadeAndSeacherNotifications();
+                            //updadeAndSeacherNotifications();
                             displayNotification();
-                            verificationIsNull();
                         } catch (Exception e) {
                             // error, do something
                         }
@@ -376,7 +387,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            System.out.println("comecou");
                             verificationIsNull();
                         } catch (Exception e) {
                             // error, do something
@@ -386,92 +396,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
 
-        timer.schedule(task, 0, 800);  // interval of one minute
+        timer.schedule(task, 0, 100);  // interval of one minute
     }
     public void setting(MenuItem item) {
         startActivity(new Intent(MainActivity.this,SettingActivity.class));
     }
 
-    public void updadeAndSeacherNotifications(){
-        Queue queue = DBManager.getInstance().getQueue();
-        queue.nofify();
-        notifications = queue.getNotifications();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
-                List<EmergencyMedicalPersonnel> eP = DBManager.getInstance().getEmergencyMedicalPersonnels();
-
-                    for (Notification n : notifications) {
-                        System.out.println(" -------------------------------------------- size hash: " + notificationTriggered.size());
-                        if (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())) {
-                            popNotification(n);
-                            //popNotification(n);
-                            for (EmergencyMedicalPersonnel e : eP) {
-                                System.out.println("sending SMS to " + e.getContact() + " Message: " + n.getMessage());
-                                sendSMS(e.getContact(), n.getMessage());
-                            }
-                            DBManager.getInstance().addNewNotification(notifications);
-                            notificationTriggered.put(n.getId(), n);
-                        } else {
-                            System.out.println(" ------------------------------------------------- notification " + n.getId() + " not trrigeer " + (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())));
-                        }
-
-                }
-            } else {
-                requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
-            }
-        }
-
-
-
-//        // Send SMS
+//    public void updadeAndSeacherNotifications(){
+//        Queue queue = DBManager.getInstance().getQueue();
+//        queue.nofify();
+//        notifications = queue.getNotifications();
+//
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
 //                List<EmergencyMedicalPersonnel> eP = DBManager.getInstance().getEmergencyMedicalPersonnels();
 //
-//                String composeMessage = "";
-//                for (Notification n : notifications) {
-//                    boolean timePassed = false;
-//                    if (notificationTriggered.containsKey(n.getId())){
-//                        Log.i("CompareTime",  "Next SMS will be send on: " + Helper.format(notificationTriggered.get(n.getId()).getNextNotifier()));
-//                        timePassed = Calendar.getInstance().getTime().after(notificationTriggered.get(n.getId()).getNextNotifier());
-//                    }
+//                    for (Notification n : notifications) {
+//                        // concatena as menssagens
+//                        n.setMessage(n.getMessage()+ " "+sharedPreferences.getString("mensagen","")+"");
+//                        System.out.println(" -------------------------------------------- size hash: " + notificationTriggered.size());
+//                        if (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())) {
+//                            popNotification(n);
+//                            //popNotification(n);
+//                            for (EmergencyMedicalPersonnel e : eP) {
+//                                System.out.println("sending SMS to " + e.getContact() + " Message: " + n.getMessage());
+//                                sendSMS(e.getContact(), n.getMessage());
+//                            }
+//                            DBManager.getInstance().addNewNotification(notifications);
+//                            notificationTriggered.put(n.getId(), n);
+//                        } else {
+//                            System.out.println(" ------------------------------------------------- notification " + n.getId() + " not trrigeer " + (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())));
+//                        }
 //
-//                    if (!notificationTriggered.containsKey(n.getId()) || timePassed) {
-////                            composeMessage += n.getMessage()+"\n";
-//                        composeMessage += n.getDeliveryService().getParturient().getName() + " "+n.getDeliveryService().getParturient().getSurname() +", ";
-//                        notificationTriggered.put(n.getId(), n);
-//                        popNotification(n);
-//                        DBManager.getInstance().addNewNotification(notifications);
-//                    }
-//                }
-//
-//                if(!composeMessage.isEmpty()){
-//                    for (EmergencyMedicalPersonnel e : eP) {
-//                        String message = "ATENÇÃO ALERTA VERMELHO: A(s) parturiente(s) "+composeMessage+" necessita(m) de cuidados médicos";
-//                        Log.i("AsyncTask", Helper.format(Calendar.getInstance().getTime())+": sending SMS to " + e.getContact() + " Message: " + message);
-//                        sendSMS(e.getContact(), message);
-//                    }
 //                }
 //            } else {
 //                requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
 //            }
+//         }
+//
 //        }
-        }
-
-    private void sendSMS(String phoneNumber, String message) {
-        phoneNumber = phoneNumber.trim();
-        message = message.trim();
-
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-            Toast.makeText(this, "Message is sent", Toast.LENGTH_SHORT);
-
-        } catch (Exception e) {
-            Log.i("EXPECTION SMS", e.getMessage());
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
-        }
-    }
+//
+//    private void sendSMS(String phoneNumber, String message) {
+//        phoneNumber = phoneNumber.trim();
+//        message = message.trim();
+//
+//        try {
+//            SmsManager smsManager = SmsManager.getDefault();
+//            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+//            Toast.makeText(this, "Message is sent", Toast.LENGTH_SHORT);
+//
+//        } catch (Exception e) {
+//            Log.i("EXPECTION SMS", e.getMessage());
+//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
+//        }
+//    }
 
     private void popNotification(Notification notification) {
 
@@ -488,22 +466,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setContentIntent(contxtIntent)
                   .build();
           notificationManagerCompat.notify(Integer.parseInt(notification.getId()),notification1);
-
-//
-//        NotificationCompat.Builder builder=new NotificationCompat.Builder(MainActivity.this)
-//                .setSmallIcon(R.drawable.mulhergravidabom2)
-//                .setContentTitle("Alerta").setColor(Color.GREEN)
-//                .setContentText("notification.getMessage()")
-//                .setAutoCancel(true);
-//
-//        Intent intent=new Intent(MainActivity.this,DadosPessoais.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-//        intent.putExtra("id",notification.getId());
-//        PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-//        builder.setContentIntent(pendingIntent);
-//        NotificationManager notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-//        notificationManager.notify(0,builder.build());
-//
 
     }
      public void centroSaude(View view) {
@@ -524,7 +486,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
              }, Long.parseLong("400"));
          }
     }
-
 
 
 }

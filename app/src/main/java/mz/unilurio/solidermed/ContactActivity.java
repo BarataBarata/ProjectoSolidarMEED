@@ -5,7 +5,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -19,7 +18,6 @@ import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.AddContctClass;
 import mz.unilurio.solidermed.model.DBManager;
-import mz.unilurio.solidermed.model.EditContctClass;
 import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 
 public class ContactActivity extends AppCompatActivity {
@@ -40,7 +38,7 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-        SearchView searchView = (SearchView) findViewById(R.id.seacherContact);
+        SearchView searchView = (SearchView) findViewById(R.id.seacherDilatacao);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -130,9 +128,10 @@ public class ContactActivity extends AppCompatActivity {
 
     public void initializeteDisplayContextContact() {
         list=DBManager.getInstance().getEmergencyMedicalPersonnels();
+        System.out.println("dddddddddddddddddddd"+list);
         buscaAtualizacao(seacher);
         RecyclerView view;
-        view = (RecyclerView) findViewById(R.id.recycler_contact);
+        view = (RecyclerView) findViewById(R.id.recycler_Contact);
         LinearLayoutManager contactLayoutManager;
         contactLayoutManager = new LinearLayoutManager(this);
         emergencyMedicalPersonnelRecyclerAdpter = new EmergencyMedicalPersonnelRecyclerAdpter(this, auxList);

@@ -2,14 +2,13 @@ package mz.unilurio.solidermed;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -36,10 +35,10 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.AlertParutient;
 import mz.unilurio.solidermed.model.DBManager;
@@ -86,6 +85,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private Switch swit;
     private int idParturiente;
     private TextView textContTimer;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +98,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         textEditAndRegist=findViewById(R.id.txtRegisto_Edit);
         initView();
         invisible();
+        // inicializa o numero de dilatacao inicial e final
         validator = new Validator(this);
         validator.setValidationListener(this);
         viewNumber();
@@ -117,6 +118,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         }
 
     }
+
 
     private void viewnumber2() {
         para.addOnChangeListener(new Slider.OnChangeListener() {
@@ -360,6 +362,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
                 parturient.setPara((int) para.getValue());
                 parturient.setReason(mSliderDilatation.getValue()+"");
 
+
                 if(isTrasferencia){
                     parturient.setTransfered(true);
                     parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
@@ -496,9 +499,10 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
                     }
 
                     if (!isExistParturiente(parturient)) {
+                        parturient.reverseTimer(60*9);
                         DBManager.getInstance().addQueueAndDeliveryService(parturient);
                         databaseReference = firebaseDatabase.getReference("Parturiente");
-                        databaseReference.child(parturient.getId() + "").setValue(parturient);
+                        databaseReference.child(parturient.getId()+"-"+format(new Date())).setValue(parturient);
                         progressBar();
                         Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
 
@@ -620,5 +624,10 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
             }
         }
     return true;
+    }
+
+    private String format(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm-yyyy-MM-dd ");
+        return dateFormat.format(date);
     }
 }

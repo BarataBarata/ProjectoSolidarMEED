@@ -53,7 +53,7 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UserNurse userNurse =  originalListNurse.get(position);
         holder.currentPosition = position;
-        holder.txtNameParturient.setText(userNurse.getNomeNurse());
+        holder.txtNameParturient.setText(userNurse.getFullName());
         holder.textVcontacto.setText(userNurse.getContacto());
         holder.imageEditar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +120,7 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
                 list.addAll(auxListNurse);
             }else{
                 for(UserNurse hospitais: auxListNurse){
-                    if(hospitais.getNomeNurse().toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if(hospitais.getFullName().toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(hospitais);
                     }
                 }
@@ -155,7 +155,7 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
             super(itemView);
             imageEditar=(ImageView)itemView.findViewById(R.id.idEditEnfermeira);
             buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptionsParturiente);
-            textVcontacto=(TextView)itemView.findViewById(R.id.idContactoMedico);
+            textVcontacto=(TextView)itemView.findViewById(R.id.idContactMedico);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
             txtNameParturient = (TextView) itemView.findViewById(R.id.idEnfermeiro);

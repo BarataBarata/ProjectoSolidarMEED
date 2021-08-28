@@ -38,7 +38,7 @@
             tools:text="Nome do medico" />
         <TextView
             android:layout_marginTop="6dp"
-            android:id="@+id/idContactoMedico"
+            android:id="@+id/idContactMedico"
             android:singleLine="true"
             android:ellipsize="marquee"
             android:layout_below="@id/idEnfermeiro"

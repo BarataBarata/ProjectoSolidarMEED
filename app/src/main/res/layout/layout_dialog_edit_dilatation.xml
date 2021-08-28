@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="16dp"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+        <TextView
+            android:gravity="center"
+            android:layout_marginTop="12dp"
+            android:id="@+id/txttitl"
+            android:text="Dilatação"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_below="@id/txttitl"
+            android:gravity="center"
+            android:id="@+id/txtTitleDilatation"
+            android:layout_marginStart="8dp"
+            android:text="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <com.google.android.material.slider.Slider
+            android:layout_below="@id/txtTitleDilatation"
+            android:id="@+id/idEditDilatation"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingLeft="0dp"
+            android:paddingTop="40dp"
+            android:paddingRight="0dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="10" />
+
+        <TextView
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:layout_below="@id/idEditDilatation"
+            android:id="@+id/txtTitleTempoAlerta"
+            android:text="Tempo de Alerta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+
+        <RelativeLayout
+            android:id="@+id/viewTxt"
+            android:layout_below="@id/txtTitleTempoAlerta"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:id="@+id/idViewHoras"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:" />
+            <TextView
+                android:textStyle="bold"
+                android:textSize="16sp"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_alignTop="@id/idViewHoras"
+                android:layout_marginStart="5dp"
+                android:layout_toRightOf="@id/idViewHoras"
+                android:id="@+id/idViewMinutos"
+                android:text="00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="16dp"
+            android:text="horas"
+            android:layout_below="@id/viewTxt"
+            android:id="@+id/textTitleHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/idEdilatation"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textTitleHora"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingLeft="0dp"
+            android:paddingTop="40dp"
+            android:paddingRight="0dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="24" />
+
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="16dp"
+            android:text="Minutos"
+            android:layout_below="@id/idEdilatation"
+            android:id="@+id/textTitleMinutos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.slider.Slider
+            android:layout_below="@id/textTitleMinutos"
+            android:id="@+id/idminutosAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:paddingLeft="0dp"
+            android:paddingTop="40dp"
+            android:paddingRight="0dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="60" />
+
+
+
+</RelativeLayout>
+</ScrollView>

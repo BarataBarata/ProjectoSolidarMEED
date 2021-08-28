@@ -150,7 +150,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
             textCircle=(TextView)itemView.findViewById(R.id.id_ImagemSettings);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtHoraAtendido = (TextView) itemView.findViewById(R.id.idHoraSaida);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.idNomeParturienteAtendido);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.idNomeMedico);
             buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsParturiente);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 

@@ -159,7 +159,7 @@ public class EmergencyMedicalPersonnelRecyclerAdpter2 extends RecyclerView.Adapt
             textApelido=(TextView) itemView.findViewById(R.id.idApelidoEditContact);
             imageDelete=(ImageView)itemView.findViewById(R.id.idDelete);
             imageEditarContact=(ImageView)itemView.findViewById(R.id.idEditEnfermeira);
-            textContact=(TextView)itemView.findViewById(R.id.idContactoMedico);
+            textContact=(TextView)itemView.findViewById(R.id.idContactMedico);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
             txtNameMedico = (TextView) itemView.findViewById(R.id.idEnfermeiro);

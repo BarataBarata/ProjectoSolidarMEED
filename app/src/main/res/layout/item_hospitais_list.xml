@@ -2,29 +2,30 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="20dp"
+    android:layout_marginBottom="8dp"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/activity_hospitais">
 
     <RelativeLayout
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="55dp">
 
         <ImageView
+            android:layout_centerVertical="true"
             android:src="@drawable/hospitallist"
             android:id="@+id/id_ImagemSettings"
-            android:layout_width="40dp"
-            android:gravity="center"
+            android:layout_width="30dp"
             android:textSize="30dp"
             android:textColor="@color/purple_500"
-            android:layout_height="40dp" />
+            android:layout_height="30dp" />
 
 
         <TextView
-            android:layout_marginTop="8dp"
+            android:layout_centerVertical="true"
             android:id="@+id/txt_idHospitais"
             android:ellipsize="marquee"
             android:singleLine="true"
@@ -33,7 +34,7 @@
             android:layout_marginStart="16dp"
             android:layout_toEndOf="@id/id_ImagemSettings"
             android:textColor="@color/CorParturient"
-            android:textSize="18sp"
+            android:textSize="15sp"
             tools:text="Hospitais" />
 
     </RelativeLayout>

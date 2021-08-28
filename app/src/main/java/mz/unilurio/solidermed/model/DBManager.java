@@ -11,8 +11,9 @@ import mz.unilurio.solidermed.R;
 
 public class DBManager {
 
-
+    private  static  int idDilatation=6;
     private static DBManager ourInstance = null;
+    private List<DilatationAndTimer> dilatationAndTimerList=new ArrayList<>();
     private List<Integer> integerListLimitDilatation=new ArrayList<>();
     private List<Integer>integerListInitDilatation=new ArrayList<>();
     private List<Integer> integerListOpcoesParidade=new ArrayList<>();
@@ -65,9 +66,28 @@ public class DBManager {
             ourInstance.initializeDilatationCervical();
             ourInstance.initializeOpcoesParidade();
             ourInstance.initializeTimer();
+            ourInstance.intDilatationAndTimer();
             ///ourInstance.initializeParturientesAtendidos();
         }
         return ourInstance;
+    }
+
+    private void intDilatationAndTimer() {
+        dilatationAndTimerList.add(new DilatationAndTimer("4","5",1));
+        dilatationAndTimerList.add(new DilatationAndTimer("5","4",2));
+        dilatationAndTimerList.add(new DilatationAndTimer("6","3",3));
+        dilatationAndTimerList.add(new DilatationAndTimer("7","2",4));
+        dilatationAndTimerList.add(new DilatationAndTimer("8","1",5));
+    }
+
+    public void addDilatation(DilatationAndTimer dilatationAndTimer){
+        dilatationAndTimer.setIdDilatation(idDilatation++);
+        this.dilatationAndTimerList.add(dilatationAndTimer);
+    }
+
+
+    public List<DilatationAndTimer> getDilatationAndTimerList() {
+        return dilatationAndTimerList;
     }
 
     private void initializeTimer(){
@@ -197,11 +217,11 @@ public class DBManager {
     }
 
     private void initializeDoctor() {
-        this.userDoctorList.add(new UserDoctor("","",1,"845740722"));
-        this.userDoctorList.add(new UserDoctor("Ussimane Killer Wazy","129",2,"847759422"));
-        this.userDoctorList.add(new UserDoctor("Felermino Ali","128",3,"864293652"));
-        this.userDoctorList.add(new UserDoctor("Felermino Rumbi","122",4,"846689637"));
-        this.userDoctorList.add(new UserDoctor("Saide Nilfero","138",5,"849288877"));
+        this.userDoctorList.add(new UserDoctor("Barata Estevao Mario Barata","","",1,"845740722"));
+        this.userDoctorList.add(new UserDoctor("Ussimane Killer Wazy","ussimane","129",2,"847759422"));
+        this.userDoctorList.add(new UserDoctor("Felermino Ali","128","felermino",3,"864293652"));
+        this.userDoctorList.add(new UserDoctor("Felermino Rumbi","rumbi","122",4,"846689637"));
+        this.userDoctorList.add(new UserDoctor("Saide Nilfero","saide","138",5,"849288877"));
 
     }
 
@@ -221,10 +241,10 @@ public class DBManager {
     }
 
     private void initializeInfermeira() {
-        this.userNurseList.add(new UserNurse("Salima","Sara","123","1","84574072"));
-        this.userNurseList.add(new UserNurse("Fatima","Joao","124","2","84574072"));
-        this.userNurseList.add(new UserNurse("Maria","Fito","124","3","84574072"));
-        this.userNurseList.add(new UserNurse("Carla","Dario","128","4","84574072"));
+        this.userNurseList.add(new UserNurse("Salima Maria","salima","123","1","84574072"));
+        this.userNurseList.add(new UserNurse("Fatima Carla","fatima","124","2","84574072"));
+        this.userNurseList.add(new UserNurse("Maria Sofia","maria","124","3","84574072"));
+        this.userNurseList.add(new UserNurse("Carla Antonio","carla","128","4","84574072"));
     }
 
     public List<UserNurse> getUserNurseList() {
@@ -502,8 +522,8 @@ public class DBManager {
 //        initNotifications.add(initializeNotification2());
     }
 
-    public void addNewNotification(List<Notification >notification){
-        notifications.addAll(notification);
+    public void addNewNotification(Notification notification){
+        notifications.add(notification);
     }
 
     public List<Notification> getNotifications() {

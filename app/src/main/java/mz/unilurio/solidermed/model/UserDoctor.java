@@ -1,22 +1,32 @@
 package mz.unilurio.solidermed.model;
 
 public class UserDoctor {
-             private  String emailUser;
+             private  String fullName;
+             private  String userLogin;
              private  String passwordUser;
              private  String contacto;
              private  int idUser;
              private  Privilegios privilegios;
 
 
-    public UserDoctor(String emailUser, String passwordUser, int idUser,String contacto) {
-        this.emailUser = emailUser;
+    public UserDoctor(String fullName,String userLogin, String passwordUser, int idUser, String contacto) {
+        this.fullName = fullName;
         this.passwordUser = passwordUser;
         this.idUser = idUser;
         this.contacto=contacto;
+        this.userLogin=userLogin;
     }
 
-    public String getEmailUser() {
-        return emailUser;
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     public String getContacto() {
@@ -27,8 +37,8 @@ public class UserDoctor {
         this.contacto = contacto;
     }
 
-    public void setEmailUser(String emailUser) {
-        this.emailUser = emailUser;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPasswordUser() {

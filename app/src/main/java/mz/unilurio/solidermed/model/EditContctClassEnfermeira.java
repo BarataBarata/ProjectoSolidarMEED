@@ -47,7 +47,7 @@ public class EditContctClassEnfermeira extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         userNurse.setContacto(editContact.getText().toString());
-                        userNurse.setNomeNurse(editNome.getText().toString());
+                        userNurse.setFullName(editNome.getText().toString());
                     }
                 });
               editContact=view.findViewById(R.id.idContactEditContact);
@@ -66,9 +66,9 @@ public class EditContctClassEnfermeira extends AppCompatDialogFragment {
          List<UserNurse> list=DBManager.getInstance().getUserNurseList();
          for(UserNurse userNurse1:list) {
              if(Integer.parseInt(userNurse1.getIdNurse())==id) {
-                 nome = userNurse1.getNomeNurse();
+                 nome = userNurse1.getFullName();
                  contact = userNurse1.getContacto();
-                 apelido=userNurse1.getApelido();
+                 apelido=userNurse1.getUserNurse();
                  userNurse=userNurse1;
                  break;
              }

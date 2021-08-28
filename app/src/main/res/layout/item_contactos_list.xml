@@ -3,69 +3,79 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="#EDEFEC"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/activity_contact">
 
-    <RelativeLayout
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+
+    <androidx.cardview.widget.CardView
+        android:onClick="viewContact"
+        android:id="@+id/card1"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/toolbar"
+        android:background="@color/white"
+        app:cardCornerRadius="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp">
 
-        <ImageView
-            android:id="@+id/id_ImagemSettings"
-            android:background="@drawable/list_contacto"
-            android:layout_width="40dp"
-            android:layout_height="50dp"
-            />
-
-
-        <TextView
-            android:layout_toLeftOf="@id/idEditContacto"
-            android:id="@+id/idNomeParturienteAtendido"
-            android:ellipsize="marquee"
-            android:singleLine="true"
+        <RelativeLayout
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/id_ImagemSettings"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="80dp"
-            android:layout_toEndOf="@id/id_ImagemSettings"
-            android:textColor="@color/CorParturient"
-            android:textSize="17sp"
-            tools:text="Nome do medico" />
-        <TextView
-            android:layout_marginTop="4dp"
-            android:id="@+id/idContactoMedico"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            android:layout_below="@id/idNomeParturienteAtendido"
-            android:layout_alignStart="@id/idNomeParturienteAtendido"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/CorParturient"
-            android:textSize="14sp"
-            android:text="845740722"/>
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/image1"
+                android:layout_marginStart="8dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_edit_contact"
+                android:layout_width="25dp"
+                android:layout_height="25dp"/>
+            <TextView
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                android:textSize="16sp"
+                android:id="@+id/idNomeMedico"
+                android:layout_marginStart="10dp"
+                android:layout_alignTop="@id/image1"
+                android:layout_toRightOf="@id/image1"
+                android:text="Nome "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/idContactMedico"
+                android:textSize="13dp"
+                android:layout_marginTop="1dp"
+                android:layout_alignStart="@id/idNomeMedico"
+                android:layout_below="@id/idNomeMedico"
+                android:text="Contacto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-        <ImageView
-            android:layout_alignTop="@id/idNomeParturienteAtendido"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/idDelete"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            app:srcCompat="@drawable/delete" />
+            <ImageView
+                android:id="@+id/idDelete"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-        <ImageView
-            android:id="@+id/idEditContacto"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="20dp"
-            android:layout_toLeftOf="@id/idDelete"
-            app:srcCompat="@drawable/edit_contact" />
+            <ImageView
+                android:id="@+id/idEditContacto"
+                android:layout_marginEnd="14dp"
+                android:layout_centerVertical="true"
+                android:layout_alignTop="@id/idDelete"
+                android:src="@drawable/edit_contact"
+                android:layout_toLeftOf="@id/idDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-    </RelativeLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.cardview.widget.CardView>

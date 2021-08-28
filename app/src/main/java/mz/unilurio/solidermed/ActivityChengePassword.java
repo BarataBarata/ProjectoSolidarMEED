@@ -93,7 +93,7 @@ public class ActivityChengePassword extends AppCompatActivity {
             @Override
             public void run() {
                 handler.post(new Runnable() {
-                    public void run() {
+                    public void run(){
                         try {
                             verificationPasswordChenge();
                         } catch (Exception e) {
@@ -103,7 +103,7 @@ public class ActivityChengePassword extends AppCompatActivity {
                 });
             }
         };
-        timer.schedule(task, 0, 900);  // interval of one minute
+        timer.schedule(task, 0, 100);  // interval of one minute
 
     }
 
@@ -130,11 +130,10 @@ public class ActivityChengePassword extends AppCompatActivity {
 
     public void trocar(String numberSeacher, String newPassword,String chengeuser){
             boolean isTrue=true;
-        System.out.println( numberSeacher +"  === " +newPassword);
             for (UserNurse userNurse: DBManager.getInstance().getUserNurseList()){
-                if(userNurse.getContacto().equalsIgnoreCase(newPassword)){
+                if(userNurse.getContacto().equals(numberSeacher)){
                     userNurse.setPassworNurse(newPassword);
-                    userNurse.setNomeNurse(chengeuser);
+                    userNurse.setUserNurse(chengeuser);
                     isTrue=false;
                 }
             }
@@ -143,7 +142,7 @@ public class ActivityChengePassword extends AppCompatActivity {
                 for (UserDoctor userDoctor : DBManager.getInstance().getUserDoctorList()) {
                     if (userDoctor.getContacto().equalsIgnoreCase(numberSeacher)) {
                         userDoctor.setPasswordUser(newPassword);
-                        userDoctor.setEmailUser(chengeuser);
+                        userDoctor.setUserLogin(chengeuser);
                     }
                 }
             }

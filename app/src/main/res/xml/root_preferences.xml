@@ -1,35 +1,50 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="Numeros">
+    <PreferenceCategory app:icon="@drawable/icondilatacao" app:title="Dilatação">
+
+  <EditTextPreference
+            app:key="minimoDilatacaoCervical"
+            app:title="Minimo de Dilatação Cervical"
+            app:summary="Editar o numero minimo de dilatação cervical"/>
+
 
         <EditTextPreference
-            app:key="signature"
-            app:title="Adicionar numero :"
-            app:useSimpleSummaryProvider="true" />
+            app:key="maximoDilatacaoCervical"
+            app:title="Maximo de Dilatação Cervical"
+            app:summary="Editar o numero maximo de dilatação cervical"/>
 
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
+<!--        <ListPreference-->
+<!--            app:defaultValue="reply"-->
+<!--            app:entries="@array/reply_entries"-->
+<!--            app:entryValues="@array/reply_values"-->
+<!--            app:key="notificationList"-->
+<!--            app:title="@string/reply_title"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="Opções Paridade ">
+        <EditTextPreference
+            app:key="minimoOpcoesDeParidade"
+            app:title="Minimo de Opções Paridade"
+            app:summary="Editar o valor"/>
+        <EditTextPreference
+            app:key="maximoOpcoesDeParidade"
+            app:title="Maximo de Opções Paridade"
+            app:summary="Editar o valor"/>
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+    </PreferenceCategory>
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
 
+
+
+
+    <PreferenceCategory app:icon="@drawable/iconnotification" app:title="Notificação">
+
+        <EditTextPreference
+            app:key="mensagen"
+            app:title="Mensagem de alerta"
+            app:summary="Editar mensagem de alerta"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

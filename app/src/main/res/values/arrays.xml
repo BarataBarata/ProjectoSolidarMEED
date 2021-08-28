@@ -1,8 +1,8 @@
 <resources>
     <!-- Reply Preference -->
     <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
+        <item>1 hora</item>
+        <item>2 horas</item>
     </string-array>
 
     <string-array name="reply_values">

@@ -1,7 +1,10 @@
 package mz.unilurio.solidermed.model;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,7 +14,6 @@ import java.util.List;
 import mz.unilurio.solidermed.utils.Helper;
 
 public class Queue {
-
     private List<Observer> observers = new ArrayList<>();
     private List<Notification> notifications = new ArrayList<>();
 
@@ -24,13 +26,14 @@ public class Queue {
     }
 
     public void nofify(){
+
         this.notifications = new ArrayList<>();
         for (Observer ob:observers){
             if(ob.fireAlert()){
                 Notification notification = new Notification();
                 notification.setColour(Color.rgb(248, 215,218));
                 Parturient p = ((DeliveryService) ob).getParturient();
-                notification.setMessage(p.getName()+" "+p.getSurname()+" necessita de cuidados médicos");
+                notification.setMessage(p.getName()+" "+p.getSurname());
                 notification.setTime( Calendar.getInstance().getTime());
                 notification.setOpen(true);
                 notification.setDeliveryService((DeliveryService) ob);

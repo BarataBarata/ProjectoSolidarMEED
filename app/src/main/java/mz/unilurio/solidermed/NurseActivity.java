@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,8 +18,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
-import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
-import mz.unilurio.solidermed.model.Hospitais;
 import mz.unilurio.solidermed.model.UserNurse;
 
 public class NurseActivity extends AppCompatActivity {
@@ -126,7 +122,7 @@ public class NurseActivity extends AppCompatActivity {
         }else {
             auxList=new ArrayList<>();
             for(UserNurse userNurse: list){
-                if(userNurse.getNomeNurse().toLowerCase().contains(seacher.toString().toLowerCase())){
+                if(userNurse.getFullName().toLowerCase().contains(seacher.toString().toLowerCase())){
                     auxList.add(userNurse);
                 }
             }

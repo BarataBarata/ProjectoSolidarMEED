@@ -1,23 +1,27 @@
 package mz.unilurio.solidermed;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+
+import java.io.UnsupportedEncodingException;
 
 public class SettingsActivity extends AppCompatActivity {
 
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-
-
-        EditTextPreference editTextPreference=new EditTextPreference(new SettingsActivity());
-        editTextPreference.getText();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
@@ -34,7 +38,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        startActivity(new Intent(SettingsActivity.this,MainActivity.class));
         super.onPause();
     }
 

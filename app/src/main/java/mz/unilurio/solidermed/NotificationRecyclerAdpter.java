@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
@@ -24,7 +25,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import mz.unilurio.solidermed.model.EditContctClass;
 import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.ViewEditClassNotification;
 
 public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder> implements Filterable {
 
@@ -54,13 +57,14 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
         holder.cardView.setCardBackgroundColor(notification.getColour());
         holder.txtTime.setText(format(notification.getTime()));
-        holder.txtNameParturient.setText(oUpperFirstCase(notification.getDeliveryService().getParturient().getName())+ " "+oUpperFirstCase(notification.getDeliveryService().getParturient().getSurname()));
-        holder.txtDetails.setText("Idade : "+notification.getDeliveryService().getParturient().getAge()+"   |  Dilatacao: "+ notification.getDeliveryService().getMeasure().peek().getInitialDilatation());
+        holder.txtNameParturient.setText(oUpperFirstCase(notification.getMessage()));
+        holder.txtDetails.setText("Idade : 10| diltatacao");
 
 
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
                 //creating a popup menu
                 Context mCtx = null;
@@ -74,7 +78,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                         switch (item.getItemId()) {
 
                             case R.id.atendimento:{
-                                Intent intent = new Intent(context, Atendimento.class);
+                                Intent intent = new Intent(context, ViewAtendimentoActivity.class);
                                 intent.putExtra("idParturiente",notifications.get(position).getId());
                                 context.startActivity(intent);
                             }
@@ -146,7 +150,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            txtDetails=(TextView)itemView.findViewById(R.id.idContactoMedico);
+            txtDetails=(TextView)itemView.findViewById(R.id.idContactMedico);
             cardView = (CardView) itemView.findViewById(R.id.card_viewNotification);
             txtTime = (TextView) itemView.findViewById(R.id.idHoraAlertaNotification);
             txtNameParturient = (TextView) itemView.findViewById(R.id.txt_NomeParturienteNotification);
@@ -155,21 +159,25 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        ProgressDialog progressBar;
-                        progressBar=new ProgressDialog(context);
-                        progressBar.setTitle("Aguarde");
-                        progressBar.setMessage("processando...");
-                        progressBar.show();
+                    Intent intent = new Intent(context, ViewAtendimentoActivity.class);
+                         intent.putExtra("idParturiente", notifications.get(currentPosition).getId()+"");
+                              context.startActivity(intent);
 
-                        new Handler().postDelayed(new Thread() {
-                            @Override
-                            public void run() {
-                                progressBar.dismiss();
-                                Intent intent = new Intent(context, DadosPessoais.class);
-                                intent.putExtra("idParturiente", notifications.get(currentPosition).getId()+"");
-                                context.startActivity(intent);
-                            }
-                        },Long.parseLong("400"));
+//                        ProgressDialog progressBar;
+//                        progressBar=new ProgressDialog(context);
+//                        progressBar.setTitle("Aguarde");
+//                        progressBar.setMessage("processando...");
+//                        progressBar.show();
+//
+//                        new Handler().postDelayed(new Thread() {
+//                            @Override
+//                            public void run() {
+//                                progressBar.dismiss();
+//                                Intent intent = new Intent(context, DadosPessoais.class);
+//                                intent.putExtra("idParturiente", notifications.get(currentPosition).getId()+"");
+//                                context.startActivity(intent);
+//                            }
+//                        },Long.parseLong("400"));
                     }
 
 

@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="@color/white"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/fragment_atendidos">
 
@@ -38,7 +39,7 @@
             android:textColor="#0C0000" />
 
         <TextView
-            android:id="@+id/idNomeParturienteAtendido"
+            android:id="@+id/idNomeMedico"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:layout_toLeftOf="@id/textViewOptionsParturiente"
@@ -53,12 +54,12 @@
             tools:text="Parturiente" />
         <TextView
             android:layout_marginTop="6dp"
-            android:id="@+id/idContactoMedico"
+            android:id="@+id/idContactMedico"
             android:singleLine="true"
             android:ellipsize="marquee"
             android:layout_toLeftOf="@id/textViewOptionsParturiente"
-            android:layout_below="@id/idNomeParturienteAtendido"
-            android:layout_alignStart="@id/idNomeParturienteAtendido"
+            android:layout_below="@id/idNomeMedico"
+            android:layout_alignStart="@id/idNomeMedico"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/CorParturient"

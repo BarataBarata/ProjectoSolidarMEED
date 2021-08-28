@@ -1,31 +1,31 @@
 package mz.unilurio.solidermed.model;
 
 public class UserNurse {
-       private  String nomeNurse;
+       private  String fullName;
        private  String passworNurse;
        private  String idNurse;
        private  String contacto;
-       private  String apelido;
+       private  String userNurse;
        private  Privilegios privilegios;
 
 
-    public UserNurse(String nomeNurse,String apelido, String passworNurse, String idNurse,String contacto) {
-        this.nomeNurse = nomeNurse;
+    public UserNurse(String nomeNurse,String userNurse, String passworNurse, String idNurse,String contacto) {
+        this.fullName = nomeNurse;
         this.passworNurse = passworNurse;
         this.idNurse = idNurse;
         this.contacto=contacto;
-        this.apelido=apelido;
+        this.userNurse =userNurse;
     }
 
 
 
 
-    public String getApelido() {
-        return apelido;
+    public String getUserNurse() {
+        return userNurse;
     }
 
-    public void setApelido(String apelido) {
-        this.apelido = apelido;
+    public void setUserNurse(String userNurse) {
+        this.userNurse = userNurse;
     }
 
     public String getContacto() {
@@ -36,12 +36,12 @@ public class UserNurse {
         this.contacto = contacto;
     }
 
-    public String getNomeNurse() {
-        return nomeNurse;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setNomeNurse(String nomeNurse) {
-        this.nomeNurse = nomeNurse;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPassworNurse() {

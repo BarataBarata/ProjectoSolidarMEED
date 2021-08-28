@@ -1,32 +1,22 @@
 package mz.unilurio.solidermed;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.jetbrains.annotations.NotNull;
 
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Privilegios;
@@ -42,6 +32,7 @@ public class Login extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private Privilegios privilegios;
+    private String fullName;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -105,9 +96,6 @@ public class Login extends AppCompatActivity {
 //        }, Long.parseLong("900"));
 //    }
 
-
-
-
     private void progressBar2(String email,String password) {
         progressBar=new ProgressDialog(Login.this);
         progressBar.setMessage("validando os dados...");
@@ -117,35 +105,25 @@ public class Login extends AppCompatActivity {
             @Override
             public void run() {
                 progressBar.dismiss();
-
-                if(isDoctor(email,password)){
-                    textAlerta.setText("");
-                    startActivity( new Intent(Login.this, MainActivity.class));
-                } else {
-                    if(isNurse(email,password)){
+                    if(isExistNurse(email,password) || isExistDoctor(email,password)){
                         textAlerta.setText("");
-                        startActivity( new Intent(Login.this, MainActivity.class));
+                        Intent intent= new Intent(Login.this, MainActivity.class);
+                        intent.putExtra("user",fullName);
+                        startActivity(intent);
                     }else{
                         textAlerta.setText(" Usuario ou senha incorreto");
                     }
-                }
+
 
             }
-        }, Long.parseLong("900"));
+        }, Long.parseLong("500"));
     }
 
-
-
-
-
-
-
-
-
-    public boolean isDoctor(String user,String password){
+    public boolean isExistDoctor(String user, String password){
 
         for (UserDoctor s:DBManager.getInstance().getUserDoctorList()) {
-            if(user.equalsIgnoreCase(s.getEmailUser()) && password.equalsIgnoreCase(s.getPasswordUser())){
+            if(removeSpace(user).equalsIgnoreCase(removeSpace(s.getUserLogin())) && password.equalsIgnoreCase(s.getPasswordUser())){
+                fullName=s.getFullName();
                 privilegios.setViewAll(true);
                 return true;
             }
@@ -154,10 +132,11 @@ public class Login extends AppCompatActivity {
     }
 
 
-    public boolean isNurse(String user,String password){
+    public boolean isExistNurse(String user, String password){
 
         for(UserNurse userNurse:DBManager.getInstance().getUserNurseList()){
-            if(userNurse.getNomeNurse().equalsIgnoreCase(user) && userNurse.getPassworNurse().equalsIgnoreCase(password)){
+            if(removeSpace(userNurse.getUserNurse()).equalsIgnoreCase(removeSpace(user)) && userNurse.getPassworNurse().equalsIgnoreCase(password)){
+                fullName=userNurse.getFullName();
                 privilegios.setViewAll(false);
                 return true;
             }
@@ -165,9 +144,10 @@ public class Login extends AppCompatActivity {
         return false;
     }
 
+
     @Override
     public void finish() {
-        super.finish();
+       finish();
     }
 
     @Override
@@ -179,6 +159,17 @@ public class Login extends AppCompatActivity {
 
     public void confirmarPassword(View view) {
         startActivity(new Intent(Login.this,Activity_VerificarPassword.class));
+    }
+
+    public String removeSpace(String name){
+        String newName="";
+
+        for (int i = 0; i <name.length() ; i++) {
+             if(name.charAt(i)!=32){
+                 newName=newName+name.charAt(i);
+             }
+        }
+        return newName;
     }
 
 }

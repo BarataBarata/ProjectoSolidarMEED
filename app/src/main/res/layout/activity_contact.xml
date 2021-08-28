@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EDEFEC"
     android:orientation="vertical"
     tools:context=".ContactActivity">
 
@@ -12,33 +13,34 @@
         android:id="@+id/toolbarDadosPessoais"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="#EDEFEC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
 
+
         <ImageView
             android:onClick="finish"
-            android:src="@drawable/back_24"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_25" />
 
         <TextView
-            android:textSize="20dp"
             android:textStyle="bold"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_marginStart="30dp"
-            android:textColor="@color/white"
-            android:text= "Contactos"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="Definicoes"
+            android:textColor="#BC343534" />
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.SearchView
         android:layout_marginTop="55dp"
-        android:id="@+id/seacherContact"
+        android:id="@+id/seacherDilatacao"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="wrap_content"
         android:gravity="center"
         app:iconifiedByDefault="false"
@@ -74,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seacherContact"
+        app:layout_constraintTop_toBottomOf="@+id/seacherDilatacao"
         tools:layout_editor_absoluteX="0dp">
         <LinearLayout
             android:orientation="vertical"
@@ -82,7 +84,7 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_contact"
+                android:id="@+id/recycler_Contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -93,7 +95,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.615"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seacherContact"
+                app:layout_constraintTop_toBottomOf="@+id/seacherDilatacao"
                 app:layout_constraintVertical_bias="0.008"
                 tools:listitem="@layout/item_contactos_list" />
         </LinearLayout>

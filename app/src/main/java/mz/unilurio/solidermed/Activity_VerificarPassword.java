@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import mz.unilurio.solidermed.model.DBManager;
-import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 import mz.unilurio.solidermed.model.UserDoctor;
 import mz.unilurio.solidermed.model.UserNurse;
 
@@ -53,7 +52,7 @@ public class Activity_VerificarPassword extends AppCompatActivity {
         for(UserDoctor userDoctor: DBManager.getInstance().getUserDoctorList()){
              if(userDoctor.getContacto().equalsIgnoreCase(seacherUserNumber)){
                  numberUser=userDoctor.getContacto();
-                 nomeCompleto =userDoctor.getEmailUser();
+                 nomeCompleto =userDoctor.getFullName();
                  return  true;
              }
         }
@@ -66,7 +65,7 @@ public class Activity_VerificarPassword extends AppCompatActivity {
         for(UserNurse userNurse: DBManager.getInstance().getUserNurseList()){
             if(userNurse.getContacto().equalsIgnoreCase(seacherUserNumber)){
                 numberUser=userNurse.getContacto();
-                nomeCompleto =userNurse.getNomeNurse()+" "+userNurse.getApelido();
+                nomeCompleto =userNurse.getFullName();
                 return  true;
             }
         }

@@ -1,28 +1,27 @@
 package mz.unilurio.solidermed.model;
 
-import android.os.Build;
+import android.graphics.Color;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
-import android.widget.TextView;
-
-import androidx.annotation.RequiresApi;
+import android.telephony.SmsManager;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.List;
 
 public class Parturient implements Parcelable {
+    private static List<Notification> notifications = new ArrayList<>();
     private int id;
     private Date horaEntrada;
     private Date horaAlerta;
     private Date horaAtendimento;
     private String name;
-    private  int tempo=60;
+    private int tempoAlerta;
     private String surname;
     private int age;
     private int para;
@@ -33,12 +32,11 @@ public class Parturient implements Parcelable {
     private String reason;
     private int numeroCama;
     private boolean isStartCont;
-    private  String origemTransferencia;
-    private  String motivosDaTrasferencia;
-    private  String TempoRestante;
+    private String origemTransferencia;
+    private String motivosDaTrasferencia;
+    private String viewTempo;
 
-    public Parturient(){
-        reverseTimer(60);
+    public Parturient() {
     }
 
     public Parturient(int id, String name, String surname, int age) {
@@ -77,6 +75,7 @@ public class Parturient implements Parcelable {
         this.surname = surname;
         this.age = age;
     }
+
     public Date getTime() {
         return time;
     }
@@ -85,22 +84,18 @@ public class Parturient implements Parcelable {
         this.time = time;
     }
 
-    public Parturient(String name, String surname, int age, boolean isTransfered, String reason, Date time,int numeroCama) {
+    public Parturient(String name, String surname, int age, boolean isTransfered, String reason, Date time, int numeroCama) {
         this.name = name;
         this.time = time;
         this.surname = surname;
         this.age = age;
         this.isTransfered = isTransfered;
         this.reason = reason;
-        this.numeroCama=numeroCama;
+        this.numeroCama = numeroCama;
     }
 
-    public int getTempo() {
-        return tempo;
-    }
-
-    public void setTempo(int tempo) {
-        this.tempo = tempo;
+    public void setTempoAlerta(int tempoRestante) {
+        this.tempoAlerta = tempoRestante;
     }
 
     public Date getHoraEntrada() {
@@ -191,7 +186,9 @@ public class Parturient implements Parcelable {
         return age;
     }
 
-    public void setAge(int age){ this.age = age; }
+    public void setAge(int age) {
+        this.age = age;
+    }
 
 //    public void setAge(int age) throws IllegalArgumentException{
 //        if ((age < 12) || (age > 50)){
@@ -217,7 +214,9 @@ public class Parturient implements Parcelable {
         this.reason = reason;
     }
 
-    public int getPara() { return para; }
+    public int getPara() {
+        return para;
+    }
 
     public void setPara(int para) {
         this.para = para;
@@ -231,9 +230,13 @@ public class Parturient implements Parcelable {
 //        }
 //    }
 
-    public String getGestatinalRange() { return gestatinalRange; }
+    public String getGestatinalRange() {
+        return gestatinalRange;
+    }
 
-    public void setGestatinalRange(String gestatinalRange) { this.gestatinalRange = gestatinalRange; }
+    public void setGestatinalRange(String gestatinalRange) {
+        this.gestatinalRange = gestatinalRange;
+    }
 
     public String getOrigemTransferencia() {
         return origemTransferencia;
@@ -264,35 +267,62 @@ public class Parturient implements Parcelable {
                 int minutes = tempMint / 60;
                 seconds = tempMint - (minutes * 60);
 
-                setTempoRestante(String.format("%02d", hours)
+                setTempoRes("Tempo Restante : " + String.format("%02d", hours)
                         + ":" + String.format("%02d", minutes)
                         + ":" + String.format("%02d", seconds));
             }
 
             public void onFinish() {
-                // tv.setText("Completed");
+                sendNotification();
+                setTempoRes("Alerta Disparado");
             }
         }.start();
     }
 
 
-    public String getTempoRestante() {
-        return TempoRestante;
+    public String getTempoRest() {
+        return viewTempo;
     }
 
-    public void setTempoRestante(String tempoRestante) {
-        TempoRestante = tempoRestante;
+    public void setTempoRes(String tempoRestante) {
+        viewTempo = tempoRestante;
     }
-    private String formatMinuto(Date date){
+
+    private String formatMinuto(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("mm");
         return dateFormat.format(date);
     }
-    private String formatSegundos(Date date){
+
+    private String formatSegundos(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("ss");
         return dateFormat.format(date);
     }
-    private String formatHoras(Date date){
+
+    private String formatHoras(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("hh");
         return dateFormat.format(date);
+    }
+
+    private void sendSMS(String phoneNumber, String message) {
+        phoneNumber = phoneNumber.trim();
+        message = message.trim();
+
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+
+        } catch (Exception e) {
+            Log.i("EXPECTION SMS", e.getMessage());
+        }
+    }
+
+    void sendNotification(){
+        Notification notification = new Notification();
+        notification.setColour(Color.rgb(248, 215,218));
+        notification.setMessage(name+" "+surname);
+        notification.setTime( Calendar.getInstance().getTime());
+        notification.setOpen(true);
+        DBManager.getInstance().addNewNotification(notification);
+        sendSMS(name,surname);
     }
 }

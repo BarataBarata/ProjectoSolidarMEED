@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:backgroundTint="#EDEFEC"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_dilatetion_and_hours">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card1"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/toolbar"
+        android:background="@color/white"
+        app:cardCornerRadius="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <RelativeLayout
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/image1"
+                android:layout_marginStart="8dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icondilatacao"
+                android:layout_width="25dp"
+                android:layout_height="25dp"/>
+            <TextView
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                android:textSize="16sp"
+                android:id="@+id/idDilatacao"
+                android:layout_marginStart="10dp"
+                android:layout_alignTop="@id/image1"
+                android:layout_toRightOf="@id/image1"
+                android:text="Dilatacao "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/idTimer"
+                android:textSize="13dp"
+                android:layout_marginTop="1dp"
+                android:layout_alignStart="@id/idDilatacao"
+                android:layout_below="@id/idDilatacao"
+                android:text="Tempo para alerta 4 "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/idDeleteInDilatationInList"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/idEditDilatationInList"
+                android:layout_marginEnd="14dp"
+                android:layout_centerVertical="true"
+                android:layout_alignTop="@id/idDeleteInDilatationInList"
+                android:src="@drawable/edit_timer_and_dilatation"
+                android:layout_toLeftOf="@id/idDeleteInDilatationInList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.cardview.widget.CardView>

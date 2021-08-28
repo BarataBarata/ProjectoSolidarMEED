@@ -2,12 +2,12 @@ package mz.unilurio.solidermed;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,7 +34,7 @@ public class DadosPessoais extends AppCompatActivity {
     private TextView textApelido;
     private TextView textDilatacaoInicial;
     private Parturient parturient;
-    private RelativeLayout relativeShow;
+    private CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,15 +96,15 @@ public class DadosPessoais extends AppCompatActivity {
         if(parturient.isTransfered()){
             motivosTrasferenciaParturiente.setText(parturient.getMotivosDaTrasferencia()+"");
             origemTrasferenciaParturiente.setText(parturient.getOrigemTransferencia());
-            relativeShow.setVisibility(View.VISIBLE);
+            cardView.setVisibility(View.VISIBLE);
         }else {
-            relativeShow.setVisibility(View.INVISIBLE);
+            cardView.setVisibility(View.INVISIBLE);
         }
 
     }
 
     private void initialize() {
-        relativeShow = findViewById(R.id.isTransferidok);
+        //cardView = findViewById(R.id.isTransferidok);
         textDilatacaoInicial = findViewById(R.id.dilatacaoInicialParturientek);
         nomeParturiente=(TextView)findViewById(R.id.nomeParturientek);
         idadeParturiente=(TextView)findViewById(R.id.idadeParturientek);
@@ -117,7 +117,7 @@ public class DadosPessoais extends AppCompatActivity {
     }
 
     private String format(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
         return dateFormat.format(date);
     }
     @Override

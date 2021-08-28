@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#EBF1ED"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    tools:context=".ViewDadosPessoaisActivity"
+    android:layout_height="match_parent">
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="710dp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarDadosPessoais"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="finish"
+                    android:src="@drawable/back_25" />
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="Dados da Parturuente"
+                    android:textColor="#BC343534"
+                    android:textStyle="bold" />
+            </androidx.appcompat.widget.Toolbar>
+
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/toolbarDadosPessoais"
+                android:id="@+id/card2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:cardCornerRadius="20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/image4"
+                        android:layout_marginTop="16sp"
+                        android:src="@drawable/regist"
+                        android:foregroundGravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"/>
+
+                    <TextView
+                        android:id="@+id/idViewFullName"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/image4"
+                        android:layout_marginStart="16sp"
+                        android:layout_marginTop="10dp"
+                        android:text="Nome" />
+                    <TextView
+                        android:layout_alignLeft="@id/idViewFullName"
+                        android:layout_marginTop="10dp"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_below="@id/idViewFullName"
+                        android:id="@+id/viewIdade"
+                        android:text="Idade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_alignLeft="@id/idViewFullName"
+                        android:layout_below="@id/viewIdade"
+                        android:id="@+id/viewDilatacaoInicial"
+                        android:text="Dilatacao Inicial"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_alignLeft="@id/idViewFullName"
+                        android:layout_below="@id/viewDilatacaoInicial"
+                        android:id="@+id/viewIdadeGestacional"
+                        android:text=" Idade gestacional "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        style="@style/TextAppearance.AppCompat.Medium" android:layout_centerVertical="true"
+                        android:layout_alignLeft="@id/idViewFullName"
+                        android:layout_below="@id/viewIdadeGestacional"
+                        android:id="@+id/viewOpcoesDeParidade"
+                        android:text=" Opcoes de Paridade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_alignLeft="@id/idViewFullName"
+                        android:layout_below="@id/viewOpcoesDeParidade"
+                        android:id="@+id/viewHoraEntradaF"
+                        android:text="Hora entrada: "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_marginBottom="16sp"
+                        android:layout_alignLeft="@id/idViewFullName"
+                        android:layout_below="@id/viewHoraEntradaF"
+                        android:id="@+id/ViewTempoRestate"
+                        android:text="Tempo Restante"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/card2"
+                android:id="@+id/card3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:cardCornerRadius="20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+
+
+                    <RelativeLayout
+                        android:gravity="center"
+                        android:id="@+id/relative"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/image5"
+                            android:layout_marginTop="16sp"
+                            android:src="@drawable/trasferido"
+                            android:foregroundGravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"/>
+
+                        <TextView
+                            android:textStyle="bold"
+                            android:text="Parturiente Trasferido"
+                            android:layout_marginStart="10dp"
+                            android:layout_alignTop="@id/image5"
+                            android:layout_toRightOf="@id/image5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </RelativeLayout>
+
+
+                    <TextView
+                        android:layout_marginStart="16sp"
+                        android:layout_marginTop="10dp"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_below="@id/relative"
+                        android:id="@+id/idOrigemTrasferencia"
+                        android:text="trasferida"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginStart="16sp"
+                        android:layout_below="@id/idOrigemTrasferencia"
+                        android:id="@+id/idMotivosTrasferencia"
+                        android:text="motivos"
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="16sp"
+                        android:layout_height="wrap_content"/>
+
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+
+        </RelativeLayout>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab3"
+            style="@style/TextAppearance.AppCompat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="#08C368"
+            app:srcCompat="@drawable/edit_timer_and_dilatation"
+            tools:ignore="MissingConstraints" />
+
+
+    </FrameLayout>
+
+</ScrollView>

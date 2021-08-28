@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/idNomeParturienteAtendido"
+            android:id="@+id/idNomeMedico"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:layout_width="match_parent"

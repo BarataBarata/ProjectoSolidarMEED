@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#EBF1ED"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.ParturientesFragment">
 
@@ -29,7 +30,7 @@
          android:textSize="20dp"
         android:layout_marginTop="150dp"
         android:id="@+id/idNullResultParturiente"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:textStyle="italic"
         android:gravity="center"
         android:layout_marginStart="16dp"

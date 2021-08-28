@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
@@ -28,6 +29,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.Parturient;
+import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
 
 public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteRecyclerAdpter.ViewHolder> implements Filterable {
     private final Context context;
@@ -37,6 +39,8 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     private TimerTask taskMinutos;
     private Handler handlerMinutos;
     int contador=0;
+    private ParturientesFragment contexto;
+    private FragmentManager fragmentManager;
 
 
     public ParturienteRecyclerAdpter(Context context, List<Parturient> parturients) {
@@ -63,7 +67,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         Parturient parturient =  originalListParturientes.get(position);
         holder.currentPosition = position;
         holder.textCircle.setText((parturient.getName().charAt(0)+"").toUpperCase());
-        holder.horaEntrada.setText("Entrada : "+format(parturient.getHoraEntrada())+" pm");
+        holder.horaEntrada.setText("Entrada : "+format(parturient.getHoraEntrada())+"");
         holder.txtNameParturient.setText(oUpperFirstCase(parturient.getName())+ " "+oUpperFirstCase(parturient.getSurname()));
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +96,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                                 return true;
                             case R.id.item3:
                                 //handle menu3 click
-                                return true;
+                              return true;
                             default:
                                 return false;
                         }
@@ -110,7 +114,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
             taskMinutos = new TimerTask() {
                 @Override
                 public void run() {
-                    System.out.println("tempo : "+originalListParturientes.get(position).getTempo());
+
                     handlerMinutos.post(new Runnable() {
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         public void run() {
@@ -125,12 +129,12 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
 
 
 
-                                 String tempoRestante=originalListParturientes.get(position).getTempoRestante();
-                                 if(tempoRestante.equals("00:00:00")){
-                                     timerMinutos.cancel();
+                                 String tempoRestante=originalListParturientes.get(position).getTempoRest();
+                                 if(tempoRestante.equals("Alerta Disparado")){
                                      holder.horaAlerta.setText("Alerta Disparado");
+                                     timerMinutos.cancel();
                                  }else {
-                                     holder.horaAlerta.setText("Tempo Restante : " + tempoRestante);
+                                     holder.horaAlerta.setText(tempoRestante);
                                  }
 
                                 } catch (Exception e) {
@@ -218,17 +222,17 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             horaEntrada=(TextView)itemView.findViewById(R.id.idHoraEntrada);
-            horaAlerta=(TextView) itemView.findViewById(R.id.idContactoMedico);
+            horaAlerta=(TextView) itemView.findViewById(R.id.idContactMedico);
             textCircle=(TextView)itemView.findViewById(R.id.id_ImagemSettings);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            txtNameParturient = (TextView) itemView.findViewById(R.id.idNomeParturienteAtendido);
+            txtNameParturient = (TextView) itemView.findViewById(R.id.idNomeMedico);
             buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsParturiente);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, DadosPessoais.class);
+                    Intent intent = new Intent(context, ViewDadosPessoaisActivity.class);
                     intent.putExtra("idParturiente", originalListParturientes.get(currentPosition).getId()+"");
                     context.startActivity(intent);
                 }

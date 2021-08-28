@@ -157,10 +157,10 @@ public class EmergencyMedicalPersonnelRecyclerAdpter extends RecyclerView.Adapte
             textApelido=(TextView) itemView.findViewById(R.id.idApelidoEditContact);
             imageDelete=(ImageView)itemView.findViewById(R.id.idDelete);
             imageEditarContact=(ImageView)itemView.findViewById(R.id.idEditContacto);
-            textContact=(TextView)itemView.findViewById(R.id.idContactoMedico);
+            textContact=(TextView)itemView.findViewById(R.id.idContactMedico);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtNameMedico = (TextView) itemView.findViewById(R.id.idNomeParturienteAtendido);
+            txtNameMedico = (TextView) itemView.findViewById(R.id.idNomeMedico);
             buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptionsNotification);
 
             itemView.setOnClickListener(new View.OnClickListener() {
