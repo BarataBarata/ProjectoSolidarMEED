@@ -23,7 +23,7 @@ import mz.unilurio.solidermed.MainActivity;
 import mz.unilurio.solidermed.R;
 
 public class Parturient implements Parcelable {
-    private Notification notifications = new Notification();
+    private Notification notifications  = new Notification();
     private int id;
     private static int timerEmergence=4;
     private Date horaEntrada;
