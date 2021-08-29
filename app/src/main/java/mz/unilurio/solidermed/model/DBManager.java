@@ -73,11 +73,7 @@ public class DBManager {
     }
 
     private void intDilatationAndTimer() {
-        dilatationAndTimerList.add(new DilatationAndTimer("4","5",1));
-        dilatationAndTimerList.add(new DilatationAndTimer("5","4",2));
-        dilatationAndTimerList.add(new DilatationAndTimer("6","3",3));
-        dilatationAndTimerList.add(new DilatationAndTimer("7","2",4));
-        dilatationAndTimerList.add(new DilatationAndTimer("8","1",5));
+        dilatationAndTimerList.add(new DilatationAndTimer(4,0,1));
     }
 
     public void addDilatation(DilatationAndTimer dilatationAndTimer){

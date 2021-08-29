@@ -41,6 +41,10 @@ public final class Notification implements Parcelable {
         isOpen = in.readByte() != 0;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public static final Creator<Notification> CREATOR = new Creator<Notification>() {
         @Override
         public Notification createFromParcel(Parcel in) {
@@ -99,7 +103,7 @@ public final class Notification implements Parcelable {
     }
 
     public String getId() {
-        return this.deliveryService.getParturient().getId()+"";
+        return this.id;
     }
 
     public Date getNextNotifier() {

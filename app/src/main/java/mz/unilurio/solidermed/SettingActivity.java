@@ -58,4 +58,8 @@ public class SettingActivity extends AppCompatActivity {
     public void viewDilatationActivity(View view) {
         startActivity(new Intent(SettingActivity.this,ActivityDilatetionAndHours.class));
     }
+
+    public void definirTempoEmergencia(View view) {
+           startActivity(new Intent(SettingActivity.this,ActivityDefinitionEmergencTimer.class));
+    }
 }

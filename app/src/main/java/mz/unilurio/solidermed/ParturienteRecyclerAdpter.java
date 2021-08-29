@@ -1,7 +1,9 @@
 package mz.unilurio.solidermed;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +32,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mz.unilurio.solidermed.model.App;
+import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
 
@@ -38,6 +44,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     private final LayoutInflater layoutInflater;
     private TimerTask taskMinutos;
     private Handler handlerMinutos;
+    private NotificationManagerCompat notificationManagerCompat;
     int contador=0;
     private ParturientesFragment contexto;
     private FragmentManager fragmentManager;
@@ -125,8 +132,6 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
 //                              int hora =  min      /60;
 //                              min %=  60;
 //                             // System.out.println(String.format("%02d:%02d:%02d",hora,min,seg));
-
-
 
 
                                  String tempoRestante=originalListParturientes.get(position).getTempoRest();
@@ -261,5 +266,8 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         DateFormat dateFormat = new SimpleDateFormat("hh:mm-yyyy-MM-dd ");
         return dateFormat.format(date);
     }
+
+
+
 
 }

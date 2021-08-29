@@ -27,11 +27,17 @@ public class AddDilatationClassDilatation extends AppCompatDialogFragment {
     private static String timerDilatation;
     private EditText editDilatation;
     private EditText editEditTimer;
-    private  DilatationAndTimer dilatationAndTimer;
-    Slider sliderViewDlatation;
+    private DilatationAndTimer dilatationAndTimer;
     TextView textViewDilatation;
+
+    private static int numberHours;
+    private static int numberMinutes;
+    private static int numberDilatation;
+
+    Slider sliderViewDlatation;
     Slider sliderMinutos;
     Slider sliderHora;
+
     TextView textHoras;
     TextView textMinutos;
 
@@ -40,9 +46,9 @@ public class AddDilatationClassDilatation extends AppCompatDialogFragment {
     @NotNull
     @Override
     public Dialog onCreateDialog(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater=getActivity().getLayoutInflater();
-        View view=inflater.inflate(R.layout.layout_dialog_edit_dilatation,null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.layout_dialog_edit_dilatation, null);
         builder.setView(view)
                 .setTitle("Adicionar ").setIcon(R.drawable.add)
                 .setNegativeButton("Nao", new DialogInterface.OnClickListener() {
@@ -53,50 +59,41 @@ public class AddDilatationClassDilatation extends AppCompatDialogFragment {
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dilatationAndTimer.setNumberDilatation(editDilatation.getText().toString());
+                        DBManager.getInstance().addDilatation(new DilatationAndTimer(numberDilatation,numberHours,numberMinutes));
                     }
                 });
-                textHoras = view.findViewById(R.id.idViewHoras);
-                textMinutos=view.findViewById(R.id.idViewMinutos);
+        textHoras = view.findViewById(R.id.idViewHoras);
+        textMinutos = view.findViewById(R.id.idViewMinutos);
 
-                sliderHora=view.findViewById(R.id.idEdilatation);
-                textViewDilatation=view.findViewById(R.id.txtTitleDilatation);
-                sliderViewDlatation=view.findViewById(R.id.idEditDilatation);
+        sliderHora = view.findViewById(R.id.sliderHoras);
+        sliderMinutos = view.findViewById(R.id.sliderMinutos);
+        textViewDilatation = view.findViewById(R.id.txtTitleDilatationEdit);
+        sliderViewDlatation = view.findViewById(R.id.idEditDilatationAdd);
 
         sliderViewDlatation.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
-                textViewDilatation.setText((int)sliderViewDlatation.getValue()+"");
+                textViewDilatation.setText((int) sliderViewDlatation.getValue() + "");
+                numberDilatation = (int) sliderViewDlatation.getValue();
             }
         });
-                sliderHora.addOnChangeListener(new Slider.OnChangeListener() {
-                    @Override
-                    public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
-                        textHoras.setText((int)sliderHora.getValue()+" : ");
-                    }
-                });
-                sliderMinutos=view.findViewById(R.id.idminutosAlert);
-                sliderMinutos.addOnChangeListener(new Slider.OnChangeListener() {
-                    @Override
-                    public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
-                        textMinutos.setText((int)sliderMinutos.getValue()+" ");
-                    }
-                });
+        sliderHora.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
+                textHoras.setText((int) sliderHora.getValue() + " : ");
+                numberHours = (int) sliderHora.getValue();
+            }
+        });
+
+        sliderMinutos.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
+                textMinutos.setText((int) sliderMinutos.getValue() + " ");
+                numberMinutes = (int) sliderMinutos.getValue();
+            }
+        });
 
         return builder.create();
-
-    }
-
- public void setContact(int id){
-         List<DilatationAndTimer> list=DBManager.getInstance().getDilatationAndTimerList();
-         for(DilatationAndTimer dilatationAndTimer:list) {
-             if(dilatationAndTimer.getIdDilatation()==id) {
-                 dilatation = dilatationAndTimer.getNumberDilatation();
-                 timerDilatation = dilatationAndTimer.getTimerDilatation();
-                 this.dilatationAndTimer =dilatationAndTimer;
-                 break;
-             }
-         }
  }
 
     @Override

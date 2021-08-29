@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#EDEFEC"
+    android:layout_height="match_parent"
+    tools:context=".ActivityDefinitionEmergencTimer">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
+
+            <ImageView
+                android:onClick="finish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back_25" />
+
+            <TextView
+                android:textStyle="bold"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:text="Alerta de Emergencia"
+                android:textColor="#BC343534" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card1"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/toolbar"
+            android:background="@color/white"
+            app:cardCornerRadius="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="100dp"
+            android:layout_marginEnd="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_marginTop="25dp"
+                    android:gravity="center"
+                    android:id="@+id/txtTitleTempoAlerta"
+                    android:text="Tempo de Alerta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                    android:id="@+id/viewTxt"
+                    android:layout_below="@id/txtTitleTempoAlerta"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:id="@+id/idViewHorasEmergence"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:" />
+                    <TextView
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_alignTop="@id/idViewHorasEmergence"
+                        android:layout_marginStart="5dp"
+                        android:layout_toRightOf="@id/idViewHorasEmergence"
+                        android:id="@+id/idViewMinutosEmergence"
+                        android:text="00"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="16dp"
+                    android:text="horas"
+                    android:layout_below="@id/viewTxt"
+                    android:id="@+id/textTitleHora"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderHorasEmergence"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textTitleHora"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="40dp"
+                    android:paddingRight="0dp"
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:valueTo="24" />
+
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="16dp"
+                    android:text="Minutos"
+                    android:layout_below="@id/sliderHorasEmergence"
+                    android:id="@+id/textTitleMinutos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <com.google.android.material.slider.Slider
+                    android:layout_below="@id/textTitleMinutos"
+                    android:id="@+id/sliderMinutosEmergence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="40dp"
+                    android:paddingRight="0dp"
+                    android:stepSize="1"
+                    android:valueFrom="0"
+                    android:layout_marginBottom="100dp"
+                    android:valueTo="60" />
+
+
+
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:onClick="saveTempoEmergenca"
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="#08C368"
+        app:srcCompat="@drawable/registo_parturiente"
+        tools:ignore="MissingConstraints" />
+
+
+
+</FrameLayout>

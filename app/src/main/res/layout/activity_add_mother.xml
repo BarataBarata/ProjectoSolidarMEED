@@ -290,7 +290,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-
                     <com.google.android.material.slider.Slider
                         android:id="@+id/dilatation"
                         android:layout_width="match_parent"
@@ -301,7 +300,7 @@
                         android:paddingTop="40dp"
                         android:paddingRight="0dp"
                         android:stepSize="1"
-                        android:valueFrom="3"
+                        android:valueFrom="4"
                         android:valueTo="10"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"

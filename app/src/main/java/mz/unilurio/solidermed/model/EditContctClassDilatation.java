@@ -23,8 +23,11 @@ import mz.unilurio.solidermed.R;
 
 public class EditContctClassDilatation extends AppCompatDialogFragment {
 
-    private static String dilatation;
-    private static String timerDilatation;
+    private static int dilatation;
+    private int hours;
+    private  int minuts;
+
+    private static int timerDilatation;
     private EditText editDilatation;
     private EditText editEditTimer;
     private  DilatationAndTimer dilatationAndTimer;
@@ -53,38 +56,49 @@ public class EditContctClassDilatation extends AppCompatDialogFragment {
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                      dilatationAndTimer.setNumberDilatation(dilatation);
+                      dilatationAndTimer.setFullTimerDilatationHours(hours*3600+minuts*60);
+                      dilatationAndTimer.setTimerDilatationHours(hours);
+                      dilatationAndTimer.setTimerDilatationMinutes(minuts);
                     }
                 });
                 textHoras = view.findViewById(R.id.idViewHoras);
                 textMinutos=view.findViewById(R.id.idViewMinutos);
-                textViewDilatation=view.findViewById(R.id.txtTitleDilatation);
-                sliderViewDlatation=view.findViewById(R.id.idEditDilatation);
+                textViewDilatation=view.findViewById(R.id.txtTitleDilatationEdit);
+
+                sliderViewDlatation=view.findViewById(R.id.idEditDilatationAdd);
+                sliderMinutos=view.findViewById(R.id.sliderMinutos);
+                sliderHora=view.findViewById(R.id.sliderHoras);
 
                 sliderViewDlatation.addOnChangeListener(new Slider.OnChangeListener() {
                     @Override
                     public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
-                        textViewDilatation.setText((int)sliderViewDlatation.getValue()+"");
+                        textViewDilatation.setText((int)sliderViewDlatation.getValue()+" : ");
+                        dilatation=(int)sliderViewDlatation.getValue();
                     }
                 });
 
-                sliderHora=view.findViewById(R.id.idEdilatation);
                 sliderHora.addOnChangeListener(new Slider.OnChangeListener() {
                     @Override
                     public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
                         textHoras.setText((int)sliderHora.getValue()+" : ");
+                        hours=(int)sliderHora.getValue();
                     }
                 });
-                sliderMinutos=view.findViewById(R.id.idminutosAlert);
+
                 sliderMinutos.addOnChangeListener(new Slider.OnChangeListener() {
                     @Override
                     public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
                         textMinutos.setText((int)sliderMinutos.getValue()+" ");
+                        minuts=(int)sliderMinutos.getValue();
                     }
                 });
 
                 //send
-                sliderViewDlatation.setValue(Integer.parseInt(dilatation));
+                textViewDilatation.setText(dilatation+"");
+                sliderViewDlatation.setValue(dilatation);
+                sliderMinutos.setValue(minuts);
+                sliderHora.setValue(hours);
 
 
         return builder.create();
@@ -95,8 +109,9 @@ public class EditContctClassDilatation extends AppCompatDialogFragment {
          List<DilatationAndTimer> list=DBManager.getInstance().getDilatationAndTimerList();
          for(DilatationAndTimer dilatationAndTimer:list) {
              if(dilatationAndTimer.getIdDilatation()==id) {
+                 hours=dilatationAndTimer.getTimerDilatationHours();
+                 minuts=dilatationAndTimer.getTimerDilatationMinutes();
                  dilatation = dilatationAndTimer.getNumberDilatation();
-                 timerDilatation = dilatationAndTimer.getTimerDilatation();
                  this.dilatationAndTimer =dilatationAndTimer;
                  break;
              }

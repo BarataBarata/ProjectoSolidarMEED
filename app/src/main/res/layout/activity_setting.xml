@@ -157,4 +157,44 @@
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:onClick="definirTempoEmergencia"
+        android:id="@+id/card4"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/card3"
+        android:background="@color/white"
+        app:cardCornerRadius="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <RelativeLayout
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/image5"
+                android:layout_marginStart="8dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/tempo_acabado"
+                android:layout_width="25dp"
+                android:layout_height="25dp"/>
+
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                android:textSize="16sp"
+                android:id="@+id/title4"
+                android:layout_marginStart="10dp"
+                android:layout_alignTop="@id/image5"
+                android:layout_toRightOf="@id/image5"
+                android:text="Alerta de Emergencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

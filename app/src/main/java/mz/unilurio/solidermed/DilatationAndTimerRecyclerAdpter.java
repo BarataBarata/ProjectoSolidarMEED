@@ -79,7 +79,7 @@ public class DilatationAndTimerRecyclerAdpter extends RecyclerView.Adapter<Dilat
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DilatationAndTimer dilatationAndTimer =  originalListDilatation.get(position);
         holder.currentPosition = position;
-        holder.textTimer.setText("Tempo definido:"+dilatationAndTimer.getTimerDilatation());
+        holder.textTimer.setText("Tempo definido :  "+dilatationAndTimer.getTimerDilatationHours()+ " : "+dilatationAndTimer.getTimerDilatationMinutes());
         holder.txtDilatation.setText("Para "+dilatationAndTimer.getNumberDilatation() +" de Dilatação ");
         holder.imageDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +120,7 @@ public class DilatationAndTimerRecyclerAdpter extends RecyclerView.Adapter<Dilat
                 list.addAll(auxListDilatation);
             }else{
                 for(DilatationAndTimer dilatation: auxListDilatation){
-                    if(dilatation.getNumberDilatation().toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if((""+dilatation.getNumberDilatation()).toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(dilatation);
                     }
                 }

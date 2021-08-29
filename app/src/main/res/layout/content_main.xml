@@ -33,7 +33,7 @@
             android:text="Alerta" />
 
         <com.google.android.material.tabs.TabItem
-            android:icon="@drawable/atendidos"
+            android:icon="@drawable/trasferencia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Atendidos" />

@@ -1,30 +1,50 @@
 package mz.unilurio.solidermed.model;
 
 public class DilatationAndTimer {
-    private  String numberDilatation;
-    private  String timerDilatation;
+    private  int numberDilatation;
+    private  int timerDilatationHours;
+    private  int timerDilatationMinutes;
+    private  int fullTimerDilatationHours;
     private  int idDilatation;
 
-    public DilatationAndTimer(String numberDilatation, String timerDilatation, int idDilatation) {
+
+    public DilatationAndTimer(int numberDilatation, int timerDilatationHours, int timerDilatationMinutes) {
+        this.fullTimerDilatationHours=timerDilatationHours*3600+timerDilatationMinutes*60;
         this.numberDilatation = numberDilatation;
-        this.timerDilatation = timerDilatation;
-        this.idDilatation = idDilatation;
+        this.timerDilatationHours = timerDilatationHours;
+        this.timerDilatationMinutes = timerDilatationMinutes;
     }
 
-    public String getNumberDilatation() {
+    public int getFullTimerDilatationHours() {
+        return fullTimerDilatationHours;
+    }
+
+    public void setFullTimerDilatationHours(int fullTimerDilatationHours) {
+        this.fullTimerDilatationHours = fullTimerDilatationHours;
+    }
+
+    public int getTimerDilatationMinutes() {
+        return timerDilatationMinutes;
+    }
+
+    public void setTimerDilatationMinutes(int timerDilatationMinutes) {
+        this.timerDilatationMinutes = timerDilatationMinutes;
+    }
+
+    public int getNumberDilatation() {
         return numberDilatation;
     }
 
-    public void setNumberDilatation(String numberDilatation) {
+    public void setNumberDilatation(int numberDilatation) {
         this.numberDilatation = numberDilatation;
     }
 
-    public String getTimerDilatation() {
-        return timerDilatation;
+    public int getTimerDilatationHours() {
+        return timerDilatationHours;
     }
 
-    public void setTimerDilatation(String timerDilatation) {
-        this.timerDilatation = timerDilatation;
+    public void setTimerDilatationHours(int timerDilatationHours) {
+        this.timerDilatationHours = timerDilatationHours;
     }
 
     public int getIdDilatation() {

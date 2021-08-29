@@ -2,13 +2,20 @@ package mz.unilurio.solidermed;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -39,9 +46,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.AlertParutient;
+import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class AddParturientActivity extends AppCompatActivity implements Validator.ValidationListener {
@@ -72,7 +83,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private TextView textSanitario;
     private TextView textTrasferencia;
     private TextView textEditAndRegist;
-
+    private NotificationManagerCompat notificationManagerCompat;
     private boolean isTrasferencia;
     private boolean isEdit;
     private static  int newidParturiente=1;// por inicializacao
@@ -92,7 +103,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
         firebaseDatabase=FirebaseDatabase.getInstance();
-
+        notificationManagerCompat= NotificationManagerCompat.from(this);
         textSanitario = (TextView)findViewById(R.id.textSanitario);
         textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
         textEditAndRegist=findViewById(R.id.txtRegisto_Edit);
@@ -343,7 +354,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         dialog.setTitle(mensagemTitle);
         dialog.setMessage(mensagem);
         dialog.setCancelable(false);
-        dialog.setIcon(getDrawable(R.drawable.edit_contact));
+        dialog.setIcon(getDrawable(R.drawable.icondilatacao));
 
         dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 
@@ -468,8 +479,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if(verificationNumberName(txtNameParturient) &&
-                        verificationNumberName(textApelido)) {
+                if(verificationNumberName(txtNameParturient) && verificationNumberName(textApelido)) {
 
                     validationError();
 
@@ -488,6 +498,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
                     parturient.setPara((int) para.getValue());
                     parturient.setReason(mSliderDilatation.getValue() + "");
 
+
                     if (isTrasferencia) {
                         parturient.setTransfered(true);
                         parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
@@ -499,7 +510,8 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
                     }
 
                     if (!isExistParturiente(parturient)) {
-                        parturient.reverseTimer(60*9);
+                        alertaNotification(parturient);
+                        parturient.initializeHoureDilatation((int) mSliderDilatation.getValue());
                         DBManager.getInstance().addQueueAndDeliveryService(parturient);
                         databaseReference = firebaseDatabase.getReference("Parturiente");
                         databaseReference.child(parturient.getId()+"-"+format(new Date())).setValue(parturient);
@@ -549,7 +561,54 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         dialog.show();
     }
 
+    private void popNotification(Parturient parturientNotificatio) {
+        String mensagem=oUpperFirstCase(parturientNotificatio.getName()) +" "+oUpperFirstCase(parturientNotificatio.getSurname())+" necessita  de cuidados medicos";
+        Intent activitIntent=new Intent(this, MainActivity.class);
+        PendingIntent contxtIntent=PendingIntent.getActivity(this,0,activitIntent,0);
+        android.app.Notification notification1=new NotificationCompat.Builder(this, App.CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.mulhergravidabom2)
+                .setContentTitle("Alerta")
+                .setColor(Color.GREEN)
+                .setAutoCancel(true)
+                .setContentText(mensagem)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(contxtIntent)
+                .build();
+        notificationManagerCompat.notify(Integer.parseInt(parturientNotificatio.getId()+""),notification1);
 
+    }
+
+    void alertaNotification(Parturient parturient){
+
+        TimerTask taskMinutos;
+        Handler handlerMinutos;
+        handlerMinutos = new Handler();
+        Timer timerMinutos = new Timer();
+        taskMinutos = new TimerTask() {
+            @Override
+            public void run() {
+
+                handlerMinutos.post(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    public void run() {
+                        try {
+                            if(parturient.getTempoRest().equals("Alerta Disparado")){
+                                popNotification(parturient);
+                                timerMinutos.cancel();
+                            }
+
+                        } catch (Exception e) {
+                            // error, do something
+                        }
+                    }
+                });
+            }
+        };
+
+        timerMinutos.schedule(taskMinutos, 0, 1000);  // interval of one minute
+
+    }
 
 
     public void alertaParturienteExist(){

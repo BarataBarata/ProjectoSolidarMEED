@@ -23,8 +23,8 @@ import mz.unilurio.solidermed.R;
 
 public class ViewEditClassNotification extends AppCompatDialogFragment {
 
-    private static String dilatation;
-    private static String timerDilatation;
+    private static int dilatation;
+    private static int timerDilatation;
     private EditText editDilatation;
     private EditText editEditTimer;
     private  DilatationAndTimer dilatationAndTimer;
@@ -66,7 +66,7 @@ public class ViewEditClassNotification extends AppCompatDialogFragment {
          for(DilatationAndTimer dilatationAndTimer:list) {
              if(dilatationAndTimer.getIdDilatation()==id) {
                  dilatation = dilatationAndTimer.getNumberDilatation();
-                 timerDilatation = dilatationAndTimer.getTimerDilatation();
+                 timerDilatation = dilatationAndTimer.getTimerDilatationHours();
                  this.dilatationAndTimer =dilatationAndTimer;
                  break;
              }

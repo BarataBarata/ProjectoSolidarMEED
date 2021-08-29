@@ -27,14 +27,14 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_antendimento);
-        textNomeParturiente= findViewById(R.id.nomeParturientek);
+        textNomeParturiente= findViewById(R.id.nomeParturienteView);
 
         if(getIntent().getStringExtra("idParturiente")!=null){
             idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
             for(Parturient parturient: DBManager.getInstance().getParturients()){
                 if(parturient.getId()==idParturiente){
                     newParturient=parturient;
-                    textNomeParturiente.setText(parturient.getName()+" "+parturient.getSurname());
+                    textNomeParturiente.setText(oUpperFirstCase(parturient.getName())+" "+oUpperFirstCase(parturient.getSurname()));
                     break;
                 }
             }
@@ -43,7 +43,10 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
 
 
     }
-
+    public  String oUpperFirstCase(String string){
+        String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
+        return  auxString;
+    }
     public void setHoraAtendimento(Parturient parturient){
         parturient.setHoraAtendimento(new Date());
     }

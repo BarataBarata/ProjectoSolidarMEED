@@ -8,12 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
         <TextView
             android:gravity="center"
             android:layout_marginTop="12dp"
-            android:id="@+id/txttitl"
+            android:id="@+id/txtTitleDila"
             android:text="Dilatação"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -24,9 +22,9 @@
             android:layout_marginTop="4dp"
             android:textSize="16sp"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_below="@id/txttitl"
+            android:layout_below="@id/txtTitleDila"
             android:gravity="center"
-            android:id="@+id/txtTitleDilatation"
+            android:id="@+id/txtTitleDilatationEdit"
             android:layout_marginStart="8dp"
             android:text="0"
             android:layout_width="match_parent"
@@ -34,8 +32,8 @@
 
 
         <com.google.android.material.slider.Slider
-            android:layout_below="@id/txtTitleDilatation"
-            android:id="@+id/idEditDilatation"
+            android:layout_below="@id/txtTitleDilatationEdit"
+            android:id="@+id/idEditDilatationAdd"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_width="wrap_content"
@@ -46,13 +44,13 @@
             android:paddingTop="40dp"
             android:paddingRight="0dp"
             android:stepSize="1"
-            android:valueFrom="0"
+            android:valueFrom="1"
             android:valueTo="10" />
 
         <TextView
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:layout_below="@id/idEditDilatation"
+            android:layout_below="@id/idEditDilatationAdd"
             android:id="@+id/txtTitleTempoAlerta"
             android:text="Tempo de Alerta"
             android:layout_width="match_parent"
@@ -102,7 +100,7 @@
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.slider.Slider
-            android:id="@+id/idEdilatation"
+            android:id="@+id/sliderHoras"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_width="wrap_content"
@@ -122,14 +120,14 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
             android:text="Minutos"
-            android:layout_below="@id/idEdilatation"
+            android:layout_below="@id/sliderHoras"
             android:id="@+id/textTitleMinutos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.slider.Slider
             android:layout_below="@id/textTitleMinutos"
-            android:id="@+id/idminutosAlert"
+            android:id="@+id/sliderMinutos"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
             android:clickable="true"

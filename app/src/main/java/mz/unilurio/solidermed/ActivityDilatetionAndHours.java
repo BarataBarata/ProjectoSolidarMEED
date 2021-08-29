@@ -99,7 +99,7 @@ public class ActivityDilatetionAndHours extends AppCompatActivity {
         }else {
             auxList=new ArrayList<>();
             for(DilatationAndTimer dilatationAndTimer: list){
-                if(dilatationAndTimer.getNumberDilatation().toLowerCase().contains(seacher.toString().toLowerCase())){
+                if((""+dilatationAndTimer.getNumberDilatation()).toLowerCase().contains(seacher.toString().toLowerCase())){
                     auxList.add(dilatationAndTimer);
                 }
             }
