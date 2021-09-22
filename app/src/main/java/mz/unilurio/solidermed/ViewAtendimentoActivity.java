@@ -7,7 +7,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +24,22 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     private TextView textNomeParturiente;
     private Parturient newParturient=new Parturient();
     private ProgressDialog progressBar;
+    private CheckBox checkBox1;
+    boolean bggg;
+    boolean bggg2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_antendimento);
         textNomeParturiente= findViewById(R.id.nomeParturienteView);
+
+
+        checkBox1=findViewById(R.id.txt1);
+
+
+
+
 
         if(getIntent().getStringExtra("idParturiente")!=null){
             idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
@@ -129,5 +141,4 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         dialog.create();
         dialog.show();
     }
-
 }

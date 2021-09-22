@@ -38,21 +38,12 @@ public class SettingActivity extends AppCompatActivity {
         startActivity(new Intent(SettingActivity.this,ContactActivity.class));
     }
 
-    public void initializeteDisplayContextHospitais() {
-//        //view = (RecyclerView)findViewById(R.id.reciclySettings);
-//        settingLayoutManager = new LinearLayoutManager(this);
-//        settings = DBManager.getInstance().getSettingsList();
-//        settingsRecyclerAdpter = new  SettingsRecyclerAdpter(this, settings);
-//        view.setLayoutManager(settingLayoutManager);
-//        view.setAdapter(settingsRecyclerAdpter);
-    }
-
     public void finishs(View view) {
         finish();
     }
 
-    public void viewContact(View view) {
-        startActivity(new Intent(SettingActivity.this,ContactActivity.class));
+    public void viewList(View view) {
+        startActivity(new Intent(SettingActivity.this,MainActivity_Users_List.class));
     }
 
     public void viewDilatationActivity(View view) {

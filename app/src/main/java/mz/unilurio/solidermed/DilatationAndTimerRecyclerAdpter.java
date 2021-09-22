@@ -21,9 +21,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import mz.unilurio.solidermed.model.AddDilatation;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DilatationAndTimer;
-import mz.unilurio.solidermed.model.EditContctClassDilatation;
+import mz.unilurio.solidermed.model.EditClassDilatation;
 
 public class DilatationAndTimerRecyclerAdpter extends RecyclerView.Adapter<DilatationAndTimerRecyclerAdpter.ViewHolder> implements Filterable {
     ActivityDilatetionAndHours context;
@@ -60,6 +61,8 @@ public class DilatationAndTimerRecyclerAdpter extends RecyclerView.Adapter<Dilat
             public void onClick(DialogInterface dialog, int which) {
                Toast.makeText(context.getApplicationContext(), " a linha foi eliminado", Toast.LENGTH_LONG).show();
                DBManager.getInstance().getDilatationAndTimerList().remove(position);
+               AddDilatation e=new AddDilatation();
+               e.isRemove=true;
             }
         });
         dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
@@ -92,8 +95,8 @@ public class DilatationAndTimerRecyclerAdpter extends RecyclerView.Adapter<Dilat
             @Override
             public void onClick(View v) {
 
-                EditContctClassDilatation editContctClass=new EditContctClassDilatation();
-                editContctClass.setContact(originalListDilatation.get(position).getIdDilatation());
+                EditClassDilatation editContctClass=new EditClassDilatation();
+                editContctClass.setDilatation(dilatationAndTimer);
                 editContctClass.show(context.getSupportFragmentManager(),"Editar");
             }
         });

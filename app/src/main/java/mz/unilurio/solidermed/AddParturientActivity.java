@@ -52,12 +52,15 @@ import java.util.TimerTask;
 import mz.unilurio.solidermed.model.AlertParutient;
 import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
+import mz.unilurio.solidermed.model.DilatationAndTimer;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class AddParturientActivity extends AppCompatActivity implements Validator.ValidationListener {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private DBService dbService;
 
     public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
@@ -103,6 +106,8 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
         firebaseDatabase=FirebaseDatabase.getInstance();
+
+        dbService=new DBService(this);
         notificationManagerCompat= NotificationManagerCompat.from(this);
         textSanitario = (TextView)findViewById(R.id.textSanitario);
         textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
@@ -511,7 +516,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
                     if (!isExistParturiente(parturient)) {
                         alertaNotification(parturient);
-                        parturient.initializeHoureDilatation((int) mSliderDilatation.getValue());
+                        parturient.alertParturiente(dbService.getTimerDilatation((int)mSliderDilatation.getValue()+""));
                         DBManager.getInstance().addQueueAndDeliveryService(parturient);
                         databaseReference = firebaseDatabase.getReference("Parturiente");
                         databaseReference.child(parturient.getId()+"-"+format(new Date())).setValue(parturient);
@@ -529,7 +534,6 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
                 }
             }
-
 
 
             private void progressBar() {

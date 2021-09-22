@@ -14,10 +14,6 @@ public class EmergencyMedicalPersonnel {
         this.id=id;
     }
 
-    public EmergencyMedicalPersonnel() {
-
-    }
-
     public int getId() {
         return id;
     }

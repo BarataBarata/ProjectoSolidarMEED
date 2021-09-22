@@ -5,19 +5,20 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mz.unilurio.solidermed.model.AddNursesClass;
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
+import mz.unilurio.solidermed.model.EditNurseClass;
 import mz.unilurio.solidermed.model.UserNurse;
 
 public class NurseActivity extends AppCompatActivity {
@@ -29,13 +30,16 @@ public class NurseActivity extends AppCompatActivity {
     private List<UserNurse> auxList;
     private List<UserNurse> list;
     private int tamanhoList;
-    private  String seacher="";
+    private static String seacher="";
     private Timer timer;
+    private DBService dbService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nurse);
+        dbService=new DBService(this);
+
         initializeteDisplayContextNurses();
 
         SearchView searchView=(SearchView)findViewById(R.id.seacherInfermeira);
@@ -48,29 +52,29 @@ public class NurseActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 seacher=newText;
-                buscaAtualizacao(newText);
-                //nurseRecyclerAdpter1.getFilter().filter(newText);
+                nurseRecyclerAdpter1.getFilter().filter(newText);
                 return false;
             }
         });
-
-
 
         FloatingActionButton fab = findViewById(R.id.fab2);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(NurseActivity.this, AddUserNurseActivity.class));
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+                AddNursesClass addNursesClass=new AddNursesClass();
+                addNursesClass.show(getSupportFragmentManager(),"Adicionar");
             }
         });
 
     }
-    private void atualizacao() {
+    private void updadeNurses() {
 
         handler = new Handler();
         timer = new Timer();
+
+         AddNursesClass addNursesClass=new AddNursesClass();
+         EditNurseClass editNurseClass=new EditNurseClass();
+
 
         task = new TimerTask() {
             @Override
@@ -78,7 +82,23 @@ public class NurseActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            initializeteDisplayContextNurses();
+
+                            if(addNursesClass.isAdd){
+                                initializeteDisplayContextNurses();
+                                addNursesClass.isAdd=false;
+                            }
+
+                            if(editNurseClass.isEdit){
+                                initializeteDisplayContextNurses();
+                                nurseRecyclerAdpter1.getFilter().filter(seacher);
+                                editNurseClass.isEdit=false;
+
+                            }
+                            if(addNursesClass.isRemove){
+                                initializeteDisplayContextNurses();
+                                addNursesClass.isRemove=false;
+                            }
+
                         } catch (Exception e) {
                             // error, do something
                         }
@@ -100,36 +120,16 @@ public class NurseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        atualizacao();
+        updadeNurses();
     }
 
     public void initializeteDisplayContextNurses(){
-        list=DBManager.getInstance().getUserNurseList();
-        buscaAtualizacao(seacher);
+        list=dbService.getListNurse();
         view = (RecyclerView)findViewById(R.id.listaInfermeira);
         nurseLinearLayoutManager = new LinearLayoutManager(this);
-        nurseRecyclerAdpter1 = new NurseRecyclerAdpter(this,auxList);
+        nurseRecyclerAdpter1 = new NurseRecyclerAdpter(this,list);
         view.setLayoutManager(nurseLinearLayoutManager);
         view.setAdapter(nurseRecyclerAdpter1);
-    }
-
-    public void buscaAtualizacao(String seacher){
-
-        if(seacher.isEmpty()){
-            auxList=new ArrayList<>();
-            list = DBManager.getInstance().getUserNurseList();
-            auxList.addAll(list);
-        }else {
-            auxList=new ArrayList<>();
-            for(UserNurse userNurse: list){
-                if(userNurse.getFullName().toLowerCase().contains(seacher.toString().toLowerCase())){
-                    auxList.add(userNurse);
-                }
-            }
-            System.out.println(auxList.size());
-        }
-
-
     }
     public void finish(View view) {
         finish();

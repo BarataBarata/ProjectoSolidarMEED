@@ -11,9 +11,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 public class ActivityValitationCode extends AppCompatActivity {
    private TextView textTitle;
-   private EditText valitation;
+   private TextInputLayout valitation;
    private  TextView textAlert;
    private String numberSeacher;
     private String codigoConfirmacao;
@@ -22,15 +24,12 @@ public class ActivityValitationCode extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification_code);
-
-        textTitle=findViewById(R.id.idTitleConfirmation);
-        valitation=findViewById(R.id.seacherValitation);
-        textAlert=findViewById(R.id.txtAlertSeacherValitation);
+        valitation=findViewById(R.id.seacherValitation2);
 
         if(getIntent().getStringExtra("numberSeacherUser")!=null){
             numberSeacher = getIntent().getStringExtra("numberSeacherUser");
             codigoConfirmacao = getIntent().getStringExtra("codigo");
-            textTitle.setText(" Insira o código de confirmação ");
+           // textTitle.setText(" Insira o código de confirmação ");
        }
         if(getIntent().getStringExtra("codigo")!=null){
             codigoConfirmacao = getIntent().getStringExtra("codigo");
@@ -60,20 +59,22 @@ public class ActivityValitationCode extends AppCompatActivity {
             public void run() {
                 progressBar.dismiss();
 
-                if(valitation.getText().toString().equals("")){
+                if(valitation.getEditText().getText().toString().equals("")){
                     valitation.setError(" campo vazio");
                 }else{
-                    if(valitation.getText().toString().length()<8 || valitation.getText().toString().length()>8){
-                        textAlert.setText("O código tem 8 digitos");
-                        textAlert.setTextColor(Color.RED);
+                    if(valitation.getEditText().getText().toString().length()<8 || valitation.getEditText().getText().toString().length()>8){
+                        valitation.setError("Codigo incorreto");
+                        // textAlert.setText("O código tem 8 digitos");
+                        //textAlert.setTextColor(Color.RED);
                     }else {
-                        if(codigoConfirmacao.equalsIgnoreCase(valitation.getText().toString())){
+                        if(codigoConfirmacao.equalsIgnoreCase(valitation.getEditText().getText().toString())){
                             Intent intent=new Intent(ActivityValitationCode.this,ActivityChengePassword.class);
                             intent.putExtra("numberSeacher",numberSeacher);
                             startActivity(intent);
                         }else {
-                            textAlert.setText("O código esta incorreto");
-                            textAlert.setTextColor(Color.RED);
+                            valitation.setError("O codigo esta incorreto");
+                            //textAlert.setText("O código esta incorreto");
+                           // textAlert.setTextColor(Color.RED);
                         }
                     }
 

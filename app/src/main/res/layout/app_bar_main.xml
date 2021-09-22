@@ -28,11 +28,12 @@
             android:background="#FDFEFF"
             app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
             <ImageView
-                android:src="@drawable/hospitallist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:src="@drawable/imagesh"
+                android:layout_width="35dp"
+                android:layout_height="35dp"/>
 
             <TextView
+                android:layout_marginStart="25dp"
                 android:textStyle="bold"
                 android:id="@+id/idCentroSaudeTitle"
                 android:onClick="centroSaude"
@@ -64,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="#08C368"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        android:backgroundTint="@color/purple_500"
+        app:srcCompat="@drawable/add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main"
     tools:context=".MainActivity">
@@ -12,6 +11,7 @@
     <com.google.android.material.tabs.TabLayout
         app:tabGravity="fill"
         app:tabInlineLabel="true"
+        android:background="@color/white"
         android:id="@+id/tabLayout"
         android:layout_width="0dp"
         android:layout_height="40dp"

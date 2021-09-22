@@ -1,9 +1,7 @@
 package mz.unilurio.solidermed;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
@@ -25,9 +22,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import mz.unilurio.solidermed.model.EditContctClass;
 import mz.unilurio.solidermed.model.Notification;
-import mz.unilurio.solidermed.model.ViewEditClassNotification;
 
 public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder> implements Filterable {
 

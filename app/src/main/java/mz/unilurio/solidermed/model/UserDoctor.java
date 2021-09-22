@@ -16,6 +16,12 @@ public class UserDoctor {
         this.contacto=contacto;
         this.userLogin=userLogin;
     }
+    public UserDoctor(String fullName,String userLogin, String passwordUser, String contacto) {
+        this.fullName = fullName;
+        this.passwordUser = passwordUser;
+        this.contacto=contacto;
+        this.userLogin=userLogin;
+    }
 
     public String getUserLogin() {
         return userLogin;
@@ -55,5 +61,17 @@ public class UserDoctor {
 
     public void setIdUser(int idUser) {
         this.idUser = idUser;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDoctor{" +
+                "fullName='" + fullName + '\'' +
+                ", userLogin='" + userLogin + '\'' +
+                ", passwordUser='" + passwordUser + '\'' +
+                ", contacto='" + contacto + '\'' +
+                ", idUser=" + idUser +
+                ", privilegios=" + privilegios +
+                '}';
     }
 }

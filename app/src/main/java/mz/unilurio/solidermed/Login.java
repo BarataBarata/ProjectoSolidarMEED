@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.TextView;
@@ -18,9 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.Privilegios;
-import mz.unilurio.solidermed.model.UserDoctor;
 import mz.unilurio.solidermed.model.UserNurse;
 
 public class Login extends AppCompatActivity {
@@ -33,6 +32,7 @@ public class Login extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private Privilegios privilegios;
     private String fullName;
+    DBService dbService;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -40,11 +40,13 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        dbService=new DBService(this);
+       // requestPermissions(new String[]{Manifest.permission.CALL_PHONE},1);
         requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
+
         SmsManager smsManager = SmsManager.getDefault();
         privilegios = new Privilegios();
-        textAlerta = findViewById(R.id.idAlertaPassword);
+        //textAlerta = findViewById(R.id.idAlertaPassword);
         textEmail= findViewById(R.id.id_input_nome);
         textPassword=findViewById(R.id.id_input_password);
         auth = FirebaseAuth.getInstance();
@@ -52,102 +54,58 @@ public class Login extends AppCompatActivity {
     }
 
     public void Entrar(View view) {
+        //callPhone();
         String email=textEmail.getEditText().getText().toString();
         String password=textPassword.getEditText().getText().toString();
-        progressBar2(email,password);
-
-        // (intent);
-       // auth = FirebaseAuth.getInstance();
-       // progressBar();
-    }
-
-//    private void progressBar() {
-//        progressBar=new ProgressDialog(Login.this);
-//        progressBar.setMessage("validando os dados...");
-//        progressBar.show();
-//
-//        new Handler().postDelayed(new Thread() {
-//            @Override
-//            public void run() {
-//                progressBar.dismiss();
-//
-//                String email=textEmail.getEditText().getText().toString();
-//                String password=textPassword.getEditText().getText().toString();
-//                System.out.println(email+"         "+password);
-//                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
-//
-//                    auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                        @Override
-//                        public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-//                           if(task.isSuccessful()){
-//                            Intent intent = new Intent(Login.this, MainActivity.class);
-//                            startActivity(intent);
-//                            }else {
-//                                String erro=task.getException().getMessage();
-//                                textAlerta.setText("Email ou Senha Incorreto");
-//                                textAlerta.setTextColor(Color.RED);
-//                                Toast.makeText(Login.this, erro, Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-//
-//                }
-//            }
-//        }, Long.parseLong("900"));
-//    }
-
-    private void progressBar2(String email,String password) {
-        progressBar=new ProgressDialog(Login.this);
-        progressBar.setMessage("validando os dados...");
-        progressBar.show();
-
-        new Handler().postDelayed(new Thread() {
-            @Override
-            public void run() {
-                progressBar.dismiss();
-                    if(isExistNurse(email,password) || isExistDoctor(email,password)){
-                        textAlerta.setText("");
-                        Intent intent= new Intent(Login.this, MainActivity.class);
-                        intent.putExtra("user",fullName);
-                        startActivity(intent);
-                    }else{
-                        textAlerta.setText(" Usuario ou senha incorreto");
-                    }
-
-
-            }
-        }, Long.parseLong("500"));
-    }
-
-    public boolean isExistDoctor(String user, String password){
-
-        for (UserDoctor s:DBManager.getInstance().getUserDoctorList()) {
-            if(removeSpace(user).equalsIgnoreCase(removeSpace(s.getUserLogin())) && password.equalsIgnoreCase(s.getPasswordUser())){
-                fullName=s.getFullName();
-                privilegios.setViewAll(true);
-                return true;
-            }
-        }
-        return false;
+        verificationUser(email,password);
     }
 
 
-    public boolean isExistNurse(String user, String password){
+    private void verificationUser(String email, String password) {
 
-        for(UserNurse userNurse:DBManager.getInstance().getUserNurseList()){
-            if(removeSpace(userNurse.getUserNurse()).equalsIgnoreCase(removeSpace(user)) && userNurse.getPassworNurse().equalsIgnoreCase(password)){
-                fullName=userNurse.getFullName();
-                privilegios.setViewAll(false);
-                return true;
-            }
+                 if(email.isEmpty()){
+                     textEmail.setError("campo vazio");
+                 }else {
+                     if(password.isEmpty()){
+                         textPassword.setError("campo vazio");
+                     }else {
+                         if(isExistUser(email,password)){
+                             textPassword.setError("");
+                             textEmail.setError("");
+                             Intent intent= new Intent(Login.this, MainActivity.class);
+                             intent.putExtra("user",fullName);
+                             startActivity(intent);
+                         }else{
+                             textEmail.setError(" ");
+                             textPassword.setError(" senha ou usuario invalido");
+                             //textAlerta.setText(" Usuario ou senha incorreto");
+                         }
+                     }
+                 }
+
+
+    }
+
+    public boolean isExistUser(String user, String password){
+
+        if(dbService.isDoctorLogin(user,password)){
+            privilegios.setViewAll(true);
+            return true;
+        }else {
+           if(dbService.isNurseLogin(user,password)){
+               privilegios.setViewAll(false);
+               return true;
+           }
         }
         return false;
     }
 
 
     @Override
-    public void finish() {
-       finish();
+    protected void onPause() {
+        StartApp startApp=new StartApp();
+        startApp.start=true;
+        super.onPause();
     }
 
     @Override
@@ -171,5 +129,21 @@ public class Login extends AppCompatActivity {
         }
         return newName;
     }
+
+    public void callPhone(){
+
+        Uri uri=Uri.parse("tel:"+845740722);
+        Intent intent=new Intent(Intent.ACTION_CALL,uri);
+//        if (ActivityCompat.checkSelfPermission(Login.this,Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
+//            ActivityCompat.requestPermissions(Login.this,new String[]{Manifest.permission.CALL_PHONE},1);
+//            return;
+//        }
+        startActivity(intent);
+    }
+
+    public void registarUsuario(View view) {
+        startActivity(new Intent(Login.this,Activity_RegistarUsuario.class));
+    }
+
 
 }

@@ -11,33 +11,34 @@ import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import mz.unilurio.solidermed.model.AddContctClass;
-import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.AddDoctorClass;
+import mz.unilurio.solidermed.model.DBService;
+import mz.unilurio.solidermed.model.EditDoctorClass;
 import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
+import mz.unilurio.solidermed.model.UserDoctor;
 
 public class ContactActivity extends AppCompatActivity {
 
-    private EmergencyMedicalPersonnelRecyclerAdpter emergencyMedicalPersonnelRecyclerAdpter;
+    private DoctorRecyclerAdpter doctorRecyclerAdpter;
     private Handler handler;
     private TimerTask task;
     private Timer timer;
     private List<EmergencyMedicalPersonnel> auxList;
-    private List<EmergencyMedicalPersonnel> list;
+    private List<UserDoctor> list;
     private int tamanhoList;
     private  String seacher="";
-
-
+    DBService dbService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
-
+        dbService=new DBService(this);
+        initializeteDisplayContextDoctor();
         SearchView searchView = (SearchView) findViewById(R.id.seacherDilatacao);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -47,9 +48,8 @@ public class ContactActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                   seacher=newText;
-                   buscaAtualizacao(newText);
-
+                seacher=newText;
+                doctorRecyclerAdpter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -57,35 +57,15 @@ public class ContactActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddContctClass addContctClass = new AddContctClass();
-                addContctClass.show(getSupportFragmentManager(), "Adicionar");
+                AddDoctorClass addDoctorClass = new AddDoctorClass();
+                addDoctorClass.show(getSupportFragmentManager(), "Adicionar");
             }
         });
 
 
     }
 
-
-    public void buscaAtualizacao(String seacher){
-
-                if(seacher.isEmpty()){
-                    auxList=new ArrayList<>();
-                    list = DBManager.getInstance().getEmergencyMedicalPersonnels();
-                    auxList.addAll(list);
-                }else {
-                    auxList=new ArrayList<>();
-                    for(EmergencyMedicalPersonnel emergencyMedicalPersonnel: list){
-                        if(emergencyMedicalPersonnel.getName().toLowerCase().contains(seacher.toString().toLowerCase())){
-                            auxList.add(emergencyMedicalPersonnel);
-                        }
-                    }
-                    System.out.println(auxList.size());
-                }
-
-
-    }
-
-    private void atualizacao() {
+    private void startUpdate() {
 
         handler = new Handler();
         timer = new Timer();
@@ -93,10 +73,25 @@ public class ContactActivity extends AppCompatActivity {
         task = new TimerTask() {
             @Override
             public void run() {
+                EditDoctorClass e =new EditDoctorClass();
+                AddDoctorClass add=new AddDoctorClass();
+
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            initializeteDisplayContextContact();
+                            if(e.isOK){
+                                initializeteDisplayContextDoctor();
+                                doctorRecyclerAdpter.getFilter().filter(seacher);
+                                 e.isOK=false;
+                            }
+                            if(add.isAdd){
+                                initializeteDisplayContextDoctor();
+                                add.isAdd=false;
+                            }
+
+                            if(add.isRemove){
+                                initializeteDisplayContextDoctor();
+                            }
                         } catch (Exception e) {
                             // error, do something
                         }
@@ -111,7 +106,7 @@ public class ContactActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        atualizacao();
+         startUpdate();
     }
 
     @Override
@@ -119,24 +114,21 @@ public class ContactActivity extends AppCompatActivity {
         super.onPause();
         task.cancel();
         timer.cancel();
-
     }
 
     public void finish(View view) {
         finish();
     }
 
-    public void initializeteDisplayContextContact() {
-        list=DBManager.getInstance().getEmergencyMedicalPersonnels();
-        System.out.println("dddddddddddddddddddd"+list);
-        buscaAtualizacao(seacher);
+    public void initializeteDisplayContextDoctor() {
+        list=dbService.getListDoctor();
         RecyclerView view;
         view = (RecyclerView) findViewById(R.id.recycler_Contact);
         LinearLayoutManager contactLayoutManager;
         contactLayoutManager = new LinearLayoutManager(this);
-        emergencyMedicalPersonnelRecyclerAdpter = new EmergencyMedicalPersonnelRecyclerAdpter(this, auxList);
+        doctorRecyclerAdpter = new DoctorRecyclerAdpter(this, list);
         view.setLayoutManager(contactLayoutManager);
-        view.setAdapter(emergencyMedicalPersonnelRecyclerAdpter);
+        view.setAdapter(doctorRecyclerAdpter);
     }
 
 }

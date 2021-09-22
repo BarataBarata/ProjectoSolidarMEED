@@ -4,24 +4,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.UserDoctor;
 import mz.unilurio.solidermed.model.UserNurse;
 
 public class ActivityChengePassword extends AppCompatActivity {
-    private EditText novaSenha;
+    private TextInputLayout novaSenha;
+    private boolean isTrueConfirmation=false;
     private EditText user;
-    private EditText confirmarSenha;
+    private TextInputLayout confirmarSenha;
     private TextView textAlertaSenha;
     private Handler handler;
     private TimerTask task;
@@ -29,16 +32,16 @@ public class ActivityChengePassword extends AppCompatActivity {
     private String numberSeacher;
     private String newPassword;
     private String chengeuser;
+    private DBService dbService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chenge_password);
-
+        dbService=new DBService(this);
         novaSenha=findViewById(R.id.idNovaSenha);
         confirmarSenha=findViewById(R.id.idConfirmarSenha);
-        textAlertaSenha=findViewById(R.id.idAlerMessage);
-        user =findViewById(R.id.idUsuario);
+
 
         if(getIntent().getStringExtra("numberSeacher")!=null){
             numberSeacher = getIntent().getStringExtra("numberSeacher");
@@ -46,17 +49,22 @@ public class ActivityChengePassword extends AppCompatActivity {
     }
 
     public void trocarPassword(View view) {
-        if(novaSenha.getText().toString().equals("") || confirmarSenha.getText().toString().equals("") || user.getText().toString().equals("")){
+        if(novaSenha.getEditText().getText().toString().equals("") || confirmarSenha.getEditText().getText().toString().equals("")){
             textAlertaSenha.setText(" campo vazio");
         }else{
-            progressBar();
+            if(isTrueConfirmation){
+                progressBar();
+            }else {
+                confirmarSenha.setError("Diferente ...");
+            }
+
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        atualizacao();
+        update();
     }
 
     @Override
@@ -67,24 +75,23 @@ public class ActivityChengePassword extends AppCompatActivity {
     }
 
     public void verificationPasswordChenge(){
-        if(!novaSenha.getText().toString().equals("") && !confirmarSenha.getText().toString().equals("")){
-
-            if (novaSenha.getText().toString().equals(confirmarSenha.getText().toString())) {
-                textAlertaSenha.setText(" senha confirmada");
-                newPassword = novaSenha.getText().toString();
-                chengeuser = user.getText().toString();
-                textAlertaSenha.setTextColor(Color.GREEN);
+        if(!novaSenha.getEditText().getText().toString().equals("") && !confirmarSenha.getEditText().getText().toString().equals("")){
+            if (novaSenha.getEditText().getText().toString().equals(confirmarSenha.getEditText().getText().toString())) {
+                novaSenha.setError("");
+                confirmarSenha.setError("");
+                isTrueConfirmation=true;
+                newPassword = novaSenha.getEditText().getText().toString();
             }else {
-                textAlertaSenha.setText(" diferente..");
-                textAlertaSenha.setTextColor(Color.RED);
+                isTrueConfirmation=false;
+                confirmarSenha.setError(" Diferente ");
             }
         }else{
-            textAlertaSenha.setText("");
+           // textAlertaSenha.setText("");
         }
     }
 
 
-    private void atualizacao() {
+    private void update() {
 
         handler = new Handler();
         timer = new Timer();
@@ -104,7 +111,6 @@ public class ActivityChengePassword extends AppCompatActivity {
             }
         };
         timer.schedule(task, 0, 100);  // interval of one minute
-
     }
 
 
@@ -123,31 +129,23 @@ public class ActivityChengePassword extends AppCompatActivity {
                 progressBar.dismiss();
                 trocar(numberSeacher,newPassword,chengeuser);
                 startActivity(new Intent(ActivityChengePassword.this,Login.class));
+
             }
         },Long.parseLong("900"));
     }
 
 
     public void trocar(String numberSeacher, String newPassword,String chengeuser){
-            boolean isTrue=true;
-            for (UserNurse userNurse: DBManager.getInstance().getUserNurseList()){
-                if(userNurse.getContacto().equals(numberSeacher)){
-                    userNurse.setPassworNurse(newPassword);
-                    userNurse.setUserNurse(chengeuser);
-                    isTrue=false;
-                }
-            }
 
-            if(isTrue) {
-                for (UserDoctor userDoctor : DBManager.getInstance().getUserDoctorList()) {
-                    if (userDoctor.getContacto().equalsIgnoreCase(numberSeacher)) {
-                        userDoctor.setPasswordUser(newPassword);
-                        userDoctor.setUserLogin(chengeuser);
-                    }
-                }
+        if(dbService.isTellDoctor(numberSeacher)){
+            dbService.updadeDoctorUserAndPassword(dbService.getIdDoctor(numberSeacher),chengeuser,newPassword);
+        }else {
+            if(dbService.isTellNurse(numberSeacher)){
+                dbService.updadeNurseUserAndPassword(dbService.getIdNurse(numberSeacher),chengeuser,newPassword);
             }
-
+        }
     }
-
-
+    public void finish(View view) {
+        finish();
+    }
 }

@@ -8,11 +8,12 @@ public class DilatationAndTimer {
     private  int idDilatation;
 
 
-    public DilatationAndTimer(int numberDilatation, int timerDilatationHours, int timerDilatationMinutes) {
+    public DilatationAndTimer(int numberDilatation, int timerDilatationHours, int timerDilatationMinutes,int id) {
         this.fullTimerDilatationHours=timerDilatationHours*3600+timerDilatationMinutes*60;
         this.numberDilatation = numberDilatation;
         this.timerDilatationHours = timerDilatationHours;
         this.timerDilatationMinutes = timerDilatationMinutes;
+        this.idDilatation=id;
     }
 
     public int getFullTimerDilatationHours() {

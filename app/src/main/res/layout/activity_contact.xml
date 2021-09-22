@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:backgroundTint="#3279B1"
+        android:backgroundTint="#0ED116"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.954"
@@ -97,7 +97,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/seacherDilatacao"
                 app:layout_constraintVertical_bias="0.008"
-                tools:listitem="@layout/item_contactos_list" />
+                tools:listitem="@layout/item_docter_list" />
         </LinearLayout>
     </ScrollView>
 

@@ -16,31 +16,19 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="28dp"
             android:layout_marginEnd="8dp"
-            android:hint="Nome" />
+            android:hint="Nome completo" />
 
         <EditText
             android:id="@+id/idContactEditContact"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/idApelidoEditContact"
-            android:layout_alignStart="@+id/idApelidoEditContact"
-            android:layout_alignEnd="@+id/idApelidoEditContact"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="39dp"
-            android:layout_marginEnd="0dp"
-            android:hint="Contact" />
-
-        <EditText
-            android:id="@+id/idApelidoEditContact"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
             android:layout_below="@+id/idNomeEditContact"
             android:layout_alignStart="@+id/idNomeEditContact"
             android:layout_alignEnd="@+id/idNomeEditContact"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="-3dp"
-            android:hint="Apelido" />
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="0dp"
+            android:hint="Contact" />
 
     </RelativeLayout>
 </ScrollView>

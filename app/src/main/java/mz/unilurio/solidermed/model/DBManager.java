@@ -10,7 +10,7 @@ import java.util.List;
 import mz.unilurio.solidermed.R;
 
 public class DBManager {
-
+    private DBService dbService;
     private  static  int idDilatation=6;
     private static DBManager ourInstance = null;
     private List<DilatationAndTimer> dilatationAndTimerList=new ArrayList<>();
@@ -40,6 +40,7 @@ public class DBManager {
     private Queue queue=new Queue();
     private List<EmergencyMedicalPersonnel> emergencyMedicalPersonnels = new ArrayList<>();
     public int totalPaturient=0;
+    private  static int idNurse=1;
     private List<GestatinalRange> ranges;
     private List<DeliveryService> deliveryServices = new ArrayList<>();
 
@@ -73,7 +74,7 @@ public class DBManager {
     }
 
     private void intDilatationAndTimer() {
-        dilatationAndTimerList.add(new DilatationAndTimer(4,0,1));
+       // dilatationAndTimerList.add(new DilatationAndTimer(4,0,1));
     }
 
     public void addDilatation(DilatationAndTimer dilatationAndTimer){
@@ -213,11 +214,12 @@ public class DBManager {
     }
 
     private void initializeDoctor() {
-        this.userDoctorList.add(new UserDoctor("Barata Estevao Mario Barata","","",1,"845740722"));
-        this.userDoctorList.add(new UserDoctor("Ussimane Killer Wazy","ussimane","129",2,"847759422"));
-        this.userDoctorList.add(new UserDoctor("Felermino Ali","128","felermino",3,"864293652"));
-        this.userDoctorList.add(new UserDoctor("Felermino Rumbi","rumbi","122",4,"846689637"));
-        this.userDoctorList.add(new UserDoctor("Saide Nilfero","saide","138",5,"849288877"));
+
+     //   this.userDoctorList.add(new UserDoctor("Barata Estevao Mario Barata","","",1,"845740722"));
+//        this.userDoctorList.add(new UserDoctor("Ussimane Killer Wazy","ussimane","129",2,"847759422"));
+//        this.userDoctorList.add(new UserDoctor("Felermino Ali","128","felermino",3,"864293652"));
+//        this.userDoctorList.add(new UserDoctor("Felermino Rumbi","rumbi","122",4,"846689637"));
+//        this.userDoctorList.add(new UserDoctor("Saide Nilfero","saide","138",5,"849288877"));
 
     }
 
@@ -237,10 +239,10 @@ public class DBManager {
     }
 
     private void initializeInfermeira() {
-        this.userNurseList.add(new UserNurse("Salima Maria","salima","123","1","84574072"));
-        this.userNurseList.add(new UserNurse("Fatima Carla","fatima","124","2","84574072"));
-        this.userNurseList.add(new UserNurse("Maria Sofia","maria","124","3","84574072"));
-        this.userNurseList.add(new UserNurse("Carla Antonio","carla","128","4","84574072"));
+    }
+    public void addNurse(UserNurse userNurse){
+           userNurse.setIdNurse(idNurse++);
+           this.userNurseList.add(userNurse);
     }
 
     public List<UserNurse> getUserNurseList() {
@@ -404,6 +406,10 @@ public class DBManager {
 
 
     private void initializeEmergencyPersonnels(){ emergencyMedicalPersonnels.add(initializeEmergencyPersonnel1());
+       //dbService=new DBService(this);
+       //emergencyMedicalPersonnels.removeAll(emergencyMedicalPersonnels);
+
+
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel2());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel3());
         emergencyMedicalPersonnels.add(initializeEmergencyPersonnel4());
@@ -416,15 +422,15 @@ public class DBManager {
         return new EmergencyMedicalPersonnel("Rosario", "Ap", "845740722",1);
     }
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel1(){
-        return new EmergencyMedicalPersonnel("Saide", "Nilfero", "849288877",2);
+        return new EmergencyMedicalPersonnel("Saide", "Nilfero", "8492888772",2);
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel2(){
-        return new EmergencyMedicalPersonnel("Felermino", "Rumbi", "846689637",3);
+        return new EmergencyMedicalPersonnel("Felermino", "Rumbi", "8466896372",3);
     }
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel3(){
-        return new EmergencyMedicalPersonnel("Felermino", "Ali", "864293652",4);
+        return new EmergencyMedicalPersonnel("Felermino", "Ali", "8642936522",4);
     }
 
 
@@ -432,7 +438,7 @@ public class DBManager {
 
     private EmergencyMedicalPersonnel initializeEmergencyPersonnel4(){
 
-        return new EmergencyMedicalPersonnel("Ussimane", "Killer Wazy", "847759422",5);
+        return new EmergencyMedicalPersonnel("Ussimane", "Killer Wazy", "8477594222",5);
     }
 
     public  void addQueueAndDeliveryService(Parturient parturient){

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,17 +15,17 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
-import mz.unilurio.solidermed.ContactActivity;
 import mz.unilurio.solidermed.R;
 
-public class AddContctClass extends AppCompatDialogFragment {
-
+public class AddDoctorClass extends AppCompatDialogFragment {
 
     private EditText editNome;
     private EditText editContact;
+    public static boolean isAdd=false;
+    public static boolean isRemove=false;
     private  EditText editApelido;
-    private EmergencyMedicalPersonnel emergencyMedicalPersonnel;
-
+    private UserDoctor userDoctor;
+    DBService dbService;
 
     @NonNull
     @NotNull
@@ -34,27 +35,34 @@ public class AddContctClass extends AppCompatDialogFragment {
         LayoutInflater inflater=getActivity().getLayoutInflater();
         View view=inflater.inflate(R.layout.layout_dialog_edit_contact,null);
         builder.setView(view)
-                .setTitle("Adicionar Contacto").setIcon(R.drawable.edit_contact)
+                .setTitle("Adicionar Medico").setIcon(R.drawable.ic_baseline_person_add_alt_1_24)
                 .setNegativeButton("Nao", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                     }
                 })
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                       emergencyMedicalPersonnel=new EmergencyMedicalPersonnel();
-                        emergencyMedicalPersonnel.setContact(editContact.getText().toString());
-                        emergencyMedicalPersonnel.setName(editNome.getText().toString());
-                        emergencyMedicalPersonnel.setSurname(editApelido.getText().toString());
-                        DBManager.getInstance().addEmergencyMedicalPersonnels(emergencyMedicalPersonnel);
+                       if(validation(editContact)){
+                           if(validation(editNome)){
+                               if(!dbService.isTellDoctor(editContact.getText().toString())) {
+                                   dbService.addDoctor("","",editContact.getText().toString(),editNome.getText().toString());
+                                   isAdd = true;
+                                   Toast.makeText( getContext(), " Usuario registado com sucesso", Toast.LENGTH_SHORT).show();
 
+                               }else {
+                                   Toast.makeText( getContext(), " Falha ao registar, o contacto existe", Toast.LENGTH_SHORT).show();
+                               }
+                           }
+                       }
 
                     }
                 });
               editContact=view.findViewById(R.id.idContactEditContact);
               editNome=view.findViewById(R.id.idNomeEditContact);
-              editApelido=view.findViewById(R.id.idApelidoEditContact);
+              dbService=new DBService(this.getContext());
 
         return builder.create();
 
@@ -68,5 +76,13 @@ public class AddContctClass extends AppCompatDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    public  boolean validation(EditText editText){
+            if(editText.getText().toString().isEmpty()){
+                Toast.makeText(getContext(), "Erro campo vazio", Toast.LENGTH_SHORT).show();
+            return false;
+            }
+            return true;
     }
 }

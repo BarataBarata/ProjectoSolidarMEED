@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import mz.unilurio.solidermed.R;
 
-public class AddDilatationClassDilatation extends AppCompatDialogFragment {
+public class AddDilatation extends AppCompatDialogFragment {
 
     private static String dilatation;
     private static String timerDilatation;
@@ -29,6 +30,10 @@ public class AddDilatationClassDilatation extends AppCompatDialogFragment {
     private EditText editEditTimer;
     private DilatationAndTimer dilatationAndTimer;
     TextView textViewDilatation;
+    private DBService dbService;
+
+    public static boolean isAdd=false;
+    public static boolean isRemove=false;
 
     private static int numberHours;
     private static int numberMinutes;
@@ -59,7 +64,12 @@ public class AddDilatationClassDilatation extends AppCompatDialogFragment {
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DBManager.getInstance().addDilatation(new DilatationAndTimer(numberDilatation,numberHours,numberMinutes));
+                        if(!dbService.isExistDilatation(numberDilatation+"")){
+                            dbService.addDilatation(numberDilatation,numberHours,numberMinutes);
+                            isAdd=true;
+                        }else {
+                            Toast.makeText(getContext(), "Erro ! o numero da dilatação existe", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
         textHoras = view.findViewById(R.id.idViewHoras);
@@ -93,6 +103,7 @@ public class AddDilatationClassDilatation extends AppCompatDialogFragment {
             }
         });
 
+        dbService=new DBService(this.getContext());
         return builder.create();
  }
 
@@ -106,25 +117,5 @@ public class AddDilatationClassDilatation extends AppCompatDialogFragment {
         super.onResume();
     }
 
-
-//    Slider sliderMinutos;
-//    Slider sliderHora;
-//    TextView textHoras;
-//    TextView textMinutos;
-
-//
-//        sliderMinutos.addOnChangeListener(new Slider.OnChangeListener() {
-//        @Override
-//        public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
-//            textMinutos.setText((int)sliderMinutos.getValue()+" ");
-//        }
-//    });
-//
-//        sliderHora.addOnChangeListener(new Slider.OnChangeListener() {
-//        @Override
-//        public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
-//            textHoras.setText((int)sliderHora.getValue()+" : ");
-//        }
-//    });
 
 }

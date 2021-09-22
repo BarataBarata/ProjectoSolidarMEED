@@ -16,10 +16,10 @@
 
         <ImageView
             android:layout_centerVertical="true"
-            android:src="@drawable/hospitallist"
+            android:src="@drawable/imagesh"
             android:id="@+id/id_ImagemSettings"
-            android:layout_width="30dp"
-            android:textSize="30dp"
+            android:layout_width="35dp"
+            android:textSize="35dp"
             android:textColor="@color/purple_500"
             android:layout_height="30dp" />
 

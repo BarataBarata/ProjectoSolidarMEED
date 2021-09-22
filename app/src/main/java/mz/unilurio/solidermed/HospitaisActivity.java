@@ -11,6 +11,7 @@ import android.view.View;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.Hospitais;
 
 public class HospitaisActivity extends AppCompatActivity {
@@ -18,6 +19,7 @@ public class HospitaisActivity extends AppCompatActivity {
     private RecyclerView view;
     private LinearLayoutManager hospitaisLinearLayoutManager;
     private HospitaisRecyclerAdpter hospitaisRecyclerAdpter;
+    private  DBService dbService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class HospitaisActivity extends AppCompatActivity {
     public void initializeteDisplayContextHospitais() {
         view = (RecyclerView)findViewById(R.id.recyclerVieHospitais);
         hospitaisLinearLayoutManager = new LinearLayoutManager(this);
-        List<Hospitais> hospitais= DBManager.getInstance().getHospitais();
+        List<Hospitais> hospitais= dbService.getListHospitais();
         hospitaisRecyclerAdpter = new  HospitaisRecyclerAdpter(this,hospitais);
         view.setLayoutManager(hospitaisLinearLayoutManager);
         view.setAdapter(hospitaisRecyclerAdpter);

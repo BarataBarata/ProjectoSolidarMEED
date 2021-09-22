@@ -28,6 +28,7 @@ public class EditContctClassEnfermeira extends AppCompatDialogFragment {
     private EditText editContact;
     private EditText editApelido;
     private  UserNurse userNurse;
+    private  DBService dbService;
 
     @NonNull
     @NotNull
@@ -37,7 +38,7 @@ public class EditContctClassEnfermeira extends AppCompatDialogFragment {
         LayoutInflater inflater=getActivity().getLayoutInflater();
         View view=inflater.inflate(R.layout.layout_dialog_edit_contact,null);
         builder.setView(view)
-                .setTitle("Editar Contacto").setIcon(R.drawable.edit_contact)
+                .setTitle("Editar Medico").setIcon(R.drawable.edit_timer_and_dilatation)
                 .setNegativeButton("Nao", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -46,18 +47,17 @@ public class EditContctClassEnfermeira extends AppCompatDialogFragment {
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        userNurse.setContacto(editContact.getText().toString());
-                        userNurse.setFullName(editNome.getText().toString());
+                        dbService.updadeDoctorNameAndTellphone(dbService.getIdDoctor(editContact.getText().toString()),editContact.getText().toString(),editNome.getText().toString());
+
                     }
                 });
               editContact=view.findViewById(R.id.idContactEditContact);
               editNome=view.findViewById(R.id.idNomeEditContact);
-              editApelido=view.findViewById(R.id.idApelidoEditContact);
 
         editContact.setText(contact);
         editNome.setText(nome);
         editApelido.setText(apelido);
-
+        dbService=new DBService(this.getContext());
         return builder.create();
 
     }
@@ -65,7 +65,7 @@ public class EditContctClassEnfermeira extends AppCompatDialogFragment {
  public  void getContact(int id){
          List<UserNurse> list=DBManager.getInstance().getUserNurseList();
          for(UserNurse userNurse1:list) {
-             if(Integer.parseInt(userNurse1.getIdNurse())==id) {
+             if(userNurse1.getIdNurse()==id) {
                  nome = userNurse1.getFullName();
                  contact = userNurse1.getContacto();
                  apelido=userNurse1.getUserNurse();

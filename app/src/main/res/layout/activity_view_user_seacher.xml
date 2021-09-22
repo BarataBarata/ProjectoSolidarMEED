@@ -3,19 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#EDEFEC"
     android:layout_height="match_parent"
     tools:context=".ActivityViewUserSeacher">
-
-
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.appcompat.widget.Toolbar
+
             android:id="@+id/toolbarDadosPessoais"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +22,7 @@
 
             <ImageView
                 android:onClick="finish"
-                android:src="@drawable/back_24"
+                android:src="@drawable/back_25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
@@ -31,70 +30,104 @@
                 android:textStyle="bold"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_marginStart="30dp"
-                android:textColor="@color/white"
+                android:textColor="#757875"
                 android:text= " Recupere a Senha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         </androidx.appcompat.widget.Toolbar>
 
+        <FrameLayout
+            android:layout_marginTop="57dp"
+            android:layout_width="wrap_content"
+            android:background="@drawable/blue_bg"
+            android:layout_height="90dp">
 
-
-        <TextView
-            android:id="@+id/txtTitleText"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_marginTop="50dp"
-            android:layout_below="@id/toolbarDadosPessoais"
-            android:gravity="center"
-            android:text=" Resuldados encontrado"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-            <TextView
-                android:gravity="center"
-                android:textStyle="bold"
-                android:layout_marginEnd="50dp"
-                android:layout_marginStart="50dp"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:text="Doctor"
-                android:layout_marginTop="12dp"
-                android:layout_below="@id/txtTitleText"
-                android:id="@+id/idViewResult"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
+        </FrameLayout>
         <RelativeLayout
+            android:id="@+id/card1"
             android:layout_marginTop="25dp"
-            android:layout_below="@id/idViewResult"
-            android:gravity="center"
+            android:layout_below="@id/toolbarDadosPessoais"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="100dp"
+            android:layout_marginEnd="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <Button
-                android:onClick="voltar"
-                android:id="@+id/idButtoncancelar"
-                android:textColor="@color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#03A9F4"
-                android:gravity="center"
-                android:text="   voltar   "
-                android:textSize="14dp" />
-            <Button
-                android:layout_marginStart="25dp"
-                android:layout_toRightOf="@id/idButtoncancelar"
-                android:onClick="continuar"
-                android:id="@+id/idSendMenssage"
-                android:textColor="@color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/purple_500"
-                android:gravity="center"
-                android:text="Continuar"
-                android:textSize="14dp" />
+                <TextView
+                    android:id="@+id/txtTitleText"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:textStyle="italic"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center"
+                    android:text=" Resuldado encontrado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginStart="50dp"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:text="Doctor"
+                    android:layout_marginTop="12dp"
+                    android:layout_below="@id/txtTitleText"
+                    android:id="@+id/idViewResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                    android:layout_marginTop="25dp"
+                    android:layout_below="@id/idViewResult"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/txtSend"
+                        android:gravity="center"
+                        android:textSize="17dp"
+                        android:textColor="@color/white"
+                        android:text="Continuar"
+                        android:onClick="continuar"
+                        android:textStyle="bold"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:background="@drawable/blue_fill__rounded_color"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_below="@id/txtSend"
+                        android:gravity="center"
+                        android:textSize="17dp"
+                        android:textColor="@color/white"
+                        android:text="Cancelar"
+                        android:onClick="voltar"
+                        android:textStyle="bold"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:background="@drawable/blue_fill__rounded_color2"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
         </RelativeLayout>
-
     </RelativeLayout>
 </ScrollView>

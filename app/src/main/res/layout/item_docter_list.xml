@@ -9,7 +9,6 @@
 
 
     <androidx.cardview.widget.CardView
-        android:onClick="viewContact"
         android:id="@+id/card1"
         android:layout_marginTop="10dp"
         android:layout_below="@id/toolbar"
@@ -35,13 +34,14 @@
             <TextView
                 android:singleLine="true"
                 android:ellipsize="marquee"
+                android:layout_marginEnd="95dp"
                 style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
                 android:textSize="16sp"
                 android:id="@+id/idNomeMedico"
                 android:layout_marginStart="10dp"
                 android:layout_alignTop="@id/image1"
                 android:layout_toRightOf="@id/image1"
-                android:text="Nome "
+                android:text="Nome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView

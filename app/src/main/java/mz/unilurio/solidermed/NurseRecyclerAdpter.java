@@ -1,19 +1,19 @@
 package mz.unilurio.solidermed;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
@@ -23,7 +23,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import mz.unilurio.solidermed.model.EditContctClassEnfermeira;
+import mz.unilurio.solidermed.model.AddNursesClass;
+import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
+import mz.unilurio.solidermed.model.EditNurseClass;
 import mz.unilurio.solidermed.model.UserNurse;
 
 public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpter.ViewHolder> implements Filterable {
@@ -31,6 +34,7 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
     private List<UserNurse> auxListNurse;
     private List<UserNurse> originalListNurse;
     private final LayoutInflater layoutInflater;
+    private DBService dbService;
 
 
     public NurseRecyclerAdpter(NurseActivity context, List<UserNurse> nurses) {
@@ -40,12 +44,39 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
         this.originalListNurse = nurses;
     }
 
+    public void delete(UserNurse userNurse){
+        dbService=new DBService(context);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle(" Deletar ?");
+        dialog.setCancelable(false);
+        dialog.setIcon(R.drawable.delete);
+
+        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dbService.deleteNurse(userNurse.getIdNurse());
+                AddNursesClass e=new AddNursesClass();
+                e.isRemove=true;
+
+            }
+        });
+        dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(context.getApplicationContext(), " Operacao Cancelada", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        dialog.create();
+        dialog.show();
+    }
 
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_infermeira_list, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_nurse_list, parent, false);
         return new ViewHolder(view);
     }
 
@@ -58,45 +89,16 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
         holder.imageEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditContctClassEnfermeira editContctClass=new EditContctClassEnfermeira();
-                editContctClass.getContact(Integer.parseInt(userNurse.getIdNurse()));
-                editContctClass.show(context.getSupportFragmentManager(),"Editar");
-
+                EditNurseClass editNurseClass=new EditNurseClass();
+                editNurseClass.setIdNurse(userNurse);
+                editNurseClass.show(context.getSupportFragmentManager(),"Editar");
             }
         });
 
-
-
-
-        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+        holder.imageDelete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                //creating a popup menu
-
-                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.options_menu_enfermeira);
-                //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-
-                            case R.id.idDesativar:{
-                            }
-                                return true;
-                            case R.id.item3:
-                                //handle menu3 click
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                //displaying the popup
-                popup.show();
-
+            public void onClick(View v) {
+                delete(userNurse);
             }
         });
     }
@@ -142,22 +144,23 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public int currentPosition;
-        public final CardView cardView;
-        public final TextView txtTime;
+        //public final CardView cardView;
+        //public final TextView txtTime;
         public final TextView textVcontacto;
         public final TextView txtNameParturient;
-        public final TextView buttonViewOption;
         public final ImageView imageEditar;
+        public final ImageView imageDelete;
 
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageEditar=(ImageView)itemView.findViewById(R.id.idEditEnfermeira);
-            buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptionsParturiente);
+            imageEditar=(ImageView)itemView.findViewById(R.id.idEditNurse);
+            imageDelete=(ImageView)itemView.findViewById(R.id.idDeleteNurse);
+            //buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptionsParturiente);
             textVcontacto=(TextView)itemView.findViewById(R.id.idContactMedico);
-            cardView = (CardView) itemView.findViewById(R.id.card_view);
-            txtTime = (TextView) itemView.findViewById(R.id.txtTime);
+            //cardView = (CardView) itemView.findViewById(R.id.card_view);
+            //txtTime = (TextView) itemView.findViewById(R.id.txtTime);
             txtNameParturient = (TextView) itemView.findViewById(R.id.idEnfermeiro);
 
 

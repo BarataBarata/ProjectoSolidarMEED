@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
@@ -23,34 +22,38 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import mz.unilurio.solidermed.model.EditContctClass;
-import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
+import mz.unilurio.solidermed.model.AddDoctorClass;
+import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
+import mz.unilurio.solidermed.model.EditDoctorClass;
+import mz.unilurio.solidermed.model.UserDoctor;
 
-public class EmergencyMedicalPersonnelRecyclerAdpter2 extends RecyclerView.Adapter<EmergencyMedicalPersonnelRecyclerAdpter2.ViewHolder> implements Filterable {
-    EditContctClass   context;
-    private List<EmergencyMedicalPersonnel> auxListContact;
-    private List<EmergencyMedicalPersonnel> originalListContact;
+public class DoctorRecyclerAdpter extends RecyclerView.Adapter<DoctorRecyclerAdpter.ViewHolder> implements Filterable {
+    ContactActivity  context;
+    private List<UserDoctor> auxListContact;
+    private List<UserDoctor> originalListContact;
     private final LayoutInflater layoutInflater;
+    private DBService dbService;
 
 
-    public EmergencyMedicalPersonnelRecyclerAdpter2(EditContctClass context, List<EmergencyMedicalPersonnel> originalListContact) {
+    public DoctorRecyclerAdpter(ContactActivity context, List<UserDoctor> originalListContact) {
         this.context = context;
         this.auxListContact =new ArrayList<>(originalListContact);
-        layoutInflater = LayoutInflater.from(context.getContext());
+        layoutInflater = LayoutInflater.from(context);
         this.originalListContact = originalListContact;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_contactos_list, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_docter_list, parent, false);
         return new ViewHolder(view);
     }
 
 
-    public void delete(int position){
-
-        AlertDialog.Builder dialog = new AlertDialog.Builder(context.getContext());
+    public void delete(UserDoctor userDoctor){
+        dbService=new DBService(context);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle(" Deletar ?");
         dialog.setCancelable(false);
         dialog.setIcon(R.drawable.delete);
@@ -60,8 +63,11 @@ public class EmergencyMedicalPersonnelRecyclerAdpter2 extends RecyclerView.Adapt
             @Override
             public void onClick(DialogInterface dialog, int which) {
                // Toast.makeText(context.getApplicationContext(), " Contacto Eliminado", Toast.LENGTH_LONG).show();
-               // DBManager.getInstance().getEmergencyMedicalPersonnels().clear();
-                //startActivit();
+               DBManager.getInstance().getEmergencyMedicalPersonnels().remove(userDoctor);
+                dbService.deleteDoctor(userDoctor.getIdUser());
+                AddDoctorClass e=new AddDoctorClass();
+                e.isRemove=true;
+
             }
 
 
@@ -69,7 +75,7 @@ public class EmergencyMedicalPersonnelRecyclerAdpter2 extends RecyclerView.Adapt
         dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(context.getContext().getApplicationContext(), " Operacao Cancelada", Toast.LENGTH_LONG).show();
+                Toast.makeText(context.getApplicationContext(), " Operacao Cancelada", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -81,27 +87,26 @@ public class EmergencyMedicalPersonnelRecyclerAdpter2 extends RecyclerView.Adapt
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        EmergencyMedicalPersonnel contact =  originalListContact.get(position);
+        UserDoctor userDoctor =  originalListContact.get(position);
         holder.currentPosition = position;
-        holder.textContact.setText(contact.getContact());
-        holder.txtNameMedico.setText(contact.getName()+" "+contact.getSurname());
+        holder.textContact.setText(userDoctor.getContacto());
+        holder.txtNameMedico.setText(userDoctor.getFullName());
         holder.imageDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delete(position);
+                delete(userDoctor);
             }
         });
 
         holder.imageEditarContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditContctClass editContctClass=new EditContctClass();
-                editContctClass.getContact(position);
-                editContctClass.show((FragmentManager)null,"Editar");
+                EditDoctorClass editDoctorClass =new EditDoctorClass();
+                editDoctorClass.setUserDoctor(userDoctor);
+                editDoctorClass.show(context.getSupportFragmentManager(),"Editar");
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -117,13 +122,13 @@ public class EmergencyMedicalPersonnelRecyclerAdpter2 extends RecyclerView.Adapt
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<EmergencyMedicalPersonnel>list =new ArrayList<>();
+            List<UserDoctor>list =new ArrayList<>();
 
             if(constraint.toString().isEmpty()){
                 list.addAll(auxListContact);
             }else{
-                for(EmergencyMedicalPersonnel contact: auxListContact){
-                    if(contact.getName().toLowerCase().contains(constraint.toString().toLowerCase())){
+                for(UserDoctor contact: auxListContact){
+                    if(contact.getFullName().toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(contact);
                     }
                 }
@@ -137,7 +142,7 @@ public class EmergencyMedicalPersonnelRecyclerAdpter2 extends RecyclerView.Adapt
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             originalListContact.clear();
-            originalListContact.addAll((Collection<? extends EmergencyMedicalPersonnel>) results.values);
+            originalListContact.addAll((Collection<? extends UserDoctor>) results.values);
             notifyDataSetChanged();
         }
     };
@@ -149,20 +154,19 @@ public class EmergencyMedicalPersonnelRecyclerAdpter2 extends RecyclerView.Adapt
         public final TextView txtTime;
         public final TextView txtNameMedico;
         public final TextView textContact;
-        public final TextView textApelido;
-
+        public View buttonViewOption;
         public  final ImageView imageEditarContact;
         public  final ImageView imageDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textApelido=(TextView) itemView.findViewById(R.id.idApelidoEditContact);
             imageDelete=(ImageView)itemView.findViewById(R.id.idDelete);
-            imageEditarContact=(ImageView)itemView.findViewById(R.id.idEditEnfermeira);
+            imageEditarContact=(ImageView)itemView.findViewById(R.id.idEditContacto);
             textContact=(TextView)itemView.findViewById(R.id.idContactMedico);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            txtNameMedico = (TextView) itemView.findViewById(R.id.idEnfermeiro);
+            txtNameMedico = (TextView) itemView.findViewById(R.id.idNomeMedico);
+            buttonViewOption=(TextView)itemView.findViewById(R.id.textViewOptionsNotification);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

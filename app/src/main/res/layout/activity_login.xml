@@ -1,197 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Login">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="201dp"
+            android:background="@drawable/blue_bg"
+            >
 
-            <RelativeLayout
-                android:id="@+id/relativeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+          <androidx.cardview.widget.CardView
 
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="match_parent"
-                    android:layout_height="73dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="39dp"
-                    android:src="@drawable/login" />
-
-                <TextView
-                    android:layout_marginTop="12dp"
-                    android:textStyle="bold"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_below="@+id/image"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:text="Autenticação "/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="415dp"
-                android:layout_height="670dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </RelativeLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/id_input_nome"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="180dp"
-                android:layout_marginEnd="50dp"
-                app:endIconDrawable="@drawable/partu"
-                android:hint="Usuario :"
-                app:endIconMode="password_toggle"
-                app:counterEnabled="true"
-                app:counterMaxLength="40"
-                app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/id_input_password"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="280dp"
-                android:layout_marginEnd="50dp"
-                android:hint="Senha :"
-                app:endIconTint="@color/purple_500"
-                app:counterMaxLength="30"
-                app:counterEnabled="true"
-                app:endIconMode="password_toggle"
-                app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:gravity="center"
-                android:layout_marginTop="440dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-
-                <RelativeLayout
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <Button
-                        android:onClick="Entrar"
-                        android:id="@+id/trocarPassword"
-                        android:textColor="@color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/botaoentrareffect"
-                        android:gravity="center"
-                        android:text="Entrar"
-                        android:textSize="14dp" />
-                </RelativeLayout>
-            </LinearLayout>
-
+                android:background="@color/black"
+                android:layout_gravity="center"
+              app:cardCornerRadius="35dp"
+                android:layout_width="67sp"
+                android:layout_height="50sp">
+              <ImageView
+                  android:background="@color/black"
+                  android:src="@drawable/imagesh2"
+                  android:layout_gravity="center"
+                  android:layout_width="67sp"
+                  android:layout_height="50sp">
+              </ImageView>
+          </androidx.cardview.widget.CardView>
             <TextView
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:textStyle="bold"
                 android:gravity="center"
-                android:textColor="#EA1C0D"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/id_input_password"
-                android:id="@+id/idAlertaPassword"
+                android:text=" Autenticação"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginTop="135dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+        </FrameLayout>
 
-
-            <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/idAlertaPassword"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.google.android.material.textfield.TextInputLayout
+                app:boxCornerRadiusBottomEnd="14dp"
+                app:boxCornerRadiusTopEnd="14dp"
+                app:boxCornerRadiusBottomStart="14dp"
+                android:id="@+id/id_input_nome"
+                app:endIconDrawable="@drawable/partu"
+                app:endIconMode="password_toggle"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="50dp"
+                android:hint="Usuario :">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:boxCornerRadiusBottomEnd="14dp"
+                app:boxCornerRadiusTopEnd="14dp"
+                app:endIconMode="password_toggle"
+                app:boxCornerRadiusBottomStart="14dp"
+                android:layout_below="@id/id_input_nome"
+                android:id="@+id/id_input_password"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/idtxt1"
-                    android:text="Se esqueceu da senha? "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_toRightOf="@id/idtxt1"
-                    android:id="@+id/idVerificarSenha"
-                    android:ellipsize="marquee"
-                    android:onClick="confirmarPassword"
-                    android:singleLine="true"
-                    android:textColor="#448AFF"
-                    android:text="cliqui aqui "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                   android:layout_below="@id/idtxt1"
-                    android:layout_alignLeft="@id/idtxt1"
-                    android:id="@+id/txt3"
-                    android:text="para recuperar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:gravity="center"
-                android:layout_marginTop="430dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/id_alerta_pass_senha"
-                    android:textColor="#F80707"
-                    android:text=""
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="50dp"
+                android:hint="Senha :">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
         </RelativeLayout>
-    </ScrollView>
 
-</androidx.cardview.widget.CardView>
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/id_input_password"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+
+                android:id="@+id/idtxt1"
+                android:text="Se esqueceu da senha? "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_toRightOf="@id/idtxt1"
+                android:id="@+id/idVerificarSenha"
+                android:ellipsize="marquee"
+                android:onClick="confirmarPassword"
+                android:singleLine="true"
+                android:textColor="#448AFF"
+                android:text="clique aqui "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <TextView
+            android:gravity="center"
+            android:textSize="17dp"
+            android:textColor="@color/white"
+            android:text="Entrar"
+            android:onClick="Entrar"
+            android:textStyle="bold"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/blue_fill__rounded_color"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/id_input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/id_input_password"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+
+                android:id="@+id/idtxt2"
+                android:text="Não estas registado/a?"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_toRightOf="@id/idtxt2"
+                android:id="@+id/idRegistar"
+                android:ellipsize="marquee"
+                android:onClick="registarUsuario"
+                android:singleLine="true"
+                android:textColor="#448AFF"
+                android:text=" Registar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

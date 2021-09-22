@@ -1,7 +1,5 @@
 package mz.unilurio.solidermed.model;
 
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.os.Parcel;
@@ -9,22 +7,16 @@ import android.os.Parcelable;
 import android.telephony.SmsManager;
 import android.util.Log;
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import mz.unilurio.solidermed.MainActivity;
-import mz.unilurio.solidermed.R;
-
 public class Parturient implements Parcelable {
     private Notification notifications  = new Notification();
     private int id;
+    private DBService dbService;
     private static int timerEmergence=4;
     private Date horaEntrada;
     private Date horaAlerta;
@@ -277,9 +269,9 @@ public class Parturient implements Parcelable {
     }
 
 
-    public void reverseTimer(int seconds) {
+    public void alertParturiente(int seconds) {
 
-        new CountDownTimer(seconds * 1000 + 1000, 1000) {
+        new CountDownTimer(seconds*1000+1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
@@ -333,12 +325,12 @@ public class Parturient implements Parcelable {
     }
 
     private void sendMensageEmergence() {
-
-         List<EmergencyMedicalPersonnel> list=DBManager.getInstance().getEmergencyMedicalPersonnels();
+        dbService=new DBService();
+         List<UserDoctor> list=dbService.getListDoctor();
          String mensagem=oUpperFirstCase(name) +" "+oUpperFirstCase(surname)+" necessita  de cuidados medicos";
          System.out.println(mensagem);
-        for(EmergencyMedicalPersonnel emergencyMedicalPersonnel: list){
-             sendSMS(emergencyMedicalPersonnel.getContact(),mensagem);
+        for(UserDoctor userDoctor: list){
+             sendSMS(userDoctor.getContacto(),mensagem);
          }
     }
 
@@ -385,18 +377,6 @@ public class Parturient implements Parcelable {
         notification.setTime( Calendar.getInstance().getTime());
         notification.setOpen(true);
         DBManager.getInstance().addNewNotification(notification);
-    }
-
-    public void initializeHoureDilatation(int dilatation){
-
-
-    List<DilatationAndTimer> list=DBManager.getInstance().getDilatationAndTimerList();
-
-    for(DilatationAndTimer dilatationAndTimer: list){
-        if(dilatationAndTimer.getNumberDilatation()==dilatation){
-            reverseTimer(dilatationAndTimer.getFullTimerDilatationHours());
-        }
-     }
     }
 
 

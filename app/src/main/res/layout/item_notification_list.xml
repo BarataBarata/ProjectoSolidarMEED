@@ -22,7 +22,7 @@
             android:layout_marginStart="4dp"
             android:layout_below="@id/idHoraAlertaNotification"
             android:id="@+id/id_ImagemSettings"
-            android:background="@drawable/notification_alert"
+            android:background="@drawable/notification7"
             android:layout_width="30dp"
             android:layout_height="30dp"
             />

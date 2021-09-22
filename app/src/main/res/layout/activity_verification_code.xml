@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#EDEFEC"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ActivityValitationCode">
@@ -14,7 +15,6 @@
             android:id="@+id/toolbarDadosPessoais"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -22,72 +22,96 @@
 
             <ImageView
                 android:onClick="finish"
-                android:src="@drawable/back_24"
+                android:src="@drawable/back_25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:textSize="20dp"
                 android:textStyle="bold"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_marginStart="30dp"
-                android:textColor="@color/white"
-                android:text= " Confirmacao"
+                android:text= " Confirmação"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         </androidx.appcompat.widget.Toolbar>
 
-        <TextView
-            android:gravity="center"
-            android:layout_marginTop="50dp"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_below="@id/toolbarDadosPessoais"
-            android:layout_marginEnd="50dp"
-            android:layout_marginStart="50dp"
-            android:id="@+id/idTitleConfirmation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        <FrameLayout
+            android:layout_marginTop="57dp"
+            android:layout_width="wrap_content"
+            android:background="@drawable/blue_bg"
+            android:layout_height="90dp">
 
-        <EditText
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_below="@id/idTitleConfirmation"
-            android:layout_marginTop="10dp"
-            android:id="@+id/seacherValitation"
-            android:gravity="center"
-            android:hint="__ __ __ __ __ __"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#FF1807"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/seacherValitation"
-            android:id="@+id/txtAlertSeacherValitation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        </FrameLayout>
 
 
         <RelativeLayout
-            android:layout_below="@id/txtAlertSeacherValitation"
-            android:gravity="center"
+            android:id="@+id/card1"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/toolbarDadosPessoais"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="100dp"
+            android:layout_marginEnd="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:layout_marginTop="10dp"
-                android:id="@+id/trocarPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/botaoentrareffect"
-                android:gravity="center"
-                android:onClick="valitationUser"
-                android:text="Confirmar Codigo"
-                android:textColor="@color/white"
-                android:textSize="14dp" />
+            <RelativeLayout
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputLayout
+                  android:id="@+id/seacherValitation2"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="44dp"
+                    android:layout_marginEnd="50dp"
+                    app:boxCornerRadiusTopEnd="14dp"
+                    app:boxCornerRadiusBottomEnd="14dp"
+                    app:boxCornerRadiusBottomStart="14dp"
+                    app:boxCornerRadiusTopStart="14dp"
+                    android:hint="insira o Código de confirmação :"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <RelativeLayout
+                    android:layout_below="@id/seacherValitation2"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:gravity="center"
+                        android:textSize="17dp"
+                        android:textColor="@color/white"
+                        android:text="Validar"
+                        android:onClick="valitationUser"
+                        android:textStyle="bold"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:background="@drawable/blue_fill__rounded_color"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
         </RelativeLayout>
+
 
 
     </RelativeLayout>

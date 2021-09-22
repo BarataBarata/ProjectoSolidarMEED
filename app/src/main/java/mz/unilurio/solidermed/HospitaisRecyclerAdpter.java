@@ -163,7 +163,7 @@ public class HospitaisRecyclerAdpter extends RecyclerView.Adapter<HospitaisRecyc
         dialog.setTitle("Centro de Saude");
         dialog.setMessage(" Carregar dados do "+ originalListHospital.get(currentPosition).getNomeHospital()+" ?");
         dialog.setCancelable(false);
-        dialog.setIcon((R.drawable.hospital));
+        dialog.setIcon((R.drawable.imagesh));
 
         dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#EDEFEC"
     android:layout_height="match_parent"
     tools:context=".ActivitySendMenssage">
 
@@ -15,7 +16,7 @@
             android:id="@+id/toolbarDadosPessoais"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -23,64 +24,100 @@
 
             <ImageView
                 android:onClick="finish"
-                android:src="@drawable/back_24"
+                android:src="@drawable/back_25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:textSize="20dp"
                 android:textStyle="bold"
-                style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_marginStart="30dp"
-                android:textColor="@color/white"
                 android:text= " Recupere a Senha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         </androidx.appcompat.widget.Toolbar>
+        <FrameLayout
+            android:layout_marginTop="57dp"
+            android:layout_width="wrap_content"
+            android:background="@drawable/blue_bg"
+            android:layout_height="90dp">
 
-<TextView
-    android:textStyle="bold"
-    android:textSize="16dp"
-    android:gravity="center"
-    android:layout_marginTop="50dp"
-    android:layout_below="@id/toolbarDadosPessoais"
-    android:id="@+id/txtTitle"
-    android:layout_marginEnd="50dp"
-    android:layout_marginStart="50dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
-
-
+        </FrameLayout>
         <RelativeLayout
-            android:layout_below="@id/txtTitle"
+            android:id="@+id/card1"
             android:layout_marginTop="25dp"
-           android:gravity="center"
+            android:layout_below="@id/toolbarDadosPessoais"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="100dp"
+            android:layout_marginEnd="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:onClick="CancelSendMenssage"
-                android:id="@+id/idButtoncancelar"
-                android:textColor="@color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#03A9F4"
-                android:gravity="center"
-                android:text="Cancelar"
-                android:textSize="14dp" />
-            <Button
-                android:layout_marginStart="25dp"
-                android:layout_toRightOf="@id/idButtoncancelar"
-                android:onClick="sendMenssage"
-                android:id="@+id/idSendMenssage"
-                android:textColor="@color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/purple_500"
-                android:gravity="center"
-                android:text="  Enviar  "
-                android:textSize="14dp" />
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+
+       <TextView
+           android:textStyle="bold"
+           android:textSize="16dp"
+           android:gravity="center"
+           android:layout_marginTop="58dp"
+           android:id="@+id/txtTitle"
+           android:layout_marginEnd="50dp"
+           android:layout_marginStart="50dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"/>
+
+
+       <RelativeLayout
+           android:layout_marginBottom="20dp"
+           android:layout_below="@id/txtTitle"
+           android:layout_marginTop="25dp"
+           android:gravity="center"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <TextView
+               android:id="@+id/txtSend"
+               android:gravity="center"
+               android:textSize="17dp"
+               android:textColor="@color/white"
+               android:text="Enviar"
+               android:onClick="sendMenssage"
+               android:textStyle="bold"
+               android:paddingTop="10dp"
+               android:paddingBottom="10dp"
+               android:layout_marginEnd="50dp"
+               android:background="@drawable/blue_fill__rounded_color"
+               android:layout_marginStart="50dp"
+               android:layout_marginTop="10dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+
+           <TextView
+               android:layout_below="@id/txtSend"
+               android:gravity="center"
+               android:textSize="17dp"
+               android:textColor="@color/white"
+               android:text="Cancelar"
+               android:onClick="CancelSendMenssage"
+               android:textStyle="bold"
+               android:paddingTop="10dp"
+               android:paddingBottom="10dp"
+               android:layout_marginEnd="50dp"
+               android:background="@drawable/blue_fill__rounded_color2"
+               android:layout_marginStart="50dp"
+               android:layout_marginTop="10dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+
+       </RelativeLayout>
+
+
+   </RelativeLayout>
+
         </RelativeLayout>
+
 
 
     </RelativeLayout>

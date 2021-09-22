@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#ffffff"
+    android:layout_height="match_parent"
+    tools:context=".Activity_Confirmar_Registo">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
+
+                <ImageView
+                    android:onClick="finish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/back_25" />
+
+                <TextView
+                    android:textStyle="bold"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="Confirmar o codigo"
+                    android:textColor="#BC343534" />
+            </androidx.appcompat.widget.Toolbar>
+
+            <FrameLayout
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/toolbar"
+                android:layout_width="wrap_content"
+                android:background="@drawable/blue_bg"
+                android:layout_height="90dp">
+
+            </FrameLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/card1"
+                android:layout_marginTop="25dp"
+                android:layout_below="@id/toolbar"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="100dp"
+                android:layout_marginEnd="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_alignStart="@id/idImputConfirmation"
+                        android:layout_alignEnd="@id/idImputConfirmation"
+                        android:id="@+id/txtConfirmacarRegisto"
+                        android:textStyle="bold"
+                        android:layout_marginTop="75dp"
+                        android:layout_marginEnd="16sp"
+                        android:text="Foi enviado um codigo de confirmacao para o numero:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_below="@id/txtConfirmacarRegisto"
+                        android:id="@+id/idImputConfirmation"
+                        app:boxCornerRadiusTopEnd="14dp"
+                        app:boxCornerRadiusBottomEnd="14dp"
+                        app:boxCornerRadiusBottomStart="14dp"
+                        app:boxCornerRadiusTopStart="14dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="50dp"
+                        android:hint="insira o codigo de confirmacao :"
+
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <RelativeLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="15dp"
+                        android:gravity="center"
+                        android:layout_below="@id/idImputConfirmation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:gravity="center"
+                            android:textSize="17dp"
+                            android:textColor="@color/white"
+                            android:text="Confirmar"
+                            android:onClick="confirmarRegisto"
+                            android:textStyle="bold"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:layout_marginEnd="50dp"
+                            android:background="@drawable/blue_fill__rounded_color"
+                            android:layout_marginStart="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+</FrameLayout>

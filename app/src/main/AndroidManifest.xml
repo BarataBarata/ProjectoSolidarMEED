@@ -13,8 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projecto_S"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ActivityDefinitionEmergencTimer"
-            android:theme="@style/Theme.Projecto_S.NoActionBar"></activity>
+        <activity android:name=".Activity_Confirmar_Registo"></activity>
+        <activity android:name=".Activity_RegistarUsuario" />
+        <activity android:name=".MainActivity_Users_List" />
+        <activity
+            android:name=".ActivityDefinitionEmergencTimer"
+            android:theme="@style/Theme.Projecto_S.NoActionBar" />
         <activity
             android:name=".ViewDadosPessoaisActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
