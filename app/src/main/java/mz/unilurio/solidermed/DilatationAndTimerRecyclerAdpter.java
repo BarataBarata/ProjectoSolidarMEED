@@ -23,6 +23,7 @@ import java.util.List;
 
 import mz.unilurio.solidermed.model.AddDilatation;
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.DilatationAndTimer;
 import mz.unilurio.solidermed.model.EditClassDilatation;
 
@@ -31,6 +32,7 @@ public class DilatationAndTimerRecyclerAdpter extends RecyclerView.Adapter<Dilat
     private List<DilatationAndTimer> auxListDilatation;
     private List<DilatationAndTimer> originalListDilatation;
     private final LayoutInflater layoutInflater;
+    private DBService dbService;
 
 
     public DilatationAndTimerRecyclerAdpter(ActivityDilatetionAndHours context, List<DilatationAndTimer> dilatationAndTimers) {
@@ -48,7 +50,7 @@ public class DilatationAndTimerRecyclerAdpter extends RecyclerView.Adapter<Dilat
     }
 
 
-    public void delete(int position){
+    public void delete(int dilatation){
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle(" Deletar ?");
@@ -59,9 +61,9 @@ public class DilatationAndTimerRecyclerAdpter extends RecyclerView.Adapter<Dilat
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               Toast.makeText(context.getApplicationContext(), " a linha foi eliminado", Toast.LENGTH_LONG).show();
-               DBManager.getInstance().getDilatationAndTimerList().remove(position);
-               AddDilatation e=new AddDilatation();
+                dbService=new DBService(context);
+                dbService.deleteDilatation(dbService.getIdDilatation(dilatation+""));
+                 AddDilatation e=new AddDilatation();
                e.isRemove=true;
             }
         });
@@ -87,7 +89,7 @@ public class DilatationAndTimerRecyclerAdpter extends RecyclerView.Adapter<Dilat
         holder.imageDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delete(position);
+                delete(dilatationAndTimer.getNumberDilatation());
             }
         });
 
