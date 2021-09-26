@@ -13,7 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projecto_S"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity_Confirmar_Registo"></activity>
+
+
+        <activity
+            android:name=".SelectHospitalActivity"
+            android:theme="@style/Theme.Projecto_S.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Activity_Confirmar_Registo" />
         <activity android:name=".Activity_RegistarUsuario" />
         <activity android:name=".MainActivity_Users_List" />
         <activity
@@ -31,11 +43,7 @@
         <activity
             android:name=".StartApp"
             android:theme="@style/Theme.Projecto_S.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".TimerActivity"
@@ -88,7 +96,11 @@
         <activity
             android:name=".Login"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Projecto_S.NoActionBar" />
+            android:theme="@style/Theme.Projecto_S.NoActionBar" >
+
+        </activity>
+
+
         <activity
             android:name=".DadosPessoais"
             android:label="@string/title_activity_dados_pessoais"
@@ -100,6 +112,8 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
+
+
     </application>
 
 </manifest>

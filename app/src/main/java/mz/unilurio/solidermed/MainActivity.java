@@ -52,6 +52,7 @@ import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.PageAdapder;
@@ -90,16 +91,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String nomeHospitalExtra="";
     private NotificationManagerCompat notificationManagerCompat;
     private FloatingActionButton fab;
-    private SharedPreferences sharedPreferences;
+    private DBService dbService;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
+        dbService=new DBService(this);
         fab = findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         notificationManagerCompat=NotificationManagerCompat.from(this);
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(getIntent().getStringExtra("nomeHospital")!=null) {
             textNomeHospital.setText(getIntent().getStringExtra("nomeHospital"));
         }else{
-            textNomeHospital.setText("Centro de Saude de Chiure");
+            textNomeHospital.setText(dbService.getHospitalSelect());
         }
 
 //        if(getIntent().getStringExtra("user")!=null){

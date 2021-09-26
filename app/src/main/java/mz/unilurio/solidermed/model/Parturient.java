@@ -1,5 +1,6 @@
 package mz.unilurio.solidermed.model;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.os.Parcel;
@@ -13,11 +14,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import mz.unilurio.solidermed.AddParturientActivity;
+import mz.unilurio.solidermed.MainActivity;
+
 public class Parturient implements Parcelable {
     private Notification notifications  = new Notification();
     private int id;
+    private boolean inProcess;
     private DBService dbService;
-    private static int timerEmergence=4;
+    private static int timerEmergence=30;
     private Date horaEntrada;
     private Date horaAlerta;
     private Date horaAtendimento;
@@ -88,6 +93,14 @@ public class Parturient implements Parcelable {
         this.name = name;
         this.surname = surname;
         this.age = age;
+    }
+
+    public boolean isInProcess() {
+        return inProcess;
+    }
+
+    public void setInProcess(boolean inProcess) {
+        this.inProcess = inProcess;
     }
 
     public Date getTime() {
@@ -315,24 +328,37 @@ public class Parturient implements Parcelable {
             }
 
             public void onFinish() {
-                notification.setColour(Color.rgb(248, 215,218));
-
                 sendMensageEmergence();
 
-                sendSMS(name,surname);
             }
         }.start();
     }
 
     private void sendMensageEmergence() {
-        dbService=new DBService();
-         List<UserDoctor> list=dbService.getListDoctor();
+     if(!this.inProcess){
+         notification.setColour(Color.rgb(248, 215,218));
+         sendSMS(name,surname);
+         List<UserDoctor> list= new AddParturientActivity().getListUserDoctor();
          String mensagem=oUpperFirstCase(name) +" "+oUpperFirstCase(surname)+" necessita  de cuidados medicos";
          System.out.println(mensagem);
-        for(UserDoctor userDoctor: list){
+         for(UserDoctor userDoctor: list){
              sendSMS(userDoctor.getContacto(),mensagem);
          }
+     }
     }
+    private void sendSMS(String phoneNumber, String message) {
+        phoneNumber = phoneNumber.trim();
+        message = message.trim();
+
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+
+        } catch (Exception e) {
+            Log.i("EXPECTION SMS", e.getMessage());
+        }
+    }
+
 
     public String getTempoRest() {
         return viewTempo;
@@ -357,23 +383,12 @@ public class Parturient implements Parcelable {
         return dateFormat.format(date);
     }
 
-    private void sendSMS(String phoneNumber, String message) {
-        phoneNumber = phoneNumber.trim();
-        message = message.trim();
-
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-
-        } catch (Exception e) {
-            Log.i("EXPECTION SMS", e.getMessage());
-        }
-    }
 
     void sendNotification(){
         notification.setColour(Color.YELLOW+Color.BLACK);
         notification.setMessage(name+" "+surname);
         notification.setId(id+"");
+        notification.setInProcess(inProcess);
         notification.setTime( Calendar.getInstance().getTime());
         notification.setOpen(true);
         DBManager.getInstance().addNewNotification(notification);

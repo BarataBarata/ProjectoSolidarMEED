@@ -118,6 +118,7 @@
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
         <TextView
+            android:id="@+id/entrarLogin"
             android:gravity="center"
             android:textSize="17dp"
             android:textColor="@color/white"

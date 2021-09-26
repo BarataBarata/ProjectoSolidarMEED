@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -86,6 +87,13 @@ public class Login extends AppCompatActivity {
 
     }
 
+    @Override
+    public void finish() {
+        StartApp startApp =new StartApp();
+        startApp.start=true;
+        super.finish();
+    }
+
     public boolean isExistUser(String user, String password){
 
         if(dbService.isDoctorLogin(user,password)){
@@ -101,10 +109,9 @@ public class Login extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onPause() {
-        StartApp startApp=new StartApp();
-        startApp.start=true;
         super.onPause();
     }
 

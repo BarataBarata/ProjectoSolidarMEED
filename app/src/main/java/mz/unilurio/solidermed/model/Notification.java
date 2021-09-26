@@ -11,6 +11,7 @@ public final class Notification implements Parcelable {
     public static final int TWO_INTERVAL = 1;
     public static final int FIVE_INTERVAL = 5;
     public static final int TEN_INTERVAL = 10;
+    private boolean inProcess;
     private String id;
     private int color;
     private String message;
@@ -68,6 +69,14 @@ public final class Notification implements Parcelable {
 
     public void setColour(int color) {
         this.color = color;
+    }
+
+    public boolean isInProcess() {
+        return inProcess;
+    }
+
+    public void setInProcess(boolean inProcess) {
+        this.inProcess = inProcess;
     }
 
     public String getMessage() {

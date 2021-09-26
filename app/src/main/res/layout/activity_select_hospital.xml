@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".SelectHospitalActivity">
+
+    <RelativeLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="80dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/teal_700"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:gravity="center"
+            android:id="@+id/idTitle"
+            android:text="Selecione o Hospital"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:layout_marginStart="16sp"
+            android:layout_marginEnd="16sp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/relative"
+            android:layout_below="@id/idTitle"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="70dp"
+                android:id="@+id/cardv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imageStart"
+                    android:src="@drawable/imagesh"
+                    android:layout_width="47dp"
+                    android:layout_height="47dp"/>
+            </androidx.cardview.widget.CardView>
+            <Spinner
+                android:layout_toEndOf="@id/cardv"
+                android:id="@+id/spinner_hospital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                />
+        </RelativeLayout>
+        <TextView
+            android:layout_below="@id/relative"
+            android:gravity="center"
+            android:textSize="17dp"
+            android:textColor="@color/white"
+            android:text="continuar"
+            android:onClick="proximo"
+            android:textStyle="bold"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/blue_fill__rounded_color"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+</RelativeLayout>

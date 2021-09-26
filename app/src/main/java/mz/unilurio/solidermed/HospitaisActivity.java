@@ -25,6 +25,7 @@ public class HospitaisActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hospitais);
+        dbService=new DBService(this);
         initializeteDisplayContextHospitais();
 
         SearchView searchView =(SearchView) findViewById(R.id.seacherHospitais);

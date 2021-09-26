@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -18,8 +19,10 @@ public class DBService  extends SQLiteOpenHelper {
     private String[] sql = {
             "CREATE TABLE UserDoctor(id INTEGER NOT NULL UNIQUE, username TEXT NOT NULL,fullname TEXT NOT NULL,tellDoctor TEXT NOT NULL, pass TEXT NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE UserNurse(id INTEGER NOT NULL UNIQUE, username TEXT NOT NULL ,fullname TEXT NOT NULL ,tellNurse TEXT NOT NULL, pass TEXT NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
+            "CREATE TABLE HospitalSelect(id INTEGER NOT NULL UNIQUE, hospital TEXT NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE Hospitais(id INTEGER NOT NULL UNIQUE, hospital TEXT NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE Dilatacao(id INTEGER NOT NULL UNIQUE, dilatation TEXT NOT NULL, horas TEXT NOT NULL , minutes TEXT NOT NULL  , PRIMARY KEY(id AUTOINCREMENT ));",
+
     };
 
     public DBService(@Nullable Context context) {
@@ -409,7 +412,37 @@ public class DBService  extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
         return arrayList;
-
-
     }
+    //..........................HospitalSelect...................//
+
+    public long addHospitalSelect(String hospital) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("hospital", hospital);
+        return db.insert("HospitalSelect", null, cv);
+    }
+
+    public boolean isHospitalSelect() {
+        String id="1";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM HospitalSelect WHERE id= ?",
+                new String[]{id});
+        c.moveToFirst();
+        if (c.getCount()>0) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public String getHospitalSelect() {
+        String id="1";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM HospitalSelect WHERE id = ?",
+                new String[]{id});
+        c.moveToFirst();
+
+        return c.getString(c.getColumnIndex("hospital"));
+    }
+
 }

@@ -2,6 +2,7 @@ package mz.unilurio.solidermed;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +54,11 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         holder.cardView.setCardBackgroundColor(notification.getColour());
         holder.txtTime.setText(format(notification.getTime()));
         holder.txtNameParturient.setText(oUpperFirstCase(notification.getMessage()));
-        holder.txtDetails.setText("Idade : 10| diltatacao");
+        if(notification.isInProcess()){
+            holder.txtDetails.setText("Parturiente em Processo...");
+        }else {
+            holder.txtDetails.setText("Idade : 10| diltatacao");
+        }
 
 
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {

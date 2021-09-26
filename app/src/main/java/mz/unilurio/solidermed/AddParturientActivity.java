@@ -44,23 +44,30 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mz.unilurio.solidermed.model.AddDoctorClass;
 import mz.unilurio.solidermed.model.AlertParutient;
 import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.DilatationAndTimer;
+import mz.unilurio.solidermed.model.EditDoctorClass;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
+import mz.unilurio.solidermed.model.UserDoctor;
 
 public class AddParturientActivity extends AppCompatActivity implements Validator.ValidationListener {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private DBService dbService;
+    private Handler handler;
+    private TimerTask task;
+    private Timer timer;
 
     public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
@@ -100,6 +107,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private int idParturiente;
     private TextView textContTimer;
     private SharedPreferences sharedPreferences;
+    private List<UserDoctor> listDoctor=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -483,7 +491,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                upadeListDoctor();
                 if(verificationNumberName(txtNameParturient) && verificationNumberName(textApelido)) {
 
                     validationError();
@@ -692,5 +700,36 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private String format(Date date){
         DateFormat dateFormat = new SimpleDateFormat("hh:mm-yyyy-MM-dd ");
         return dateFormat.format(date);
+    }
+
+    public List<UserDoctor> getListUserDoctor(){
+        return listDoctor;
+    }
+
+
+    private void upadeListDoctor() {
+
+        handler = new Handler();
+        timer = new Timer();
+
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                EditDoctorClass e =new EditDoctorClass();
+                AddDoctorClass add=new AddDoctorClass();
+
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            listDoctor=dbService.getListDoctor();
+                        } catch (Exception e) {
+                            // error, do something
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(task, 0, 500);  // interval of one minute
+
     }
 }

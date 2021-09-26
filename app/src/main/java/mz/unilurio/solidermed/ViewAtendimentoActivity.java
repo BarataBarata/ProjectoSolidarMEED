@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +27,8 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     private Parturient newParturient=new Parturient();
     private ProgressDialog progressBar;
     private CheckBox checkBox1;
-    boolean bggg;
-    boolean bggg2;
+    private Switch aSwitchProcess;
+    private  boolean optionSwitch=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +36,23 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_antendimento);
         textNomeParturiente= findViewById(R.id.nomeParturienteView);
 
+        aSwitchProcess=findViewById(R.id.switchProcess);
+        aSwitchProcess.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+             optionSwitch=isChecked;
+            }
+        });
 
         checkBox1=findViewById(R.id.txt1);
-
-
-
-
 
         if(getIntent().getStringExtra("idParturiente")!=null){
             idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
             for(Parturient parturient: DBManager.getInstance().getParturients()){
                 if(parturient.getId()==idParturiente){
                     newParturient=parturient;
+                    optionSwitch=parturient.isInProcess();
+                    aSwitchProcess.setChecked(optionSwitch);
                     textNomeParturiente.setText(oUpperFirstCase(parturient.getName())+" "+oUpperFirstCase(parturient.getSurname()));
                     break;
                 }
@@ -87,7 +94,11 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     }
 
     public  void addNewAtendido(View view){
-        addNewParturiente();
+        if(optionSwitch){
+            parturienteInProcess();
+        }else {
+            addNewParturiente();
+        }
     }
 
 
@@ -121,6 +132,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                         DBManager.getInstance().addParturienteAtendido(newParturient);
                         removParturiente();
                         removNotification();
+                        newParturient.setInProcess(false);
                         finish();
                     }
                 },Long.parseLong("900"));
@@ -140,5 +152,62 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
 
         dialog.create();
         dialog.show();
+    }
+    public  void parturienteInProcess(){
+
+        String mensagemTitle="Parturiente em processo ?";;
+
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setTitle(mensagemTitle);
+        dialog.setCancelable(false);
+        dialog.setIcon(getDrawable(R.drawable.mulhergravidabom2));
+
+        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                progressBar =new ProgressDialog(ViewAtendimentoActivity.this);
+                progressBar.setTitle("Aguarde");
+                progressBar.setMessage("Inserindo...");
+                progressBar.show();
+
+                new Handler().postDelayed(new Thread() {
+                    @Override
+                    public void run() {
+                        progressBar.dismiss();
+                        newParturient.setInProcess(true);
+                        setProgressNotification(newParturient.getId());
+                        finish();
+
+                    }
+                },Long.parseLong("900"));
+
+                //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
+                Toast.makeText(getApplicationContext(), " Dados adicionados com sucesso", Toast.LENGTH_LONG).show();
+            }
+
+        });
+        dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext()," Operacao Cancelada",Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        dialog.create();
+        dialog.show();
+    }
+
+    public void setProgressNotification(int id){
+
+        for (Notification notification:DBManager.getInstance().getNotifications()){
+            if(Integer.parseInt(notification.getId())==id){
+                notification.setInProcess(true);
+                break;
+            }
+        }
+
     }
 }
