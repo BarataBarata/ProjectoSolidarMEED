@@ -25,7 +25,6 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
     TextView tempoEsprarado;
     TextView origemTrasferenciaParturiente;
     TextView motivosTrasferenciaParturiente;
-    private TextView textDilatacaoInicial;
     private Parturient parturient;
     private CardView cardView;
 
@@ -74,7 +73,7 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
 
 
     private void sendDade(Parturient parturient) {
-        nomeParturiente.setText(" Nome da parturiente :"+ parturient.getName()+" "+  parturient.getSurname());
+        nomeParturiente.setText(" Nome da parturiente :"+ parturient.getFullName());
         idadeParturiente.setText(" Idade da parturiente :"+ parturient.getAge()+" anos de idade");
         dilatacaoParturiente.setText(" dilatação inicial da parturiente :"+parturient.getReason()+" cm");
         idadeDeParidadeDaParturiente.setText("opções de Paridade da parturiente é de : "+parturient.getPara()+"");
@@ -83,9 +82,15 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
         if(parturient.getTime()!=null)
             horaEntradaDaParturiente.setText(" A hora de entrada da Parturiente : "+format(parturient.getTime()));
 
-        if(parturient.isTransfered()){
-            motivosTrasferenciaParturiente.setText(" Motivo da  transferência  da parturiente :"+parturient.getMotivosDaTrasferencia()+" ");
-            origemTrasferenciaParturiente.setText( "Origem da  transferência :"+parturient.getOrigemTransferencia());
+        if(parturient.isTransfered() || parturient.isTrasferidoParaForaDoHospital()){
+            if(parturient.isTrasferidoParaForaDoHospital()){
+                motivosTrasferenciaParturiente.setText(" Motivo da  transferência  da parturiente para fora da unidade Sanitaria :" + parturient.getMotivosDestinoDaTrasferencia() + " ");
+                origemTrasferenciaParturiente.setText("Destino da  transferência :" + parturient.getDestinoTrasferencia());
+
+            }else {
+                motivosTrasferenciaParturiente.setText(" Motivo da  transferência  da parturiente :" + parturient.getMotivosDaTrasferencia() + " ");
+                origemTrasferenciaParturiente.setText("Origem da  transferência :" + parturient.getOrigemTransferencia());
+            }
             cardView.setVisibility(View.VISIBLE);
         }else {
             cardView.setVisibility(View.INVISIBLE);

@@ -76,7 +76,6 @@
                 app:boxCornerRadiusBottomStart="14dp"
                 android:layout_below="@id/id_input_nome"
                 android:id="@+id/id_input_password"
-
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -61,11 +61,26 @@
             android:layout_toLeftOf="@id/textViewOptionsNotification"
             android:layout_below="@id/txt_NomeParturienteNotification"
             android:layout_alignStart="@id/txt_NomeParturienteNotification"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/CorParturient"
             android:textSize="14sp"
             android:text="Idade e Hora de entrada"/>
+
+        <TextView
+            android:textStyle="italic"
+            android:layout_alignEnd="@id/idContactMedico"
+            android:layout_marginTop="6dp"
+            android:id="@+id/idAlertEmergence"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:layout_below="@id/txt_NomeParturienteNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/CorParturient"
+            android:textSize="14sp"
+            android:text="Parturiente trasferido"/>
+
         <TextView
             android:layout_marginEnd="16dp"
             android:singleLine="true"

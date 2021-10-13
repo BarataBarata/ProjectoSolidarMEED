@@ -184,6 +184,7 @@
                     <TextView
                         android:layout_marginStart="16sp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginEnd="16sp"
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_below="@id/relative"
                         android:id="@+id/idOrigemTrasferencia"
@@ -193,36 +194,17 @@
                     <TextView
                         android:layout_marginTop="10dp"
                         style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_marginStart="16sp"
+                        android:layout_marginStart="16sp"
                         android:layout_below="@id/idOrigemTrasferencia"
                         android:id="@+id/idMotivosTrasferencia"
                         android:text="motivos"
+                        android:layout_marginEnd="16sp"
                         android:layout_width="match_parent"
                         android:layout_marginBottom="16sp"
                         android:layout_height="wrap_content"/>
-
-
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
-
-
-
-
         </RelativeLayout>
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab3"
-            style="@style/TextAppearance.AppCompat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:backgroundTint="#08C368"
-            app:srcCompat="@drawable/edit_timer_and_dilatation"
-            tools:ignore="MissingConstraints" />
-
-
     </FrameLayout>
 
 </ScrollView>

@@ -55,45 +55,49 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Parturient parturient =  originalListParturientes.get(position);
         holder.currentPosition = position;
-        holder.txtHoraAtendido.setText("Saida : "+format(parturient.getHoraAtendimento()));
-        holder.textCircle.setText((parturient.getName().charAt(0)+"").toUpperCase());
-        holder.txtNameParturient.setText(oUpperFirstCase(parturient.getName())+ " "+oUpperFirstCase(parturient.getSurname()));
-        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        if(parturient.isTrasferirParturiente()){
+            holder.tipoAtendimento.setText("Trasferido ( "+parturient.getMotivosDaTrasferencia()+" )");
+        }else {
+            holder.tipoAtendimento.setText("Tipo de atendimento ( " + parturient.getTipoAtendimento()+" )");
+        }
 
-                //creating a popup menu
-                Context mCtx = null;
-                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.options_menu_parturiente);
-                //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.idDesativar:{
-                                Intent intent = new Intent(context,AddParturientActivity.class);
-                                intent.putExtra("idParturienteAtendidos", originalListParturientes.get(position).getId()+"");
-                                context.startActivity(intent);
-                            }
-                            return true;
-                            case R.id.transferir:
-                                Intent intent = new Intent(context,TrasferenciaActivity.class);
-                                intent.putExtra("idParturienteAtendidos", originalListParturientes.get(position).getId()+"");
-                                context.startActivity(intent);
-                                return true;
-                            case R.id.item3:
-                                //handle menu3 click
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                popup.show();
-            }
-        });
+        holder.txtHoraAtendido.setText("Saida : "+format(parturient.getHoraAtendimento()));
+        holder.textCircle.setText((parturient.getFullName().charAt(0)+""));
+        holder.txtNameParturient.setText(parturient.getFullName());
+//        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                //creating a popup menu
+//                Context mCtx = null;
+//                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
+//                //inflating menu from xml resource
+//                popup.inflate(R.menu.options_menu_parturiente_atendidos);
+//                //adding click listener
+//                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        switch (item.getItemId()) {
+//                            case R.id.idEdit:{
+//                                Intent intent = new Intent(context,AddParturientActivity.class);
+//                                intent.putExtra("idParturienteAtendidos", originalListParturientes.get(position).getId()+"");
+//                                context.startActivity(intent);
+//                            }
+//                            return true;
+////                            case R.id.transferir:
+////                                Intent intent = new Intent(context,TrasferenciaActivity.class);
+////                                intent.putExtra("idParturienteAtendidos", originalListParturientes.get(position).getId()+"");
+////                                context.startActivity(intent);
+////                                //handle menu3 click
+////                                return true;
+//                            default:
+//                                return false;
+//                        }
+//                    }
+//                });
+//                popup.show();
+//            }
+       /// });
     }
 
     @Override
@@ -116,7 +120,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
                 list.addAll(auxListParturientes);
             }else{
                 for(Parturient parturient:auxListParturientes){
-                    if(parturient.getName().toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if(parturient.getFullName().toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(parturient);
                         System.out.println(parturient.getName());
                     }
@@ -143,21 +147,23 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
         public final TextView txtNameParturient;
         public final TextView textCircle;
         public View buttonViewOption;
+        public final TextView tipoAtendimento;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            tipoAtendimento=(TextView) itemView.findViewById(R.id.idTipoAtendimento);
             textCircle=(TextView)itemView.findViewById(R.id.id_ImagemSettings);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtHoraAtendido = (TextView) itemView.findViewById(R.id.idHoraSaida);
             txtNameParturient = (TextView) itemView.findViewById(R.id.idNomeMedico);
-            buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsParturiente);
+            buttonViewOption=(TextView) itemView.findViewById(R.id.textViewOptionsParturienteAtenditos);
             //txtDetails = (TextView) itemView.findViewById(R.id.txtDetails);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, DadosPessoais.class);
+                    Intent intent = new Intent(context, ViewDadosPessoaisActivity.class);
                     intent.putExtra("idParturienteAtendidos", +originalListParturientes.get(currentPosition).getId()+"");
                     context.startActivity(intent);
                 }

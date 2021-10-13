@@ -61,22 +61,32 @@ public class Activity_RegistarUsuario extends AppCompatActivity {
         if(!isExistContacto){
             contacto.setError("Contacto não autorizado");
         }else {
+            isExistContacto=false;
             if(userView.isEmpty()){
-                String codigo="";
-                Random gerador = new Random();
 
-                for (int i = 0; i <5; i++) {
-                    codigo=codigo+gerador.nextInt(30);
+                if(verificationUser()){
+
+                }else {
+
+                    String codigo="";
+                    Random gerador = new Random();
+
+                    for (int i = 0; i <5; i++) {
+                        codigo=codigo+gerador.nextInt(30);
+                    }
+                    String message=" SISTEMA DE ALERTA. codigo de verificacao do registo: "+codigo;
+                    sendSMS(contacto.getEditText().getText().toString(),message);
+
+                    Intent intent=new Intent(Activity_RegistarUsuario.this,Activity_Confirmar_Registo.class);
+                    intent.putExtra("codigo",codigo+"");
+                    intent.putExtra("user",user.getEditText().getText().toString());
+                    intent.putExtra("senha",novaSenha.getEditText().getText().toString());
+                    intent.putExtra("contacto",contacto.getEditText().getText().toString());
+                    startActivity(intent);
+
                 }
-                String message=" SISTEMA DE ALERTA. codigo de verificacao do registo: "+codigo;
-                sendSMS(contacto.getEditText().getText().toString(),message);
 
-                Intent intent=new Intent(Activity_RegistarUsuario.this,Activity_Confirmar_Registo.class);
-                intent.putExtra("codigo",codigo+"");
-                intent.putExtra("user",user.getEditText().getText().toString());
-                intent.putExtra("senha",novaSenha.getEditText().getText().toString());
-                intent.putExtra("contacto",contacto.getEditText().getText().toString());
-                startActivity(intent);
+
 
             }else {
                 contacto.setError("existe uma conta para o contacto");
@@ -86,6 +96,23 @@ public class Activity_RegistarUsuario extends AppCompatActivity {
 
 
 
+    }
+
+    private boolean verificationUser() {
+
+              for(UserDoctor userDoctor:dbService.getListDoctor()){
+                  if(userDoctor.getUserLogin().equals(user.getEditText().getText().toString())){
+                      user.setError("Existe um usuario com este nome");
+                      return  true;
+                  }
+              }
+            for(UserNurse userNurse:dbService.getListNurse()){
+                if(userNurse.getUserNurse().equals(user.getEditText().getText().toString())){
+                    user.setError("Existe um usuario com este nome");
+                    return  true;
+                }
+            }
+          return  false;
     }
 
     public boolean verificationIsnull(TextInputLayout textInputLayout){

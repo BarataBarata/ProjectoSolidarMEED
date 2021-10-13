@@ -19,15 +19,22 @@ import mz.unilurio.solidermed.MainActivity;
 
 public class Parturient implements Parcelable {
     private Notification notifications  = new Notification();
+    public boolean isEditDilatation;
+    private boolean trasferirParturiente;
+    private boolean isTrasferidoParaForaDoHospital;
     private int id;
+    private String fullName;
+    int timerAux;
+    public boolean startCountDownTimer;
+    public boolean cancelCountDownTimer;
     private boolean inProcess;
     private DBService dbService;
-    private static int timerEmergence=30;
+    private static int timerEmergence;
     private Date horaEntrada;
     private Date horaAlerta;
     private Date horaAtendimento;
     private String name;
-    private int tempoAlerta;
+    private int initializeTimerAlert;
     private String surname;
     private int age;
     private int para;
@@ -40,7 +47,10 @@ public class Parturient implements Parcelable {
     private boolean isStartCont;
     private String origemTransferencia;
     private String motivosDaTrasferencia;
+    private String destinoTrasferencia;
+    private String motivosDestinoDaTrasferencia;
     private String viewTempo;
+    private String tipoAtendimento;
     private Notification notification= new Notification();;
 
     public Parturient() {
@@ -59,6 +69,38 @@ public class Parturient implements Parcelable {
 
     public static void setTimerEmergence(int timerEmergence) {
         Parturient.timerEmergence = timerEmergence;
+    }
+
+    public String getTipoAtendimento() {
+        return tipoAtendimento;
+    }
+
+    public void setTipoAtendimento(String tipoAtendimento) {
+        this.tipoAtendimento = tipoAtendimento;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public boolean isTrasferirParturiente() {
+        return trasferirParturiente;
+    }
+
+    public void setTrasferirParturiente(boolean trasferirParturiente) {
+        this.trasferirParturiente = trasferirParturiente;
+    }
+
+    public String getMotivosDestinoDaTrasferencia() {
+        return motivosDestinoDaTrasferencia;
+    }
+
+    public void setMotivosDestinoDaTrasferencia(String motivosDestinoDaTrasferencia) {
+        this.motivosDestinoDaTrasferencia = motivosDestinoDaTrasferencia;
     }
 
     public boolean isStartCont() {
@@ -121,8 +163,24 @@ public class Parturient implements Parcelable {
         this.numeroCama = numeroCama;
     }
 
-    public void setTempoAlerta(int tempoRestante) {
-        this.tempoAlerta = tempoRestante;
+    public boolean isTrasferidoParaForaDoHospital() {
+        return isTrasferidoParaForaDoHospital;
+    }
+
+    public void setTrasferidoParaForaDoHospital(boolean trasferidoParaForaDoHospital) {
+        isTrasferidoParaForaDoHospital = trasferidoParaForaDoHospital;
+    }
+
+    public String getDestinoTrasferencia() {
+        return destinoTrasferencia;
+    }
+
+    public void setDestinoTrasferencia(String destinoTrasferencia) {
+        this.destinoTrasferencia = destinoTrasferencia;
+    }
+
+    public void setInitializeTimerAlert(int tempoRestante) {
+        this.initializeTimerAlert = tempoRestante;
     }
 
     public Date getHoraEntrada() {
@@ -282,7 +340,7 @@ public class Parturient implements Parcelable {
     }
 
 
-    public void alertParturiente(int seconds) {
+    public void initializeCountDownTimer(int seconds) {
 
         new CountDownTimer(seconds*1000+1000, 1000) {
 
@@ -297,18 +355,37 @@ public class Parturient implements Parcelable {
                 setTempoRes("Tempo Restante : " + String.format("%02d", hours)
                         + ":" + String.format("%02d", minutes)
                         + ":" + String.format("%02d", seconds));
+                timerAux=minutes*60+hours*3600+seconds;
+                if(cancelCountDownTimer){
+                    startCountDownTimer=true;
+                    cancelCountDownTimer=false;
+                    cancel();
+                    setTempoRes("Cancelado...");
+
+                }
+                if(isEditDilatation){
+                    isEditDilatation=false;
+                    cancel();
+                    initializeCountDownTimer(initializeTimerAlert);
+                }else {
+                }
                }
 
             public void onFinish() {
                 alertaEmergence(timerEmergence);
                 setTempoRes("Alerta Disparado");
                 sendNotification();
-
             }
         }.start();
     }
 
+    public void setStartCountDownTimer(){
+        if(startCountDownTimer){
+            startCountDownTimer=false;
+            initializeCountDownTimer(timerAux);
+        }
 
+    }
     public void alertaEmergence(int seconds) {
 
         new CountDownTimer(seconds * 1000 + 1000, 1000) {
@@ -324,7 +401,7 @@ public class Parturient implements Parcelable {
 //                setTempoRes("Tempo Restante : " + String.format("%02d", hours)
 //                        + ":" + String.format("%02d", minutes)
 //                        + ":" + String.format("%02d", seconds));
-                System.out.println(seconds);
+//
             }
 
             public void onFinish() {
@@ -337,9 +414,8 @@ public class Parturient implements Parcelable {
     private void sendMensageEmergence() {
      if(!this.inProcess){
          notification.setColour(Color.rgb(248, 215,218));
-         sendSMS(name,surname);
          List<UserDoctor> list= new AddParturientActivity().getListUserDoctor();
-         String mensagem=oUpperFirstCase(name) +" "+oUpperFirstCase(surname)+" necessita  de cuidados medicos";
+         String mensagem=fullName+" necessita  de cuidados medicos";
          System.out.println(mensagem);
          for(UserDoctor userDoctor: list){
              sendSMS(userDoctor.getContacto(),mensagem);
@@ -386,7 +462,7 @@ public class Parturient implements Parcelable {
 
     void sendNotification(){
         notification.setColour(Color.YELLOW+Color.BLACK);
-        notification.setMessage(name+" "+surname);
+        notification.setMessage(fullName);
         notification.setId(id+"");
         notification.setInProcess(inProcess);
         notification.setTime( Calendar.getInstance().getTime());

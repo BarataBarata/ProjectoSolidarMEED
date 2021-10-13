@@ -9,6 +9,8 @@ import android.view.View;
 import com.google.android.material.textfield.TextInputLayout;
 
 import mz.unilurio.solidermed.model.DBService;
+import mz.unilurio.solidermed.model.UserDoctor;
+import mz.unilurio.solidermed.model.UserNurse;
 
 public class Activity_Confirmar_Registo extends AppCompatActivity {
 
@@ -50,11 +52,33 @@ public class Activity_Confirmar_Registo extends AppCompatActivity {
     }
 
     public void confirmarRegisto(View view) {
+        boolean isExist=false;
            if(!confirmarCodigo.getEditText().getText().toString().isEmpty()) {
-               if (codigo.equals(confirmarCodigo.getEditText().getText().toString())) {
-                   dbService.updadeDoctorUserAndPassword(dbService.getIdDoctor(contacto),user,password);
-                   startActivity(new Intent(Activity_Confirmar_Registo.this, Login.class));
-               } else {
+
+               if(codigo.equals(confirmarCodigo.getEditText().getText().toString())) {
+                   for(UserDoctor userDoctor: dbService.getListDoctor()){
+                       System.out.println( "doctor : "+ userDoctor.getContacto()+" =="+contacto);
+                       if(userDoctor.getContacto().equals(contacto)){
+                           isExist=true;
+                           dbService.updadeDoctorUserAndPassword(dbService.getIdDoctor(contacto),password);
+                           startActivity(new Intent(Activity_Confirmar_Registo.this, Login.class));
+                       }
+                   }
+
+                   if (!isExist) {
+                       for (UserNurse userNurse : dbService.getListNurse()) {
+                           System.out.println( "nurse : "+ userNurse.getContacto()+" =="+contacto);
+                           if (userNurse.getContacto().equals(contacto)) {
+                               dbService.updadeNurseUserAndPassword(dbService.getIdNurse(contacto),password);
+                               startActivity(new Intent(Activity_Confirmar_Registo.this, Login.class));
+
+                           }
+                       }
+                   }
+
+
+
+             } else {
                    confirmarCodigo.setError(" codigo incorrecto");
                }
            }else {

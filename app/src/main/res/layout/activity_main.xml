@@ -8,9 +8,6 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-
-
-
     <include
         android:id="@+id/app_bar_main"
         layout="@layout/app_bar_main"
@@ -19,7 +16,6 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:onClick="jfjfjjfjfjjf"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

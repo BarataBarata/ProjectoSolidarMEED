@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -23,18 +24,85 @@ import mz.unilurio.solidermed.model.Parturient;
 
 public class ViewAtendimentoActivity extends AppCompatActivity {
     private int idParturiente;
+
     private TextView textNomeParturiente;
     private Parturient newParturient=new Parturient();
     private ProgressDialog progressBar;
-    private CheckBox checkBox1;
+    private CheckBox checkBox1,checkBox2,checkBox3,checkBox4,checkBox5;
     private Switch aSwitchProcess;
+    public static String checkBoxTextOption;
     private  boolean optionSwitch=false;
+    private  boolean optionCheckBox=false;
+    private  boolean optionCheckBoxTrasfered=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_antendimento);
         textNomeParturiente= findViewById(R.id.nomeParturienteView);
+
+        checkBox1=findViewById(R.id.txt1);
+        checkBox1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                optionCheckBox=checkBox1.isChecked();
+                checkBoxTextOption=checkBox1.getText().toString();
+                checkBox2.setChecked(false);
+                checkBox4.setChecked(false);
+                checkBox5.setChecked(false);
+                checkBox3.setChecked(false);
+            }
+        });
+
+        checkBox2=findViewById(R.id.txt2);
+        checkBox2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                optionCheckBox=checkBox2.isChecked();
+                checkBoxTextOption=checkBox2.getText().toString();
+                checkBox3.setChecked(false);
+                checkBox4.setChecked(false);
+                checkBox5.setChecked(false);
+                checkBox1.setChecked(false);
+            }
+        });
+        checkBox3=findViewById(R.id.txt3);
+        checkBox3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    optionCheckBox=checkBox3.isChecked();
+                    checkBoxTextOption=checkBox3.getText().toString();
+                    checkBox2.setChecked(false);
+                    checkBox4.setChecked(false);
+                    checkBox5.setChecked(false);
+                    checkBox1.setChecked(false);
+
+            }
+        });
+        checkBox4=findViewById(R.id.txt4);
+        checkBox4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                optionCheckBox=checkBox4.isChecked();
+                checkBoxTextOption=checkBox4.getText().toString();
+                checkBox2.setChecked(false);
+                checkBox3.setChecked(false);
+                checkBox5.setChecked(false);
+                checkBox1.setChecked(false);
+            }
+        });
+        checkBox5=findViewById(R.id.txt5);
+        checkBox5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                optionCheckBoxTrasfered=checkBox5.isChecked();
+                optionCheckBox=checkBox5.isChecked();
+                checkBox2.setChecked(false);
+                checkBox4.setChecked(false);
+                checkBox3.setChecked(false);
+                checkBox1.setChecked(false);
+            }
+        });
 
         aSwitchProcess=findViewById(R.id.switchProcess);
         aSwitchProcess.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -44,22 +112,20 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
             }
         });
 
-        checkBox1=findViewById(R.id.txt1);
-
         if(getIntent().getStringExtra("idParturiente")!=null){
             idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
+
             for(Parturient parturient: DBManager.getInstance().getParturients()){
                 if(parturient.getId()==idParturiente){
                     newParturient=parturient;
                     optionSwitch=parturient.isInProcess();
                     aSwitchProcess.setChecked(optionSwitch);
-                    textNomeParturiente.setText(oUpperFirstCase(parturient.getName())+" "+oUpperFirstCase(parturient.getSurname()));
+                    textNomeParturiente.setText(parturient.getFullName());
                     break;
                 }
             }
 
         }
-
 
     }
     public  String oUpperFirstCase(String string){
@@ -94,18 +160,31 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     }
 
     public  void addNewAtendido(View view){
+        System.out.println(optionCheckBox);
         if(optionSwitch){
             parturienteInProcess();
         }else {
-            addNewParturiente();
+            if(optionCheckBox){
+                addNewParturiente();
+            }else {
+                alertAdd();
+            }
         }
     }
 
 
     public  void addNewParturiente(){
+        String mensagemTitle="SALVAR";
+        String mensagem="";
+        if(optionCheckBoxTrasfered){
+            mensagemTitle="Transferência";
+            mensagem=" Tasferir ?";
+        }else {
+            mensagemTitle="SALVAR";
+            mensagem="Atendimento ?";
+        }
 
-        String mensagem="Salvar dados ?";
-        String mensagemTitle="SALVAR";;
+
 
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setTitle(mensagemTitle);
@@ -120,19 +199,26 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
 
                 progressBar =new ProgressDialog(ViewAtendimentoActivity.this);
                 progressBar.setTitle("Aguarde");
-                progressBar.setMessage("Registando...");
+                progressBar.setMessage("Processando...");
                 progressBar.show();
 
                 new Handler().postDelayed(new Thread() {
                     @Override
                     public void run() {
                         progressBar.dismiss();
-                        setHoraAtendimento(newParturient);
-                        System.out.println("trasferencia : " +newParturient.isTransfered());
-                        DBManager.getInstance().addParturienteAtendido(newParturient);
-                        removParturiente();
-                        removNotification();
-                        newParturient.setInProcess(false);
+                        if(optionCheckBoxTrasfered){
+                            Intent intent =new Intent(ViewAtendimentoActivity.this,TrasferenciaActivity.class);
+                            intent.putExtra("idParturiente",newParturient.getId()+"");
+                            startActivity(intent);
+                        }else {
+                            setHoraAtendimento(newParturient);
+                            newParturient.setTipoAtendimento(checkBoxTextOption);
+                            System.out.println("trasferencia : " +newParturient.isTransfered());
+                            DBManager.getInstance().addParturienteAtendido(newParturient);
+                            removParturiente();
+                            removNotification();
+                            newParturient.setInProcess(false);
+                        }
                         finish();
                     }
                 },Long.parseLong("900"));
@@ -153,6 +239,36 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         dialog.create();
         dialog.show();
     }
+
+
+
+    public  void alertAdd(){
+
+        //String mensagem="";
+       String mensagemTitle="Selecione uma das Opções ";;
+
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setTitle(mensagemTitle);
+        //dialog.setMessage(mensagem);
+        dialog.setCancelable(false);
+        dialog.setIcon(getDrawable(R.drawable.error));
+
+        dialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+
+        });
+
+        dialog.create();
+        dialog.show();
+    }
+
+
+
     public  void parturienteInProcess(){
 
         String mensagemTitle="Parturiente em processo ?";;
@@ -178,13 +294,14 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                         progressBar.dismiss();
                         newParturient.setInProcess(true);
                         setProgressNotification(newParturient.getId());
-                        finish();
+
 
                     }
                 },Long.parseLong("900"));
 
                 //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
-                Toast.makeText(getApplicationContext(), " Dados adicionados com sucesso", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), " sucesso", Toast.LENGTH_LONG).show();
+                finish();
             }
 
         });

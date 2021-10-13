@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,8 +29,9 @@
                 android:src="@drawable/back_25" />
 
             <TextView
+                android:textSize="19dp"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
                 android:textStyle="bold"
-                style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
@@ -38,22 +39,13 @@
                 android:textColor="#BC343534" />
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card1"
-            android:layout_marginTop="25dp"
-            android:layout_below="@id/toolbar"
-            android:background="@color/white"
-            app:cardCornerRadius="20dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="100dp"
-            android:layout_marginEnd="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
             <RelativeLayout
+                android:layout_below="@id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
+                    style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_marginTop="25dp"
                     android:gravity="center"
                     android:id="@+id/txtTitleTempoAlerta"
@@ -70,7 +62,7 @@
 
                     <TextView
                         android:textStyle="bold"
-                        android:textSize="16sp"
+                        android:textSize="36sp"
                         android:id="@+id/idViewHorasEmergence"
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="wrap_content"
@@ -78,7 +70,7 @@
                         android:text="00:" />
                     <TextView
                         android:textStyle="bold"
-                        android:textSize="16sp"
+                        android:textSize="36sp"
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_alignTop="@id/idViewHorasEmergence"
                         android:layout_marginStart="5dp"
@@ -141,32 +133,39 @@
                     android:paddingRight="0dp"
                     android:stepSize="1"
                     android:valueFrom="0"
-                    android:layout_marginBottom="100dp"
+                    android:layout_marginBottom="50dp"
                     android:valueTo="60" />
+
+                <TextView
+                    android:layout_below="@id/sliderMinutosEmergence"
+                    android:id="@+id/entrarLogin"
+                    android:gravity="center"
+                    android:textSize="17dp"
+                    android:textColor="@color/white"
+                    android:text="Definir"
+                    android:onClick="saveTempoEmergenca"
+                    android:textStyle="bold"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_marginEnd="50dp"
+                    android:background="@drawable/blue_fill__rounded_color"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
 
 
             </RelativeLayout>
 
 
-        </androidx.cardview.widget.CardView>
+        </RelativeLayout>
 
-    </RelativeLayout>
+
 
     </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:onClick="saveTempoEmergenca"
-        style="@style/TextAppearance.AppCompat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="#08C368"
-        app:srcCompat="@drawable/registo_parturiente"
-        tools:ignore="MissingConstraints" />
 
 
 
-</FrameLayout>
+</RelativeLayout>

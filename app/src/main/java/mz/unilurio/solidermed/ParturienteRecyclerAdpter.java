@@ -1,9 +1,7 @@
 package mz.unilurio.solidermed;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -18,7 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,8 +29,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import mz.unilurio.solidermed.model.App;
-import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
 
@@ -44,10 +40,6 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     private final LayoutInflater layoutInflater;
     private TimerTask taskMinutos;
     private Handler handlerMinutos;
-    private NotificationManagerCompat notificationManagerCompat;
-    int contador=0;
-    private ParturientesFragment contexto;
-    private FragmentManager fragmentManager;
 
 
     public ParturienteRecyclerAdpter(Context context, List<Parturient> parturients) {
@@ -73,9 +65,9 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Parturient parturient =  originalListParturientes.get(position);
         holder.currentPosition = position;
-        holder.textCircle.setText((parturient.getName().charAt(0)+"").toUpperCase());
+        holder.textCircle.setText((parturient.getFullName().charAt(0)+""));
         holder.horaEntrada.setText("Entrada : "+format(parturient.getHoraEntrada())+"");
-        holder.txtNameParturient.setText(oUpperFirstCase(parturient.getName())+ " "+oUpperFirstCase(parturient.getSurname()));
+        holder.txtNameParturient.setText(parturient.getFullName());
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +82,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.idDesativar:{
+                            case R.id.idEdit:{
                                 Intent intent = new Intent(context,AddParturientActivity.class);
                                 intent.putExtra("idParturiente", originalListParturientes.get(position).getId()+"");
                                 context.startActivity(intent);
@@ -101,9 +93,12 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                                 intent.putExtra("idParturiente", originalListParturientes.get(position).getId()+"");
                                 context.startActivity(intent);
                                 return true;
-                            case R.id.item3:
-                                //handle menu3 click
+                            case R.id.idCancel:
+                               parturient.cancelCountDownTimer=true;
                               return true;
+                            case R.id.idRetornar:
+                                parturient.setStartCountDownTimer();
+                                return true;
                             default:
                                 return false;
                         }
@@ -126,14 +121,6 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         public void run() {
                           try {
-//                              contador--;
-//                              int seg  =  contador %60;
-//                              int min  =  contador /60;
-//                              int hora =  min      /60;
-//                              min %=  60;
-//                             // System.out.println(String.format("%02d:%02d:%02d",hora,min,seg));
-
-
                                  String tempoRestante=originalListParturientes.get(position).getTempoRest();
                                  if(tempoRestante.equals("Alerta Disparado")){
                                      holder.horaAlerta.setText("Alerta Disparado");
@@ -152,20 +139,6 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
 
             timerMinutos.schedule(taskMinutos, 0, 1000);  // interval of one minute
         }
-
-
-//        new CountDownTimer(30000, 1000) {
-//
-//            public void onTick(long millisUntilFinished) {
-//                System.out.println("seconds remaining: " + millisUntilFinished / 1000);
-//                //here you can have your logic to set text to edittext
-//            }
-//
-//            public void onFinish() {
-//                System.out.println("terminou");
-//            }
-//
-//        }.start();
 
     }
 
@@ -190,9 +163,8 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                 list.addAll(auxListParturientes);
             }else{
                 for(Parturient parturient:auxListParturientes){
-                    if(parturient.getName().toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if(parturient.getFullName().toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(parturient);
-                        System.out.println(parturient.getName());
                     }
                 }
             }
@@ -244,30 +216,11 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
             });
         }
 
+    }
 
-    }
-    private String formatMinuto(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("mm");
-        return dateFormat.format(date);
-    }
-    private String formatSegundos(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("ss");
-        return dateFormat.format(date);
-    }
-    private String formatHoras(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("hh");
-        return dateFormat.format(date);
-    }
     private String format(Date date){
         DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
         return dateFormat.format(date);
     }
-    private String format2(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm-yyyy-MM-dd ");
-        return dateFormat.format(date);
-    }
-
-
-
 
 }

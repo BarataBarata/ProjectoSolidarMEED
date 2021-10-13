@@ -63,7 +63,11 @@ public class Login extends AppCompatActivity {
 
 
     private void verificationUser(String email, String password) {
+        privilegios.setViewAll(true);
 
+//        Intent intent= new Intent(Login.this, MainActivity.class);
+//        intent.putExtra("nomeUserLogin",fullName);
+//        startActivity(intent);
                  if(email.isEmpty()){
                      textEmail.setError("campo vazio");
                  }else {
@@ -74,7 +78,7 @@ public class Login extends AppCompatActivity {
                              textPassword.setError("");
                              textEmail.setError("");
                              Intent intent= new Intent(Login.this, MainActivity.class);
-                             intent.putExtra("user",fullName);
+                             intent.putExtra("nomeUserLogin",fullName);
                              startActivity(intent);
                          }else{
                              textEmail.setError(" ");
@@ -97,19 +101,18 @@ public class Login extends AppCompatActivity {
     public boolean isExistUser(String user, String password){
 
         if(dbService.isDoctorLogin(user,password)){
+            fullName=dbService.getFullNameDoctorLogin(user,password);
             privilegios.setViewAll(true);
             return true;
         }else {
            if(dbService.isNurseLogin(user,password)){
+               fullName=dbService.getFullNameNurseLogin(user,password);
                privilegios.setViewAll(false);
                return true;
            }
         }
         return false;
     }
-
-
-
     @Override
     protected void onPause() {
         super.onPause();

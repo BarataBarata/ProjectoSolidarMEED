@@ -2,7 +2,6 @@ package mz.unilurio.solidermed;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +22,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Parturient;
 
 public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder> implements Filterable {
 
@@ -53,12 +54,19 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
         holder.cardView.setCardBackgroundColor(notification.getColour());
         holder.txtTime.setText(format(notification.getTime()));
-        holder.txtNameParturient.setText(oUpperFirstCase(notification.getMessage()));
+        holder.txtNameParturient.setText(notification.getMessage());
         if(notification.isInProcess()){
-            holder.txtDetails.setText("Parturiente em Processo...");
+            holder.txtDetails.setText("Em Processo de parto...");
         }else {
-            holder.txtDetails.setText("Idade : 10| diltatacao");
+            holder.txtDetails.setText("Idade :"+getIdade(Integer.parseInt(notification.getId())) );
         }
+
+        if(isTrasferido(Integer.parseInt(notification.getId()))){
+            holder.idAlerteEmergence.setText("Trasferida");
+        }else {
+            holder.idAlerteEmergence.setText("Não trasferida");
+        }
+
 
 
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +91,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                                 context.startActivity(intent);
                             }
                                 return true;
-                            case R.id.item3:
+                            case R.id.idCancel:
                                 //handle menu3 click
                                 return true;
                             default:
@@ -96,6 +104,15 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
             }
         });
+    }
+
+    private boolean isTrasferido(int parseInt) {
+        for(Parturient parturient: DBManager.getInstance().getParturients()){
+            if(parturient.getId()==parseInt){
+                return parturient.isTransfered();
+            }
+        }
+        return false;
     }
 
     @Override
@@ -118,7 +135,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                 list.addAll(auxListNotificacao);
             }else{
                 for(Notification notification:auxListNotificacao){
-                    if(notification.getDeliveryService().getParturient().getName().toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if(notification.getMessage().toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(notification);
                     }
                 }
@@ -144,12 +161,13 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         public final TextView txtTime;
         public final TextView txtNameParturient;
         public final TextView txtDetails;
+        public final TextView idAlerteEmergence;
         public View buttonViewOption;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+          idAlerteEmergence=(TextView)itemView.findViewById(R.id.idAlertEmergence);
             txtDetails=(TextView)itemView.findViewById(R.id.idContactMedico);
             cardView = (CardView) itemView.findViewById(R.id.card_viewNotification);
             txtTime = (TextView) itemView.findViewById(R.id.idHoraAlertaNotification);
@@ -200,4 +218,13 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
     }
 
 
+    public String getIdade(int id){
+
+        for(Parturient parturient: DBManager.getInstance().getParturients()){
+            if(parturient.getId()==id){
+                return parturient.getAge()+"";
+            }
+        }
+        return "10";
+    }
 }

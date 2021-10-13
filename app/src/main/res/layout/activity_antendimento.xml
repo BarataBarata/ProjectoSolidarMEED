@@ -9,7 +9,6 @@
     android:layout_height="match_parent">
 
 
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -44,13 +43,30 @@
                     android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
 
+         <RelativeLayout
+             android:gravity="center"
+             android:id="@+id/relativeImage"
+             android:layout_below="@id/toolbarDadosPessoais"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+             <ImageView
+                 android:textStyle="bold"
+                 style="@style/TextAppearance.AppCompat.Medium"
+                 android:id="@+id/imagemParturienteView"
+                 android:layout_marginTop="15dp"
+                 android:src="@drawable/mulhergravidabom2"
+                 android:gravity="center"
+                 android:layout_width="48dp"
+                 android:layout_height="45dp"/>
+         </RelativeLayout>
 
             <TextView
+
                 android:textStyle="bold"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:id="@+id/nomeParturienteView"
                 android:layout_marginTop="15dp"
-                android:layout_below="@id/toolbarDadosPessoais"
+                android:layout_below="@id/relativeImage"
                 android:text=" Sara Mario"
                 android:gravity="center"
                 android:layout_width="match_parent"
@@ -97,7 +113,7 @@
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/card2"
+               android:id="@+id/card2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card1"
@@ -106,7 +122,7 @@
                 app:cardCornerRadius="20dp">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                   android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp">
@@ -138,11 +154,12 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/title2"
                         android:layout_alignLeft="@id/title2"
-                        android:layout_marginTop="18dp"
+                        android:layout_marginTop="22dp"
                         android:layout_marginEnd="16dp"
                         android:text="Parto normal" />
 
                     <CheckBox
+                        android:layout_marginTop="15dp"
                         android:textSize="15dp"
                         android:id="@+id/txt2"
                         style="@style/TextAppearance.AppCompat.Medium"
@@ -154,6 +171,7 @@
                         android:text="Falso parto" />
 
                     <CheckBox
+                        android:layout_marginTop="15dp"
                         android:textSize="15dp"
                         android:id="@+id/txt3"
                         style="@style/TextAppearance.AppCompat.Medium"
@@ -165,6 +183,7 @@
                         android:text="Cesariana" />
 
                     <CheckBox
+                        android:layout_marginTop="15dp"
                         android:textSize="15dp"
                         android:id="@+id/txt4"
                         style="@style/TextAppearance.AppCompat.Medium"
@@ -176,6 +195,7 @@
                         android:text="Nado-Morto" />
 
                     <CheckBox
+                        android:layout_marginTop="15dp"
                         android:textSize="15dp"
                         android:id="@+id/txt5"
                         style="@style/TextAppearance.AppCompat.Medium"
@@ -187,16 +207,17 @@
                         android:text="Transferência fora do destino " />
 
                     <ImageView
+
                         android:id="@+id/image3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/txt5"
                         android:layout_alignLeft="@id/image2"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="35dp"
                         android:src="@drawable/assigner" />
 
                     <TextView
-                        android:textSize="16sp"
+                       android:textSize="16sp"
                         android:id="@+id/txt6"
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="match_parent"
@@ -209,6 +230,7 @@
                         android:textStyle="bold" />
 
                     <EditText
+
                         android:textSize="15dp"
                         android:id="@+id/txt7"
                         style="@style/TextAppearance.AppCompat.Medium"
@@ -217,7 +239,7 @@
                         android:layout_below="@id/txt6"
                         android:layout_alignLeft="@id/title2"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16sp"
+                        android:layout_marginBottom="50sp"
                         android:hint="Outros fins" />
 
 

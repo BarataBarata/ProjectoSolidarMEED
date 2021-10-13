@@ -23,8 +23,6 @@ public class AddDoctorClass extends AppCompatDialogFragment {
     private EditText editContact;
     public static boolean isAdd=false;
     public static boolean isRemove=false;
-    private  EditText editApelido;
-    private UserDoctor userDoctor;
     DBService dbService;
 
     @NonNull

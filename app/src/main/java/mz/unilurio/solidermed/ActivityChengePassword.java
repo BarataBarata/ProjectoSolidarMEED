@@ -127,7 +127,7 @@ public class ActivityChengePassword extends AppCompatActivity {
             @Override
             public void run() {
                 progressBar.dismiss();
-                trocar(numberSeacher,newPassword,chengeuser);
+                trocar(numberSeacher,newPassword);
                 startActivity(new Intent(ActivityChengePassword.this,Login.class));
 
             }
@@ -135,13 +135,13 @@ public class ActivityChengePassword extends AppCompatActivity {
     }
 
 
-    public void trocar(String numberSeacher, String newPassword,String chengeuser){
+    public void trocar(String numberSeacher, String newPassword){
 
         if(dbService.isTellDoctor(numberSeacher)){
-            dbService.updadeDoctorUserAndPassword(dbService.getIdDoctor(numberSeacher),chengeuser,newPassword);
+            dbService.updadeDoctorUserAndPassword(dbService.getIdDoctor(numberSeacher),newPassword);
         }else {
             if(dbService.isTellNurse(numberSeacher)){
-                dbService.updadeNurseUserAndPassword(dbService.getIdNurse(numberSeacher),chengeuser,newPassword);
+                dbService.updadeNurseUserAndPassword(dbService.getIdNurse(numberSeacher),newPassword);
             }
         }
     }

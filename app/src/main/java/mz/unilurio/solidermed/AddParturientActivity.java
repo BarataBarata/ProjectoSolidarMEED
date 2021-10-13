@@ -55,19 +55,18 @@ import mz.unilurio.solidermed.model.AlertParutient;
 import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
-import mz.unilurio.solidermed.model.DilatationAndTimer;
 import mz.unilurio.solidermed.model.EditDoctorClass;
-import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.model.UserDoctor;
 
-public class AddParturientActivity extends AppCompatActivity implements Validator.ValidationListener {
+public class AddParturientActivity extends AppCompatActivity{
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private DBService dbService;
     private Handler handler;
     private TimerTask task;
     private Timer timer;
+
 
     public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
 
@@ -114,8 +113,9 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
         firebaseDatabase=FirebaseDatabase.getInstance();
-
         dbService=new DBService(this);
+
+
         notificationManagerCompat= NotificationManagerCompat.from(this);
         textSanitario = (TextView)findViewById(R.id.textSanitario);
         textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
@@ -123,8 +123,6 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         initView();
         invisible();
         // inicializa o numero de dilatacao inicial e final
-        validator = new Validator(this);
-        validator.setValidationListener(this);
         viewNumber();
         viewnumber2();
 
@@ -178,8 +176,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         String idade="";
 
         // ENVIANDO 0S DADOS PARA OS CAMPOS//
-        txtNameParturient.setText(ediParturient.getName());
-        textApelido.setText(ediParturient.getSurname());
+        txtNameParturient.setText(ediParturient.getFullName());
         idade=String.valueOf(ediParturient.getAge());
         numberPick1=Integer.parseInt(idade.charAt(0)+"");
         numberPick2=Integer.parseInt(idade.charAt(1)+"");
@@ -241,7 +238,6 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     private void initView() {
 //        numberPicker1 = findViewById(R.id.numberPickerTwo);
 //        numberPicker2 = findViewById(R.id.numberPickerOne);
-        textApelido = findViewById(R.id.txtSurname);
         txtNameParturient = findViewById(R.id.txtName);
         numberPicker1 = findViewById(R.id.numberPickerOne);
         numberPicker2 = findViewById(R.id.numberPickerTwo);
@@ -354,7 +350,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         if(isEdit){
             editParturiente();
         }else{
-            validator.validate(); // novo registo
+            addNewParturient();// novo registo
         }
     }
 
@@ -374,33 +370,32 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                validationError();
-                progressBar();
-                parturient.setName(txtNameParturient.getText().toString());
-                parturient.setSurname(textApelido.getText().toString());
+                if (verificatioNull(txtNameParturient)) {
+                    progressBar();
+                    parturient.setName(txtNameParturient.getText().toString());
 
-                String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
-                parturient.setAge(Integer.parseInt(age));
-                parturient.setTime(new Date());
-                parturient.setGestatinalRange(spinner.getSelectedItem()+"");
-                parturient.setPara((int) para.getValue());
-                parturient.setReason(mSliderDilatation.getValue()+"");
+                    String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
+                    parturient.setAge(Integer.parseInt(age));
+                    parturient.setTime(new Date());
+                    parturient.setGestatinalRange(spinner.getSelectedItem() + "");
+                    parturient.setPara((int) para.getValue());
+                    if (isTrasferencia) {
+                        parturient.setTransfered(true);
+                        parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
+                        parturient.setOrigemTransferencia(spinnerSanitaria.getSelectedItem().toString());
+                    } else {
+                        parturient.setTransfered(false);
+                        parturient.setMotivosDaTrasferencia(null);
+                        parturient.setOrigemTransferencia(null);
+                    }
+                    verificationDilatation(parturient, (int) mSliderDilatation.getValue());
+                    //parturient.setReason((int)mSliderDilatation.getValue()+"");
+                    databaseReference = firebaseDatabase.getReference("Parturiente");
+                    databaseReference.child(parturient.getId() + "").setValue(parturient);
 
-
-                if(isTrasferencia){
-                    parturient.setTransfered(true);
-                    parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
-                    parturient.setOrigemTransferencia(spinnerSanitaria.getSelectedItem().toString());
-                }else {
-                    parturient.setTransfered(false);
-                    parturient.setMotivosDaTrasferencia(null);
-                    parturient.setOrigemTransferencia(null);
+                    //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
+                    Toast.makeText(getApplicationContext(), " Parturiente Editado com sucesso", Toast.LENGTH_LONG).show();
                 }
-                    databaseReference=firebaseDatabase.getReference("Parturiente");
-                    databaseReference.child(parturient.getId()+"").setValue(parturient);
-
-                //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
-                Toast.makeText(getApplicationContext(), " Parturiente Editado com sucesso", Toast.LENGTH_LONG).show();
             }
 
 
@@ -434,18 +429,8 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     }
 
 
-    public void validationError() {
-        optionRegist = true;
-        optionRegist = verificatioNull(optionRegist, txtNameParturient);
-        optionRegist = verificatioNull(optionRegist, textApelido);
-    }
+    public boolean  verificatioNull(TextView textOption){
 
-
-    public boolean  verificatioNull(boolean option, TextView textOption){
-
-        if(!option){
-            return false;
-        }
         if(textOption.getText().toString().equals("")){
             textOption.setError("Preenche o campo");
             return  false;
@@ -474,8 +459,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         });
     }
 
-    @Override
-    public void onValidationSucceeded() {
+    public void addNewParturient() {
 
         String mensagem="Deseja registar um Parturiente ?";
         String mensagemTitle="REGISTAR";
@@ -491,25 +475,21 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                upadeListDoctor();
-                if(verificationNumberName(txtNameParturient) && verificationNumberName(textApelido)) {
+                updadeListDoctor();
 
-                    validationError();
-
+                if(verificationNumberName(txtNameParturient) && verificatioNull(txtNameParturient)) {
                     parturient = new Parturient();
+                    parturient.setTimerEmergence(dbService.getHourasAlert()*3600+dbService.getMinutesAlert()*60);
                     parturient.setId(++newidParturiente);
                     AlertParutient alertParutient=new AlertParutient(60,newidParturiente);
                     DBManager.getInstance().addListAlertParturiente(alertParutient);
-
-                    parturient.setName(txtNameParturient.getText().toString());
-                    parturient.setSurname(textApelido.getText().toString());
-
+                    parturient.setFullName( upCaseName(txtNameParturient.getText().toString()));
                     String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
                     parturient.setAge(Integer.parseInt(age));
                     parturient.setTime(new Date());
                     parturient.setGestatinalRange(spinner.getSelectedItem() + "");
                     parturient.setPara((int) para.getValue());
-                    parturient.setReason(mSliderDilatation.getValue() + "");
+                    parturient.setReason((int)mSliderDilatation.getValue() + "");
 
 
                     if (isTrasferencia) {
@@ -524,11 +504,12 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
 
                     if (!isExistParturiente(parturient)) {
                         alertaNotification(parturient);
-                        parturient.alertParturiente(dbService.getTimerDilatation((int)mSliderDilatation.getValue()+""));
+                        parturient.initializeCountDownTimer(dbService.getTimerDilatation((int)mSliderDilatation.getValue()+""));
                         DBManager.getInstance().addQueueAndDeliveryService(parturient);
                         databaseReference = firebaseDatabase.getReference("Parturiente");
                         databaseReference.child(parturient.getId()+"-"+format(new Date())).setValue(parturient);
                         progressBar();
+                        ordeList();
                         Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
 
                     } else {
@@ -650,30 +631,11 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         dialog.show();
     }
 
-
-
-
-        @Override
-    public void onValidationFailed(List<ValidationError> errors) {
-        for (ValidationError error : errors) {
-            View view = error.getView();
-            String message = error.getCollatedErrorMessage(this);
-
-            // Display error messages
-            if (view instanceof EditText) {
-                ((EditText) view).setError("Preenche o Campo");
-            } else {
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
     public boolean isExistParturiente(Parturient newParturient){
            List<Parturient> list=DBManager.getInstance().getParturients();
            for(Parturient parturientSeacher:list){
-               if(parturientSeacher.getName().equalsIgnoreCase(newParturient.getName())&&
-                    parturientSeacher.getSurname().equalsIgnoreCase(newParturient.getSurname())){
-                    return true;
+               if(parturientSeacher.getFullName().equalsIgnoreCase(newParturient.getFullName())){
+                  return true;
                }
            }
         return false;
@@ -687,13 +649,15 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     public boolean verificationNumberName(TextView txtnome){
 
        String nome=txtnome.getText().toString();
-        for (int i = 0; i < nome.length(); i++) {
-            char i1 = nome.charAt(i);
-            if(i1 <='9' && i1 >='0'){
-                txtnome.setError("Não pode conter números");
-                return false;
-            }
-        }
+
+           for (int i = 0; i < nome.length(); i++) {
+               char i1 = nome.charAt(i);
+               if (i1 <= '9' && i1 >= '0') {
+                   txtnome.setError("Não pode conter números");
+                   return false;
+               }
+           }
+
     return true;
     }
 
@@ -707,7 +671,7 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
     }
 
 
-    private void upadeListDoctor() {
+    private void updadeListDoctor() {
 
         handler = new Handler();
         timer = new Timer();
@@ -731,5 +695,50 @@ public class AddParturientActivity extends AppCompatActivity implements Validato
         };
         timer.schedule(task, 0, 500);  // interval of one minute
 
+    }
+
+    public void verificationDilatation(Parturient parturient,int dilatacao){
+
+      if (Integer.parseInt(parturient.getReason())!=dilatacao){
+          for(Parturient parturient1:DBManager.getInstance().getParturients()){
+              if(parturient1.getId()==parturient.getId()){
+                   parturient.setReason(dilatacao+"");
+                   parturient.setInitializeTimerAlert(dbService.getTimerDilatation(dilatacao+""));
+                   parturient.isEditDilatation=true;
+              }
+          }
+
+     }
+
+    }
+
+    public String upCaseName(String name){
+
+       name=oUpperFirstCase(name);
+        String auxStr="";
+
+        for(int i=0;i<name.length();i++){
+          if(i+1<=name.length()){
+              if(name.charAt(i)==' ' && name.charAt(i+1)!=' '){
+                  auxStr=auxStr+(" ");
+                  auxStr=auxStr+(name.charAt(i+1)+"").toUpperCase();
+                  i++;
+              }else {
+                  auxStr=auxStr+(name.charAt(i)+"");
+              }
+          }
+        }
+        return auxStr;
+
+
+    }
+
+    public void ordeList(){ // o primeiro a entrar fica no topo
+           ArrayList<Parturient> list = new ArrayList<>();
+           for(int i=(DBManager.getInstance().getParturients().size()-1);i>=0;i--){
+               list.add(DBManager.getInstance().getParturients().get(i));
+           }
+            DBManager.getInstance().getParturients().removeAll(DBManager.getInstance().getParturients());
+            DBManager.getInstance().getParturients().addAll(list);
     }
 }

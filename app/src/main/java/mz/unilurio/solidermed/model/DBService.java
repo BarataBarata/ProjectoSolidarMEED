@@ -22,16 +22,20 @@ public class DBService  extends SQLiteOpenHelper {
             "CREATE TABLE HospitalSelect(id INTEGER NOT NULL UNIQUE, hospital TEXT NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE Hospitais(id INTEGER NOT NULL UNIQUE, hospital TEXT NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE Dilatacao(id INTEGER NOT NULL UNIQUE, dilatation TEXT NOT NULL, horas TEXT NOT NULL , minutes TEXT NOT NULL  , PRIMARY KEY(id AUTOINCREMENT ));",
-
+            "CREATE TABLE Alert(id INTEGER NOT NULL UNIQUE, horas TEXT NOT NULL , minutes TEXT NOT NULL  , PRIMARY KEY(id AUTOINCREMENT ));",
     };
 
     public DBService(@Nullable Context context) {
         super(context, nomeDB, null, versao);
 
+
         if (!isDoctorLogin("barata", "123")) {
             addDoctor("barata", "123", "845740722", "Barata Estevao Mario Barata");
         }
 
+        if(!isExistTimer("1")){
+            addAlertDilatation(0,1);
+        }
         if (!isHospital("Hospital Distrital de Chiúre")) {
             addHospital("Hospital Distrital de Chiúre");
             addHospital("Centro de saúde de Catapua");
@@ -100,10 +104,10 @@ public class DBService  extends SQLiteOpenHelper {
         return db.update("UserDoctor", cv, "id=?", new String[]{String.valueOf(id)});
     }
 
-    public long updadeDoctorUserAndPassword(int id, String username, String pass) {
+    public long updadeDoctorUserAndPassword(int id, String pass) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("username", username);
+        //cv.put("username", username);
         cv.put("pass", pass);
         return db.update("UserDoctor", cv, "id=?", new String[]{String.valueOf(id)});
     }
@@ -136,6 +140,16 @@ public class DBService  extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+    public String getFullNameDoctorLogin(String username, String pass) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM UserDoctor WHERE username = ? AND pass = ?",
+                new String[]{username, pass});
+        c.moveToFirst();
+        if (c.getCount() == 1) {
+            return c.getString(c.getColumnIndex("fullname"));
+        }
+        return "";
     }
 
     public int getIdDoctor(String tellDoctor) {
@@ -210,10 +224,10 @@ public class DBService  extends SQLiteOpenHelper {
         return db.update("UserNurse", cv, "id=?", new String[]{String.valueOf(id)});
     }
 
-    public long updadeNurseUserAndPassword(int id, String username, String pass) {
+    public long updadeNurseUserAndPassword(int id, String pass) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("username", username);
+       // cv.put("username", username);
         cv.put("pass", pass);
         return db.update("UserNurse", cv, "id=?", new String[]{String.valueOf(id)});
     }
@@ -246,6 +260,17 @@ public class DBService  extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+
+    public String getFullNameNurseLogin(String username, String pass) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM UserNurse WHERE username = ? AND pass = ?",
+                new String[]{username, pass});
+        c.moveToFirst();
+        if (c.getCount() == 1) {
+            return c.getString(c.getColumnIndex("fullname"));
+        }
+        return "";
     }
 
     public int getIdNurse(String tellNurse) {
@@ -445,4 +470,72 @@ public class DBService  extends SQLiteOpenHelper {
         return c.getString(c.getColumnIndex("hospital"));
     }
 
+    /// ......................Alert......................................
+
+    public long addAlertDilatation(int timerDilatationHours, int timerDilatationMinutes) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("horas", timerDilatationHours);
+        cv.put("minutes", timerDilatationMinutes);
+        return db.insert("Alert", null, cv);
+    }
+    public boolean isExistTimer(String minutes) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Alert WHERE minutes = ?",
+                new String[]{minutes});
+        c.moveToFirst();
+        if (c.getCount() == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public int getHourasAlert() {
+        int timerDilatationHours=0;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Alert", null);
+        c.moveToFirst();
+        if (c.getCount() > 0) {
+            do {
+                timerDilatationHours = c.getInt(c.getColumnIndex("horas"));
+            } while (c.moveToNext());
+        }
+        return timerDilatationHours;
+    }
+
+    public int getMinutesAlert() {
+        int timerDilatationMinutes=0;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Alert", null);
+        c.moveToFirst();
+        if (c.getCount() > 0) {
+            do {
+                timerDilatationMinutes = c.getInt(c.getColumnIndex("minutes"));
+            } while (c.moveToNext());
+        }
+        return timerDilatationMinutes;
+    }
+
+    public long updadeAlertDilatation(int id,int timerDilatationHours, int timerDilatationMinutes) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("horas", timerDilatationHours);
+        cv.put("minutes", timerDilatationMinutes);
+        return db.update("Alert", cv, "id=?", new String[]{String.valueOf(id)});
+    }
+
+    public int getIdAlertDilatation() {
+        String dilatation ="1";
+        int id = 0;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Alert WHERE id = ?",
+                new String[]{dilatation});
+        c.moveToFirst();
+        if (c.getCount() > 0) {
+            do {
+                id = c.getInt(c.getColumnIndex("id"));
+            } while (c.moveToNext());
+        }
+        return id;
+    }
 }

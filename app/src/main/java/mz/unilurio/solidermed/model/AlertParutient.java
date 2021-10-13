@@ -11,9 +11,6 @@ public class AlertParutient {
         this.idParturiente = idParturiente;
     }
 
-    public AlertParutient() {
-    }
-
     public int getSegundos() {
         this.segundos=--segundos;
         return segundos;

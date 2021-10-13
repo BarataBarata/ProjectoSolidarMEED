@@ -24,11 +24,6 @@ import mz.unilurio.solidermed.R;
 
 public class AddDilatation extends AppCompatDialogFragment {
 
-    private static String dilatation;
-    private static String timerDilatation;
-    private EditText editDilatation;
-    private EditText editEditTimer;
-    private DilatationAndTimer dilatationAndTimer;
     TextView textViewDilatation;
     private DBService dbService;
 

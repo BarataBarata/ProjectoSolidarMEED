@@ -14,9 +14,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.view.WindowInsets;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,9 +53,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mz.unilurio.solidermed.model.AddDoctorClass;
 import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
+import mz.unilurio.solidermed.model.EditDoctorClass;
 import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.PageAdapder;
@@ -63,6 +68,7 @@ import mz.unilurio.solidermed.model.Queue;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private String fullNameUserLogin;
     private TabLayout tabLayout;
     private AppBarConfiguration mAppBarConfiguration;
     private RecyclerView recyclerItems;
@@ -78,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView textNotificacao;
     private TextView textUserLogin;
     private TextView textVerificationNull;
-    private Timer timer;
     private static int id;
     private TextView textSeacher;
     private boolean visible;
@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NotificationManagerCompat notificationManagerCompat;
     private FloatingActionButton fab;
     private DBService dbService;
+    private DrawerLayout drawer;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -104,18 +110,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         notificationManagerCompat=NotificationManagerCompat.from(this);
         textNomeHospital = findViewById(R.id.idCentroSaudeTitle);
 
+        if(getIntent().getStringExtra("nomeUserLogin")!=null) {
+            fullNameUserLogin=getIntent().getStringExtra("nomeUserLogin");
+        }
 
         if(getIntent().getStringExtra("nomeHospital")!=null) {
             textNomeHospital.setText(getIntent().getStringExtra("nomeHospital"));
         }else{
             textNomeHospital.setText(dbService.getHospitalSelect());
         }
-
-//        if(getIntent().getStringExtra("user")!=null){
-//            System.out.println("gggggggg=================="+getIntent().getStringExtra("user"));
-//            textUserLogin.findViewById(R.id.idNameUserLogin);
-//            textUserLogin.setText(getIntent().getStringExtra(getIntent().getStringExtra("user")));
-//        }
 
         tabLayout=(TabLayout)findViewById(R.id.tabLayout);
         pager=findViewById(R.id.viewpager);
@@ -145,7 +148,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
 
+
+
         });
+
+
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         notificationManager=NotificationManagerCompat.from(this);
@@ -162,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -170,6 +177,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        drawer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                TextView textView=v.findViewById(R.id.idNameUserLogin);
+                textView.setText(fullNameUserLogin);
+
+            }
+        });
         initializeDisplayContent();
     }
 
@@ -266,25 +283,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
-//        MenuItem menuItem=menu.findItem(R.id.app_bar_search);
-//        SearchView searchView=(SearchView)menuItem.getActionView();
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                switch (opcoesSeacher){
-//                    case 0: notificationRecyclerAdapter.getFilter().filter(newText);break;
-//                    case 1: atendidosRecyclerAdpter.getFilter().filter(newText);break;
-//                    case 2: parturienteRecyclerAdpter.getFilter().filter(newText);break;
-//                }
-//                return false;
-//            }
-//        });
-//
   return true;
     }
 
@@ -293,8 +291,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NotNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-
 
 
             if (id == R.id.id_out){
@@ -348,6 +344,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onResume() {
         super.onResume();
         verificationNull();
+        //startUpdate();
         //setRepeatingAsyncTask(this);
     }
 
@@ -401,72 +398,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(MainActivity.this,SettingActivity.class));
     }
 
-//    public void updadeAndSeacherNotifications(){
-//        Queue queue = DBManager.getInstance().getQueue();
-//        queue.nofify();
-//        notifications = queue.getNotifications();
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
-//                List<EmergencyMedicalPersonnel> eP = DBManager.getInstance().getEmergencyMedicalPersonnels();
-//
-//                    for (Notification n : notifications) {
-//                        // concatena as menssagens
-//                        n.setMessage(n.getMessage()+ " "+sharedPreferences.getString("mensagen","")+"");
-//                        System.out.println(" -------------------------------------------- size hash: " + notificationTriggered.size());
-//                        if (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())) {
-//                            popNotification(n);
-//                            //popNotification(n);
-//                            for (EmergencyMedicalPersonnel e : eP) {
-//                                System.out.println("sending SMS to " + e.getContact() + " Message: " + n.getMessage());
-//                                sendSMS(e.getContact(), n.getMessage());
-//                            }
-//                            DBManager.getInstance().addNewNotification(notifications);
-//                            notificationTriggered.put(n.getId(), n);
-//                        } else {
-//                            System.out.println(" ------------------------------------------------- notification " + n.getId() + " not trrigeer " + (!notificationTriggered.containsKey(n.getId()) || Calendar.getInstance().getTime().after(n.getNextNotifier())));
-//                        }
-//
-//                }
-//            } else {
-//                requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
-//            }
-//         }
-//
-//        }
-//
-//    private void sendSMS(String phoneNumber, String message) {
-//        phoneNumber = phoneNumber.trim();
-//        message = message.trim();
-//
-//        try {
-//            SmsManager smsManager = SmsManager.getDefault();
-//            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-//            Toast.makeText(this, "Message is sent", Toast.LENGTH_SHORT);
-//
-//        } catch (Exception e) {
-//            Log.i("EXPECTION SMS", e.getMessage());
-//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT);
-//        }
-//    }
 
-    private void popNotification(Notification notification) {
-
-        Intent activitIntent=new Intent(this,MainActivity.class);
-        PendingIntent contxtIntent=PendingIntent.getActivity(this,0,activitIntent,0);
-        android.app.Notification notification1=new NotificationCompat.Builder(this, App.CHANNEL_1_ID)
-                         .setSmallIcon(R.drawable.mulhergravidabom2)
-                         .setContentTitle("Alerta")
-                         .setColor(Color.GREEN)
-                         .setAutoCancel(true)
-                         .setContentText(notification.getMessage())
-                         .setPriority(NotificationCompat.PRIORITY_HIGH)
-                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setContentIntent(contxtIntent)
-                  .build();
-          notificationManagerCompat.notify(Integer.parseInt(notification.getId()),notification1);
-
-    }
      public void centroSaude(View view) {
          if(new Privilegios().isViewAll()) {
              ProgressDialog progressBar;
@@ -485,6 +417,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
              }, Long.parseLong("400"));
          }
     }
-
 
 }

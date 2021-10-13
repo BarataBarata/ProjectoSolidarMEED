@@ -16,26 +16,33 @@ import com.google.android.material.slider.Slider;
 
 import org.jetbrains.annotations.NotNull;
 
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class ActivityDefinitionEmergencTimer extends AppCompatActivity {
     private static int numberHours;
     private static int numberMinutes;
-    TextView textHoras;
-    TextView textMinutos;
-    Slider sliderMinutos;
-    Slider sliderHora;
+    private TextView textHoras;
+    private TextView textMinutos;
+    private Slider sliderMinutos;
+    private Slider sliderHora;
+    private DBService dbService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_definition_emergenc_timer);
 
+        dbService=new DBService(this);
         textHoras = findViewById(R.id.idViewHorasEmergence);
         textMinutos =findViewById(R.id.idViewMinutosEmergence);
         sliderHora =findViewById(R.id.sliderHorasEmergence);
         sliderMinutos = findViewById(R.id.sliderMinutosEmergence);
 
+        sliderHora.setValue(dbService.getHourasAlert());
+        sliderMinutos.setValue(dbService.getMinutesAlert());
+        textHoras.setText(dbService.getHourasAlert()+" : ");
+        textMinutos.setText(dbService.getMinutesAlert()+"");
 
         sliderHora.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
@@ -86,6 +93,7 @@ public class ActivityDefinitionEmergencTimer extends AppCompatActivity {
                         progressBar.dismiss();
                         Parturient parturient=new Parturient();
                         parturient.setTimerEmergence(numberHours*3600+numberMinutes*60);
+                        dbService.updadeAlertDilatation(dbService.getIdAlertDilatation(),numberHours,numberMinutes);
                         finish();
                     }
                 },Long.parseLong("400"));

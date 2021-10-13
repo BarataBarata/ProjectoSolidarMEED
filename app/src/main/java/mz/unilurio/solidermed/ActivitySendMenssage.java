@@ -90,12 +90,14 @@ public class ActivitySendMenssage extends AppCompatActivity {
                 }
 
                 String message=" Condigo de confirmacao da Senha da aplicacao MAMA "+"- Codigo : "+codigo;
+                System.out.println(message);
                 sendSMS(numberSeacher,message);
                 Intent intent=new Intent(ActivitySendMenssage.this, ActivityValitationCode.class);
                 intent.putExtra("codigo",codigo);
                 intent.putExtra("numberSeacherUser",numberSeacher);
+
                 startActivity(intent);
-                System.out.println(message);
+
             }
         },Long.parseLong("900"));
     }

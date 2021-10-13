@@ -66,7 +66,7 @@
                         android:layout_alignEnd="@id/idImputConfirmation"
                         android:id="@+id/txtConfirmacarRegisto"
                         android:textStyle="bold"
-                        android:layout_marginTop="75dp"
+                        android:layout_marginTop="89dp"
                         android:layout_marginEnd="16sp"
                         android:text="Foi enviado um codigo de confirmacao para o numero:"
                         android:layout_width="wrap_content"

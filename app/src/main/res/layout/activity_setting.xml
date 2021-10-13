@@ -33,6 +33,7 @@
     </androidx.appcompat.widget.Toolbar>
 
      <androidx.cardview.widget.CardView
+
          android:onClick="viewList"
          android:id="@+id/card1"
          android:layout_marginTop="25dp"
