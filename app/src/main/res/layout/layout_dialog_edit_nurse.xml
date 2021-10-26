@@ -9,6 +9,7 @@
         android:layout_height="match_parent">
 
         <EditText
+
             android:id="@+id/idNomeEditNurse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -16,7 +17,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="28dp"
             android:layout_marginEnd="8dp"
-            android:hint="Nome" />
+            android:hint="Nome : " />
 
         <EditText
             android:id="@+id/idNurseEditContact"
@@ -25,10 +26,31 @@
             android:layout_below="@+id/idNomeEditNurse"
             android:layout_alignStart="@+id/idNomeEditNurse"
             android:layout_alignEnd="@+id/idNomeEditNurse"
-            android:layout_marginStart="4dp"
             android:layout_marginTop="39dp"
             android:layout_marginEnd="0dp"
-            android:hint="Contact" />
+            android:hint="Contact : " />
+
+        <EditText
+            android:id="@+id/idNurseUser"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/idNurseEditContact"
+            android:layout_alignStart="@+id/idNomeEditNurse"
+            android:layout_alignEnd="@+id/idNomeEditNurse"
+            android:layout_marginTop="39dp"
+            android:layout_marginEnd="0dp"
+            android:hint="User :" />
+
+        <EditText
+            android:id="@+id/idNursePassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/idNurseUser"
+            android:layout_alignStart="@+id/idNomeEditNurse"
+            android:layout_alignEnd="@+id/idNomeEditNurse"
+            android:layout_marginTop="39dp"
+            android:layout_marginEnd="0dp"
+            android:hint="Senha : " />
 
     </RelativeLayout>
 </ScrollView>

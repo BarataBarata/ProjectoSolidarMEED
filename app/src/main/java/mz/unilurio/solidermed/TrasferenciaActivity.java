@@ -12,7 +12,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.DBManager;
@@ -38,22 +41,10 @@ public class TrasferenciaActivity extends AppCompatActivity {
 
         if(getIntent().getStringExtra("idParturiente")!=null){
             idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
-           for(Parturient parturient: DBManager.getInstance().getParturients()){
+           for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
                 if(parturient.getId()==idParturiente){
                     auxParturiente=parturient;
-                    fullNameParturiente=parturient.getFullName();
-                    textFullName.setText(fullNameParturiente);
-                    break;
-                }
-            }
-        }
-        if(getIntent().getStringExtra("idParturienteAtendidos")!=null){
-            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturienteAtendidos"));
-
-            for(Parturient parturient: DBManager.getInstance().getListParturientesAtendidos()){
-                if(parturient.getId()==idParturiente){
-                    auxParturiente=parturient;
-                    fullNameParturiente=parturient.getFullName();
+                    fullNameParturiente=parturient.getFullName()+ " "+parturient.getSurname();
                     textFullName.setText(fullNameParturiente);
                     break;
                 }
@@ -103,20 +94,22 @@ public class TrasferenciaActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             progressBar.dismiss();
-                            auxParturiente.setHoraAtendimento(Calendar.getInstance().getTime());
+                            auxParturiente.setHoraAtendimento(format(new Date())+"");
                             auxParturiente.cancelCountDownTimer=true;
                             auxParturiente.setTrasferirParturiente(true);
                             auxParturiente.setTrasferidoParaForaDoHospital(true);
                             auxParturiente.setDestinoTrasferencia(spinnerDestino.getSelectedItem().toString());
                             auxParturiente.setMotivosDestinoDaTrasferencia(spinnerMotivoDestino.getSelectedItem().toString());
                             DBManager.getInstance().getListParturientesAtendidos().add(auxParturiente);
-                           for(Notification notification: DBManager.getInstance().getNotifications()){
-                                if(Integer.parseInt(notification.getId())==auxParturiente.getId()){
+                            DBManager.getInstance().getParturients().remove(auxParturiente);
+
+                            for(Notification notification: DBManager.getInstance().getNotifications()){
+                                if(Integer.parseInt(notification.getId())==idParturiente){
                                     DBManager.getInstance().getNotifications().remove(notification);
+
                                 }
                             }
-                            DBManager.getInstance().getParturients().remove(auxParturiente);
-                            finish();
+                           finish();
                         }
                     },Long.parseLong("900"));
                     Toast.makeText(getApplicationContext(), "Trasferido com sucesso", Toast.LENGTH_LONG).show();
@@ -134,5 +127,8 @@ public class TrasferenciaActivity extends AppCompatActivity {
             dialog.create();
             dialog.show();
         }
-
+    private String format(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+        return dateFormat.format(date);
+    }
 }

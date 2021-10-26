@@ -16,6 +16,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import mz.unilurio.solidermed.model.DBManager;
@@ -23,17 +25,20 @@ import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class ViewAtendimentoActivity extends AppCompatActivity {
-    private int idParturiente;
+    private static int idParturiente;
+
 
     private TextView textNomeParturiente;
     private Parturient newParturient=new Parturient();
     private ProgressDialog progressBar;
-    private CheckBox checkBox1,checkBox2,checkBox3,checkBox4,checkBox5;
+    private CheckBox checkBox1,checkBox2,checkBox5;
     private Switch aSwitchProcess;
     public static String checkBoxTextOption;
     private  boolean optionSwitch=false;
     private  boolean optionCheckBox=false;
     private  boolean optionCheckBoxTrasfered=false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +53,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                 optionCheckBox=checkBox1.isChecked();
                 checkBoxTextOption=checkBox1.getText().toString();
                 checkBox2.setChecked(false);
-                checkBox4.setChecked(false);
                 checkBox5.setChecked(false);
-                checkBox3.setChecked(false);
             }
         });
 
@@ -60,37 +63,11 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 optionCheckBox=checkBox2.isChecked();
                 checkBoxTextOption=checkBox2.getText().toString();
-                checkBox3.setChecked(false);
-                checkBox4.setChecked(false);
                 checkBox5.setChecked(false);
                 checkBox1.setChecked(false);
             }
         });
-        checkBox3=findViewById(R.id.txt3);
-        checkBox3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    optionCheckBox=checkBox3.isChecked();
-                    checkBoxTextOption=checkBox3.getText().toString();
-                    checkBox2.setChecked(false);
-                    checkBox4.setChecked(false);
-                    checkBox5.setChecked(false);
-                    checkBox1.setChecked(false);
 
-            }
-        });
-        checkBox4=findViewById(R.id.txt4);
-        checkBox4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                optionCheckBox=checkBox4.isChecked();
-                checkBoxTextOption=checkBox4.getText().toString();
-                checkBox2.setChecked(false);
-                checkBox3.setChecked(false);
-                checkBox5.setChecked(false);
-                checkBox1.setChecked(false);
-            }
-        });
         checkBox5=findViewById(R.id.txt5);
         checkBox5.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,8 +75,6 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                 optionCheckBoxTrasfered=checkBox5.isChecked();
                 optionCheckBox=checkBox5.isChecked();
                 checkBox2.setChecked(false);
-                checkBox4.setChecked(false);
-                checkBox3.setChecked(false);
                 checkBox1.setChecked(false);
             }
         });
@@ -113,19 +88,22 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         });
 
         if(getIntent().getStringExtra("idParturiente")!=null){
-            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
-
-            for(Parturient parturient: DBManager.getInstance().getParturients()){
+           idParturiente=Integer.parseInt(getIntent().getStringExtra("idParturiente"));
+           for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
                 if(parturient.getId()==idParturiente){
+                    textNomeParturiente.setText(parturient.getName()+ " "+parturient.getSurname());
                     newParturient=parturient;
-                    optionSwitch=parturient.isInProcess();
-                    aSwitchProcess.setChecked(optionSwitch);
-                    textNomeParturiente.setText(parturient.getFullName());
                     break;
                 }
             }
 
         }
+
+//        if(getIntent().getStringExtra("idParturienteNotification")!=null){
+//            System.out.println(" ======================== vem do notificacao");
+//            optionSelectParturienteNotification=true;
+//            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturienteNotification"));
+//        }
 
     }
     public  String oUpperFirstCase(String string){
@@ -133,7 +111,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         return  auxString;
     }
     public void setHoraAtendimento(Parturient parturient){
-        parturient.setHoraAtendimento(new Date());
+        parturient.setHoraAtendimento(new Date()+"");
     }
     public void removParturiente(){
         for(Parturient parturient: DBManager.getInstance().getParturients()){
@@ -174,7 +152,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
 
 
     public  void addNewParturiente(){
-        String mensagemTitle="SALVAR";
+        String mensagemTitle="";
         String mensagem="";
         if(optionCheckBoxTrasfered){
             mensagemTitle="Transferência";
@@ -183,8 +161,6 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
             mensagemTitle="SALVAR";
             mensagem="Atendimento ?";
         }
-
-
 
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setTitle(mensagemTitle);
@@ -207,19 +183,48 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                     public void run() {
                         progressBar.dismiss();
                         if(optionCheckBoxTrasfered){
-                            Intent intent =new Intent(ViewAtendimentoActivity.this,TrasferenciaActivity.class);
-                            intent.putExtra("idParturiente",newParturient.getId()+"");
-                            startActivity(intent);
+
+                            for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
+                                if(parturient.getId()==idParturiente){
+                                    setHoraAtendimento(newParturient);
+                                    parturient.setHoraAtendimento(format(new Date()));
+                                    parturient.setTipoAtendimento(checkBoxTextOption);
+                                    parturient.setInProcess(false);
+                                    Intent intent =new Intent(ViewAtendimentoActivity.this,TrasferenciaActivity.class);
+                                    intent.putExtra("idParturiente",parturient.getId()+"");
+                                    startActivity(intent);
+                                    break;
+                                }
+                            }
                         }else {
                             setHoraAtendimento(newParturient);
+                            newParturient.setHoraAtendimento(format(new Date()));
                             newParturient.setTipoAtendimento(checkBoxTextOption);
-                            System.out.println("trasferencia : " +newParturient.isTransfered());
-                            DBManager.getInstance().addParturienteAtendido(newParturient);
-                            removParturiente();
-                            removNotification();
                             newParturient.setInProcess(false);
+                            DBManager.getInstance().addParturienteAtendido(newParturient);
+                            removNotification();
+                            removParturiente();
+
+//
+//                              if(!optionSelectParturienteNotification){
+//                                  for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
+//                                      if(parturient.getId()==idParturiente){
+//                                          setHoraAtendimento(newParturient);
+//                                          parturient.setHoraAtendimento(format(new Date()));
+//                                          parturient.setTipoAtendimento(checkBoxTextOption);
+//                                          parturient.setInProcess(false);
+//                                          DBManager.getInstance().addParturienteAtendido(parturient);
+//                                          removNotification();
+//                                          break;
+//                                      }
+//                                  }
+//                              }else {
+//
+//
+//                              }
+
                         }
-                        finish();
+                            finish();
                     }
                 },Long.parseLong("900"));
 
@@ -245,8 +250,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     public  void alertAdd(){
 
         //String mensagem="";
-       String mensagemTitle="Selecione uma das Opções ";;
-
+        String mensagemTitle="Selecione uma das Opções ";;
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setTitle(mensagemTitle);
         //dialog.setMessage(mensagem);
@@ -257,7 +261,6 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
 
             }
 
@@ -282,26 +285,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                progressBar =new ProgressDialog(ViewAtendimentoActivity.this);
-                progressBar.setTitle("Aguarde");
-                progressBar.setMessage("Inserindo...");
-                progressBar.show();
-
-                new Handler().postDelayed(new Thread() {
-                    @Override
-                    public void run() {
-                        progressBar.dismiss();
-                        newParturient.setInProcess(true);
-                        setProgressNotification(newParturient.getId());
-
-
-                    }
-                },Long.parseLong("900"));
-
-                //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
-                Toast.makeText(getApplicationContext(), " sucesso", Toast.LENGTH_LONG).show();
-                finish();
+                progressBar();
             }
 
         });
@@ -318,7 +302,6 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     }
 
     public void setProgressNotification(int id){
-
         for (Notification notification:DBManager.getInstance().getNotifications()){
             if(Integer.parseInt(notification.getId())==id){
                 notification.setInProcess(true);
@@ -326,5 +309,35 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
             }
         }
 
+    }
+    private void progressBar() {
+        ProgressDialog progressBar;
+        progressBar=new ProgressDialog(ViewAtendimentoActivity.this);
+        progressBar.setTitle("Aguarde");
+        progressBar.setMessage("Pesquisando...");
+        progressBar.show();
+
+        new Handler().postDelayed(new Thread() {
+            @Override
+            public void run() {
+                progressBar.dismiss();
+                for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()) {
+                    if (parturient.getId() == idParturiente) {
+                        parturient.setInProcess(true);
+                        setProgressNotification(parturient.getId());
+                        finish();
+                        break;
+                    }
+                }
+
+
+            }
+        },Long.parseLong("900"));
+    }
+
+
+    private String format(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+        return dateFormat.format(date);
     }
 }

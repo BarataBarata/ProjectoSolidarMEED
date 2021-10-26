@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import mz.unilurio.solidermed.model.DBManager;
@@ -43,9 +45,12 @@ public class Atendimento extends AppCompatActivity {
 
 
     }
-
+    private String format(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+        return dateFormat.format(date);
+    }
     public void setHoraAtendimento(Parturient parturient){
-           parturient.setHoraAtendimento(new Date());
+           parturient.setHoraAtendimento(format(new Date())+"");
     }
     public void removParturiente(){
         for(Parturient parturient: DBManager.getInstance().getParturients()){

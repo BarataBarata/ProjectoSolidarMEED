@@ -65,9 +65,9 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Parturient parturient =  originalListParturientes.get(position);
         holder.currentPosition = position;
-        holder.textCircle.setText((parturient.getFullName().charAt(0)+""));
-        holder.horaEntrada.setText("Entrada : "+format(parturient.getHoraEntrada())+"");
-        holder.txtNameParturient.setText(parturient.getFullName());
+        holder.textCircle.setText((parturient.getName().charAt(0)+""));
+        holder.horaEntrada.setText("Entrada : "+parturient.getHoraEntrada()+"");
+        holder.txtNameParturient.setText(parturient.getName()+" "+parturient.getSurname());
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,8 +89,8 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                             }
                             return true;
                             case R.id.transferir:
-                                Intent intent = new Intent(context,TrasferenciaActivity.class);
-                                intent.putExtra("idParturiente", originalListParturientes.get(position).getId()+"");
+                                Intent intent = new Intent(context,ViewAtendimentoActivity.class);
+                                intent.putExtra("idParturiente", originalListParturientes.get(holder.currentPosition).getId()+"");
                                 context.startActivity(intent);
                                 return true;
                             case R.id.idCancel:
@@ -126,6 +126,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                                      holder.horaAlerta.setText("Alerta Disparado");
                                      timerMinutos.cancel();
                                  }else {
+                                    // System.out.println("========= : " +tempoRestante);
                                      holder.horaAlerta.setText(tempoRestante);
                                  }
 
@@ -199,7 +200,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             horaEntrada=(TextView)itemView.findViewById(R.id.idHoraEntrada);
-            horaAlerta=(TextView) itemView.findViewById(R.id.idContactMedico);
+            horaAlerta=(TextView) itemView.findViewById(R.id.idTxtAlert);
             textCircle=(TextView)itemView.findViewById(R.id.id_ImagemSettings);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             txtNameParturient = (TextView) itemView.findViewById(R.id.idNomeMedico);

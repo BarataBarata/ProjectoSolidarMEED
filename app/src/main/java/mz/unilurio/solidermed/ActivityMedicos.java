@@ -21,7 +21,7 @@ import mz.unilurio.solidermed.model.EditDoctorClass;
 import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 import mz.unilurio.solidermed.model.UserDoctor;
 
-public class ContactActivity extends AppCompatActivity {
+public class ActivityMedicos extends AppCompatActivity {
 
     private DoctorRecyclerAdpter doctorRecyclerAdpter;
     private Handler handler;

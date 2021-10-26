@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:text="Definicoes"
+            android:text="Definições"
             android:textColor="#BC343534" />
     </androidx.appcompat.widget.Toolbar>
 
@@ -124,6 +124,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card3"
+        android:onClick="selectOpcoesParidade"
         android:layout_marginTop="10dp"
         android:layout_below="@id/card2"
         android:background="@color/white"
@@ -160,40 +161,78 @@
     </androidx.cardview.widget.CardView>
 
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card4"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/card3"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/white"
+            android:onClick="definirTempoEmergencia"
+            app:cardCornerRadius="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp">
+
+                <ImageView
+                    android:id="@+id/image5"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/tempo_acabado" />
+
+                <TextView
+                    android:id="@+id/title4"
+                    style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/image5"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@id/image5"
+                    android:text="Alerta de emergencia"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:onClick="definirTempoEmergencia"
-        android:id="@+id/card4"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/card3"
-        android:background="@color/white"
-        app:cardCornerRadius="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:id="@+id/card5"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
-
+        android:layout_height="60dp"
+        android:layout_below="@id/card4"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/white"
+        android:onClick="definirIdadeGestacional"
+        app:cardCornerRadius="20dp">
         <RelativeLayout
+
             android:layout_marginStart="10dp"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:id="@+id/image5"
+                android:id="@+id/image7"
                 android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/tempo_acabado"
+                android:src="@drawable/common_google_signin_btn_text_dark_normal_background"
                 android:layout_width="25dp"
                 android:layout_height="25dp"/>
 
             <TextView
                 style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
                 android:textSize="16sp"
-                android:id="@+id/title4"
+                android:id="@+id/title7"
                 android:layout_marginStart="10dp"
-                android:layout_alignTop="@id/image5"
-                android:layout_toRightOf="@id/image5"
-                android:text="Alerta de Emergencia"
+                android:layout_alignTop="@id/image7"
+                android:layout_toRightOf="@id/image7"
+                android:text="Definir idade gestacional"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>

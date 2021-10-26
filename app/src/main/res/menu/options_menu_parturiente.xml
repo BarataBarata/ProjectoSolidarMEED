@@ -7,11 +7,13 @@
         android:title="Editar" />
     <item
         android:id="@+id/transferir"
-        android:title="Trasferir" />
+        android:title="Atendimento" />
     <item
         android:id="@+id/idCancel"
+        android:visible="false"
         android:title="Cancelar" />
     <item
         android:id="@+id/idRetornar"
+        android:visible="false"
         android:title="Retornar" />
 </menu>

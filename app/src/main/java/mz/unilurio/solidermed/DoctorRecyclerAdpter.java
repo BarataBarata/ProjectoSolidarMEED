@@ -1,6 +1,7 @@
 package mz.unilurio.solidermed;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,14 +30,15 @@ import mz.unilurio.solidermed.model.EditDoctorClass;
 import mz.unilurio.solidermed.model.UserDoctor;
 
 public class DoctorRecyclerAdpter extends RecyclerView.Adapter<DoctorRecyclerAdpter.ViewHolder> implements Filterable {
-    ContactActivity  context;
+    ActivityMedicos context;
     private List<UserDoctor> auxListContact;
     private List<UserDoctor> originalListContact;
     private final LayoutInflater layoutInflater;
+    private int idDoctor;
     private DBService dbService;
 
 
-    public DoctorRecyclerAdpter(ContactActivity context, List<UserDoctor> originalListContact) {
+    public DoctorRecyclerAdpter(ActivityMedicos context, List<UserDoctor> originalListContact) {
         this.context = context;
         this.auxListContact =new ArrayList<>(originalListContact);
         layoutInflater = LayoutInflater.from(context);
@@ -88,6 +90,7 @@ public class DoctorRecyclerAdpter extends RecyclerView.Adapter<DoctorRecyclerAdp
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UserDoctor userDoctor =  originalListContact.get(position);
+        idDoctor=userDoctor.getIdUser();
         holder.currentPosition = position;
         holder.textContact.setText(userDoctor.getContacto());
         holder.txtNameMedico.setText(userDoctor.getFullName());
@@ -171,7 +174,9 @@ public class DoctorRecyclerAdpter extends RecyclerView.Adapter<DoctorRecyclerAdp
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+//                    Intent intent = new Intent(context, ActivitViewPasswordUser.class);
+//                    intent.putExtra("userDoctor",idDoctor+"");
+//                    context.startActivity(intent);
                 }
 
             });

@@ -27,9 +27,7 @@ public class NurseActivity extends AppCompatActivity {
     private NurseRecyclerAdpter nurseRecyclerAdpter1;
     private Handler handler;
     private TimerTask task;
-    private List<UserNurse> auxList;
     private List<UserNurse> list;
-    private int tamanhoList;
     private static String seacher="";
     private Timer timer;
     private DBService dbService;

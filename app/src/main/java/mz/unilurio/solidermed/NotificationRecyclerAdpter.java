@@ -53,18 +53,18 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         holder.currentPosition = position;
 
         holder.cardView.setCardBackgroundColor(notification.getColour());
-        holder.txtTime.setText(format(notification.getTime()));
+        holder.txtTime.setText(notification.getTime());
         holder.txtNameParturient.setText(notification.getMessage());
         if(notification.isInProcess()){
             holder.txtDetails.setText("Em Processo de parto...");
         }else {
-            holder.txtDetails.setText("Idade :"+getIdade(Integer.parseInt(notification.getId())) );
+            holder.txtDetails.setText("Idade :"+getIdade(Integer.parseInt(notification.getId())));
         }
 
         if(isTrasferido(Integer.parseInt(notification.getId()))){
-            holder.idAlerteEmergence.setText("Trasferida");
+            holder.idAlerteEmergence.setText("");
         }else {
-            holder.idAlerteEmergence.setText("Não trasferida");
+            holder.idAlerteEmergence.setText("");
         }
 
 
@@ -91,8 +91,10 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                                 context.startActivity(intent);
                             }
                                 return true;
-                            case R.id.idCancel:
-                                //handle menu3 click
+                            case R.id.edit:
+                                Intent intent = new Intent(context, AddParturientActivity.class);
+                                intent.putExtra("idParturiente",notifications.get(position).getId());
+                                context.startActivity(intent);
                                 return true;
                             default:
                                 return false;

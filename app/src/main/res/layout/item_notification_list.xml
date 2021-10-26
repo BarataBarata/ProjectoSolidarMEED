@@ -29,10 +29,11 @@
 
         <TextView
             android:id="@+id/textViewOptionsNotification"
-            android:layout_width="30dp"
-            android:layout_height="40dp"
+            android:layout_width="31dp"
+            android:layout_height="50dp"
             android:layout_alignTop="@id/id_ImagemSettings"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="0dp"
             android:gravity="center"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:text="&#8942;"
@@ -79,7 +80,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/CorParturient"
             android:textSize="14sp"
-            android:text="Parturiente trasferido"/>
+            android:text=" "/>
 
         <TextView
             android:layout_marginEnd="16dp"

@@ -1,8 +1,11 @@
 package mz.unilurio.solidermed.model;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,11 +22,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
+import mz.unilurio.solidermed.ActivityViewUserSeacher;
+import mz.unilurio.solidermed.Activity_VerificarPassword;
 import mz.unilurio.solidermed.R;
 
 public class AddNursesClass extends AppCompatDialogFragment {
     private EditText editNome;
     private EditText editContact;
+    private EditText user;
+    private EditText password;
     public static boolean isAdd=false;
     public static boolean isRemove=false;
     private  DBService dbService;
@@ -48,7 +55,7 @@ public class AddNursesClass extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         if(validation(editNome)){
                             if(validation(editContact)){
-                                dbService.addNurse(removeFiristSpece(editNome.getText().toString()),"","",editContact.getText().toString());
+                                dbService.addNurse(removeFiristSpece(upCaseName(editNome.getText().toString())),user.getText().toString(),password.getText().toString(),editContact.getText().toString());
                                 isAdd=true;
                             }
                         }
@@ -56,6 +63,8 @@ public class AddNursesClass extends AppCompatDialogFragment {
                 });
         editContact=view.findViewById(R.id.idNurseEditContact);
         editNome=view.findViewById(R.id.idNomeEditNurse);
+        user=view.findViewById(R.id.idNurseUser);
+        password=view.findViewById(R.id.idNursePassword);
         dbService=new DBService(this.getContext());
         return builder.create();
 
@@ -91,4 +100,32 @@ public class AddNursesClass extends AppCompatDialogFragment {
         }
         return true;
     }
+
+    public String upCaseName(String name){
+
+        name=oUpperFirstCase(name);
+        String auxStr="";
+        int i=0;
+
+        for( i=0;i<name.length();i++){
+            if(i<name.length()){
+                if(!(name.charAt(i)==' ' && i+1==name.length()))
+                    if(name.charAt(i)==' ' && name.charAt(i+1)!=' '){
+                        auxStr=auxStr+(" ");
+                        auxStr=auxStr+(name.charAt(i+1)+"").toUpperCase();
+                        i++;
+                    }else {
+                        auxStr=auxStr+(name.charAt(i)+"");
+                    }
+            }
+        }
+        /// auxStr=auxStr+(name.charAt(i)+"");
+        return auxStr;
+    }
+
+    public  String oUpperFirstCase(String string){
+        String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
+        return  auxString;
+    }
+
 }

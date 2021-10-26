@@ -16,52 +16,36 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.AddDilatation;
-import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.AddIdadeGestacional;
 import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.DilatationAndTimer;
 import mz.unilurio.solidermed.model.EditClassDilatation;
+import mz.unilurio.solidermed.model.EditIadeGestacional;
+import mz.unilurio.solidermed.model.IdadeGestacional;
 
-public class ActivityDilatetionAndHours extends AppCompatActivity {
-    private DilatationAndTimerRecyclerAdpter dilatationAndTimerRecyclerAdpter;
+public class ActivityDefinitionIdadeGestacional extends AppCompatActivity {
+    private DBService dbService;
+    private FloatingActionButton fab;
     private Handler handler;
     private TimerTask task;
     private Timer timer;
-    private List<DilatationAndTimer> auxList;
-    private List<DilatationAndTimer> list;
-    private int tamanhoList;
-    private  String seacher="";
-    RecyclerView view;
-    private FloatingActionButton fab;
-    private DBService dbService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dilatetion_and_hours);
+        setContentView(R.layout.activity_definition_idade_gestacional);
 
         dbService=new DBService(this);
         initializeteDisplayContextDilatation();
-        fab = findViewById(R.id.fabAddDilatation);
+
+        fab = findViewById(R.id.fabAddIdadeGestacional);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddDilatation editContctClass=new AddDilatation();
+                AddIdadeGestacional editContctClass=new AddIdadeGestacional();
                 editContctClass.show(getSupportFragmentManager(),"Adicionar");
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        update();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        task.cancel();
-        timer.cancel();
     }
 
     private void update() {
@@ -75,23 +59,25 @@ public class ActivityDilatetionAndHours extends AppCompatActivity {
                 handler.post(new Runnable() {
                     public void run() {
                         EditClassDilatation e =new EditClassDilatation();
-                        AddDilatation add=new AddDilatation();
+                        AddIdadeGestacional add=new AddIdadeGestacional();
+                        EditIadeGestacional edit=new EditIadeGestacional();
 
                         handler.post(new Runnable() {
                             public void run() {
                                 try {
-                                    if(e.isEdit){
-                                        initializeteDisplayContextDilatation();
-                                        dilatationAndTimerRecyclerAdpter.getFilter().filter(seacher);
-                                        e.isEdit=false;
-                                    }
-                                    if(add.isAdd){
+//                                    if(e.isEdit){
+//                                        initializeteDisplayContextDilatation();
+//                                        dilatationAndTimerRecyclerAdpter.getFilter().filter(seacher);
+//                                        e.isEdit=false;
+//                                    }
+                                    if(add.isAdd || edit.isAdd){
                                         initializeteDisplayContextDilatation();
                                         add.isAdd=false;
+                                        edit.isAdd=false;
                                     }
-                                    if(add.isRemove){
-                                        initializeteDisplayContextDilatation();
-                                   }
+//                                    if(add.isRemove){
+//                                        initializeteDisplayContextDilatation();
+//                                    }
                                 } catch (Exception e) {
                                     // error, do something
                                 }
@@ -105,16 +91,28 @@ public class ActivityDilatetionAndHours extends AppCompatActivity {
 
     }
 
-
-    public void initializeteDisplayContextDilatation() {
-        list=dbService.getListDilatation();
+    private void initializeteDisplayContextDilatation() {
+        List<IdadeGestacional> list = dbService.getListIdadeGestacional();
         //seacherView(seacher);
-        view = (RecyclerView) findViewById(R.id.recycler_Dilatation);
+        RecyclerView view = (RecyclerView) findViewById(R.id.recycler_IdadeGestacional);
         LinearLayoutManager dilatationLayoutManager;
         dilatationLayoutManager = new LinearLayoutManager(this);
-        dilatationAndTimerRecyclerAdpter = new DilatationAndTimerRecyclerAdpter(this, list);
+        IdadeGestacionalRecyclerAdpter idadeGestacionalRecyclerAdpter= new IdadeGestacionalRecyclerAdpter(this, list);
         view.setLayoutManager(dilatationLayoutManager);
-        view.setAdapter(dilatationAndTimerRecyclerAdpter);
+        view.setAdapter(idadeGestacionalRecyclerAdpter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        task.cancel();
+        timer.cancel();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        update();
     }
 
     public void finish(View view) {

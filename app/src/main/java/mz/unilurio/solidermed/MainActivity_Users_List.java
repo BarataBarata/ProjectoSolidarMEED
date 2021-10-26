@@ -15,7 +15,7 @@ public class MainActivity_Users_List extends AppCompatActivity {
     }
 
     public void viewContact(View view) {
-        startActivity(new Intent(MainActivity_Users_List.this,ContactActivity.class));
+        startActivity(new Intent(MainActivity_Users_List.this, ActivityMedicos.class));
 
     }
 

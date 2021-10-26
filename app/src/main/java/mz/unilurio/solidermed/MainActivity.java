@@ -104,7 +104,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        
+        Privilegios privilegios= new Privilegios();
+        privilegios.setViewAll(true);
+
+
         dbService=new DBService(this);
+        dbService.updadeListParturiente();
+        dbService.updadeListNotification();
         fab = findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         notificationManagerCompat=NotificationManagerCompat.from(this);
@@ -188,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         initializeDisplayContent();
+        //displayParturiente();
     }
 
    public void verificationIsNull(){
@@ -202,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void viewNullListAtendidos(TextView textView){
 
         if(DBManager.getInstance().getListParturientesAtendidos().size()==0) {
+            displayAtendidos();
             textView.setVisibility(View.VISIBLE);
         }else {
             textView.setVisibility(View.INVISIBLE);
@@ -249,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView = findViewById(R.id.recyclerVieParturiente);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Parturient> parturients= DBManager.getInstance().getParturients();
+        dbService.close();
         parturienteRecyclerAdpter=new ParturienteRecyclerAdpter( this,parturients);
         recyclerView.setAdapter(parturienteRecyclerAdpter);
     }
@@ -344,8 +355,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onResume() {
         super.onResume();
         verificationNull();
-        //startUpdate();
-        //setRepeatingAsyncTask(this);
     }
 
     private void setRepeatingAsyncTask(MainActivity activity) {
@@ -359,10 +368,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            //updadeAndSeacherNotifications();
                             displayNotification();
+                            displayAtendidos();
                         } catch (Exception e) {
-                            // error, do something
                         }
                     }
                 });
@@ -373,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void verificationNull(){
-
+        Parturient parturient=new Parturient();
         final Handler handler = new Handler();
         Timer timer = new Timer();
 
@@ -383,6 +391,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 handler.post(new Runnable() {
                     public void run() {
                         try {
+                          if(parturient.isAlertaTwo()){
+                              displayParturiente();
+                              parturient.setAlertaTwo(false);
+                              dbService.updadeCorNotification(parturient.getIdPassAll(),Color.rgb(248, 215,218));
+                              dbService.updadeListNotification();
+                          }
+
+                          // verifica segunda alerta
+
+
+
+
+                            // verifica se ouve uma notificacao nos parturientes
+                            if(!DBManager.getInstance().getAuxListNotifications().isEmpty()){
+                                for(Notification  notification: DBManager.getInstance().getAuxListNotifications()){
+                                    dbService.addNotificacao(notification);
+                                }
+                                DBManager.getInstance().getAuxListNotifications().removeAll(DBManager.getInstance().getAuxListNotifications());
+                                dbService.updadeListNotification();
+                            }
+
                             verificationIsNull();
                         } catch (Exception e) {
                             // error, do something

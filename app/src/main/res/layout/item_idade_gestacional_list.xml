@@ -2,10 +2,10 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:backgroundTint="#EDEFEC"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/activity_contact">
+    tools:showIn="@layout/activity_definition_idade_gestacional">
 
 
     <androidx.cardview.widget.CardView
@@ -28,35 +28,24 @@
                 android:id="@+id/image1"
                 android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_edit_contact"
+                android:src="@drawable/common_google_signin_btn_text_dark"
                 android:layout_width="25dp"
                 android:layout_height="25dp"/>
-
             <TextView
-                android:layout_marginStart="16dp"
-                android:id="@+id/idNomeMedico"
-                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/image1"
-                android:layout_marginEnd="95dp"
-                android:layout_toRightOf="@id/image1"
-                android:ellipsize="marquee"
                 android:singleLine="true"
-                android:text="Nome"
-                android:textSize="16sp" />
-            <TextView
-                android:id="@+id/idContactMedico"
-                android:textSize="13dp"
-                android:layout_marginTop="1dp"
-                android:layout_alignStart="@id/idNomeMedico"
-                android:layout_below="@id/idNomeMedico"
-                android:text="Contacto"
+                android:ellipsize="marquee"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                android:textSize="16sp"
+                android:id="@+id/idIdadeGestacional"
+                android:layout_marginStart="10dp"
+                android:layout_alignTop="@id/image1"
+                android:layout_toRightOf="@id/image1"
+                android:text=" IdadeGestacional "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <ImageView
-                android:id="@+id/idDelete"
+                android:id="@+id/idDeleteInIdadeGestacionalnList"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
                 android:layout_alignParentEnd="true"
@@ -65,12 +54,12 @@
                 android:layout_height="wrap_content"/>
 
             <ImageView
-                android:id="@+id/idEditContacto"
+                android:id="@+id/idEditIdadeGestacional"
                 android:layout_marginEnd="14dp"
                 android:layout_centerVertical="true"
-                android:layout_alignTop="@id/idDelete"
-                android:src="@drawable/edit_contact"
-                android:layout_toLeftOf="@id/idDelete"
+                android:layout_alignTop="@id/idDeleteInIdadeGestacionalnList"
+                android:src="@drawable/edit_timer_and_dilatation"
+                android:layout_toLeftOf="@id/idDeleteInIdadeGestacionalnList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

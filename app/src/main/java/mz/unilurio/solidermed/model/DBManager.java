@@ -10,9 +10,10 @@ import java.util.List;
 import mz.unilurio.solidermed.R;
 
 public class DBManager {
-    private DBService dbService;
+
     private  static  int idDilatation=6;
     private static DBManager ourInstance = null;
+    private List<Parturient> auxlistNotificationParturients=new ArrayList<>();
     private List<DilatationAndTimer> dilatationAndTimerList=new ArrayList<>();
     private List<Integer> integerListLimitDilatation=new ArrayList<>();
     private List<Integer>integerListInitDilatation=new ArrayList<>();
@@ -28,6 +29,7 @@ public class DBManager {
     private List<String> listIdadeGestacional=new ArrayList<>();
     private List<Hospitais> hospitais= new ArrayList<>();
     private List<Notification> notifications = new ArrayList<>();
+    private List<Notification> auxListNotifications = new ArrayList<>();
     private List<Parturient> parturients = new ArrayList<>();
     private List<String> listMotivosTrasferencia = new ArrayList<>();
     private List<String> listOpcoesUnidadeSanitaria = new ArrayList<>();
@@ -107,6 +109,13 @@ public class DBManager {
         return integerListDilatationCervical;
     }
 
+    public List<Parturient> getAuxlistNotificationParturients() {
+        return auxlistNotificationParturients;
+    }
+    public void addAuxListNotificationParturient(Parturient parturient){
+                this.auxlistNotificationParturients.add(parturient);
+    }
+
     private void initializeOpcoesParidade() {
         this.integerListOpcoesParidade.add(4);
         this.integerListOpcoesParidade.add(5);
@@ -167,6 +176,9 @@ public class DBManager {
 
 
     private void initializeIdadeGestacional() {
+
+            this.listIdadeGestacional.removeAll(listIdadeGestacional);
+
              this.listIdadeGestacional.add("28 Semanas");
              this.listIdadeGestacional.add("entre 28 a 31 Semanas");
              this.listIdadeGestacional.add("entre 32 a 36 Semanas");
@@ -179,7 +191,13 @@ public class DBManager {
 
     private void initializeInfermeira() {
     }
+    public void addAuxListNotification(Notification notification){
+           this.auxListNotifications.add(notification);
+    }
 
+    public List<Notification> getAuxListNotifications() {
+        return auxListNotifications;
+    }
 
     public List<UserNurse> getUserNurseList() {
         return userNurseList;
@@ -325,8 +343,8 @@ public class DBManager {
     private DeliveryService InitializeDeliveryService(Parturient p, int dilatation) {
         Date current = Calendar.getInstance().getTime();
         Measure measure = new Measure(current, dilatation);
-        p.setHoraEntrada(current);
-        p.setHoraAlerta(measure.getPredictedExpulsionHour());
+        //p.setHoraEntrada(current);
+        //p.setHoraAlerta(measure.getPredictedExpulsionHour());
         return new DeliveryService(p, measure);
     }
 //
@@ -379,7 +397,7 @@ public class DBManager {
         Measure measure = new Measure(current, 4);
         DeliveryService ds = new DeliveryService(bibo,measure);
 
-        Notification notification = new Notification(Color.rgb(248, 215,218), "Message ...", Calendar.getInstance().getTime(), true, ds);
+        Notification notification = new Notification(Color.rgb(248, 215,218), "Message ...", "Calendar.getInstance().getTime()", true, ds);
         return notification;
     }
 
@@ -390,7 +408,7 @@ public class DBManager {
         Measure measure = new Measure(current, 2);
         DeliveryService ds = new DeliveryService(bibo,measure);
 
-        Notification notification = new Notification(Color.rgb(248, 215,218), "Message ...", Calendar.getInstance().getTime(), true, ds);
+        Notification notification = new Notification(Color.rgb(248, 215,218), "Message ...", "Calendar.getInstance().getTime()", true, ds);
         return notification;
     }
 

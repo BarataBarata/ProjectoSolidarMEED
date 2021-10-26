@@ -135,6 +135,7 @@
             android:layout_height="wrap_content"/>
 
         <RelativeLayout
+            android:visibility="invisible"
             android:layout_marginTop="10dp"
             android:layout_below="@id/id_input_password"
             android:layout_marginStart="50dp"

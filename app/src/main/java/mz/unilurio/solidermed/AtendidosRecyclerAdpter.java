@@ -55,15 +55,20 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Parturient parturient =  originalListParturientes.get(position);
         holder.currentPosition = position;
-        if(parturient.isTrasferirParturiente()){
-            holder.tipoAtendimento.setText("Trasferido ( "+parturient.getMotivosDaTrasferencia()+" )");
-        }else {
-            holder.tipoAtendimento.setText("Tipo de atendimento ( " + parturient.getTipoAtendimento()+" )");
-        }
 
-        holder.txtHoraAtendido.setText("Saida : "+format(parturient.getHoraAtendimento()));
-        holder.textCircle.setText((parturient.getFullName().charAt(0)+""));
-        holder.txtNameParturient.setText(parturient.getFullName());
+        if(parturient.isTrasferidoParaForaDoHospital()){
+            holder.tipoAtendimento.setText("Trasferida ( " + parturient.getMotivosDestinoDaTrasferencia() + " )");
+        }else {
+            if (parturient.isTrasferirParturiente()) {
+                holder.tipoAtendimento.setText("Trasferida ( " + parturient.getMotivosDaTrasferencia() + " )");
+            } else {
+                holder.tipoAtendimento.setText("Tipo de atendimento ( " + parturient.getTipoAtendimento() + " )");
+            }
+        }
+        System.out.println("  pppppppppppppp: === "+parturient.getFullName());
+        holder.txtHoraAtendido.setText("Saida : "+oUpperFirstCase(parturient.getHoraAtendimento()));
+        holder.textCircle.setText((parturient.getName().charAt(0)+""));
+        holder.txtNameParturient.setText(oUpperFirstCase(parturient.getName()+ " "+ parturient.getSurname()));
 //        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -169,10 +174,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
                 }
             });
         }
-
-
     }
-
     private String format(Date date){
         DateFormat dateFormat = new SimpleDateFormat("hh:mm - dd, MMM");
         return dateFormat.format(date);

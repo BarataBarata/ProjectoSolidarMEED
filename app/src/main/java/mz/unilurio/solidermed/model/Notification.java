@@ -1,6 +1,5 @@
 package mz.unilurio.solidermed.model;
 
-import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,13 +8,11 @@ import java.util.Date;
 
 public final class Notification implements Parcelable {
     public static final int TWO_INTERVAL = 1;
-    public static final int FIVE_INTERVAL = 5;
-    public static final int TEN_INTERVAL = 10;
     private boolean inProcess;
     private String id;
     private int color;
     private String message;
-    private Date time;
+    private String time;
     private boolean isOpen;
     private DeliveryService deliveryService;
     private Date nextNotifier;
@@ -24,7 +21,7 @@ public final class Notification implements Parcelable {
 
     }
 
-    public Notification(int color, String message, Date time, boolean isOpen, DeliveryService deliveryService) {
+    public Notification(int color, String message, String time, boolean isOpen, DeliveryService deliveryService) {
         this.color = color;
         this.message = message;
         this.time = time;
@@ -83,15 +80,15 @@ public final class Notification implements Parcelable {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setNome(String message) {
         this.message = message;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

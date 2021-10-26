@@ -45,9 +45,7 @@ public class Login extends AppCompatActivity {
        // requestPermissions(new String[]{Manifest.permission.CALL_PHONE},1);
         requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
 
-        SmsManager smsManager = SmsManager.getDefault();
         privilegios = new Privilegios();
-        //textAlerta = findViewById(R.id.idAlertaPassword);
         textEmail= findViewById(R.id.id_input_nome);
         textPassword=findViewById(R.id.id_input_password);
         auth = FirebaseAuth.getInstance();
@@ -99,7 +97,7 @@ public class Login extends AppCompatActivity {
     }
 
     public boolean isExistUser(String user, String password){
-
+        System.out.println("============================: "+dbService.isDoctorLogin(user,password));
         if(dbService.isDoctorLogin(user,password)){
             fullName=dbService.getFullNameDoctorLogin(user,password);
             privilegios.setViewAll(true);
@@ -107,7 +105,7 @@ public class Login extends AppCompatActivity {
         }else {
            if(dbService.isNurseLogin(user,password)){
                fullName=dbService.getFullNameNurseLogin(user,password);
-               privilegios.setViewAll(false);
+               privilegios.setViewAll(true);
                return true;
            }
         }

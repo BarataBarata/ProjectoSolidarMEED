@@ -30,5 +30,28 @@
             android:layout_marginEnd="0dp"
             android:hint="Contact" />
 
+        <EditText
+            android:id="@+id/idUserDoctor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/idContactEditContact"
+            android:layout_alignStart="@+id/idNomeEditContact"
+            android:layout_alignEnd="@+id/idNomeEditContact"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="0dp"
+            android:hint="Usuario :" />
+
+        <EditText
+            android:id="@+id/idSenhaUser"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/idUserDoctor"
+            android:layout_alignStart="@+id/idNomeEditContact"
+            android:layout_alignEnd="@+id/idNomeEditContact"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="0dp"
+            android:hint="Senha :" />
     </RelativeLayout>
 </ScrollView>

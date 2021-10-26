@@ -3,22 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="#EDEFEC"
-    android:orientation="vertical"
-    tools:context=".ActivityMedicos">
+    android:layout_height="match_parent"
+    tools:context=".ActivityDefinitionIdadeGestacional">
 
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarDadosPessoais"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#EDEFEC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
-
 
         <ImageView
             android:onClick="finish"
@@ -27,21 +24,20 @@
             android:src="@drawable/back_25" />
 
         <TextView
-            android:textSize="20dp"
             android:textStyle="bold"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:text="Medicos"
+            android:text="Idade Gestacional"
             android:textColor="#BC343534" />
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.SearchView
         android:layout_marginTop="55dp"
+        android:background="@color/white"
         android:id="@+id/seacherDilatacao"
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="wrap_content"
         android:gravity="center"
         app:iconifiedByDefault="false"
@@ -52,14 +48,14 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddContact"
+        android:id="@+id/fabAddIdadeGestacional"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         style="@style/TextAppearance.AppCompat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:backgroundTint="#0ED116"
+        android:backgroundTint="#3DBD43"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.954"
@@ -68,40 +64,40 @@
         app:layout_constraintVertical_bias="0.659"
         app:srcCompat="@drawable/add" />
 
-<LinearLayout
-    android:layout_marginTop="100dp"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ScrollView
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seacherDilatacao"
-        tools:layout_editor_absoluteX="0dp">
-        <LinearLayout
-            android:orientation="vertical"
+        android:layout_height="match_parent">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_Contact"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seacherDilatacao"
+            tools:layout_editor_absoluteX="0dp">
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.615"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seacherDilatacao"
-                app:layout_constraintVertical_bias="0.008"
-                tools:listitem="@layout/item_docter_list" />
-        </LinearLayout>
-    </ScrollView>
+                android:layout_height="match_parent">
 
-</LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_IdadeGestacional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.615"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/seacherDilatacao"
+                    app:layout_constraintVertical_bias="0.008"
+                    tools:listitem="@layout/item_idade_gestacional_list" />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

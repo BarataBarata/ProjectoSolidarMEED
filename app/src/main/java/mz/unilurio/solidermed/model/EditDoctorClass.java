@@ -27,6 +27,8 @@ public class EditDoctorClass extends AppCompatDialogFragment {
     public  static Boolean isOK=false;
     private EditText editNome;
     private EditText editContact;
+    private EditText editUser;
+    private EditText editPassword;
     private  EditText editApelido;
     private UserDoctor userDoctor;
     private  DBService dbService;
@@ -51,27 +53,28 @@ public class EditDoctorClass extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         if(validation(editContact)){
                             if(validation(editNome)){
-                                dbService.updadeDoctorNameAndTellphone(dbService.getIdDoctor(contact),editContact.getText().toString(),editNome.getText().toString());
-                                contact=editContact.getText().toString();
+                                dbService.updadeDoctor(dbService.getIdDoctor(editContact.getText().toString()),editUser.getText().toString(),editPassword.getText().toString(),editContact.getText().toString(),upCaseName(editNome.getText().toString()));
                                 isOK=true;
                             }
                         }
-
                     }
                 });
               editContact=view.findViewById(R.id.idContactEditContact);
               editNome=view.findViewById(R.id.idNomeEditContact);
+              editUser=view.findViewById(R.id.idUserDoctor);
+              editPassword=view.findViewById(R.id.idSenhaUser);
 
-        editContact.setText(contact);
-        editNome.setText(nome);
+        editContact.setText(userDoctor.getContacto());
+        editNome.setText(userDoctor.getFullName());
+        editUser.setText(userDoctor.getUserLogin());
+        editPassword.setText(userDoctor.getPasswordUser());
+
         dbService=new DBService(this.getContext());
         return builder.create();
 
     }
 
  public  void setUserDoctor(UserDoctor userDoctor){
-     nome = userDoctor.getFullName();
-     contact = userDoctor.getContacto();
      this.userDoctor =userDoctor;
  }
 
@@ -91,5 +94,33 @@ public class EditDoctorClass extends AppCompatDialogFragment {
             return false;
         }
         return true;
+    }
+
+
+    public String upCaseName(String name){
+
+        name=oUpperFirstCase(name);
+        String auxStr="";
+        int i=0;
+
+        for( i=0;i<name.length();i++){
+            if(i<name.length()){
+                if(!(name.charAt(i)==' ' && i+1==name.length()))
+                    if(name.charAt(i)==' ' && name.charAt(i+1)!=' '){
+                        auxStr=auxStr+(" ");
+                        auxStr=auxStr+(name.charAt(i+1)+"").toUpperCase();
+                        i++;
+                    }else {
+                        auxStr=auxStr+(name.charAt(i)+"");
+                    }
+            }
+        }
+        /// auxStr=auxStr+(name.charAt(i)+"");
+        return auxStr;
+    }
+
+    public  String oUpperFirstCase(String string){
+        String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
+        return  auxString;
     }
 }

@@ -53,6 +53,7 @@ public class HospitaisActivity extends AppCompatActivity {
         view = (RecyclerView)findViewById(R.id.recyclerVieHospitais);
         hospitaisLinearLayoutManager = new LinearLayoutManager(this);
         List<Hospitais> hospitais= dbService.getListHospitais();
+        dbService.close();
         hospitaisRecyclerAdpter = new  HospitaisRecyclerAdpter(this,hospitais);
         view.setLayoutManager(hospitaisLinearLayoutManager);
         view.setAdapter(hospitaisRecyclerAdpter);

@@ -1,12 +1,13 @@
 package mz.unilurio.solidermed.model;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.telephony.SmsManager;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,24 +16,31 @@ import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.AddParturientActivity;
-import mz.unilurio.solidermed.MainActivity;
 
-public class Parturient implements Parcelable {
+public class Parturient extends AppCompatActivity implements Parcelable {
+
+   //............horaparte..........//
+   private  int horaParte;
+   private  int minutoParte;
+   private  int segundoParte;
+   private  static int idPassAll;
+   ///.............................///
     private Notification notifications  = new Notification();
     public boolean isEditDilatation;
     private boolean trasferirParturiente;
     private boolean isTrasferidoParaForaDoHospital;
     private int id;
     private String fullName;
+    DBService dbService;
     int timerAux;
     public boolean startCountDownTimer;
     public boolean cancelCountDownTimer;
     private boolean inProcess;
-    private DBService dbService;
+    private static boolean isAlertaTwo;
     private static int timerEmergence;
-    private Date horaEntrada;
-    private Date horaAlerta;
-    private Date horaAtendimento;
+    private String horaEntrada;
+    private String horaAlerta;
+    private String horaAtendimento;
     private String name;
     private int initializeTimerAlert;
     private String surname;
@@ -52,6 +60,7 @@ public class Parturient implements Parcelable {
     private String viewTempo;
     private String tipoAtendimento;
     private Notification notification= new Notification();;
+    private Object context;
 
     public Parturient() {
     }
@@ -61,6 +70,30 @@ public class Parturient implements Parcelable {
         this.name = name;
         this.surname = surname;
         this.age = age;
+    }
+
+    public int getHoraParte() {
+        return horaParte;
+    }
+
+    public void setHoraParte(int horaParte) {
+        this.horaParte = horaParte;
+    }
+
+    public int getMinutoParte() {
+        return minutoParte;
+    }
+
+    public void setMinutoParte(int minutoParte) {
+        this.minutoParte = minutoParte;
+    }
+
+    public int getSegundoParte() {
+        return segundoParte;
+    }
+
+    public void setSegundoParte(int segundoParte) {
+        this.segundoParte = segundoParte;
     }
 
     public static int getTimerEmergence() {
@@ -77,6 +110,15 @@ public class Parturient implements Parcelable {
 
     public void setTipoAtendimento(String tipoAtendimento) {
         this.tipoAtendimento = tipoAtendimento;
+    }
+
+
+    public static int getIdPassAll() {
+        return idPassAll;
+    }
+
+    public static void setIdPassAll(int idPassAll) {
+        Parturient.idPassAll = idPassAll;
     }
 
     public String getFullName() {
@@ -111,7 +153,7 @@ public class Parturient implements Parcelable {
         isStartCont = startCont;
     }
 
-    public Date getHoraAtendimento() {
+    public String getHoraAtendimento() {
         return horaAtendimento;
     }
 
@@ -119,7 +161,7 @@ public class Parturient implements Parcelable {
         return notifications;
     }
 
-    public void setHoraAtendimento(Date horaAtendimento) {
+    public void setHoraAtendimento(String horaAtendimento) {
         this.horaAtendimento = horaAtendimento;
     }
 
@@ -183,19 +225,19 @@ public class Parturient implements Parcelable {
         this.initializeTimerAlert = tempoRestante;
     }
 
-    public Date getHoraEntrada() {
+    public String getHoraEntrada() {
         return horaEntrada;
     }
 
-    public void setHoraEntrada(Date horaEntrada) {
+    public void setHoraEntrada(String horaEntrada) {
         this.horaEntrada = horaEntrada;
     }
 
-    public Date getHoraAlerta() {
+    public String getHoraAlerta() {
         return horaAlerta;
     }
 
-    public void setHoraAlerta(Date horaAlerta) {
+    public void setHoraAlerta(String horaAlerta) {
         this.horaAlerta = horaAlerta;
     }
 
@@ -355,6 +397,7 @@ public class Parturient implements Parcelable {
                 setTempoRes("Tempo Restante : " + String.format("%02d", hours)
                         + ":" + String.format("%02d", minutes)
                         + ":" + String.format("%02d", seconds));
+
                 timerAux=minutes*60+hours*3600+seconds;
                 if(cancelCountDownTimer){
                     startCountDownTimer=true;
@@ -398,13 +441,12 @@ public class Parturient implements Parcelable {
                 int minutes = tempMint / 60;
                 seconds = tempMint - (minutes * 60);
 
-//                setTempoRes("Tempo Restante : " + String.format("%02d", hours)
-//                        + ":" + String.format("%02d", minutes)
-//                        + ":" + String.format("%02d", seconds));
-//
             }
 
             public void onFinish() {
+                setAlertaTwo(true);
+                setIdPassAll(id);
+                removParturiente();
                 sendMensageEmergence();
 
             }
@@ -413,15 +455,15 @@ public class Parturient implements Parcelable {
 
     private void sendMensageEmergence() {
      if(!this.inProcess){
-         notification.setColour(Color.rgb(248, 215,218));
          List<UserDoctor> list= new AddParturientActivity().getListUserDoctor();
-         String mensagem=fullName+" necessita  de cuidados medicos";
+         String mensagem=name+ "  "+ surname +": Necessita  de cuidados medicos";
          System.out.println(mensagem);
          for(UserDoctor userDoctor: list){
              sendSMS(userDoctor.getContacto(),mensagem);
          }
      }
     }
+
     private void sendSMS(String phoneNumber, String message) {
         phoneNumber = phoneNumber.trim();
         message = message.trim();
@@ -434,7 +476,6 @@ public class Parturient implements Parcelable {
             Log.i("EXPECTION SMS", e.getMessage());
         }
     }
-
 
     public String getTempoRest() {
         return viewTempo;
@@ -462,18 +503,40 @@ public class Parturient implements Parcelable {
 
     void sendNotification(){
         notification.setColour(Color.YELLOW+Color.BLACK);
-        notification.setMessage(fullName);
+        notification.setNome(name+" "+surname);
         notification.setId(id+"");
         notification.setInProcess(inProcess);
-        notification.setTime( Calendar.getInstance().getTime());
+        notification.setTime(format(new Date()));
         notification.setOpen(true);
-        DBManager.getInstance().addNewNotification(notification);
+        notification.setInProcess(false);
+        DBManager.getInstance().addAuxListNotification(notification);
     }
-
+    private String format(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+        return dateFormat.format(date);
+    }
 
     public  String oUpperFirstCase(String string){
         String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
         return  auxString;
     }
 
+    public void removParturiente(){
+
+        for(Parturient parturient: DBManager.getInstance().getParturients()){
+            if(parturient.getId()==id){
+                DBManager.getInstance().getParturients().remove(parturient);
+                break;
+            }
+        }
+
+    }
+
+    public boolean isAlertaTwo() {
+        return isAlertaTwo;
+    }
+
+    public void setAlertaTwo(boolean alertaTwo) {
+        isAlertaTwo = alertaTwo;
+    }
 }

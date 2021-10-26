@@ -21,6 +21,8 @@ public class AddDoctorClass extends AppCompatDialogFragment {
 
     private EditText editNome;
     private EditText editContact;
+    private EditText editUser;
+    private EditText editPassword;
     public static boolean isAdd=false;
     public static boolean isRemove=false;
     DBService dbService;
@@ -46,7 +48,7 @@ public class AddDoctorClass extends AppCompatDialogFragment {
                        if(validation(editContact)){
                            if(validation(editNome)){
                                if(!dbService.isTellDoctor(editContact.getText().toString())) {
-                                   dbService.addDoctor("","",editContact.getText().toString(),editNome.getText().toString());
+                                   dbService.addDoctor(editUser.getText().toString(),editPassword.getText().toString(),editContact.getText().toString(),upCaseName(editNome.getText().toString()));
                                    isAdd = true;
                                    Toast.makeText( getContext(), " Usuario registado com sucesso", Toast.LENGTH_SHORT).show();
 
@@ -60,6 +62,8 @@ public class AddDoctorClass extends AppCompatDialogFragment {
                 });
               editContact=view.findViewById(R.id.idContactEditContact);
               editNome=view.findViewById(R.id.idNomeEditContact);
+              editUser=view.findViewById(R.id.idUserDoctor);
+              editPassword=view.findViewById(R.id.idSenhaUser);
               dbService=new DBService(this.getContext());
 
         return builder.create();
@@ -82,5 +86,33 @@ public class AddDoctorClass extends AppCompatDialogFragment {
             return false;
             }
             return true;
+    }
+
+
+    public String upCaseName(String name){
+
+        name=oUpperFirstCase(name);
+        String auxStr="";
+        int i=0;
+
+        for( i=0;i<name.length();i++){
+            if(i<name.length()){
+                if(!(name.charAt(i)==' ' && i+1==name.length()))
+                    if(name.charAt(i)==' ' && name.charAt(i+1)!=' '){
+                        auxStr=auxStr+(" ");
+                        auxStr=auxStr+(name.charAt(i+1)+"").toUpperCase();
+                        i++;
+                    }else {
+                        auxStr=auxStr+(name.charAt(i)+"");
+                    }
+            }
+        }
+        /// auxStr=auxStr+(name.charAt(i)+"");
+        return auxStr;
+    }
+
+    public  String oUpperFirstCase(String string){
+        String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
+        return  auxString;
     }
 }

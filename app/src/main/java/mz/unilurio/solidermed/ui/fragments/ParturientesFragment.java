@@ -16,6 +16,7 @@ import mz.unilurio.solidermed.MainActivity;
 import mz.unilurio.solidermed.ParturienteRecyclerAdpter;
 import mz.unilurio.solidermed.R;
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.Parturient;
 
 /**
@@ -25,6 +26,7 @@ import mz.unilurio.solidermed.model.Parturient;
  */
 public class ParturientesFragment extends Fragment {
    RecyclerView recyclerView;
+   DBService dbService;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -36,6 +38,7 @@ public class ParturientesFragment extends Fragment {
     private ParturienteRecyclerAdpter parturienteRecyclerAdpter;
 
     public ParturientesFragment() {
+
         // Required empty public constructor
     }
 
@@ -64,6 +67,7 @@ public class ParturientesFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
 
+
         }
     }
 
@@ -83,7 +87,6 @@ public class ParturientesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_parturientes, container, false);
         recyclerView = view.findViewById(R.id.recyclerVieParturiente);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

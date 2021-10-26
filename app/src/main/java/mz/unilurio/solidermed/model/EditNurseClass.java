@@ -22,6 +22,8 @@ import mz.unilurio.solidermed.R;
 public class EditNurseClass  extends AppCompatDialogFragment {
     private EditText editNome;
     private EditText editContact;
+    private EditText editUser;
+    private EditText editPassword;
     public static boolean isEdit=false;
     private  EditText editApelido;
     private UserNurse userNurse;
@@ -51,7 +53,7 @@ public class EditNurseClass  extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                          if(validation(editContact)){
                              if(validation(editNome)){
-                                 dbService.updadeNurseNameAndTellphone(dbService.getIdNurse(contact),editNome.getText().toString(),editContact.getText().toString());
+                                 dbService.updadeNurse(dbService.getIdNurse(editContact.getText().toString()),upCaseName(editNome.getText().toString()),editUser.getText().toString(),editPassword.getText().toString(),editContact.getText().toString());
                                  contact=editContact.getText().toString();
                                  isEdit=true;
                              }
@@ -59,18 +61,23 @@ public class EditNurseClass  extends AppCompatDialogFragment {
 
                     }
                 });
+
         editContact=view.findViewById(R.id.idNurseEditContact);
         editNome=view.findViewById(R.id.idNomeEditNurse);
+        editUser=view.findViewById(R.id.idNurseUser);
+        editPassword=view.findViewById(R.id.idNursePassword);
 
-        editContact.setText(contact);
-        editNome.setText(nome);
+
+        editContact.setText(userNurse.getContacto());
+        editNome.setText(userNurse.getFullName());
+        editPassword.setText(userNurse.getPassworNurse());
+        editUser.setText(userNurse.getUserNurse());
         dbService=new DBService(this.getContext());
+
         return builder.create();
 
     }
     public  void setIdNurse(UserNurse userNurse){
-        nome = userNurse.getFullName();
-        contact = userNurse.getContacto();
         this.userNurse =userNurse;
     }
     @Override
@@ -102,5 +109,32 @@ public class EditNurseClass  extends AppCompatDialogFragment {
             return false;
         }
         return true;
+    }
+
+    public String upCaseName(String name){
+
+        name=oUpperFirstCase(name);
+        String auxStr="";
+        int i=0;
+
+        for( i=0;i<name.length();i++){
+            if(i<name.length()){
+                if(!(name.charAt(i)==' ' && i+1==name.length()))
+                    if(name.charAt(i)==' ' && name.charAt(i+1)!=' '){
+                        auxStr=auxStr+(" ");
+                        auxStr=auxStr+(name.charAt(i+1)+"").toUpperCase();
+                        i++;
+                    }else {
+                        auxStr=auxStr+(name.charAt(i)+"");
+                    }
+            }
+        }
+        /// auxStr=auxStr+(name.charAt(i)+"");
+        return auxStr;
+    }
+
+    public  String oUpperFirstCase(String string){
+        String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
+        return  auxString;
     }
 }

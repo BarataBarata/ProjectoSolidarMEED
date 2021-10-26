@@ -2,6 +2,7 @@ package mz.unilurio.solidermed;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.AddNursesClass;
-import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.EditNurseClass;
 import mz.unilurio.solidermed.model.UserNurse;
@@ -34,6 +34,8 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
     private List<UserNurse> auxListNurse;
     private List<UserNurse> originalListNurse;
     private final LayoutInflater layoutInflater;
+    private int idUser;
+    private int positiond;
     private DBService dbService;
 
 
@@ -82,7 +84,9 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         UserNurse userNurse =  originalListNurse.get(position);
+        idUser=userNurse.getIdNurse();
         holder.currentPosition = position;
         holder.txtNameParturient.setText(userNurse.getFullName());
         holder.textVcontacto.setText(userNurse.getContacto());
@@ -94,7 +98,6 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
                 editNurseClass.show(context.getSupportFragmentManager(),"Editar");
             }
         });
-
         holder.imageDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,8 +170,8 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                     alerte();
-                    }
+                    setId(currentPosition);
+                }
             });
         }
 
@@ -179,7 +182,7 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
         DateFormat dateFormat = new SimpleDateFormat("hh:mm - dd, MMM");
         return dateFormat.format(date);
     }
-    public  void alerte(){
+    public  void setId( int id){
 
                 ProgressDialog progressBar;
                 progressBar=new ProgressDialog(context);
@@ -191,7 +194,8 @@ public class NurseRecyclerAdpter extends RecyclerView.Adapter<NurseRecyclerAdpte
                     @Override
                     public void run() {
                         progressBar.dismiss();
-//                        Intent intent = new Intent(context, MainActivity.class);
+//                        Intent intent = new Intent(context, ActivitViewPasswordUser.class);
+//                        intent.putExtra("userNurse",originalListNurse.get(id).getIdNurse()+"");
 //                        context.startActivity(intent);
                     }
                 },Long.parseLong("400"));

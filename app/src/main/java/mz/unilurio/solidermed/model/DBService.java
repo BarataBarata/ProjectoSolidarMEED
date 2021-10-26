@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DBService  extends SQLiteOpenHelper {
@@ -17,55 +19,27 @@ public class DBService  extends SQLiteOpenHelper {
     private static int versao = 1;
 
     private String[] sql = {
+            "CREATE TABLE Atendidos(id INTEGER NOT NULL UNIQUE, fullname TEXT NOT NULL,apelido TEXT NOT NULL,idade TEXT NOT NULL,dilatacao TEXT NOT NULL,paridade TEXT NOT NULL,isTrasferencia boolean NOT NULL,isTrasferenciaForaDaUnidade boolean NOT NULL,HoraEntrada TXT NOT NULL,HoraAtendimento TXT NOT NULL,origemTrasferencia TXT NOT NULL,motivoOrigemTrasferencia TXT NOT NULL,destinoTrasferencia TXT NOT NULL,motivosDestinoTrasferencia TXT NOT NULL,parturienteEmprocesso boolean NOT NULL,idadeGestacional TXT NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
+            "CREATE TABLE Parturientes(id INTEGER NOT NULL UNIQUE, fullname TEXT NOT NULL,apelido TEXT NOT NULL,idade TEXT NOT NULL,dilatacao TEXT NOT NULL,paridade TEXT NOT NULL,isTrasferencia boolean NOT NULL,isTrasferenciaForaDaUnidade boolean NOT NULL,HoraEntrada TXT NOT NULL, horaParte INTEGER NOT NULL, minutoParte INTEGER NOT NULL,segundoParte INTEGER NOT NULL,HoraAtendimento TXT NOT NULL,origemTrasferencia TXT NOT NULL,motivoOrigemTrasferencia TXT NOT NULL,destinoTrasferencia TXT NOT NULL,motivosDestinoTrasferencia TXT NOT NULL,parturienteEmprocesso boolean NOT NULL,idadeGestacional TXT NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
+            "CREATE TABLE Notificacao(id INTEGER NOT NULL UNIQUE, fullname TEXT NOT NULL,HoraNotification TXT NOT NULL,isOpen boolean NOT NULL,inProcess boolean NOT NULL,cor INTEGER NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE UserDoctor(id INTEGER NOT NULL UNIQUE, username TEXT NOT NULL,fullname TEXT NOT NULL,tellDoctor TEXT NOT NULL, pass TEXT NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE UserNurse(id INTEGER NOT NULL UNIQUE, username TEXT NOT NULL ,fullname TEXT NOT NULL ,tellNurse TEXT NOT NULL, pass TEXT NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE HospitalSelect(id INTEGER NOT NULL UNIQUE, hospital TEXT NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE Hospitais(id INTEGER NOT NULL UNIQUE, hospital TEXT NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
+            "CREATE TABLE OpcoesParidade(id INTEGER NOT NULL UNIQUE, valor TEXT NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
+            "CREATE TABLE IdadeGestacional(id INTEGER NOT NULL UNIQUE, txtIdadeGestacional TEXT NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE Dilatacao(id INTEGER NOT NULL UNIQUE, dilatation TEXT NOT NULL, horas TEXT NOT NULL , minutes TEXT NOT NULL  , PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE Alert(id INTEGER NOT NULL UNIQUE, horas TEXT NOT NULL , minutes TEXT NOT NULL  , PRIMARY KEY(id AUTOINCREMENT ));",
+
     };
 
     public DBService(@Nullable Context context) {
         super(context, nomeDB, null, versao);
-
-
-        if (!isDoctorLogin("barata", "123")) {
-            addDoctor("barata", "123", "845740722", "Barata Estevao Mario Barata");
-        }
-
-        if(!isExistTimer("1")){
-            addAlertDilatation(0,1);
-        }
-        if (!isHospital("Hospital Distrital de Chiúre")) {
-            addHospital("Hospital Distrital de Chiúre");
-            addHospital("Centro de saúde de Catapua");
-            addHospital("Centro de saúde de Ocua");
-            addHospital("Centro de saúde de Chiúre Velho");
-            addHospital("Centro de saúde de Mmala");
-            addHospital("Centro de saúde de Marera");
-            addHospital("Centro de saúde de Mazeze");
-            addHospital("Centro de saúde de Muege");
-            addHospital("Centro de saúde de Nakoto");
-            addHospital("Centro de saúde de Namogeliua");
-            addHospital("Centro de saúde de Samora Machel");
-            addHospital("Centro de saúde de Bilibiza");
-        }
-        if (!isExistDilatation("1")) {
-            addDilatation(1, 9, 0);
-            addDilatation(2, 8, 0);
-            addDilatation(3, 7, 0);
-            addDilatation(4, 9, 0);
-            addDilatation(5, 7, 30);
-            addDilatation(6, 6, 0);
-            addDilatation(7, 4, 30);
-            addDilatation(8, 3, 0);
-            addDilatation(9, 1, 30);
-            addDilatation(10, 0, 30);
-        }
-
     }
 
-    public DBService() {
+
+
+    public DBService(Parturient parturient) {
         super(null, nomeDB, null, versao);
     }
 
@@ -125,8 +99,10 @@ public class DBService  extends SQLiteOpenHelper {
                 new String[]{tellPhone});
         c.moveToFirst();
         if (c.getCount() == 1) {
+            c.close();
             return true;
         }
+        c.close();
         return false;
     }
 
@@ -136,7 +112,7 @@ public class DBService  extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM UserDoctor WHERE username = ? AND pass = ?",
                 new String[]{username, pass});
         c.moveToFirst();
-        if (c.getCount() == 1) {
+        if (c.getCount()>0) {
             return true;
         }
         return false;
@@ -149,6 +125,7 @@ public class DBService  extends SQLiteOpenHelper {
         if (c.getCount() == 1) {
             return c.getString(c.getColumnIndex("fullname"));
         }
+        c.close();
         return "";
     }
 
@@ -184,6 +161,7 @@ public class DBService  extends SQLiteOpenHelper {
                 listaUtilizadores.add(new UserDoctor(fullName, username, pass, id, tellDoctor));
 
             } while (c.moveToNext());
+            c.close();
         }
         return listaUtilizadores;
     }
@@ -245,8 +223,11 @@ public class DBService  extends SQLiteOpenHelper {
                 new String[]{tellPhone});
         c.moveToFirst();
         if (c.getCount() == 1) {
+            c.close();
             return true;
+
         }
+        c.close();
         return false;
     }
 
@@ -257,8 +238,10 @@ public class DBService  extends SQLiteOpenHelper {
                 new String[]{username, pass});
         c.moveToFirst();
         if (c.getCount() == 1) {
+            c.close();
             return true;
         }
+        c.close();
         return false;
     }
 
@@ -316,6 +299,7 @@ public class DBService  extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("hospital", hospital);
         return db.insert("Hospitais", null, cv);
+
     }
 
     public boolean isHospital(String hospital) {
@@ -323,7 +307,8 @@ public class DBService  extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM Hospitais WHERE hospital = ?",
                 new String[]{hospital});
         c.moveToFirst();
-        if (c.getCount() == 1) {
+        if (c.getCount()>0) {
+
             return true;
         }
         return false;
@@ -340,12 +325,82 @@ public class DBService  extends SQLiteOpenHelper {
 
                 int id = c.getInt(c.getColumnIndex("id"));
                 String hospital = c.getString(c.getColumnIndex("hospital"));
-
                 listaUtilizadores.add(new Hospitais(hospital, id + ""));
 
             } while (c.moveToNext());
+            db.close();
         }
         return listaUtilizadores;
+    }
+//................................IdadeGestacional.............................//
+
+
+
+    public long addIdadeGestacional(String idadeGestacional) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("txtIdadeGestacional", idadeGestacional);
+        return db.insert("IdadeGestacional", null, cv);
+
+    }
+    public long updadeIdadeGestacional(int id, String idadeGestacional) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("txtIdadeGestacional", idadeGestacional);
+        return db.update("IdadeGestacional", cv, "id=?", new String[]{String.valueOf(id)});
+    }
+
+
+    public List<IdadeGestacional> getListIdadeGestacional() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM IdadeGestacional", null);
+        List<IdadeGestacional> listaIdadeGestacional = new ArrayList<>();
+        c.moveToFirst();
+        if (c.getCount() > 0) {
+            do {
+                int id = c.getInt(c.getColumnIndex("id"));
+                String txtIdadeGestacional = c.getString(c.getColumnIndex("txtIdadeGestacional"));
+                listaIdadeGestacional.add(new IdadeGestacional(txtIdadeGestacional, id + ""));
+
+            } while (c.moveToNext());
+            db.close();
+        }
+        return listaIdadeGestacional;
+    }
+
+    public long deleteIdadeGestacional(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete("IdadeGestacional", "id=?", new String[]{String.valueOf(id)});
+    }
+
+    //......................opcoes paridade...........................//
+
+    public int getOpcoesParidadeMaximoValor() {
+        String id="1";
+        String valor;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM OpcoesParidade WHERE id = ?",
+                new String[]{id});
+        c.moveToFirst();
+        valor=c.getString(c.getColumnIndex("valor"));
+
+        return Integer.parseInt(valor);
+    }
+
+    public long addOpcoesParidade(String valor) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("valor", valor);
+        return db.insert("OpcoesParidade", null, cv);
+
+    }
+
+    public long updadeOpcoesParidade(String valor) {
+        int id=1;
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("valor", valor);
+        return db.update("OpcoesParidade", cv, "id=?", new String[]{String.valueOf(id)});
     }
 
     //............................dilatacao........................................//
@@ -381,15 +436,17 @@ public class DBService  extends SQLiteOpenHelper {
                 new String[]{dilatation});
         c.moveToFirst();
         if (c.getCount() == 1) {
+            c.close();
             return true;
         }
+        c.close();
         return false;
     }
 
     public int getTimerDilatation(String dilatation) {
         int horas = 0;
         int minutos=0;
-        int secundos=4;
+        int secundos=0;
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM Dilatacao WHERE dilatation = ?",
@@ -401,6 +458,7 @@ public class DBService  extends SQLiteOpenHelper {
                 minutos = c.getInt(c.getColumnIndex("minutes"));
                 secundos=horas*3600+minutos*60;
             } while (c.moveToNext());
+            c.close();
         }
         return secundos;
     }
@@ -414,6 +472,7 @@ public class DBService  extends SQLiteOpenHelper {
             do {
                 id = c.getInt(c.getColumnIndex("id"));
             } while (c.moveToNext());
+            c.close();
         }
         return id;
     }
@@ -435,6 +494,7 @@ public class DBService  extends SQLiteOpenHelper {
                 arrayList.add(new DilatationAndTimer(numberDilatation, timerDilatationHours, timerDilatationMinutes, id));
 
             } while (c.moveToNext());
+            c.close();
         }
         return arrayList;
     }
@@ -444,6 +504,7 @@ public class DBService  extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("hospital", hospital);
+
         return db.insert("HospitalSelect", null, cv);
     }
 
@@ -454,20 +515,24 @@ public class DBService  extends SQLiteOpenHelper {
                 new String[]{id});
         c.moveToFirst();
         if (c.getCount()>0) {
+            c.close();
             return true;
         }else {
+            c.close();
             return false;
         }
     }
 
     public String getHospitalSelect() {
         String id="1";
+        String nameHospital;
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM HospitalSelect WHERE id = ?",
                 new String[]{id});
         c.moveToFirst();
-
-        return c.getString(c.getColumnIndex("hospital"));
+        nameHospital=c.getString(c.getColumnIndex("hospital"));
+        c.close();
+        return nameHospital;
     }
 
     /// ......................Alert......................................
@@ -487,6 +552,7 @@ public class DBService  extends SQLiteOpenHelper {
         if (c.getCount() == 1) {
             return true;
         }
+        c.close();
         return false;
     }
 
@@ -499,6 +565,7 @@ public class DBService  extends SQLiteOpenHelper {
             do {
                 timerDilatationHours = c.getInt(c.getColumnIndex("horas"));
             } while (c.moveToNext());
+            c.close();
         }
         return timerDilatationHours;
     }
@@ -512,6 +579,7 @@ public class DBService  extends SQLiteOpenHelper {
             do {
                 timerDilatationMinutes = c.getInt(c.getColumnIndex("minutes"));
             } while (c.moveToNext());
+            c.close();
         }
         return timerDilatationMinutes;
     }
@@ -535,7 +603,193 @@ public class DBService  extends SQLiteOpenHelper {
             do {
                 id = c.getInt(c.getColumnIndex("id"));
             } while (c.moveToNext());
+            c.close();
         }
         return id;
     }
+
+    ///............................add parturiente ...........................////
+
+    public long addParturiente(Parturient parturient) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("horaParte", parturient.getHoraParte());
+        cv.put("minutoParte ", parturient.getMinutoParte());
+        cv.put("segundoParte", parturient.getSegundoParte());
+        cv.put("fullname ", parturient.getName());
+        cv.put("apelido", parturient.getSurname());
+        cv.put("idade", parturient.getAge());
+        cv.put("isTrasferencia",parturient.isTransfered());
+        cv.put("isTrasferenciaForaDaUnidade",parturient.isTrasferidoParaForaDoHospital());
+        cv.put("HoraEntrada ",parturient.getHoraEntrada());
+        cv.put("paridade",parturient.getPara());
+        cv.put("HoraAtendimento ",parturient.getHoraAtendimento());
+        cv.put("motivosDestinoTrasferencia",parturient.getMotivosDestinoDaTrasferencia());
+        cv.put("motivoOrigemTrasferencia",parturient.getMotivosDaTrasferencia());
+        cv.put("destinoTrasferencia",parturient.getDestinoTrasferencia());
+        cv.put("origemTrasferencia",parturient.getOrigemTransferencia());
+        cv.put("parturienteEmprocesso",parturient.isInProcess());
+        cv.put("dilatacao ",parturient.getReason());
+        cv.put("idadeGestacional ",parturient.getGestatinalRange());
+        return db.insert("Parturientes", null, cv);
+    }
+
+    public void updadeListParturiente() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Parturientes", null);
+        List<Parturient> arrayList = new ArrayList<>();
+        DBManager.getInstance().getAuxlistNotificationParturients().removeAll(DBManager.getInstance().getAuxlistNotificationParturients());
+        DBManager.getInstance().getParturients().removeAll(DBManager.getInstance().getParturients());
+
+        c.moveToFirst();
+        if (c.getCount()> 0) {
+            do {
+                Parturient parturient=new Parturient();
+                parturient.setId(c.getInt(c.getColumnIndex("id")));
+                parturient.setReason(c.getString(c.getColumnIndex("dilatacao")));
+                parturient.setHoraEntrada(c.getString(c.getColumnIndex("HoraEntrada")));
+
+                if(!c.getString(c.getColumnIndex("HoraAtendimento")).isEmpty()) {
+                    parturient.setHoraAtendimento(c.getString(c.getColumnIndex("HoraAtendimento")));
+                }
+                parturient.setHoraParte(c.getInt(c.getColumnIndex("horaParte")));
+                parturient.setMinutoParte(c.getInt(c.getColumnIndex("minutoParte")));
+                parturient.setSegundoParte(c.getInt(c.getColumnIndex("segundoParte")));
+                parturient.setName(c.getString(c.getColumnIndex("fullname")));
+                parturient.setSurname(c.getString(c.getColumnIndex("apelido")));
+                parturient.setInProcess(((c.getInt(c.getColumnIndex("parturienteEmprocesso")))== 1)? true : false);
+                parturient.setOrigemTransferencia(c.getString(c.getColumnIndex("origemTrasferencia")));
+                parturient.setDestinoTrasferencia(c.getString(c.getColumnIndex("destinoTrasferencia")));
+                parturient.setMotivosDestinoDaTrasferencia(c.getString(c.getColumnIndex("motivosDestinoTrasferencia")));
+                parturient.setPara(c.getInt(c.getColumnIndex("paridade")));
+                parturient.setMotivosDaTrasferencia(c.getString(c.getColumnIndex("motivoOrigemTrasferencia")));
+                parturient.setTrasferidoParaForaDoHospital((c.getInt(c.getColumnIndex("isTrasferenciaForaDaUnidade"))== 1)? true : false);
+                parturient.setTransfered((c.getInt(c.getColumnIndex("isTrasferencia"))== 1)? true : false);
+
+
+                System.out.println(" agora vamos mosttrar as horas");
+                System.out.println(" hora 1 : "+formatHoras(new Date())+" == "+parturient.getHoraParte());
+                System.out.println(" minuto 1 : "+formatMinuto(new Date())+" == "+parturient.getMinutoParte());
+                System.out.println(" segundo 1 : "+formatSegundo(new Date())+" == "+parturient.getSegundoParte());
+
+
+
+                int segundosHoraAtual=Integer.parseInt(formatHoras(new Date()))*3600+Integer.parseInt(formatMinuto(new Date()))*60+Integer.parseInt(formatSegundo(new Date()));
+                int segundosHoraEntrada=parturient.getHoraParte()*3600+parturient.getMinutoParte()*60+parturient.getSegundoParte();
+                int sub=segundosHoraAtual-segundosHoraEntrada;
+                int tempoRestante=getTimerDilatation(parturient.getReason())-sub;
+
+                if(tempoRestante>0){
+                    parturient.initializeCountDownTimer(tempoRestante);
+                    DBManager.getInstance().getParturients().add(parturient);
+                    DBManager.getInstance().addAuxListNotificationParturient(parturient);
+                }else {
+                    deleteParturiente(parturient.getId());
+                }
+
+            } while (c.moveToNext());
+            c.close();
+        }
+    }
+
+    public long deleteParturiente(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete("Parturientes", "id=?", new String[]{String.valueOf(id)});
+    }
+
+    //....................NOTIFICACAO.................................
+    public long addNotificacao(Notification notification) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("fullname", notification.getMessage());
+        cv.put("HoraNotification",format(new Date()));
+        cv.put("isOpen", notification.isOpen());
+        cv.put("cor",notification.getColour());
+        cv.put("inProcess",notification.isInProcess());
+        return db.insert("Notificacao", null, cv);
+    }
+
+
+    public long updadeCorNotification(int id, int cor) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        //cv.put("username", username);
+        cv.put("cor", cor);
+        return db.update("Notificacao", cv, "id=?", new String[]{String.valueOf(id)});
+    }
+    public void updadeListNotification() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Notificacao", null);
+
+        DBManager.getInstance().getNotifications().removeAll(DBManager.getInstance().getNotifications());
+
+        c.moveToFirst();
+        if (c.getCount()> 0) {
+            do {
+                System.out.println("barata");
+                Notification notification=new Notification();
+                notification.setId(c.getInt(c.getColumnIndex("id"))+"");
+                notification.setInProcess(((c.getInt(c.getColumnIndex("inProcess")))== 1)? true : false);
+                notification.setNome(c.getString(c.getColumnIndex("fullname")));
+                notification.setOpen(((c.getInt(c.getColumnIndex("isOpen")))== 1)? true : false);
+                notification.setTime(c.getString(c.getColumnIndex("HoraNotification")));
+                notification.setColour(c.getInt(c.getColumnIndex("cor")));
+                DBManager.getInstance().addNewNotification(notification);
+                System.out.println("ffffffffffffffffffff fffffffff "+DBManager.getInstance().getNotifications());
+
+            } while (c.moveToNext());
+
+        }
+    }
+
+
+
+
+    //.................ATENDIMENTO...............................
+    public long addAtendimento(String nome,String apelido, String idade, String dilatacao,
+                               boolean isTrasferencia,String paridade, boolean isTrasForaDaUnidade,
+                               String horaEtrada, String horaAtendimento,String origemTrasferencia,
+                               String motivosOrigemTrasferencia, String destinoTrasferencia,
+                               String motivosDestinoTrasferencia, boolean isParturienteEmProcesso) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("fullname ", nome);
+        cv.put("apelido", apelido);
+        cv.put("idade", idade);
+        cv.put("isTrasferencia",isTrasferencia);
+        cv.put("isTrasferenciaForaDaUnidade",isTrasForaDaUnidade);
+        cv.put("HoraEntrada ",horaEtrada);
+        cv.put("paridade",paridade);
+        cv.put("HoraAtendimento ",horaAtendimento);
+        cv.put("motivosDestinoTrasferencia",motivosDestinoTrasferencia);
+        cv.put("motivoOrigemTrasferencia",motivosOrigemTrasferencia);
+        cv.put("destinoTrasferencia",destinoTrasferencia);
+        cv.put("origemTrasferencia",origemTrasferencia);
+        cv.put("parturienteEmprocesso",isParturienteEmProcesso);
+        cv.put("dilatacao ",dilatacao);
+        return db.insert("Atendidos", null, cv);
+    }
+
+    ///.............................ccc..................................///
+    private String formatMinuto(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("mm");
+        return dateFormat.format(date);
+    }
+    private String formatSegundo(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("ss");
+        return dateFormat.format(date);
+    }
+
+    private String formatHoras(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh");
+        return dateFormat.format(date);
+    }
+    private String format(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+        return dateFormat.format(date);
+    }
 }
+
+
