@@ -2,6 +2,7 @@ package mz.unilurio.solidermed;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -164,7 +165,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                 list.addAll(auxListParturientes);
             }else{
                 for(Parturient parturient:auxListParturientes){
-                    if(parturient.getFullName().toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if((parturient.getName()+" "+parturient.getSurname()).toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(parturient);
                     }
                 }

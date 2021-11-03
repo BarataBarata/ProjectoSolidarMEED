@@ -8,8 +8,6 @@
     tools:context=".ViewDadosPessoaisActivity"
     android:layout_height="match_parent">
 
-
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -124,13 +122,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                     <TextView
+                        android:visibility="invisible"
                         android:layout_marginTop="10dp"
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_marginBottom="16sp"
                         android:layout_alignLeft="@id/idViewFullName"
                         android:layout_below="@id/viewHoraEntradaF"
-                        android:id="@+id/ViewTempoRestate"
-                        android:text="Tempo Restante"
+                        android:id="@+id/ViewTipoAtendimento"
+                        android:text="Tipo de aentimento : "
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 

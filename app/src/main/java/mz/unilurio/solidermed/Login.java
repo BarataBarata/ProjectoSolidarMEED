@@ -61,7 +61,7 @@ public class Login extends AppCompatActivity {
 
 
     private void verificationUser(String email, String password) {
-        privilegios.setViewAll(true);
+        //privilegios.setViewAll(true);
 
 //        Intent intent= new Intent(Login.this, MainActivity.class);
 //        intent.putExtra("nomeUserLogin",fullName);
@@ -105,7 +105,7 @@ public class Login extends AppCompatActivity {
         }else {
            if(dbService.isNurseLogin(user,password)){
                fullName=dbService.getFullNameNurseLogin(user,password);
-               privilegios.setViewAll(true);
+               privilegios.setViewAll(false);
                return true;
            }
         }

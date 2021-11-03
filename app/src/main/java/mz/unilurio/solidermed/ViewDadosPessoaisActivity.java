@@ -22,7 +22,7 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
     TextView idadeDeParidadeDaParturiente;
     TextView idadeGestacionalDaParturiente;
     TextView horaEntradaDaParturiente;
-    TextView tempoEsprarado;
+    TextView tipoAtendimento;
     TextView origemTrasferenciaParturiente;
     TextView motivosTrasferenciaParturiente;
     private Parturient parturient;
@@ -68,19 +68,28 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
         horaEntradaDaParturiente=(TextView)findViewById(R.id.viewHoraEntradaF);
         origemTrasferenciaParturiente=(TextView)findViewById(R.id.idOrigemTrasferencia);
         motivosTrasferenciaParturiente=(TextView)findViewById(R.id.idMotivosTrasferencia);
-        tempoEsprarado=(TextView)findViewById(R.id.ViewTempoRestate);
+        tipoAtendimento =(TextView)findViewById(R.id.ViewTipoAtendimento);
     }
 
 
-    private void sendDade(Parturient parturient) {
+
+
+
+        private void sendDade(Parturient parturient) {
+
+        if(!parturient.getTipoAtendimento().isEmpty()){
+            tipoAtendimento.setText("Tipo de atentimento :"+parturient.getTipoAtendimento());
+            tipoAtendimento.setVisibility(View.VISIBLE);
+        }
+
         nomeParturiente.setText(" Nome da parturiente :"+ parturient.getFullName());
         idadeParturiente.setText(" Idade da parturiente :"+ parturient.getAge()+" anos de idade");
         dilatacaoParturiente.setText(" dilatação inicial da parturiente :"+parturient.getReason()+" cm");
         idadeDeParidadeDaParturiente.setText("opções de Paridade da parturiente é de : "+parturient.getPara()+"");
         idadeGestacionalDaParturiente.setText( "A sua idade gestacional é de "+ parturient.getGestatinalRange()+"");
 
-        if(parturient.getTime()!=null)
-            horaEntradaDaParturiente.setText(" A hora de entrada da Parturiente : "+format(parturient.getTime()));
+        if(parturient.getHoraEntrada()!=null)
+            horaEntradaDaParturiente.setText(" A hora de entrada da Parturiente : "+(parturient.getHoraEntrada()));
 
         if(parturient.isTransfered() || parturient.isTrasferidoParaForaDoHospital()){
             if(parturient.isTrasferidoParaForaDoHospital()){

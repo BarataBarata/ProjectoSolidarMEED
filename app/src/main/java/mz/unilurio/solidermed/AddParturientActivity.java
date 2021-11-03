@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -17,7 +18,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +47,7 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,20 +63,34 @@ import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.EditDoctorClass;
 import mz.unilurio.solidermed.model.IdadeGestacional;
+import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
+import mz.unilurio.solidermed.model.SelectSinal;
+import mz.unilurio.solidermed.model.SelectTransferencia;
 import mz.unilurio.solidermed.model.UserDoctor;
 
-public class AddParturientActivity extends AppCompatActivity{ //polorei
+public class AddParturientActivity extends AppCompatActivity{
+    public  static boolean isFireAlert=false;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private DBService dbService;
+    private Spinner transferencia;
+    private Spinner spinnerMotivos;
+    private Handler handlerTrans;
+    private TimerTask taskTrans;
+    private Timer timerTrans;
     private Handler handler;
     private TimerTask task;
     private Timer timer;
-    private Switch getSwitOption;
+    TextView textViewOpcoesTrasf;
+    TextView textViewOpcoesSinal;
+    private String allSelectSinal;
+    private static String origemTransferencia;
+    private static String motivosTransferencia;
     public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
     private Slider para;
     private Slider mSliderDilatation;
+    private Switch aSwitchTransfered;
 
     @NotEmpty
     @Length(min = 3, max = 10)
@@ -87,25 +106,19 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
     private NumberPicker numberPicker1;
     private NumberPicker numberPicker2;
     private Spinner spinner;
-    private Spinner spinnerSanitaria;
-    private Spinner spinnerTrasferencia;
-    private TextView textSanitario;
-    private TextView textTrasferencia;
     private TextView textEditAndRegist;
     private NotificationManagerCompat notificationManagerCompat;
     private boolean isTrasferencia;
     private boolean isEdit;
     private static  int newidParturiente=1;// por inicializacao
     private Parturient parturient;
-    private static int contTimer=60;
-    private Validator validator;
-    private boolean optionRegist;
-    private String nome="";
+    private CardView cardTransfered;
     private Switch swit;
     private int idParturiente;
     private TextView textContTimer;
     private SharedPreferences sharedPreferences;
-    private List<UserDoctor> listDoctor=new ArrayList<>();
+    private Notification notification;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,37 +127,33 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
         firebaseDatabase=FirebaseDatabase.getInstance();
 
         dbService=new DBService(this);
+        DBManager.getInstance().getUserDoctorList().removeAll(DBManager.getInstance().getUserDoctorList());
+        DBManager.getInstance().getUserDoctorList().addAll(dbService.getListDoctor());
 
-
-        notificationManagerCompat= NotificationManagerCompat.from(this);
-        textSanitario = (TextView)findViewById(R.id.textSanitario);
-        textTrasferencia = (TextView)findViewById(R.id.textTrasferencia);
-        textEditAndRegist=findViewById(R.id.txtRegisto_Edit);
-        initView();
-        inVisibility();
-        viewNumber();
-        viewnumber2();
-
-
-        getSwitOption.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+       // updadeListDoctor();
+        aSwitchTransfered=findViewById(R.id.switchTransfered);
+        cardTransfered=findViewById(R.id.card7);
+        aSwitchTransfered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                         if(isChecked){
-                             spinnerSanitaria.setVisibility(View.VISIBLE);
-                             spinnerTrasferencia.setVisibility(View.VISIBLE);
-                             textSanitario.setVisibility(View.VISIBLE);
-                             textTrasferencia.setVisibility(View.VISIBLE);
-                         }else {
-                             spinnerSanitaria.setVisibility(View.INVISIBLE);
-                             spinnerTrasferencia.setVisibility(View.INVISIBLE);
-                             textSanitario.setVisibility(View.INVISIBLE);
-                             textTrasferencia.setVisibility(View.INVISIBLE);
-                         }
-                isTrasferencia =isChecked;
-
+                if(aSwitchTransfered.isChecked()){
+                    isTrasferencia=true;
+                    cardTransfered.setVisibility(View.VISIBLE);
+                }else {
+                    isTrasferencia=false;
+                    cardTransfered.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
+
+
+
+        notificationManagerCompat= NotificationManagerCompat.from(this);
+        textEditAndRegist=findViewById(R.id.txtRegisto_Edit);
+        initView();
+        viewNumber();
+        viewnumber2();
 
         if(getIntent().getStringExtra("idParturiente")!=null){
             idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
@@ -176,7 +185,15 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
 
     @Override
     protected void onResume() {
+        verificatioTransferencia();
         super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        taskTrans.cancel();
+        timerTrans.cancel();
     }
 
     private void viewNumber() {
@@ -200,39 +217,24 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
         txtNameParturient.setText(ediParturient.getName());
         txtApelidoParturient.setText(ediParturient.getSurname());
         idade=String.valueOf(ediParturient.getAge());
-        numberPick1=Integer.parseInt(idade.charAt(0)+"");
-        numberPick2=Integer.parseInt(idade.charAt(1)+"");
+        numberPick1=(Integer.parseInt(idade))/10;
+        numberPick2=(Integer.parseInt(idade))%10;
+        System.out.println(numberPick1+ " ============="+ idade +"==============  "+numberPick2);
         numberPicker1.setValue(numberPick1);
         numberPicker2.setValue(numberPick2);
         para.setValue(ediParturient.getPara());
         mSliderDilatation.setValue((int)Float.parseFloat(ediParturient.getReason()));
-        System.out.println("  uuuuuuuuuu  "+ediParturient.getReason());
-        System.out.println("  uuuuuuuuuu  "+getPositionIdadeGestacional(ediParturient.getGestatinalRange()));
         spinner.setSelection(getPositionIdadeGestacional(ediParturient.getGestatinalRange()));
-        isTrasferencia =false; /////
+        isTrasferencia =false;
 
         if(ediParturient.isTransfered()){
+            aSwitchTransfered.setChecked(true);
             isTrasferencia =true;
-            swit.setChecked(true);
-            visibility();
-            spinnerSanitaria.setSelection(getPositionISanitaria(ediParturient.getOrigemTransferencia()));
-            spinnerTrasferencia.setSelection(getPositionMotivosTrasferencia(ediParturient.getMotivosDaTrasferencia()));
-        }
+       }
 
         parturient=ediParturient;
     }
 
-
-    int getPositionISanitaria(String sanitaria){
-        int index=0;
-        for(String list:DBManager.getInstance().getListOpcoesUnidadeSanitaria()){
-            if(list.equals(sanitaria)){
-                return index;
-            }
-            index++;
-        }
-        return  0;
-    }
 
     int getPositionIdadeGestacional(String idadeGestacional){
         int index=0;
@@ -245,22 +247,25 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
         return  0;
     }
 
-    int getPositionMotivosTrasferencia(String origem){
-        int index=0;
-        for(String list:DBManager.getInstance().getListMotivosTrasferencia()){
-            if(list.equals(origem)){
-                return index;
-            }
-            index++;
-        }
-        return  0;
-    }
-
     private void initView() {
+        transferencia = findViewById(R.id.spinnerOrigem);
+        List<String> listSanitaria = DBManager.getInstance().getListOpcoesUnidadeSanitaria();
+        ArrayAdapter<String> adapterSanitaria = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listSanitaria);
+        adapterSanitaria.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        transferencia.setAdapter(adapterSanitaria);
+
+        spinnerMotivos =findViewById(R.id.spinnerMotivos);
+        List<String> listTrasferencia = DBManager.getInstance().getListMotivosTrasferencia();
+        ArrayAdapter<String> adapterTrasferencia = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listTrasferencia);
+        adapterTrasferencia.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinnerMotivos.setAdapter( adapterTrasferencia );
+
+
+        textViewOpcoesTrasf=findViewById(R.id.viewOpcoesTransferencia);
+        textViewOpcoesSinal=findViewById(R.id.sinal);
         txtApelidoParturient=findViewById(R.id.txtNameApelido);
-        getSwitOption=findViewById(R.id.switch1);
-//        numberPicker1 = findViewById(R.id.numberPickerTwo);
-//        numberPicker2 = findViewById(R.id.numberPickerOne);
+        numberPicker1 = findViewById(R.id.numberPickerTwo);
+        numberPicker2 = findViewById(R.id.numberPickerOne);
         txtNameParturient = findViewById(R.id.txtName);
         numberPicker1 = findViewById(R.id.numberPickerOne);
         numberPicker2 = findViewById(R.id.numberPickerTwo);
@@ -274,20 +279,7 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
         ArrayAdapter<String> adapterGesta = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
         adapterGesta.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapterGesta);
-
-
-        spinnerSanitaria = findViewById(R.id.spinner_gestRangeSanitaria);
-        List<String> listSanitaria = DBManager.getInstance().getListOpcoesUnidadeSanitaria();
-        ArrayAdapter<String> adapterSanitaria = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listSanitaria);
-        adapterSanitaria.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerSanitaria.setAdapter( adapterSanitaria);
         setUpNumberPickers();
-
-        spinnerTrasferencia = findViewById(R.id.spinner_gestRangeTrasferencia);
-        List<String> listTrasferencia = DBManager.getInstance().getListMotivosTrasferencia();
-        ArrayAdapter<String> adapterTrasferencia = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listTrasferencia);
-        adapterTrasferencia.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerTrasferencia.setAdapter( adapterTrasferencia );
         setUpNumberPickers();
 
     }
@@ -336,19 +328,6 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
         finish();
     }
 
-    public void visibility(){
-        spinnerSanitaria.setVisibility(View.VISIBLE);
-        spinnerTrasferencia.setVisibility(View.VISIBLE);
-        textSanitario.setVisibility(View.VISIBLE);
-        textTrasferencia.setVisibility(View.VISIBLE);
-    }
-    public void inVisibility(){
-        spinnerSanitaria.setVisibility(View.INVISIBLE);
-        spinnerTrasferencia.setVisibility(View.INVISIBLE);
-        textSanitario.setVisibility(View.INVISIBLE);
-        textTrasferencia.setVisibility(View.INVISIBLE);
-
-    }
 
 
     public void registar(View view) {
@@ -389,17 +368,22 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
                     parturient.setPara((int) para.getValue());
                     if (isTrasferencia) {
                         parturient.setTransfered(true);
-                        parturient.setMotivosDaTrasferencia(spinnerTrasferencia.getSelectedItem().toString());
-                        parturient.setOrigemTransferencia(spinnerSanitaria.getSelectedItem().toString());
                     } else {
                         parturient.setTransfered(false);
-                        parturient.setMotivosDaTrasferencia(null);
-                        parturient.setOrigemTransferencia(null);
+                        parturient.setMotivosDaTrasferencia("");
+                        parturient.setOrigemTransferencia("");
+                    }
+                    for (Notification notifica: DBManager.getInstance().getNotifications()){
+                        System.out.println(notifica.getId()+" =="+parturient.getId());
+                        if(Integer.parseInt(notifica.getId())==idParturiente){
+                            notifica.setNome(parturient.getName()+" "+parturient.getSurname());
+                        }
                     }
                     verificationDilatation(parturient,String.valueOf(mSliderDilatation.getValue()));
+
                     //parturient.setReason((int)mSliderDilatation.getValue()+"");
-                    databaseReference = firebaseDatabase.getReference("Parturiente");
-                    databaseReference.child(parturient.getId() + "").setValue(parturient);
+                    //databaseReference = firebaseDatabase.getReference("Parturiente");
+                    //databaseReference.child(parturient.getId() + "").setValue(parturient);
 
                     //DBManager.getInstance().updateQueue((int) mSliderDilatation.getValue());
                     Toast.makeText(getApplicationContext(), " Parturiente Editado com sucesso", Toast.LENGTH_LONG).show();
@@ -483,27 +467,31 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                updadeListDoctor();
 
                 if(verificationNumberName(txtNameParturient) && verificationNumberName(txtApelidoParturient)  && verificatioNull(txtNameParturient)&&  verificatioNull(txtApelidoParturient)) {
                     String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
                     parturient = new Parturient();
-
-
                     if (!isExistParturiente(parturient)) {
                         parturient.setTimerEmergence(dbService.getHourasAlert()*3600+dbService.getMinutesAlert()*60);
                         alertaNotification(parturient);
-                        parturient.setId(newidParturiente++);
+                        parturient.setId(++newidParturiente);
                         parturient.setName(upCaseName(txtNameParturient.getText().toString()));
                         parturient.setSurname(upCaseName(txtApelidoParturient.getText().toString()));
                         parturient.setFullName(upCaseName(txtNameParturient.getText().toString()));
                         parturient.setAge(Integer.parseInt(age));
                         parturient.setReason((int)mSliderDilatation.getValue()+"");
-                        parturient.setTransfered(isTrasferencia);
+                       if(isTrasferencia){
+                            parturient.setTransfered(true);
+                            parturient.setOrigemTransferencia(transferencia.getSelectedItem().toString());
+                            parturient.setMotivosDaTrasferencia(spinnerMotivos.getSelectedItem().toString());
+                        }else {
+                            parturient.setOrigemTransferencia("");
+                            parturient.setMotivosDaTrasferencia("");
+                            parturient.setTransfered(false);
+                        }
+
                         parturient.setPara((int) para.getValue());
                         parturient.setHoraEntrada(format(new Date()));
-                        parturient.setMotivosDaTrasferencia(spinnerSanitaria.getSelectedItem().toString());
-                        parturient.setOrigemTransferencia( spinnerTrasferencia.getSelectedItem().toString());
                         parturient.setGestatinalRange(spinner.getSelectedItem()+"");
                         parturient.setHoraParte(Integer.parseInt(formatHoras(new Date())));
                         parturient.setMinutoParte(Integer.parseInt(formatMinuto(new Date())));
@@ -511,16 +499,44 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
                         parturient.setHoraAtendimento(format(new Date()));
                         parturient.setDestinoTrasferencia(" ");
                         parturient.setMotivosDestinoDaTrasferencia(" ");
-                        //ordeList();
-                        //ordeList();
-                        dbService.addParturiente(parturient);
-                        dbService.updadeListParturiente();
-                        progressBar();
-                        Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
-                    } else {
+
+                        SelectSinal selectSinal=new SelectSinal();
+                        if(!selectSinal.allNameselect.equals("Nenhum")){
+                            Notification notification =new Notification();
+                            notification.setColour(Color.rgb(248, 215,218));
+                            notification.setNome(parturient.getName()+" "+parturient.getSurname());
+                            notification.setIdParturiente(newidParturiente+""+new Date());
+                            notification.setInProcess(false);
+                            notification.setTime(format(new Date()));
+                            notification.setOpen(true);
+                            notification.setId(newidParturiente+"");
+                            notification.setInProcess(false);
+                            DBManager.getInstance().getNotifications().add(notification);
+                            DBManager.getInstance().getAuxlistNotificationParturients().add(parturient);
+                            Toast.makeText(getApplicationContext(), " Parturiente Enviando para lista de Notificoes", Toast.LENGTH_LONG).show();
+                            selectSinal.allNameselect="Nenhum";
+                            for(UserDoctor userDoctor: DBManager.getInstance().getUserDoctorList()){
+                                sendSMS(userDoctor.getContacto(),parturient.getName()+" "+parturient.getSurname()+" Necessita de cuidados medico");
+                            }
+                            finish();
+                        }else{
+                            ordeList();
+                            initializeCountDownTimer(parturient,dbService.getTimerDilatation(parturient.getReason()));
+//                            initializeCountDownTimer(parturient,dbService.getTimerDilatation(parturient.getReason()));
+                            DBManager.getInstance().getParturients().add(parturient);
+                            DBManager.getInstance().getAuxlistNotificationParturients().add(parturient);
+                            ordeList();
+                            progressBar();
+                            Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
+
+                        }
+
+
+                        //dbService.addParturiente(parturient);
+                        //dbService.updadeListParturiente();
+                   } else {
                            alertaParturienteExist();
                     }
-                    swit.setChecked(false);
                 }else{
                     Toast.makeText(getApplicationContext(), " O Nome não pode conter números", Toast.LENGTH_LONG).show();
                 }
@@ -660,9 +676,6 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
         return dateFormat.format(date);
     }
 
-    public List<UserDoctor> getListUserDoctor(){
-        return listDoctor;
-    }
 
 
     private void updadeListDoctor() {
@@ -679,7 +692,8 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            listDoctor=dbService.getListDoctor();
+
+                           // System.out.println(" lista=============  : "+listDoctor);
                         } catch (Exception e) {
                             // error, do something
                         }
@@ -701,8 +715,9 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
                    parturient.isEditDilatation=true;
               }
           }
-
      }
+
+
 
     }
 
@@ -755,4 +770,165 @@ public class AddParturientActivity extends AppCompatActivity{ //polorei
         return dateFormat.format(date);
     }
 
+    public void selectSinaisEmergencia(View view) {
+        SelectSinal selectSinal= new SelectSinal();
+        selectSinal.show(getSupportFragmentManager(), "Selecionar");
+    }
+
+    public void selectTransferencia(View view) {
+        SelectTransferencia selectTransferencia= new SelectTransferencia();
+        selectTransferencia.show(getSupportFragmentManager(), "Selecionar Transferencia");
+    }
+
+
+    private void verificatioTransferencia() {
+
+        handlerTrans = new Handler();
+        timerTrans = new Timer();
+
+        taskTrans = new TimerTask() {
+            @Override
+            public void run() {
+                SelectTransferencia e =new SelectTransferencia();
+                SelectSinal selectSinal=new SelectSinal();
+
+                handlerTrans.post(new Runnable() {
+                    public void run() {
+                        try {
+                         if(e.isAcceptTransference){
+                                e.isAcceptTransference=false;
+                                origemTransferencia=e.opcaoSanitaria;
+                                motivosTransferencia=e.motivoTransferencia;
+                                textViewOpcoesTrasf.setText("Origem da transferencia : "+origemTransferencia+ ", Motivos da transferencia : "+motivosTransferencia);
+                            }
+                         if(selectSinal.isSelectetOptionSanitaria){
+                             selectSinal.isSelectetOptionSanitaria=false;
+                             allSelectSinal=selectSinal.allNameselect;
+                             textViewOpcoesSinal.setText(allSelectSinal);
+                         }
+                        } catch (Exception e) {
+                            // error, do something
+                        }
+                    }
+                });
+            }
+        };
+        timerTrans.schedule(taskTrans, 0, 500);  // interval of one minute
+
+    }
+    int getPositionISanitaria(String sanitaria){
+        int index=0;
+        for(String list:DBManager.getInstance().getListOpcoesUnidadeSanitaria()){
+            if(list.equals(sanitaria)){
+                return index;
+            }
+            index++;
+        }
+        return  0;
+    }
+    int getPositionMotivosTrasferencia(String origem){
+        int index=0;
+        for(String list:DBManager.getInstance().getListMotivosTrasferencia()){
+            if(list.equals(origem)){
+                return index;
+            }
+            index++;
+        }
+        return  0;
+    }
+
+    private void sendSMS(String phoneNumber, String message) {
+        phoneNumber = phoneNumber.trim();
+        message = message.trim();
+        System.out.println(message);
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+
+        } catch (Exception e) {
+            Log.i("EXPECTION SMS", e.getMessage());
+        }
+    }
+
+ // criando notificacao
+
+    void sendNotification(Parturient parturient){
+        notification = new Notification();
+        notification.setColour(Color.YELLOW+Color.BLACK);
+        notification.setNome(parturient.getName()+" "+parturient.getSurname());
+        notification.setIdParturiente(parturient.getId()+""+new Date());
+        notification.setTime(format(new Date()));
+        notification.setOpen(true);
+        notification.setId(parturient.getId()+"");
+        notification.setInProcess(false);
+        DBManager.getInstance().getNotifications().add(notification);
+    }
+
+    public void initializeCountDownTimer(Parturient parturient,int seconds) {
+
+        new CountDownTimer(seconds*1000+1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+
+                int hours = seconds / (60 * 60);
+                int tempMint = (seconds - (hours * 60 * 60));
+                int minutes = tempMint / 60;
+                seconds = tempMint - (minutes * 60);
+
+                parturient.setTempoRes("Tempo Restante : " + String.format("%02d", hours)
+                        + ":" + String.format("%02d", minutes)
+                        + ":" + String.format("%02d", seconds));
+            }
+
+            public void onFinish() {
+                parturient.setTempoRes("Alerta Disparado");
+                isFireAlert=true;
+                sendNotification(parturient);
+                alertaEmergence(parturient,dbService.getTimerAlertEmergenceDilatation());
+            }
+        }.start();
+    }
+
+    public void alertaEmergence(Parturient parturient,int seconds) {
+
+        new CountDownTimer(seconds * 1000 + 1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+
+                int hours = seconds / (60 * 60);
+                int tempMint = (seconds - (hours * 60 * 60));
+                int minutes = tempMint / 60;
+                seconds = tempMint - (minutes * 60);
+
+            }
+
+            public void onFinish() {
+                isFireAlert=true;
+                removParturiente(parturient);
+                sendMensageEmergence();
+            }
+        }.start();
+    }
+
+    public void removParturiente(Parturient prt){
+        for(Parturient parturient: DBManager.getInstance().getParturients()){
+            if(parturient.getId()==prt.getId()){
+                DBManager.getInstance().getParturients().remove(parturient);
+                break;
+            }
+        }
+        isFireAlert=true;
+
+    }
+    private void sendMensageEmergence(){
+            notification.setColour(Color.rgb(248, 215,218));
+            String mensagem=notification.getMessage() +": Necessita  de cuidados medicos";
+            System.out.println(mensagem);
+            for(UserDoctor userDoctor: dbService.getListDoctor()){
+                sendSMS(userDoctor.getContacto(),mensagem);
+            }
+
+    }
 }

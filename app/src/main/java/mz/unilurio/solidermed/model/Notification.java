@@ -10,6 +10,7 @@ public final class Notification implements Parcelable {
     public static final int TWO_INTERVAL = 1;
     private boolean inProcess;
     private String id;
+    private String idParturiente;
     private int color;
     private String message;
     private String time;
@@ -37,6 +38,14 @@ public final class Notification implements Parcelable {
         id = in.readString();
         message = in.readString();
         isOpen = in.readByte() != 0;
+    }
+
+    public String getIdParturiente() {
+        return idParturiente;
+    }
+
+    public void setIdParturiente(String idParturiente) {
+        this.idParturiente = idParturiente;
     }
 
     public void setId(String id) {

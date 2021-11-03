@@ -21,11 +21,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class ViewAtendimentoActivity extends AppCompatActivity {
     private static int idParturiente;
+    private DBService dbService;
 
 
     private TextView textNomeParturiente;
@@ -38,18 +40,17 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     private  boolean optionCheckBox=false;
     private  boolean optionCheckBoxTrasfered=false;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_antendimento);
         textNomeParturiente= findViewById(R.id.nomeParturienteView);
-
+        dbService=new DBService(this);
         checkBox1=findViewById(R.id.txt1);
         checkBox1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                aSwitchProcess.setChecked(false);
                 optionCheckBox=checkBox1.isChecked();
                 checkBoxTextOption=checkBox1.getText().toString();
                 checkBox2.setChecked(false);
@@ -61,6 +62,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         checkBox2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                aSwitchProcess.setChecked(false);
                 optionCheckBox=checkBox2.isChecked();
                 checkBoxTextOption=checkBox2.getText().toString();
                 checkBox5.setChecked(false);
@@ -72,6 +74,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         checkBox5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                aSwitchProcess.setChecked(false);
                 optionCheckBoxTrasfered=checkBox5.isChecked();
                 optionCheckBox=checkBox5.isChecked();
                 checkBox2.setChecked(false);
@@ -84,26 +87,27 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
              optionSwitch=isChecked;
+             if(aSwitchProcess.isChecked()){
+                 checkBox2.setChecked(false);
+                 checkBox5.setChecked(false);
+                 checkBox1.setChecked(false);
+             }
             }
         });
 
         if(getIntent().getStringExtra("idParturiente")!=null){
            idParturiente=Integer.parseInt(getIntent().getStringExtra("idParturiente"));
+
            for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
-                if(parturient.getId()==idParturiente){
+               System.out.println(parturient.getId()+" : ============== : "+idParturiente);
+               if(parturient.getId()==idParturiente){
                     textNomeParturiente.setText(parturient.getName()+ " "+parturient.getSurname());
                     newParturient=parturient;
+                    aSwitchProcess.setChecked(parturient.isInProcess());
                     break;
                 }
             }
-
         }
-
-//        if(getIntent().getStringExtra("idParturienteNotification")!=null){
-//            System.out.println(" ======================== vem do notificacao");
-//            optionSelectParturienteNotification=true;
-//            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturienteNotification"));
-//        }
 
     }
     public  String oUpperFirstCase(String string){
@@ -282,9 +286,9 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         dialog.setIcon(getDrawable(R.drawable.mulhergravidabom2));
 
         dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 progressBar();
             }
 

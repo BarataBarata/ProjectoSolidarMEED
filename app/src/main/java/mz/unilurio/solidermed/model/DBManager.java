@@ -12,7 +12,10 @@ import mz.unilurio.solidermed.R;
 public class DBManager {
 
     private  static  int idDilatation=6;
+
     private static DBManager ourInstance = null;
+    private static List<UserDoctor> listDoctor=new ArrayList<>();
+    private List<String> listIdParturiente=new ArrayList<>();
     private List<Parturient> auxlistNotificationParturients=new ArrayList<>();
     private List<DilatationAndTimer> dilatationAndTimerList=new ArrayList<>();
     private List<Integer> integerListLimitDilatation=new ArrayList<>();
@@ -72,11 +75,17 @@ public class DBManager {
         return ourInstance;
     }
 
+    public List<UserDoctor> getUserDoctorList() {
+        return userDoctorList;
+    }
+
     private void intDilatationAndTimer() {
        // dilatationAndTimerList.add(new DilatationAndTimer(4,0,1));
     }
 
-
+    public List<String> getListIdParturiente() {
+        return listIdParturiente;
+    }
 
     public List<DilatationAndTimer> getDilatationAndTimerList() {
         return dilatationAndTimerList;

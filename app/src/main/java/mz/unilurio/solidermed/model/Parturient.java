@@ -1,5 +1,7 @@
 package mz.unilurio.solidermed.model;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.os.Parcel;
@@ -16,14 +18,15 @@ import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.AddParturientActivity;
+import mz.unilurio.solidermed.MainActivity;
 
-public class Parturient extends AppCompatActivity implements Parcelable {
+public class Parturient implements Parcelable {
 
    //............horaparte..........//
    private  int horaParte;
    private  int minutoParte;
    private  int segundoParte;
-   private  static int idPassAll;
+   private  static String idPassAll;
    ///.............................///
     private Notification notifications  = new Notification();
     public boolean isEditDilatation;
@@ -58,7 +61,7 @@ public class Parturient extends AppCompatActivity implements Parcelable {
     private String destinoTrasferencia;
     private String motivosDestinoDaTrasferencia;
     private String viewTempo;
-    private String tipoAtendimento;
+    private String tipoAtendimento="";
     private Notification notification= new Notification();;
     private Object context;
 
@@ -113,11 +116,11 @@ public class Parturient extends AppCompatActivity implements Parcelable {
     }
 
 
-    public static int getIdPassAll() {
+    public static String getIdPassAll() {
         return idPassAll;
     }
 
-    public static void setIdPassAll(int idPassAll) {
+    public static void setIdPassAll(String idPassAll) {
         Parturient.idPassAll = idPassAll;
     }
 
@@ -317,14 +320,6 @@ public class Parturient extends AppCompatActivity implements Parcelable {
         this.age = age;
     }
 
-//    public void setAge(int age) throws IllegalArgumentException{
-//        if ((age < 12) || (age > 50)){
-//            throw new IllegalArgumentException("A idade deve estar compreendida entre os 12 e os 50 anos");
-//        }else{
-//            this.age = age;
-//        }
-//    }
-
     public boolean isTransfered() {
         return isTransfered;
     }
@@ -348,15 +343,6 @@ public class Parturient extends AppCompatActivity implements Parcelable {
     public void setPara(int para) {
         this.para = para;
     }
-
-//    public void setPara(int para) throws IllegalArgumentException{
-//        if((para < 0) || (para > 20)){
-//            throw new IllegalArgumentException("A opção de paridade (PARA) deve estar compreendida entre 0 e 20");
-//        }else {
-//            this.para = para;
-//        }
-//    }
-
     public String getGestatinalRange() {
         return gestatinalRange;
     }
@@ -382,99 +368,13 @@ public class Parturient extends AppCompatActivity implements Parcelable {
     }
 
 
-    public void initializeCountDownTimer(int seconds) {
-
-        new CountDownTimer(seconds*1000+1000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
-
-                int hours = seconds / (60 * 60);
-                int tempMint = (seconds - (hours * 60 * 60));
-                int minutes = tempMint / 60;
-                seconds = tempMint - (minutes * 60);
-
-                setTempoRes("Tempo Restante : " + String.format("%02d", hours)
-                        + ":" + String.format("%02d", minutes)
-                        + ":" + String.format("%02d", seconds));
-
-                timerAux=minutes*60+hours*3600+seconds;
-                if(cancelCountDownTimer){
-                    startCountDownTimer=true;
-                    cancelCountDownTimer=false;
-                    cancel();
-                    setTempoRes("Cancelado...");
-
-                }
-                if(isEditDilatation){
-                    isEditDilatation=false;
-                    cancel();
-                    initializeCountDownTimer(initializeTimerAlert);
-                }else {
-                }
-               }
-
-            public void onFinish() {
-                alertaEmergence(timerEmergence);
-                setTempoRes("Alerta Disparado");
-                sendNotification();
-            }
-        }.start();
-    }
 
     public void setStartCountDownTimer(){
         if(startCountDownTimer){
             startCountDownTimer=false;
-            initializeCountDownTimer(timerAux);
+            //initializeCountDownTimer(timerAux);
         }
 
-    }
-    public void alertaEmergence(int seconds) {
-
-        new CountDownTimer(seconds * 1000 + 1000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
-
-                int hours = seconds / (60 * 60);
-                int tempMint = (seconds - (hours * 60 * 60));
-                int minutes = tempMint / 60;
-                seconds = tempMint - (minutes * 60);
-
-            }
-
-            public void onFinish() {
-                setAlertaTwo(true);
-                setIdPassAll(id);
-                removParturiente();
-                sendMensageEmergence();
-
-            }
-        }.start();
-    }
-
-    private void sendMensageEmergence() {
-     if(!this.inProcess){
-         List<UserDoctor> list= new AddParturientActivity().getListUserDoctor();
-         String mensagem=name+ "  "+ surname +": Necessita  de cuidados medicos";
-         System.out.println(mensagem);
-         for(UserDoctor userDoctor: list){
-             sendSMS(userDoctor.getContacto(),mensagem);
-         }
-     }
-    }
-
-    private void sendSMS(String phoneNumber, String message) {
-        phoneNumber = phoneNumber.trim();
-        message = message.trim();
-
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-
-        } catch (Exception e) {
-            Log.i("EXPECTION SMS", e.getMessage());
-        }
     }
 
     public String getTempoRest() {
@@ -500,17 +400,6 @@ public class Parturient extends AppCompatActivity implements Parcelable {
         return dateFormat.format(date);
     }
 
-
-    void sendNotification(){
-        notification.setColour(Color.YELLOW+Color.BLACK);
-        notification.setNome(name+" "+surname);
-        notification.setId(id+"");
-        notification.setInProcess(inProcess);
-        notification.setTime(format(new Date()));
-        notification.setOpen(true);
-        notification.setInProcess(false);
-        DBManager.getInstance().addAuxListNotification(notification);
-    }
     private String format(Date date){
         DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
         return dateFormat.format(date);
@@ -521,16 +410,7 @@ public class Parturient extends AppCompatActivity implements Parcelable {
         return  auxString;
     }
 
-    public void removParturiente(){
 
-        for(Parturient parturient: DBManager.getInstance().getParturients()){
-            if(parturient.getId()==id){
-                DBManager.getInstance().getParturients().remove(parturient);
-                break;
-            }
-        }
-
-    }
 
     public boolean isAlertaTwo() {
         return isAlertaTwo;

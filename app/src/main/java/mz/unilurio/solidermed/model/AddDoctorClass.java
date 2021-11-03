@@ -49,6 +49,8 @@ public class AddDoctorClass extends AppCompatDialogFragment {
                            if(validation(editNome)){
                                if(!dbService.isTellDoctor(editContact.getText().toString())) {
                                    dbService.addDoctor(editUser.getText().toString(),editPassword.getText().toString(),editContact.getText().toString(),upCaseName(editNome.getText().toString()));
+                                   DBManager.getInstance().getUserDoctorList().removeAll(DBManager.getInstance().getUserDoctorList());
+                                   DBManager.getInstance().getUserDoctorList().addAll(dbService.getListDoctor());
                                    isAdd = true;
                                    Toast.makeText( getContext(), " Usuario registado com sucesso", Toast.LENGTH_SHORT).show();
 

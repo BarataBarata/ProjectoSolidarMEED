@@ -4,388 +4,442 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
     tools:context=".AddParturientActivity">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.Projecto_S.AppBarOverlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="finish"
-                android:src="@drawable/back_24" />
-
-            <TextView
-                android:textSize="20dp"
-                android:id="@+id/txtRegisto_Edit"
-                android:textStyle="bold"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:text="Registo"
-                android:textColor="@color/white" />
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
     <ScrollView
-        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="58dp"
-        app:layout_anchor="@+id/scrollView2"
-        app:layout_anchorGravity="center">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:background="@color/ic_launcher_background"
                 android:layout_width="match_parent"
-                android:layout_height="917dp"
-                android:layout_margin="4dp"
-                app:layout_anchor="@+id/constraintLayout"
-                app:layout_anchorGravity="center"
-                app:layout_constraintBottom_toBottomOf="parent">
-
-
-                <EditText
-                    android:textStyle="bold|italic"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:id="@+id/txtName"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="16dp"
-                    android:ems="10"
-                    android:hint=" Nome completo : "
-                    android:inputType="textMultiLine"
-                    android:textSize="20dp"
-                    app:errorEnabled="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="finish"
+                        android:src="@drawable/back_24" />
+
+                    <TextView
+                        android:textSize="20dp"
+                        android:id="@+id/txtRegisto_Edit"
+                        android:textStyle="bold"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:text="Registo"
+                        android:textColor="@color/black" />
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
 
 
-                <EditText
-                    android:textStyle="bold|italic"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:id="@+id/txtNameApelido"
+            <ImageView
+                android:src="@drawable/mulhergravidabom2"
+                android:layout_marginTop="30dp"
+                android:layout_below="@id/appBarLayout"
+                android:id="@+id/imageParturiente"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"/>
+            <TextView
+                android:gravity="center"
+                android:text="Registar um novo parturiente"
+                android:layout_below="@id/imageParturiente"
+                android:id="@+id/txtTitlePartu"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:textSize="19dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="1dp"
+                android:layout_below="@id/txtTitlePartu"
+                android:id="@+id/card1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="@color/white">
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="16dp"
-                    android:ems="10"
-                    android:hint=" Apelido :"
-                    android:inputType="textMultiLine"
-                    android:textSize="20dp"
-                    app:errorEnabled="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtName" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="368dp"
-                    android:layout_height="22dp"
-                    android:layout_marginTop="88dp"
-                    android:text="Idade"
-                    android:textAlignment="center"
-                    android:textSize="14dp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.542"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtName" />
-
-                <NumberPicker
-                    android:id="@+id/numberPickerTwo"
-                    android:layout_width="71dp"
-                    android:layout_height="145dp"
-                    android:layout_margin="20dp"
-                    android:layout_marginStart="235dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="319dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.603"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-                <NumberPicker
-                    android:id="@+id/numberPickerOne"
-                    android:layout_width="68dp"
-                    android:layout_height="145dp"
-                    android:layout_margin="20dp"
-                    android:layout_marginStart="235dp"
-                    android:layout_marginEnd="319dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.372"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Dilatação cervical"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/numberPickerTwo" />
-
-                   <TextView
-                    android:id="@+id/textPara"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Opções de paridade (PARA)"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayoutPara"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_marginStart="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/id1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textPara">
-
-
-                    <com.google.android.material.slider.Slider
-                        android:id="@+id/para"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_marginTop="15dp"
+                        android:id="@+id/txtName"
+                        android:hint="Nome do parturiente"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:paddingLeft="0dp"
-                        android:paddingTop="40dp"
-                        android:paddingRight="0dp"
-                        android:stepSize="1"
-                        android:valueFrom="1"
-                        android:valueTo="15"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:id="@+id/txtNameApelido"
+                        android:layout_marginTop="25dp"
+                        android:layout_below="@id/txtName"
+                        android:hint="Apelido da parturiente"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="16dp"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:gravity="center"
+                android:textSize="17sp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:text="Idade"
+                android:textStyle="bold"
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/card1"
+                android:id="@+id/txtTitlePart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_below="@id/txtTitlePart"
+                android:id="@+id/card2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="@color/white">
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Idade gestacional"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/constraintLayoutPara"
-                    app:layout_constraintStart_toStartOf="@+id/constraintLayoutPara"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayoutPara" />
+                <RelativeLayout
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textSanitario"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="Opções de Unidades Sanitário"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/switch1" />
+                    <NumberPicker
+                        android:solidColor="#E8F1F1"
+                        android:id="@+id/numberPickerOne"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/textTrasferencia"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Opções de Motivos de transferência"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/spinner_gestRangeSanitaria"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/spinner_gestRangeSanitaria"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_gestRangeSanitaria" />
+                    <NumberPicker
+                        android:solidColor="#F0F4F3"
+                        android:layout_toRightOf="@id/numberPickerOne"
+                        android:id="@+id/numberPickerTwo"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/txtTitle2"
+                android:gravity="center"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:text="Dilatação/paridade"
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/card2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_below="@id/txtTitle2"
+                android:id="@+id/card3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="@color/white">
+
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+                     <TextView
+                        android:layout_marginStart="16dp"
+                        android:text="Dilatação cervical"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/txtTitledilatacao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+<!--                    <RelativeLayout-->
+<!--                        android:id="@+id/rec1"-->
+<!--                        android:layout_below="@id/txtTitledilatacao"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content">-->
+
+                        <com.google.android.material.slider.Slider
+                            app:tickVisible="true"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="20dp"
+                            android:id="@+id/dilatation"
+                            android:layout_marginEnd="60dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:paddingLeft="0dp"
+                            android:paddingTop="40dp"
+                            android:paddingRight="0dp"
+                            android:stepSize="1"
+                            android:valueFrom="0"
+                            android:valueTo="10" />
+
+                        <TextView
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_gravity="end"
+                            android:background="@drawable/circle"
+                            android:layout_marginStart="16dp"
+                            android:id="@+id/id0"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_marginEnd="16dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/txtOpc"
+                        android:text="Opções de paridade"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="65dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/para"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="75dp"
+                            android:layout_marginEnd="60dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_toEndOf="@id/id1"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:paddingLeft="0dp"
+                            android:paddingTop="40dp"
+                            android:paddingRight="0dp"
+                            android:stepSize="1"
+                            android:valueFrom="0"
+                            android:valueTo="10" />
+
+                        <TextView
+                            android:layout_marginTop="75dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_gravity="end"
+                            android:background="@drawable/circle"
+                            android:layout_marginStart="16dp"
+                            android:id="@+id/id1"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_alignTop="@id/para"
+                            android:layout_marginEnd="16dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+<!--                </RelativeLayout>-->
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/idadeGst"
+                android:gravity="center"
+                android:text="Idade gestacional"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/card3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginBottom="16dp"
+                android:layout_below="@id/idadeGst"
+                android:id="@+id/card4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="@color/white">
 
                 <Spinner
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginStart="16dp"
                     android:id="@+id/spinner_gestRange"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="@+id/textView3"
                     app:layout_constraintStart_toStartOf="@+id/textView3"
                     app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-                <Spinner
-                    android:id="@+id/spinner_gestRangeSanitaria"
-                    android:layout_width="0dp"
-                    android:layout_height="28dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toEndOf="@+id/textSanitario"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textSanitario"
-                    app:layout_constraintTop_toBottomOf="@+id/textSanitario" />
+            </androidx.cardview.widget.CardView>
 
-                <Spinner
-                    android:id="@+id/spinner_gestRangeTrasferencia"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toEndOf="@+id/textTrasferencia"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textTrasferencia"
-                    app:layout_constraintTop_toBottomOf="@+id/textTrasferencia" />
+            <TextView
+                android:id="@+id/txtTitleSinais"
+                android:gravity="center"
+                android:text="Sinais de patologia"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/card4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.cardview.widget.CardView
+                android:onClick="selectSinaisEmergencia"
+                android:layout_marginBottom="16dp"
+                android:layout_below="@id/txtTitleSinais"
+                android:id="@+id/card5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/sinal"
+                    android:text="Nenhum..."
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:textSize="17dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:src="@drawable/more"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/txtTrans"
+                android:gravity="center"
+                android:text="Transferência"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                android:layout_below="@+id/card5"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginBottom="16dp"
+                android:layout_below="@id/txtTrans"
+                android:id="@+id/card6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+              >
+                <TextView
+                    android:layout_marginEnd="16dp"
+                    android:id="@+id/viewOpcoesTransferencia"
+                    android:text="Parturiente transferida"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="17dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <Switch
-                    android:id="@+id/switch1"
+                    android:id="@+id/switchTransfered"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_gravity="end"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Transferido"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/spinner_gestRange"
-                    app:layout_constraintHorizontal_bias="0.502"
-                    app:layout_constraintStart_toStartOf="@+id/spinner_gestRange"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_gestRange" />
+                    android:layout_height="wrap_content"/>
+            </androidx.cardview.widget.CardView>
 
-                <ProgressBar
-                    android:id="@+id/prgressBar"
+
+            <RelativeLayout
+                android:layout_marginBottom="82dp"
+                android:layout_below="@id/card6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:visibility="invisible"
+                    android:layout_marginBottom="16dp"
+                    android:id="@+id/card7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toTopOf="@+id/switch1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:layout_editor_absoluteX="-16dp" />
+                    android:layout_marginTop="13dp"
+                    android:background="@color/white">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout2"
-                    android:layout_width="0dp"
-                    android:layout_height="47dp"
-                    android:layout_marginStart="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/id0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-                    <com.google.android.material.slider.Slider
-                        android:id="@+id/dilatation"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:paddingLeft="0dp"
-                        android:paddingTop="40dp"
-                        android:paddingRight="0dp"
-                        android:stepSize="1"
-                        android:valueFrom="0"
-                        android:valueTo="10"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView7"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Registo de Parturiente"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.497"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+                        <TextView
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:id="@+id/txtOrig"
+                            android:text="Origem da transferência "
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
 
-                <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="34dp"
-                    android:layout_height="31dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/mulhergravidabom2" />
+                        <Spinner
+                            android:layout_below="@id/txtOrig"
+                            android:id="@+id/spinnerOrigem"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginStart="16dp"
+                            android:layout_below="@id/spinnerOrigem"
+                            android:id="@+id/txtMot"
+                            android:text="Motivos da transferência "
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <Spinner
+                            android:layout_below="@id/txtMot"
+                            android:id="@+id/spinnerMotivos"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/id1"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/rounded_textview"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@android:color/white"
-                    android:textSize="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.611"
-                    tools:ignore="MissingConstraints" />
+            </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/id0"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/rounded_textview"
-                    android:gravity="center"
-                    android:text="  0  "
-                    android:textColor="@android:color/white"
-                    android:textSize="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.526"
-                    tools:ignore="MissingConstraints" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </LinearLayout>
-
+        </RelativeLayout>
     </ScrollView>
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab2"
         style="@style/TextAppearance.AppCompat"

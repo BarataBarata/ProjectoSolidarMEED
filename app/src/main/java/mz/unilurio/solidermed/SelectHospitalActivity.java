@@ -41,10 +41,10 @@ public class SelectHospitalActivity extends AppCompatActivity {
             dbService.addIdadeGestacional("Inferior a 28 semanas");
             dbService.addIdadeGestacional("De 28 a 33 semanas");
             dbService.addIdadeGestacional("De 34 a 36 semanas");
-            dbService.addIdadeGestacional("Maior ou igual a 36 semanas");
+            dbService.addIdadeGestacional("Maior ou igual a 37 semanas");
 
-            //dbService.addDilatation(1, 9, 0);
-            dbService.addDilatation(1, 0, 1);
+            dbService.addDilatation(1, 9, 0);
+            dbService.addDilatation(0, 0, 1);
             dbService.addDilatation(2, 8, 0);
             dbService.addDilatation(3, 7, 0);
             dbService.addDilatation(4, 9, 0);

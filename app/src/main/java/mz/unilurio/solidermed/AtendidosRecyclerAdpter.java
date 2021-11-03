@@ -65,7 +65,6 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
                 holder.tipoAtendimento.setText("Tipo de atendimento ( " + parturient.getTipoAtendimento() + " )");
             }
         }
-        System.out.println("  pppppppppppppp: === "+parturient.getFullName());
         holder.txtHoraAtendido.setText("Saida : "+oUpperFirstCase(parturient.getHoraAtendimento()));
         holder.textCircle.setText((parturient.getName().charAt(0)+""));
         holder.txtNameParturient.setText(oUpperFirstCase(parturient.getName()+ " "+ parturient.getSurname()));

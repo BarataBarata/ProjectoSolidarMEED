@@ -25,9 +25,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-
-
         <activity android:name=".Activity_Confirmar_Registo" />
         <activity android:name=".Activity_RegistarUsuario" />
         <activity android:name=".MainActivity_Users_List" />
@@ -109,7 +108,6 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar">
-
         </activity>
     </application>
 
