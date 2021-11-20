@@ -168,7 +168,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ViewDadosPessoaisActivity.class);
-                    intent.putExtra("idParturienteAtendidos", +originalListParturientes.get(currentPosition).getId()+"");
+                    intent.putExtra("idParturienteAtendidos", originalListParturientes.get(currentPosition).getIdAuxParturiente()+"");
                     context.startActivity(intent);
                 }
             });

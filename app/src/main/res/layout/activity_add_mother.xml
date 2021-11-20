@@ -29,7 +29,6 @@
                         android:layout_height="wrap_content"
                         android:onClick="finish"
                         android:src="@drawable/back_24" />
-
                     <TextView
                         android:textSize="20dp"
                         android:id="@+id/txtRegisto_Edit"
@@ -320,7 +319,7 @@
                     android:text="Nenhum..."
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="50dp"
                     android:layout_marginStart="16dp"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:textSize="17dp"
@@ -331,8 +330,8 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_gravity="end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
 
             </androidx.cardview.widget.CardView>
 

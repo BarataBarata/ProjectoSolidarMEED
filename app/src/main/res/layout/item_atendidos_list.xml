@@ -30,7 +30,7 @@
 
 
         <TextView
-
+           android:visibility="invisible"
             android:id="@+id/textViewOptionsParturienteAtenditos"
             android:layout_width="30dp"
             android:layout_height="40dp"

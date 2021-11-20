@@ -1,51 +1,30 @@
 package mz.unilurio.solidermed.model;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Color;
-import android.os.CountDownTimer;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.telephony.SmsManager;
-import android.util.Log;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
-import mz.unilurio.solidermed.AddParturientActivity;
-import mz.unilurio.solidermed.MainActivity;
+public class Parturient {
 
-public class Parturient implements Parcelable {
-
-   //............horaparte..........//
-   private  int horaParte;
-   private  int minutoParte;
-   private  int segundoParte;
-   private  static String idPassAll;
-   ///.............................///
-    private Notification notifications  = new Notification();
+    //............horaparte..........//
+    private int horaParte;
+    private int diaRegisto;
+    private int minutoParte;
+    private String idAuxParturiente;
+    private int segundoParte;
+    private static String idPassAll;
+    private boolean isDisparo;
+    ///.............................///
     public boolean isEditDilatation;
     private boolean trasferirParturiente;
     private boolean isTrasferidoParaForaDoHospital;
     private int id;
     private String fullName;
-    DBService dbService;
-    int timerAux;
     public boolean startCountDownTimer;
     public boolean cancelCountDownTimer;
     private boolean inProcess;
-    private static boolean isAlertaTwo;
     private static int timerEmergence;
     private String horaEntrada;
-    private String horaAlerta;
     private String horaAtendimento;
     private String name;
-    private int initializeTimerAlert;
     private String surname;
     private int age;
     private int para;
@@ -54,16 +33,13 @@ public class Parturient implements Parcelable {
     private boolean isTransfered;
     private boolean disparo;
     private String reason;
-    private int numeroCama;
-    private boolean isStartCont;
     private String origemTransferencia;
     private String motivosDaTrasferencia;
     private String destinoTrasferencia;
     private String motivosDestinoDaTrasferencia;
     private String viewTempo;
-    private String tipoAtendimento="";
-    private Notification notification= new Notification();;
-    private Object context;
+    private String tipoAtendimento = "";
+
 
     public Parturient() {
     }
@@ -75,53 +51,48 @@ public class Parturient implements Parcelable {
         this.age = age;
     }
 
+    public int getDiaRegisto() {
+        return diaRegisto;
+    }
+    public void setDiaRegisto(int diaRegisto) {
+        this.diaRegisto = diaRegisto;
+    }
     public int getHoraParte() {
         return horaParte;
     }
-
     public void setHoraParte(int horaParte) {
         this.horaParte = horaParte;
     }
-
     public int getMinutoParte() {
         return minutoParte;
     }
-
     public void setMinutoParte(int minutoParte) {
         this.minutoParte = minutoParte;
     }
-
     public int getSegundoParte() {
         return segundoParte;
     }
-
     public void setSegundoParte(int segundoParte) {
         this.segundoParte = segundoParte;
     }
-
     public static int getTimerEmergence() {
         return timerEmergence;
     }
-
-    public static void setTimerEmergence(int timerEmergence) {
-        Parturient.timerEmergence = timerEmergence;
-    }
+    public static void setTimerEmergence(int timerEmergence) { Parturient.timerEmergence = timerEmergence; }
 
     public String getTipoAtendimento() {
         return tipoAtendimento;
     }
-
     public void setTipoAtendimento(String tipoAtendimento) {
         this.tipoAtendimento = tipoAtendimento;
     }
 
-
-    public static String getIdPassAll() {
-        return idPassAll;
+    public boolean isDisparo() {
+        return isDisparo;
     }
 
-    public static void setIdPassAll(String idPassAll) {
-        Parturient.idPassAll = idPassAll;
+    public void setDisparo(boolean disparo) {
+        isDisparo = disparo;
     }
 
     public String getFullName() {
@@ -148,21 +119,18 @@ public class Parturient implements Parcelable {
         this.motivosDestinoDaTrasferencia = motivosDestinoDaTrasferencia;
     }
 
-    public boolean isStartCont() {
-        return isStartCont;
+    public String getIdAuxParturiente() {
+        return idAuxParturiente;
     }
 
-    public void setIsRun(boolean startCont) {
-        isStartCont = startCont;
+    public void setIdAuxParturiente(String idAuxParturiente) {
+        this.idAuxParturiente = idAuxParturiente;
     }
 
     public String getHoraAtendimento() {
         return horaAtendimento;
     }
 
-    public Notification getNotifications() {
-        return notifications;
-    }
 
     public void setHoraAtendimento(String horaAtendimento) {
         this.horaAtendimento = horaAtendimento;
@@ -176,11 +144,6 @@ public class Parturient implements Parcelable {
         this.disparo = disparo;
     }
 
-    public Parturient(String name, String surname, int age) {
-        this.name = name;
-        this.surname = surname;
-        this.age = age;
-    }
 
     public boolean isInProcess() {
         return inProcess;
@@ -205,7 +168,6 @@ public class Parturient implements Parcelable {
         this.age = age;
         this.isTransfered = isTransfered;
         this.reason = reason;
-        this.numeroCama = numeroCama;
     }
 
     public boolean isTrasferidoParaForaDoHospital() {
@@ -224,9 +186,6 @@ public class Parturient implements Parcelable {
         this.destinoTrasferencia = destinoTrasferencia;
     }
 
-    public void setInitializeTimerAlert(int tempoRestante) {
-        this.initializeTimerAlert = tempoRestante;
-    }
 
     public String getHoraEntrada() {
         return horaEntrada;
@@ -234,58 +193,6 @@ public class Parturient implements Parcelable {
 
     public void setHoraEntrada(String horaEntrada) {
         this.horaEntrada = horaEntrada;
-    }
-
-    public String getHoraAlerta() {
-        return horaAlerta;
-    }
-
-    public void setHoraAlerta(String horaAlerta) {
-        this.horaAlerta = horaAlerta;
-    }
-
-    public int getNumeroCama() {
-        return numeroCama;
-    }
-
-    public void setNumeroCama(int numeroCama) {
-        this.numeroCama = numeroCama;
-    }
-
-    protected Parturient(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        surname = in.readString();
-        age = in.readInt();
-        isTransfered = in.readByte() != 0;
-        reason = in.readString();
-    }
-
-    public static final Creator<Parturient> CREATOR = new Creator<Parturient>() {
-        @Override
-        public Parturient createFromParcel(Parcel in) {
-            return new Parturient(in);
-        }
-
-        @Override
-        public Parturient[] newArray(int size) {
-            return new Parturient[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(name);
-        dest.writeString(surname);
-        dest.writeInt(age);
-        dest.writeByte((byte) (isTransfered ? 1 : 0));
-        dest.writeString(reason);
     }
 
     public int getId() {
@@ -343,6 +250,7 @@ public class Parturient implements Parcelable {
     public void setPara(int para) {
         this.para = para;
     }
+
     public String getGestatinalRange() {
         return gestatinalRange;
     }
@@ -368,10 +276,9 @@ public class Parturient implements Parcelable {
     }
 
 
-
-    public void setStartCountDownTimer(){
-        if(startCountDownTimer){
-            startCountDownTimer=false;
+    public void setStartCountDownTimer() {
+        if (startCountDownTimer) {
+            startCountDownTimer = false;
             //initializeCountDownTimer(timerAux);
         }
 
@@ -385,38 +292,5 @@ public class Parturient implements Parcelable {
         viewTempo = tempoRestante;
     }
 
-    private String formatMinuto(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("mm");
-        return dateFormat.format(date);
-    }
 
-    private String formatSegundos(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("ss");
-        return dateFormat.format(date);
-    }
-
-    private String formatHoras(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("hh");
-        return dateFormat.format(date);
-    }
-
-    private String format(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-        return dateFormat.format(date);
-    }
-
-    public  String oUpperFirstCase(String string){
-        String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
-        return  auxString;
-    }
-
-
-
-    public boolean isAlertaTwo() {
-        return isAlertaTwo;
-    }
-
-    public void setAlertaTwo(boolean alertaTwo) {
-        isAlertaTwo = alertaTwo;
-    }
 }

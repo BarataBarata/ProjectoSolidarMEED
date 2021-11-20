@@ -12,10 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class ViewDadosPessoaisActivity extends AppCompatActivity {
-    private int idParturiente;
+    private String idParturiente;
     TextView nomeParturiente;
     TextView idadeParturiente;
     TextView dilatacaoParturiente;
@@ -26,6 +27,7 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
     TextView origemTrasferenciaParturiente;
     TextView motivosTrasferenciaParturiente;
     private Parturient parturient;
+    private DBService dbService;
     private CardView cardView;
 
 
@@ -33,12 +35,14 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_dados_parturientes);
+        dbService=new DBService(this);
         initialize();
+
         //activity_view_dados_pessoais
         if(getIntent().getStringExtra("idParturiente")!=null) {
-            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
-            for (Parturient parturient : DBManager.getInstance().getParturients()) {
-                if (parturient.getId() == idParturiente) {
+            idParturiente = (getIntent().getStringExtra("idParturiente"));
+            for (Parturient parturient : dbService.getListAuxParturiente()) {
+                if (parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)) {
                     sendDade(parturient);
                     break;
                 }
@@ -46,9 +50,9 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
         }
 
         if(getIntent().getStringExtra("idParturienteAtendidos")!=null) {
-            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturienteAtendidos"));
-            for (Parturient parturient : DBManager.getInstance().getListParturientesAtendidos()) {
-                if (parturient.getId() == idParturiente) {
+            idParturiente =(getIntent().getStringExtra("idParturienteAtendidos"));
+            for (Parturient parturient :dbService.getListAuxParturiente()) {
+                if (parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)) {
                     sendDade(parturient);
                     break;
                 }
@@ -76,13 +80,13 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
 
 
         private void sendDade(Parturient parturient) {
-
+            System.out.println(" ================ "+ parturient.getTipoAtendimento());
         if(!parturient.getTipoAtendimento().isEmpty()){
             tipoAtendimento.setText("Tipo de atentimento :"+parturient.getTipoAtendimento());
             tipoAtendimento.setVisibility(View.VISIBLE);
         }
 
-        nomeParturiente.setText(" Nome da parturiente :"+ parturient.getFullName());
+        nomeParturiente.setText(" Nome da parturiente :"+ parturient.getName()+" "+parturient.getSurname());
         idadeParturiente.setText(" Idade da parturiente :"+ parturient.getAge()+" anos de idade");
         dilatacaoParturiente.setText(" dilatação inicial da parturiente :"+parturient.getReason()+" cm");
         idadeDeParidadeDaParturiente.setText("opções de Paridade da parturiente é de : "+parturient.getPara()+"");

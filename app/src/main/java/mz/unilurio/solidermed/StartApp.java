@@ -17,14 +17,16 @@ public class StartApp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_app);
+
+        dbService=new DBService(this);
+        dbService.initializeListParturiente();
+        //dbService.updadeListNotification();
+
+
         if(start){
             finish();
             start=false;
         }
-
-
-
-
 
     }
 

@@ -2,6 +2,8 @@ package mz.unilurio.solidermed;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Notification;
@@ -32,6 +37,8 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
     private  List<Notification>auxListNotificacao;
     private List<Notification> notifications;
     private final LayoutInflater layoutInflater;
+    private TimerTask taskMinutos;
+    private Handler handlerMinutos;
 
         public NotificationRecyclerAdpter(Context context, List<Notification> notifications) {
         this.context = context;
@@ -49,17 +56,57 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Notification notification =  notifications.get(position);
+        Notification notification = notifications.get(position);
         holder.currentPosition = position;
 
         holder.cardView.setCardBackgroundColor(notification.getColour());
         holder.txtTime.setText(notification.getTime());
         holder.txtNameParturient.setText(notification.getMessage());
-        if(notification.isInProcess()){
-            holder.txtDetails.setText("Em Processo de parto...");
-        }else {
-            holder.txtDetails.setText("Idade :"+getIdade(Integer.parseInt(notification.getId())));
-        }
+
+        // atualiza os minutos
+        handlerMinutos = new Handler();
+        Timer timerMinutos = new Timer();
+
+
+        taskMinutos = new TimerTask() {
+            @Override
+            public void run() {
+
+                handlerMinutos.post(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    public void run() {
+                        try {
+                            if (notification.isInProcess()) {
+                                holder.txtDetails.setText("Em Processo de parto...");
+                            } else {
+
+                                String tempoRestante = notification.getViewTimerTwo();
+                                if (tempoRestante.equals("Alerta Disparado")) {
+                                    holder.txtDetails.setText("Alerta Disparado");
+                                    timerMinutos.cancel();
+
+                                } else {
+                                    // System.out.println("========= : " +tempoRestante);
+                                    holder.txtDetails.setText("Idade :" + " - " + tempoRestante);
+                                }
+                            }
+
+                        } catch (Exception e) {
+                            // error, do something
+                        }
+                    }
+                });
+            }
+        };
+
+        timerMinutos.schedule(taskMinutos, 0, 1000);  // interval of one minute
+
+
+
+
+
+
+
 
         if(isTrasferido(Integer.parseInt(notification.getId()))){
             holder.idAlerteEmergence.setText("");
@@ -87,13 +134,13 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
                             case R.id.atendimento:{
                                 Intent intent = new Intent(context, ViewAtendimentoActivity.class);
-                                intent.putExtra("idParturiente",notifications.get(position).getId());
+                                intent.putExtra("idParturiente",notifications.get(position).getIdAuxParturiente());
                                 context.startActivity(intent);
                             }
                                 return true;
                             case R.id.edit:
                                 Intent intent = new Intent(context, AddParturientActivity.class);
-                                intent.putExtra("idParturiente",notifications.get(position).getId());
+                                intent.putExtra("idParturiente",notifications.get(position).getIdAuxParturiente());
                                 context.startActivity(intent);
                                 return true;
                             default:
@@ -180,7 +227,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ViewAtendimentoActivity.class);
-                         intent.putExtra("idParturiente", notifications.get(currentPosition).getId()+"");
+                         intent.putExtra("idParturiente", notifications.get(currentPosition).getIdAuxParturiente()+"");
                               context.startActivity(intent);
 
 //                        ProgressDialog progressBar;

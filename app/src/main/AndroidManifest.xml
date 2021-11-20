@@ -21,12 +21,18 @@
         <activity
             android:name=".SelectHospitalActivity"
             android:theme="@style/Theme.Projecto_S.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
+
+       <activity
+           android:name=".MainActivity">
+           <intent-filter>
+               <action android:name="android.intent.action.MAIN" />
+               <category android:name="android.intent.category.LAUNCHER" />
+           </intent-filter>
+
+       </activity>
+
         <activity android:name=".Activity_Confirmar_Registo" />
         <activity android:name=".Activity_RegistarUsuario" />
         <activity android:name=".MainActivity_Users_List" />
@@ -89,7 +95,9 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity" >
+
+        </activity>
         <activity
             android:name=".Atendimento"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
@@ -105,10 +113,6 @@
             android:name=".AddParturientActivity"
             android:label="@string/title_activity_note"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.Projecto_S.NoActionBar">
-        </activity>
     </application>
 
 </manifest>

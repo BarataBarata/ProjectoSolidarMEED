@@ -66,9 +66,10 @@
             android:layout_height="wrap_content"
             android:textColor="@color/CorParturient"
             android:textSize="14sp"
-            android:text="Idade e Hora de entrada"/>
+            android:text="Alerta Disparado"/>
 
         <TextView
+
             android:textStyle="italic"
             android:layout_alignEnd="@id/idContactMedico"
             android:layout_marginTop="6dp"

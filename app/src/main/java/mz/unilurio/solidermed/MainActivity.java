@@ -1,27 +1,16 @@
 package mz.unilurio.solidermed;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.telephony.SmsManager;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
-import android.view.WindowInsets;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -30,7 +19,6 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -38,7 +26,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
@@ -47,23 +34,17 @@ import androidx.viewpager.widget.ViewPager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import mz.unilurio.solidermed.model.AddDoctorClass;
-import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
-import mz.unilurio.solidermed.model.EditDoctorClass;
-import mz.unilurio.solidermed.model.EmergencyMedicalPersonnel;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.PageAdapder;
 import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.model.Privilegios;
-import mz.unilurio.solidermed.model.Queue;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -105,14 +86,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        Privilegios privilegios= new Privilegios();
-        //privilegios.setViewAll(true);
-        Parturient parturiento=new Parturient();
-        //parturiento.initializeCountDownTimer(4);
 
         dbService=new DBService(this);
-    //    dbService.updadeListParturiente();
+        dbService.updadeListParturiente();
+        dbService.initializeListParturiente();
+        dbService.updadeListNotification();
 
 //        if(DBManager.getInstance().getNotifications().isEmpty()){// atualiza se estiver vaziu
 //            dbService.updadeListNotification();
@@ -358,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume() {
         super.onResume();
+        verificationNull();
     }
 
     private void setRepeatingAsyncTask(MainActivity activity) {
@@ -394,12 +373,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 handler.post(new Runnable() {
                     public void run() {
                         try {
-                            verificationIsNull();
                             if(addParturientActivity.isFireAlert){
+                                System.out.println(" ==========atualizou+++++++++++");
                                 displayNotification();
                                 displayParturiente();
                                 addParturientActivity.isFireAlert=false;
                             }
+                            verificationIsNull();
 
                         } catch (Exception e) {
                             // error, do something
@@ -435,6 +415,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
              }, Long.parseLong("400"));
          }
     }
-
-
 }

@@ -1,37 +1,26 @@
 package mz.unilurio.solidermed.model;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
-import java.util.Calendar;
 import java.util.Date;
 
-public final class Notification implements Parcelable {
+public final class Notification {
     public static final int TWO_INTERVAL = 1;
     private boolean inProcess;
     private String id;
-    private String idParturiente;
+    private String idAuxParturiente;
+    private int horas;
+    private int minutos;
+    private int segundo;
     private int color;
+    private String viewTimerTwo;
     private String message;
     private String time;
     private boolean isOpen;
-    private DeliveryService deliveryService;
     private Date nextNotifier;
 
     public Notification(){
 
-    }
-
-    public Notification(int color, String message, String time, boolean isOpen, DeliveryService deliveryService) {
-        this.color = color;
-        this.message = message;
-        this.time = time;
-        this.isOpen = isOpen;
-        this.deliveryService = deliveryService;
-        this.id = getId();
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, Notification.TWO_INTERVAL);
-        this.nextNotifier = calendar.getTime();
     }
 
     protected Notification(Parcel in) {
@@ -40,34 +29,25 @@ public final class Notification implements Parcelable {
         isOpen = in.readByte() != 0;
     }
 
-    public String getIdParturiente() {
-        return idParturiente;
+    public String getIdAuxParturiente() {
+        return idAuxParturiente;
     }
 
-    public void setIdParturiente(String idParturiente) {
-        this.idParturiente = idParturiente;
+    public void setIdAuxParturiente(String idAuxParturiente) {
+        this.idAuxParturiente = idAuxParturiente;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public static final Creator<Notification> CREATOR = new Creator<Notification>() {
-        @Override
-        public Notification createFromParcel(Parcel in) {
-            return new Notification(in);
-        }
-
-        @Override
-        public Notification[] newArray(int size) {
-            return new Notification[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public void setViewTimerTwo(String viewTimerTwo) {
+        this.viewTimerTwo = viewTimerTwo;
     }
+    public String getViewTimerTwo() {
+        return viewTimerTwo;
+    }
+
 
     public int getColour() {
         return color;
@@ -109,32 +89,31 @@ public final class Notification implements Parcelable {
         isOpen = open;
     }
 
-    public DeliveryService getDeliveryService() {
-        return deliveryService;
-    }
-
-    public void setDeliveryService(DeliveryService deliveryService) {
-        this.deliveryService = deliveryService;
-    }
-
     public String getId() {
         return this.id;
     }
 
-    public Date getNextNotifier() {
-        return nextNotifier;
+    public int getHoras() {
+        return horas;
     }
 
-    public void setNextNotifier(Date nextNotifier) {
-        this.nextNotifier = nextNotifier;
+    public void setHoras(int horas) {
+        this.horas = horas;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeParcelable(deliveryService, 0);
-        dest.writeString(message);
-        dest.writeInt(color);
-        dest.writeByte((byte) (isOpen ? 1 : 0));
+    public int getMinutos() {
+        return minutos;
+    }
+
+    public void setMinutos(int minutos) {
+        this.minutos = minutos;
+    }
+
+    public int getSegundo() {
+        return segundo;
+    }
+
+    public void setSegundo(int segundo) {
+        this.segundo = segundo;
     }
 }

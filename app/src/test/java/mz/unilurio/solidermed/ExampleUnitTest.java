@@ -7,12 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import mz.unilurio.solidermed.model.DeliveryService;
-import mz.unilurio.solidermed.model.FireMockAlert;
 import mz.unilurio.solidermed.model.Measure;
-import mz.unilurio.solidermed.model.Observer;
 import mz.unilurio.solidermed.model.Parturient;
-import mz.unilurio.solidermed.model.Queue;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

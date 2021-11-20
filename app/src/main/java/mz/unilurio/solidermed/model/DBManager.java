@@ -42,12 +42,8 @@ public class DBManager {
     static private List<Integer> camas = new ArrayList<Integer>();
     private static int idEmergencyMedicalPersonnel=5;
 
-    private Queue queue=new Queue();
     private List<EmergencyMedicalPersonnel> emergencyMedicalPersonnels = new ArrayList<>();
-    public int totalPaturient=0;
     private  static int idNurse=1;
-    private List<GestatinalRange> ranges;
-    private List<DeliveryService> deliveryServices = new ArrayList<>();
 
     public static DBManager getInstance() {
         if(ourInstance == null) {
@@ -60,7 +56,6 @@ public class DBManager {
             ourInstance.initializeNotifications();
             ourInstance.initializeSettings();
             ourInstance.initializeEmergencyPersonnels();
-            ourInstance.initializeGestationalRanre();
             ourInstance.initHospitais();
             ourInstance.initializeInfermeira();
             ourInstance.initializeIdadeGestacional();
@@ -340,22 +335,6 @@ public class DBManager {
         return new EmergencyMedicalPersonnel("Ussimane", "Killer Wazy", "8477594222",5);
     }
 
-    public  void addQueueAndDeliveryService(Parturient parturient){
-        DeliveryService ds;
-        ds=InitializeDeliveryService(parturient, (int)Float.parseFloat(parturient.getReason()));
-        this.parturients.add(parturient);
-        deliveryServices.add(ds);
-        ds.setFireble(new FireMockAlert(null, ds));
-        queue.register(ds);
-    }
-
-    private DeliveryService InitializeDeliveryService(Parturient p, int dilatation) {
-        Date current = Calendar.getInstance().getTime();
-        Measure measure = new Measure(current, dilatation);
-        //p.setHoraEntrada(current);
-        //p.setHoraAlerta(measure.getPredictedExpulsionHour());
-        return new DeliveryService(p, measure);
-    }
 //
 //    private DeliveryService InitializeDeliveryService2() {
 //        Parturient p = new Parturient("Ds", "Two", 20);
@@ -387,58 +366,13 @@ public class DBManager {
     public List<Notification> getNotifications() {
         return notifications;
     }
-
-    public Queue getQueue(){
-        return this.queue;
-    }
     public List<Notification> getInitNotifications() {
         return initNotifications;
-    }
-
-    public List<Notification> getEmptyNotifications() {
-        return new ArrayList<>();
-    }
-
-    private Notification initializeNotification1(){
-
-        Parturient bibo = new Parturient("Bibo", "Bubu", 20);
-        Date current = Calendar.getInstance().getTime();
-        Measure measure = new Measure(current, 4);
-        DeliveryService ds = new DeliveryService(bibo,measure);
-
-        Notification notification = new Notification(Color.rgb(248, 215,218), "Message ...", "Calendar.getInstance().getTime()", true, ds);
-        return notification;
-    }
-
-    private Notification initializeNotification2(){
-
-        Parturient bibo = new Parturient("Jula", "Xtimeka", 23);
-        Date current = Calendar.getInstance().getTime();
-        Measure measure = new Measure(current, 2);
-        DeliveryService ds = new DeliveryService(bibo,measure);
-
-        Notification notification = new Notification(Color.rgb(248, 215,218), "Message ...", "Calendar.getInstance().getTime()", true, ds);
-        return notification;
     }
 
     public List<Parturient> getParturients() {
         return parturients;
     }
 
-    public int getTotalPaturient(){
-        return totalPaturient;
-    }
 
-    private List<GestatinalRange> initializeGestationalRanre() {
-        ranges = new ArrayList<>();
-        ranges.add(GestatinalRange.MENORQUE28SEMANAS);
-        ranges.add(GestatinalRange.ENTRE28E31SEMANAS);
-        ranges.add(GestatinalRange.ENTRE32E36SEMANAS);
-        ranges.add(GestatinalRange.MAIORQUE37SEMANAS);
-        return ranges;
-    }
-
-    public List<GestatinalRange> getGestatinalRange(){
-        return this.ranges;
-    }
 }

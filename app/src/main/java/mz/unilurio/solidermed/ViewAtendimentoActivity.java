@@ -26,16 +26,14 @@ import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class ViewAtendimentoActivity extends AppCompatActivity {
-    private static int idParturiente;
+    private String idParturiente;
     private DBService dbService;
-
-
     private TextView textNomeParturiente;
     private Parturient newParturient=new Parturient();
     private ProgressDialog progressBar;
     private CheckBox checkBox1,checkBox2,checkBox5;
     private Switch aSwitchProcess;
-    public static String checkBoxTextOption;
+    public static String checkBoxTextOption="";
     private  boolean optionSwitch=false;
     private  boolean optionCheckBox=false;
     private  boolean optionCheckBoxTrasfered=false;
@@ -96,11 +94,10 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         });
 
         if(getIntent().getStringExtra("idParturiente")!=null){
-           idParturiente=Integer.parseInt(getIntent().getStringExtra("idParturiente"));
+           idParturiente=(getIntent().getStringExtra("idParturiente"));
 
-           for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
-               System.out.println(parturient.getId()+" : ============== : "+idParturiente);
-               if(parturient.getId()==idParturiente){
+           for(Parturient parturient: dbService.getListAuxParturiente()){
+               if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente+"")){
                     textNomeParturiente.setText(parturient.getName()+ " "+parturient.getSurname());
                     newParturient=parturient;
                     aSwitchProcess.setChecked(parturient.isInProcess());
@@ -119,7 +116,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     }
     public void removParturiente(){
         for(Parturient parturient: DBManager.getInstance().getParturients()){
-            if(parturient.getId()==idParturiente){
+            if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)){
                 DBManager.getInstance().getParturients().remove(parturient);
                 break;
             }
@@ -128,7 +125,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     }
     public void removNotification(){
         for(Notification parturient: DBManager.getInstance().getNotifications()){
-            if(Integer.parseInt(parturient.getId())==idParturiente){
+            if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)){
                 DBManager.getInstance().getNotifications().remove(parturient);
                 break;
             }
@@ -189,7 +186,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                         if(optionCheckBoxTrasfered){
 
                             for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
-                                if(parturient.getId()==idParturiente){
+                                if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)){
                                     setHoraAtendimento(newParturient);
                                     parturient.setHoraAtendimento(format(new Date()));
                                     parturient.setTipoAtendimento(checkBoxTextOption);
@@ -203,29 +200,12 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                         }else {
                             setHoraAtendimento(newParturient);
                             newParturient.setHoraAtendimento(format(new Date()));
-                            newParturient.setTipoAtendimento(checkBoxTextOption);
+                            newParturient.setTipoAtendimento(checkBoxTextOption+"");
                             newParturient.setInProcess(false);
                             DBManager.getInstance().addParturienteAtendido(newParturient);
                             removNotification();
                             removParturiente();
-
-//
-//                              if(!optionSelectParturienteNotification){
-//                                  for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
-//                                      if(parturient.getId()==idParturiente){
-//                                          setHoraAtendimento(newParturient);
-//                                          parturient.setHoraAtendimento(format(new Date()));
-//                                          parturient.setTipoAtendimento(checkBoxTextOption);
-//                                          parturient.setInProcess(false);
-//                                          DBManager.getInstance().addParturienteAtendido(parturient);
-//                                          removNotification();
-//                                          break;
-//                                      }
-//                                  }
-//                              }else {
-//
-//
-//                              }
+                            dbService.removeInBD(newParturient);
 
                         }
                             finish();
@@ -305,9 +285,9 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void setProgressNotification(int id){
+    public void setProgressNotification(String id){
         for (Notification notification:DBManager.getInstance().getNotifications()){
-            if(Integer.parseInt(notification.getId())==id){
+            if(notification.getIdAuxParturiente().equals(id)){
                 notification.setInProcess(true);
                 break;
             }
@@ -318,23 +298,21 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         ProgressDialog progressBar;
         progressBar=new ProgressDialog(ViewAtendimentoActivity.this);
         progressBar.setTitle("Aguarde");
-        progressBar.setMessage("Pesquisando...");
+        progressBar.setMessage("Processando...");
         progressBar.show();
 
         new Handler().postDelayed(new Thread() {
             @Override
             public void run() {
                 progressBar.dismiss();
-                for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()) {
-                    if (parturient.getId() == idParturiente) {
+                for(Parturient parturient: dbService.getListAuxParturiente()) {
+                    if (parturient.getIdAuxParturiente().equals(idParturiente)) {
                         parturient.setInProcess(true);
-                        setProgressNotification(parturient.getId());
+                        setProgressNotification(parturient.getIdAuxParturiente());
                         finish();
                         break;
                     }
                 }
-
-
             }
         },Long.parseLong("900"));
     }

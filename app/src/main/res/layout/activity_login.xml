@@ -44,10 +44,23 @@
                 android:layout_height="wrap_content"/>
 
         </FrameLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <ProgressBar
+                android:visibility="invisible"
+                android:id="@+id/progress_circular"
+                style="@style/Theme.AppCompat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/id_input_nome"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="174dp"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="189dp" />
+
             <com.google.android.material.textfield.TextInputLayout
                 app:boxCornerRadiusBottomEnd="14dp"
                 app:boxCornerRadiusTopEnd="14dp"

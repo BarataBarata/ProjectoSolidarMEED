@@ -85,13 +85,13 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                         switch (item.getItemId()) {
                             case R.id.idEdit:{
                                 Intent intent = new Intent(context,AddParturientActivity.class);
-                                intent.putExtra("idParturiente", originalListParturientes.get(position).getId()+"");
+                                intent.putExtra("idParturiente", originalListParturientes.get(position).getIdAuxParturiente()+"");
                                 context.startActivity(intent);
                             }
                             return true;
                             case R.id.transferir:
                                 Intent intent = new Intent(context,ViewAtendimentoActivity.class);
-                                intent.putExtra("idParturiente", originalListParturientes.get(holder.currentPosition).getId()+"");
+                                intent.putExtra("idParturiente", originalListParturientes.get(holder.currentPosition).getIdAuxParturiente()+"");
                                 context.startActivity(intent);
                                 return true;
                             case R.id.idCancel:
@@ -121,20 +121,20 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                     handlerMinutos.post(new Runnable() {
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         public void run() {
-                          try {
-                                 String tempoRestante=originalListParturientes.get(position).getTempoRest();
-                                 if(tempoRestante.equals("Alerta Disparado")){
-                                     holder.horaAlerta.setText("Alerta Disparado");
-                                     timerMinutos.cancel();
-                                 }else {
+                            try {
+                                String tempoRestante=originalListParturientes.get(position).getTempoRest();
+                                if(tempoRestante.equals("Alerta Disparado")){
+                                    holder.horaAlerta.setText("Alerta Disparado");
+                                    timerMinutos.cancel();
+                                }else {
                                     // System.out.println("========= : " +tempoRestante);
-                                     holder.horaAlerta.setText(tempoRestante);
-                                 }
-
-                                } catch (Exception e) {
-                                    // error, do something
+                                    holder.horaAlerta.setText(tempoRestante);
                                 }
+
+                            } catch (Exception e) {
+                                // error, do something
                             }
+                        }
                     });
                 }
             };
@@ -212,7 +212,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ViewDadosPessoaisActivity.class);
-                    intent.putExtra("idParturiente", originalListParturientes.get(currentPosition).getId()+"");
+                    intent.putExtra("idParturiente", originalListParturientes.get(currentPosition).getIdAuxParturiente()+"");
                     context.startActivity(intent);
                 }
             });

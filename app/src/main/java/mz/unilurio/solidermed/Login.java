@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -34,6 +35,7 @@ public class Login extends AppCompatActivity {
     private Privilegios privilegios;
     private String fullName;
     DBService dbService;
+    private ProgressBar  progressBarCirc;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -45,11 +47,12 @@ public class Login extends AppCompatActivity {
        // requestPermissions(new String[]{Manifest.permission.CALL_PHONE},1);
         requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
 
+
         privilegios = new Privilegios();
+        progressBarCirc=findViewById(R.id.progress_circular);
         textEmail= findViewById(R.id.id_input_nome);
         textPassword=findViewById(R.id.id_input_password);
         auth = FirebaseAuth.getInstance();
-
     }
 
     public void Entrar(View view) {
@@ -72,6 +75,7 @@ public class Login extends AppCompatActivity {
                      if(password.isEmpty()){
                          textPassword.setError("campo vazio");
                      }else {
+                         progressBarCirc.setVisibility(View.VISIBLE);
                          if(isExistUser(email,password)){
                              textPassword.setError("");
                              textEmail.setError("");
@@ -80,13 +84,12 @@ public class Login extends AppCompatActivity {
                              startActivity(intent);
                          }else{
                              textEmail.setError(" ");
+                             progressBarCirc.setVisibility(View.INVISIBLE);
                              textPassword.setError(" senha ou usuario invalido");
                              //textAlerta.setText(" Usuario ou senha incorreto");
                          }
                      }
                  }
-
-
     }
 
     @Override
@@ -118,6 +121,7 @@ public class Login extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        progressBarCirc.setVisibility(View.INVISIBLE);
         super.onResume();
         textEmail.getEditText().setText("");
         textPassword.getEditText().setText("");
