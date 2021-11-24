@@ -96,11 +96,11 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
         if(getIntent().getStringExtra("idParturiente")!=null){
            idParturiente=(getIntent().getStringExtra("idParturiente"));
 
-           for(Parturient parturient: dbService.getListAuxParturiente()){
+           for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
                if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente+"")){
                     textNomeParturiente.setText(parturient.getName()+ " "+parturient.getSurname());
                     newParturient=parturient;
-                    aSwitchProcess.setChecked(parturient.isInProcess());
+                    aSwitchProcess.setChecked(dbService.isInProcessParturiente(parturient));
                     break;
                 }
             }
@@ -116,17 +116,22 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     }
     public void removParturiente(){
         for(Parturient parturient: DBManager.getInstance().getParturients()){
-            if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)){
+            if(parturient.getIdAuxParturiente().equals(idParturiente)){
+                parturient.setAtendido(true);
                 DBManager.getInstance().getParturients().remove(parturient);
+                dbService.removeInBD(parturient);
+                System.out.println(" =========================  removido========= ");
                 break;
             }
         }
 
     }
     public void removNotification(){
-        for(Notification parturient: DBManager.getInstance().getNotifications()){
-            if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)){
-                DBManager.getInstance().getNotifications().remove(parturient);
+        for(Notification notification: DBManager.getInstance().getNotifications()){
+            if(notification.getIdAuxParturiente().equals(idParturiente)){
+                dbService.deleteNotification(notification);
+                DBManager.getInstance().getNotifications().remove(notification);
+
                 break;
             }
         }
@@ -183,16 +188,19 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         progressBar.dismiss();
+
+
+                        System.out.println(" ------------- : "+optionCheckBoxTrasfered);
                         if(optionCheckBoxTrasfered){
 
-                            for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
-                                if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)){
+                            for(Parturient parturient: dbService.getListAuxParturiente()){
+                                if(parturient.getIdAuxParturiente().equals(idParturiente)){
                                     setHoraAtendimento(newParturient);
                                     parturient.setHoraAtendimento(format(new Date()));
                                     parturient.setTipoAtendimento(checkBoxTextOption);
                                     parturient.setInProcess(false);
                                     Intent intent =new Intent(ViewAtendimentoActivity.this,TrasferenciaActivity.class);
-                                    intent.putExtra("idParturiente",parturient.getId()+"");
+                                    intent.putExtra("idParturiente",parturient.getIdAuxParturiente()+"");
                                     startActivity(intent);
                                     break;
                                 }
@@ -202,10 +210,11 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                             newParturient.setHoraAtendimento(format(new Date()));
                             newParturient.setTipoAtendimento(checkBoxTextOption+"");
                             newParturient.setInProcess(false);
+                            dbService.addAtendimento(newParturient);
                             DBManager.getInstance().addParturienteAtendido(newParturient);
                             removNotification();
                             removParturiente();
-                            dbService.removeInBD(newParturient);
+
 
                         }
                             finish();
@@ -288,6 +297,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     public void setProgressNotification(String id){
         for (Notification notification:DBManager.getInstance().getNotifications()){
             if(notification.getIdAuxParturiente().equals(id)){
+                dbService.updadeInProcessNotification(notification);
                 notification.setInProcess(true);
                 break;
             }
@@ -305,9 +315,10 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
             @Override
             public void run() {
                 progressBar.dismiss();
-                for(Parturient parturient: dbService.getListAuxParturiente()) {
+                for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()) {
                     if (parturient.getIdAuxParturiente().equals(idParturiente)) {
                         parturient.setInProcess(true);
+                        dbService.updadeInProcessParturiente(parturient);
                         setProgressNotification(parturient.getIdAuxParturiente());
                         finish();
                         break;

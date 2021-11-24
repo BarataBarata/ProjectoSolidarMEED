@@ -86,8 +86,13 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                                     timerMinutos.cancel();
 
                                 } else {
+                                    for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
+                                        if(parturient.getIdAuxParturiente().equals(notification.getIdAuxParturiente())){
+                                            holder.txtDetails.setText("Idade : "+ parturient.getAge()+"-" + tempoRestante+"");
+                                        }
+                                    }
                                     // System.out.println("========= : " +tempoRestante);
-                                    holder.txtDetails.setText("Idade :" + " - " + tempoRestante);
+
                                 }
                             }
 

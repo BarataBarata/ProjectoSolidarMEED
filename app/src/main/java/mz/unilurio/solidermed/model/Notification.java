@@ -9,9 +9,12 @@ public final class Notification {
     private boolean inProcess;
     private String id;
     private String idAuxParturiente;
-    private int horas;
-    private int minutos;
-    private int segundo;
+    private int horas=0;
+    private int allSegundos=0;
+    private int minutos=0;
+    private boolean isAtendido;
+    String yearDayMonthNotification;
+    private int segundo=0;
     private int color;
     private String viewTimerTwo;
     private String message;
@@ -48,6 +51,13 @@ public final class Notification {
         return viewTimerTwo;
     }
 
+    public int getAllSegundos() {
+        return allSegundos;
+    }
+
+    public void setAllSegundos(int allSegundos) {
+        this.allSegundos = allSegundos;
+    }
 
     public int getColour() {
         return color;
@@ -59,6 +69,22 @@ public final class Notification {
 
     public boolean isInProcess() {
         return inProcess;
+    }
+
+    public String getYearDayMonthNotification() {
+        return yearDayMonthNotification;
+    }
+
+    public void setYearDayMonthNotification(String yearDayMonthNotification) {
+        this.yearDayMonthNotification = yearDayMonthNotification;
+    }
+
+    public boolean isAtendido() {
+        return isAtendido;
+    }
+
+    public void setAtendido(boolean atendido) {
+        isAtendido = atendido;
     }
 
     public void setInProcess(boolean inProcess) {

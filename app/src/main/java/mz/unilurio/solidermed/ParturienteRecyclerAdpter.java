@@ -2,7 +2,6 @@ package mz.unilurio.solidermed;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -17,8 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
@@ -30,9 +27,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.Parturient;
-import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
 
 public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteRecyclerAdpter.ViewHolder> implements Filterable {
     private final Context context;
@@ -112,7 +107,6 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         handlerMinutos = new Handler();
         Timer timerMinutos = new Timer();
 
-        if(!originalListParturientes.get(position).isRun()) {
 
             taskMinutos = new TimerTask() {
                 @Override
@@ -121,15 +115,17 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                     handlerMinutos.post(new Runnable() {
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         public void run() {
+
                             try {
-                                String tempoRestante=originalListParturientes.get(position).getTempoRest();
-                                if(tempoRestante.equals("Alerta Disparado")){
-                                    holder.horaAlerta.setText("Alerta Disparado");
-                                    timerMinutos.cancel();
-                                }else {
-                                    // System.out.println("========= : " +tempoRestante);
-                                    holder.horaAlerta.setText(tempoRestante);
-                                }
+                                    String tempoRestante = originalListParturientes.get(position).getTempoRest();
+                                    if (tempoRestante.equals("Alerta Disparado")) {
+                                        holder.horaAlerta.setText("Alerta Disparado");
+                                        timerMinutos.cancel();
+                                    } else {
+                                        // System.out.println("========= : " +tempoRestante);
+                                        holder.horaAlerta.setText(tempoRestante);
+                                    }
+
 
                             } catch (Exception e) {
                                 // error, do something
@@ -140,7 +136,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
             };
 
             timerMinutos.schedule(taskMinutos, 0, 1000);  // interval of one minute
-        }
+
 
     }
 

@@ -19,7 +19,9 @@ public class StartApp extends AppCompatActivity {
         setContentView(R.layout.activity_start_app);
 
         dbService=new DBService(this);
+        dbService.initializeListParturientesAtendidos();
         dbService.initializeListParturiente();
+        dbService.initializeListNotification();
         //dbService.updadeListNotification();
 
 

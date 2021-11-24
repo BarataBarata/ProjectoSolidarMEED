@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -64,6 +65,8 @@ import mz.unilurio.solidermed.model.SelectTransferencia;
 import mz.unilurio.solidermed.model.UserDoctor;
 
 public class AddParturientActivity extends AppCompatActivity{
+    public static boolean alertFireNotification;
+    public static String idParturienteNotification;
     public  static boolean isFireAlert=false;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -108,10 +111,11 @@ public class AddParturientActivity extends AppCompatActivity{
     private Parturient parturient;
     private CardView cardTransfered;
     private Switch swit;
-    private int idParturiente;
+    private String idParturiente;
     private TextView textContTimer;
     private SharedPreferences sharedPreferences;
     private Notification notification;
+    private String auxData;
 
 
     @Override
@@ -119,7 +123,6 @@ public class AddParturientActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mother);
         firebaseDatabase=FirebaseDatabase.getInstance();
-
         dbService=new DBService(this);
 
         DBManager.getInstance().getUserDoctorList().removeAll(DBManager.getInstance().getUserDoctorList());
@@ -151,9 +154,9 @@ public class AddParturientActivity extends AppCompatActivity{
         viewnumber2();
 
         if(getIntent().getStringExtra("idParturiente")!=null){
-            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
-            for(Parturient parturient: dbService.getListAuxParturiente()){
-                if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente+"")){
+            idParturiente =(getIntent().getStringExtra("idParturiente"));
+            for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
+                if(parturient.getIdAuxParturiente().equals(idParturiente)){
                     isEdit=true;
                     textEditAndRegist.setText("Editar Parturiente");
                     editParturiente(parturient);
@@ -181,6 +184,7 @@ public class AddParturientActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         verificatioTransferencia();
+        alertaNotification();
         super.onResume();
     }
 
@@ -334,6 +338,37 @@ public class AddParturientActivity extends AppCompatActivity{
         }
     }
 
+
+    public boolean  verificatioNull(TextView textOption){
+
+        if(textOption.getText().toString().equals("")){
+            textOption.setError("Preenche o campo");
+            return  false;
+        }
+        return true;
+    }
+
+    public void setUpNumberPickers(){
+
+        numberPicker1.setMinValue(1);
+        numberPicker1.setMaxValue(5);
+        numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
+            }
+        });
+
+        numberPicker2.setMinValue(0);
+        numberPicker2.setMaxValue(9);
+        numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
+            }
+        });
+    }
+
     public  void editParturiente(){
 
         String mensagem="Editar dados ?";
@@ -358,9 +393,19 @@ public class AddParturientActivity extends AppCompatActivity{
                     String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
                     parturient.setAge(Integer.parseInt(age));
                     parturient.setTime(new Date());
-                    parturient.setReason(mSliderDilatation.getValue()+"");
+
+
+                    if(!parturient.getReason().equals(mSliderDilatation.getValue()+"")){
+                        System.out.println(
+                                " editadoiiii"
+                        );
+                        parturient.setReason((int)mSliderDilatation.getValue()+"");
+                        parturient.setEditDilatation(true);
+                    }
+
                     parturient.setGestatinalRange(spinner.getSelectedItem()+"");
                     parturient.setPara((int) para.getValue());
+
                     if (isTrasferencia) {
                         parturient.setTransfered(true);
                     } else {
@@ -369,12 +414,13 @@ public class AddParturientActivity extends AppCompatActivity{
                         parturient.setOrigemTransferencia("");
                     }
                     for (Notification notifica: DBManager.getInstance().getNotifications()){
-                        System.out.println(notifica.getId()+" =="+parturient.getId());
-                        if(Integer.parseInt(notifica.getId())==idParturiente){
+                        System.out.println(notifica.getIdAuxParturiente()+" =="+parturient.getIdAuxParturiente());
+                        if((notifica.getIdAuxParturiente()).equals(idParturiente)){
                             notifica.setNome(parturient.getName()+" "+parturient.getSurname());
                         }
                     }
-                  Toast.makeText(getApplicationContext(), " Parturiente Editado com sucesso", Toast.LENGTH_LONG).show();
+                    dbService.updadeAllDadeParturiente(parturient);
+                    Toast.makeText(getApplicationContext(), " Parturiente Editado com sucesso", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -409,36 +455,6 @@ public class AddParturientActivity extends AppCompatActivity{
     }
 
 
-    public boolean  verificatioNull(TextView textOption){
-
-        if(textOption.getText().toString().equals("")){
-            textOption.setError("Preenche o campo");
-            return  false;
-        }
-        return true;
-    }
-
-    public void setUpNumberPickers(){
-
-        numberPicker1.setMinValue(1);
-        numberPicker1.setMaxValue(5);
-        numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
-            }
-        });
-
-        numberPicker2.setMinValue(0);
-        numberPicker2.setMaxValue(9);
-        numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
-            }
-        });
-    }
-
     public void addNewParturient() {
 
         String mensagem="Deseja registar um Parturiente ?";
@@ -461,7 +477,6 @@ public class AddParturientActivity extends AppCompatActivity{
                     parturient = new Parturient();
                     if (!isExistParturiente(parturient)) {
                         parturient.setTimerEmergence(dbService.getHourasAlert()*3600+dbService.getMinutesAlert()*60);
-                        alertaNotification(parturient);
                         parturient.setName(upCaseName(txtNameParturient.getText().toString()));
                         parturient.setSurname(upCaseName(txtApelidoParturient.getText().toString()));
                         parturient.setFullName(upCaseName(txtNameParturient.getText().toString()));
@@ -485,7 +500,9 @@ public class AddParturientActivity extends AppCompatActivity{
                         parturient.setMinutoParte(Integer.parseInt(formatMinuto(new Date())));
                         parturient.setSegundoParte(Integer.parseInt(formatSegundo(new Date())));
                         parturient.setHoraAtendimento(format(new Date()));
-                        parturient.setDisparo(false);
+                        parturient.setAtendimento(false);
+                        String auxData=new Date().getYear()+""+new Date().getMonth()+""+new Date().getDay();
+                        parturient.setSetYearDayMonthNotification(auxData);
                         parturient.setDiaRegisto(new Date().getDay());
                         parturient.setDestinoTrasferencia(" ");
                         parturient.setMotivosDestinoDaTrasferencia(" ");
@@ -496,15 +513,17 @@ public class AddParturientActivity extends AppCompatActivity{
                             notification.setColour(Color.rgb(248, 215,218));
                             notification.setNome(parturient.getName()+" "+parturient.getSurname());
                             notification.setIdAuxParturiente(parturient.getIdAuxParturiente());
-                            notification.setInProcess(false);
                             notification.setTime(format(new Date()));
                             notification.setOpen(true);
-                            notification.setId(newidParturiente+"");
+                            notification.setYearDayMonthNotification(auxData);
+                            notification.setId(parturient.getId()+"");
+                            // System.out.println("  yyyyyyyyyyyyyyyyyyyyyyyy= : "+parturient.getId());
                             notification.setInProcess(false);
-                            dbService.addNotificacao(notification);
-                            dbService.addAuxParturiente(parturient);
                             DBManager.getInstance().getNotifications().add(notification);
                             DBManager.getInstance().getAuxlistNotificationParturients().add(parturient);
+
+                            dbService.addNotificacao(notification);
+                            dbService.addAuxParturiente(parturient);
                             Toast.makeText(getApplicationContext(), " Parturiente Enviando para lista de Notificoes", Toast.LENGTH_LONG).show();
                             selectSinal.allNameselect="Nenhum";
                             for(UserDoctor userDoctor: DBManager.getInstance().getUserDoctorList()){
@@ -580,8 +599,9 @@ public class AddParturientActivity extends AppCompatActivity{
 
     }
 
-    void alertaNotification(Parturient parturient){
-
+    public void alertaNotification(){
+//        public static boolean alertFireNotification;
+//        public static String nameAlerteParturiente="";
         TimerTask taskMinutos;
         Handler handlerMinutos;
         handlerMinutos = new Handler();
@@ -594,8 +614,15 @@ public class AddParturientActivity extends AppCompatActivity{
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void run() {
                         try {
-                            if(parturient.getTempoRest().equals("Alerta Disparado")){
-                                popNotification(parturient);
+                            if(alertFireNotification){
+
+                                for(Parturient parturient1: DBManager.getInstance().getAuxlistNotificationParturients()){
+                                    if(idParturienteNotification.equals(parturient1.getIdAuxParturiente())){
+                                        popNotification(parturient1);
+                                        alertFireNotification=false;
+                                    }
+                                }
+
                                 timerMinutos.cancel();
                             }
 
@@ -829,9 +856,163 @@ public class AddParturientActivity extends AppCompatActivity{
         }
     }
 
- // criando notificacao
 
 
 
+    public void functionPreferenceSaveTimer(Parturient parturient, int segundos){
+        SharedPreferences savePreference=getSharedPreferences(parturient.getIdAuxParturiente(),MODE_PRIVATE);
+        SharedPreferences.Editor editor=savePreference.edit();
+        editor.putInt("horas",Integer.parseInt(formatHoras(new Date())));
+        editor.putInt("minutos",Integer.parseInt(formatMinuto(new Date())));
+        editor.putInt("segundos",Integer.parseInt(formatSegundo(new Date())));
+        editor.putInt("timerSave",segundos);
+        editor.commit();
+    }
+
+    public int getFunctionPreferenceSaveTimer(Parturient parturient){
+        SharedPreferences savePreference=getSharedPreferences(parturient.getIdAuxParturiente(),MODE_PRIVATE);
+        int timerSave=savePreference.getInt("timerSave",0);
+        int horas=savePreference.getInt("horas",0);
+        int minutos=savePreference.getInt("minutos",0);
+        int segundos=savePreference.getInt("segundos",0);
+
+        System.out.println( " "+horas+" : "+minutos+" "+segundos);
+
+
+        int allTimerSave=horas*3600+minutos*60+segundos;
+        int allCurenteTimer=Integer.parseInt(formatHoras(new Date()))*3600+
+                Integer.parseInt(formatMinuto(new Date()))*60+
+                Integer.parseInt(formatSegundo(new Date()));
+
+        int totalTimer=allCurenteTimer-allTimerSave;
+
+        return totalTimer-timerSave;
+
+    }
+
+
+
+
+
+
+    public void initializeCountDownTimer(Parturient parturient,int seconds) {
+        MainActivity mainActivity=new MainActivity();
+        new CountDownTimer(seconds*1000+1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+
+                int hours = seconds / (60 * 60);
+                int tempMint = (seconds - (hours * 60 * 60));
+                int minutes = tempMint / 60;
+                seconds = tempMint - (minutes * 60);
+
+                functionPreferenceSaveTimer(parturient,seconds);
+                //System.out.println(" o valor do parturiente eh : "+ mainActivity.getFunctionPreferenceSaveTimer(parturient));
+
+                if(parturient.isInProcess()){
+                    parturient.setTempoRes("Em processo de parto");
+                   // dbService.updadeInProcessParturiente(true,parturient.getIdAuxParturiente());
+                    cancel();
+                }else{
+                    if(parturient.isAtendido()){
+                        cancel();
+                    }else {
+                        parturient.setTempoRes("Tempo Restante : " + String.format("%02d", hours)
+                                + ":" + String.format("%02d", minutes)
+                                + ":" + String.format("%02d", seconds));
+                    }
+                }
+            }
+
+            public void onFinish() {
+                //System.out.println(" o valor total do parturiente eh : "+ mainActivity.getFunctionPreferenceSaveTimer(parturient));
+                parturient.setTempoRes("Alerta Disparado");
+                AddParturientActivity addParturientActivity =new AddParturientActivity();
+                addParturientActivity.isFireAlert=true;
+                sendNotification(parturient);
+
+                // System.out.println("==================: "+dbService.getTimerAlertEmergenceDilatation());
+            }
+        }.start();
+    }
+
+    void sendNotification(Parturient parturient){
+        notification = new Notification();
+        notification.setColour(Color.YELLOW+Color.BLACK);
+        notification.setNome(parturient.getName()+" "+parturient.getSurname());
+        notification.setIdAuxParturiente(parturient.getIdAuxParturiente());
+        notification.setTime(format(new Date()));
+        notification.setOpen(true);
+        String auxData=new Date().getYear()+""+new Date().getMonth()+""+new Date().getDay();
+        notification.setYearDayMonthNotification(auxData);
+        notification.setSegundo(Integer.parseInt(formatSegundo(new Date())));
+        notification.setHoras(Integer.parseInt(formatHoras(new Date())));
+        notification.setMinutos(Integer.parseInt(formatMinuto(new Date())));
+        notification.setId(parturient.getId()+"");
+        // System.out.println("  yyyyyyyyyyyyyyyyyyyyyyyy= : "+parturient.getId());
+        notification.setInProcess(false);
+        alertaEmergence(notification,dbService.getTimerAlertEmergenceDilatation());
+        DBManager.getInstance().getNotifications().add(notification);
+        dbService.addNotificacao(notification);
+        //updadeListNotification();
+        System.out.println(" ======================"+parturient.getName()+"========================= ");
+    }
+
+    private void sendMensageEmergence(Notification notification){
+
+        notification.setColour(Color.rgb(248, 215,218));
+        dbService.updadeCorIsDispareNotification(Color.rgb(248, 215,218),notification.getIdAuxParturiente());
+        String mensagem=notification.getMessage() +": Necessita  de cuidados medicos";
+        System.out.println(mensagem);
+        for(UserDoctor userDoctor:dbService.getListDoctor()){
+            sendSMS(userDoctor.getContacto(),mensagem);
+        }
+    }
+
+    public void alertaEmergence(Notification notification,int seconds) {
+
+
+        new CountDownTimer(seconds * 1000 + 1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+
+                int hours = seconds / (60 * 60);
+                int tempMint = (seconds - (hours * 60 * 60));
+                int minutes = tempMint / 60;
+                seconds = tempMint - (minutes * 60);
+
+                if(notification.isAtendido()){
+                    cancel();
+                }else {
+                    if(notification.isInProcess()){
+                        notification.setViewTimerTwo(" Em processo de parto");
+                    }else{
+                        notification.setViewTimerTwo("Tempo Restante : " + String.format("%02d", hours)
+                                + ":" + String.format("%02d", minutes)
+                                + ":" + String.format("%02d", seconds));
+                    }
+                }
+
+            }
+
+            public void onFinish() {
+
+                notification.setViewTimerTwo(" Alerta Desparado");
+                AddParturientActivity addParturientActivity =new AddParturientActivity();
+                addParturientActivity.isFireAlert=true;
+
+                for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
+                    if(parturient.getIdAuxParturiente().equals(notification.getIdAuxParturiente())){
+                        dbService.removParturiente(parturient);
+                        dbService.removeInBD(parturient);
+                    }
+                }
+
+                sendMensageEmergence(notification);
+            }
+        }.start();
+    }
 
 }

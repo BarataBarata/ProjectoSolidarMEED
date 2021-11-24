@@ -4,9 +4,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -33,7 +36,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -87,10 +93,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
         dbService=new DBService(this);
-        dbService.updadeListParturiente();
-        dbService.initializeListParturiente();
-        dbService.updadeListNotification();
+        //dbService.updadeListParturiente();
+
 
 //        if(DBManager.getInstance().getNotifications().isEmpty()){// atualiza se estiver vaziu
 //            dbService.updadeListNotification();
@@ -414,5 +422,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                  }
              }, Long.parseLong("400"));
          }
+    }
+
+
+
+
+    private String formatMinuto(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("mm");
+        return dateFormat.format(date);
+    }
+    private String formatSegundo(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("ss");
+        return dateFormat.format(date);
+    }
+
+    private String formatHoras(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh");
+        return dateFormat.format(date);
+    }
+
+    private String format(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+        return dateFormat.format(date);
+    }
+    private void sendSMS(String phoneNumber, String message) {
+        phoneNumber = phoneNumber.trim();
+        message = message.trim();
+        System.out.println(message);
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+        } catch (Exception e) {
+            Log.i("EXPECTION SMS", e.getMessage());
+        }
     }
 }

@@ -14,7 +14,7 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="710dp"
+            android:layout_height="650dp"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar

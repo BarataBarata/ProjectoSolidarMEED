@@ -10,6 +10,7 @@ public class Parturient {
     private int minutoParte;
     private String idAuxParturiente;
     private int segundoParte;
+    private  int allSegundos;
     private static String idPassAll;
     private boolean isDisparo;
     ///.............................///
@@ -28,16 +29,17 @@ public class Parturient {
     private String surname;
     private int age;
     private int para;
-    private String gestatinalRange;
+    private String gestatinalRange="";
     private Date time;
     private boolean isTransfered;
-    private boolean disparo;
-    private String reason;
-    private String origemTransferencia;
-    private String motivosDaTrasferencia;
-    private String destinoTrasferencia;
-    private String motivosDestinoDaTrasferencia;
-    private String viewTempo;
+    private boolean isAtendimento;
+    private String setYearDayMonthNotification="";
+    private String reason="";
+    private String origemTransferencia="";
+    private String motivosDaTrasferencia="";
+    private String destinoTrasferencia="";
+    private String motivosDestinoDaTrasferencia="";
+    private String viewTempo="";
     private String tipoAtendimento = "";
 
 
@@ -49,6 +51,15 @@ public class Parturient {
         this.name = name;
         this.surname = surname;
         this.age = age;
+    }
+
+
+    public String getSetYearDayMonthNotification() {
+        return setYearDayMonthNotification;
+    }
+
+    public void setSetYearDayMonthNotification(String setYearDayMonthNotification) {
+        this.setYearDayMonthNotification = setYearDayMonthNotification;
     }
 
     public int getDiaRegisto() {
@@ -80,6 +91,22 @@ public class Parturient {
     }
     public static void setTimerEmergence(int timerEmergence) { Parturient.timerEmergence = timerEmergence; }
 
+    public int getAllSegundos() {
+        return allSegundos;
+    }
+
+    public void setAllSegundos(int allSegundos) {
+        this.allSegundos = allSegundos;
+    }
+
+    public boolean isEditDilatation() {
+        return isEditDilatation;
+    }
+
+    public void setEditDilatation(boolean editDilatation) {
+        isEditDilatation = editDilatation;
+    }
+
     public String getTipoAtendimento() {
         return tipoAtendimento;
     }
@@ -87,12 +114,12 @@ public class Parturient {
         this.tipoAtendimento = tipoAtendimento;
     }
 
-    public boolean isDisparo() {
+    public boolean isAtendimento() {
         return isDisparo;
     }
 
-    public void setDisparo(boolean disparo) {
-        isDisparo = disparo;
+    public void setAtendimento(boolean atendimento) {
+        isDisparo = atendimento;
     }
 
     public String getFullName() {
@@ -136,12 +163,12 @@ public class Parturient {
         this.horaAtendimento = horaAtendimento;
     }
 
-    public boolean isRun() {
-        return disparo;
+    public boolean isAtendido() {
+        return isAtendimento;
     }
 
-    public void setRun(boolean disparo) {
-        this.disparo = disparo;
+    public void setAtendido(boolean disparo) {
+        this.isAtendimento = disparo;
     }
 
 

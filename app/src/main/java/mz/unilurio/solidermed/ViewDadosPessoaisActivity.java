@@ -51,7 +51,7 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
 
         if(getIntent().getStringExtra("idParturienteAtendidos")!=null) {
             idParturiente =(getIntent().getStringExtra("idParturienteAtendidos"));
-            for (Parturient parturient :dbService.getListAuxParturiente()) {
+            for (Parturient parturient :DBManager.getInstance().getListParturientesAtendidos()) {
                 if (parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)) {
                     sendDade(parturient);
                     break;
@@ -81,7 +81,8 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
 
         private void sendDade(Parturient parturient) {
             System.out.println(" ================ "+ parturient.getTipoAtendimento());
-        if(!parturient.getTipoAtendimento().isEmpty()){
+
+            if(!parturient.getTipoAtendimento().isEmpty()){
             tipoAtendimento.setText("Tipo de atentimento :"+parturient.getTipoAtendimento());
             tipoAtendimento.setVisibility(View.VISIBLE);
         }

@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.Notification;
 import mz.unilurio.solidermed.model.Parturient;
 
@@ -29,22 +31,23 @@ public class TrasferenciaActivity extends AppCompatActivity {
     private static String fullNameParturiente;
     private Spinner spinnerDestino;
     private Spinner spinnerMotivoDestino;
-    private int idParturiente;
+    private static String idParturiente="";
     private Parturient auxParturiente=new Parturient();
-
+    private DBService dbService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trasferencia);
 
+        dbService=new DBService(this);
         initialize();
 
         if(getIntent().getStringExtra("idParturiente")!=null){
-            idParturiente = Integer.parseInt(getIntent().getStringExtra("idParturiente"));
+            idParturiente = getIntent().getStringExtra("idParturiente");
            for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
-                if(parturient.getId()==idParturiente){
+                if(parturient.getIdAuxParturiente().equals(idParturiente)){
                     auxParturiente=parturient;
-                    fullNameParturiente=parturient.getFullName()+ " "+parturient.getSurname();
+                    fullNameParturiente=parturient.getName()+ " "+parturient.getSurname();
                     textFullName.setText(fullNameParturiente);
                     break;
                 }
@@ -76,7 +79,7 @@ public class TrasferenciaActivity extends AppCompatActivity {
     public void Trasferir(View view) {
             androidx.appcompat.app.AlertDialog.Builder dialog=new androidx.appcompat.app.AlertDialog.Builder(this);
             dialog.setTitle("Transferência");
-            dialog.setMessage(" Transferir "+ fullNameParturiente+" ?");
+            dialog.setMessage(" Transferir "+ auxParturiente.getName()+" "+ auxParturiente.getSurname()+" ?");
             dialog.setCancelable(false);
             dialog.setIcon((R.drawable.mulhergravidabom2));
 
@@ -96,19 +99,19 @@ public class TrasferenciaActivity extends AppCompatActivity {
                             progressBar.dismiss();
                             auxParturiente.setHoraAtendimento(format(new Date())+"");
                             auxParturiente.cancelCountDownTimer=true;
+                            auxParturiente.setAtendido(true);
                             auxParturiente.setTrasferirParturiente(true);
                             auxParturiente.setTrasferidoParaForaDoHospital(true);
                             auxParturiente.setDestinoTrasferencia(spinnerDestino.getSelectedItem().toString());
                             auxParturiente.setMotivosDestinoDaTrasferencia(spinnerMotivoDestino.getSelectedItem().toString());
+                            dbService.addAtendimento(auxParturiente);
                             DBManager.getInstance().getListParturientesAtendidos().add(auxParturiente);
                             DBManager.getInstance().getParturients().remove(auxParturiente);
+                            dbService.removeInBD(auxParturiente);
+                            removNotification();
 
-                            for(Notification notification: DBManager.getInstance().getNotifications()){
-                                if(Integer.parseInt(notification.getId())==idParturiente){
-                                    DBManager.getInstance().getNotifications().remove(notification);
 
-                                }
-                            }
+
                            finish();
                         }
                     },Long.parseLong("900"));
@@ -127,6 +130,19 @@ public class TrasferenciaActivity extends AppCompatActivity {
             dialog.create();
             dialog.show();
         }
+
+    public void removNotification(){
+        for(Notification notification: DBManager.getInstance().getNotifications()){
+            if(notification.getIdAuxParturiente().equals(idParturiente)){
+                notification.setAtendido(true);
+                DBManager.getInstance().getNotifications().remove(notification);
+                dbService.deleteNotification(notification);
+                break;
+            }
+        }
+
+    }
+
     private String format(Date date){
         DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
         return dateFormat.format(date);
