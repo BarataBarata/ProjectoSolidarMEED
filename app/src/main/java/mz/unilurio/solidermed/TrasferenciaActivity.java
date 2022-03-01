@@ -12,16 +12,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
-import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Notificacao;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class TrasferenciaActivity extends AppCompatActivity {
@@ -44,7 +42,7 @@ public class TrasferenciaActivity extends AppCompatActivity {
 
         if(getIntent().getStringExtra("idParturiente")!=null){
             idParturiente = getIntent().getStringExtra("idParturiente");
-           for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
+           for(Parturient parturient: dbService.getListAuxParturiente()){
                 if(parturient.getIdAuxParturiente().equals(idParturiente)){
                     auxParturiente=parturient;
                     fullNameParturiente=parturient.getName()+ " "+parturient.getSurname();
@@ -104,13 +102,12 @@ public class TrasferenciaActivity extends AppCompatActivity {
                             auxParturiente.setTrasferidoParaForaDoHospital(true);
                             auxParturiente.setDestinoTrasferencia(spinnerDestino.getSelectedItem().toString());
                             auxParturiente.setMotivosDestinoDaTrasferencia(spinnerMotivoDestino.getSelectedItem().toString());
-                            dbService.addAtendimento(auxParturiente);
-                            DBManager.getInstance().getListParturientesAtendidos().add(auxParturiente);
+                            DBManager.getInstance().getListaTransferidos().add(auxParturiente);
                             DBManager.getInstance().getParturients().remove(auxParturiente);
+                            DBManager.getInstance().getAuxlistNotificationParturients().remove(auxParturiente);
                             dbService.removeInBD(auxParturiente);
                             removNotification();
-
-
+                            dbService.addTransferidos(auxParturiente);
 
                            finish();
                         }
@@ -132,11 +129,11 @@ public class TrasferenciaActivity extends AppCompatActivity {
         }
 
     public void removNotification(){
-        for(Notification notification: DBManager.getInstance().getNotifications()){
-            if(notification.getIdAuxParturiente().equals(idParturiente)){
-                notification.setAtendido(true);
-                DBManager.getInstance().getNotifications().remove(notification);
-                dbService.deleteNotification(notification);
+        for(Notificacao notificacao : DBManager.getInstance().getNotifications()){
+            if(notificacao.getIdAuxParturiente().equals(idParturiente)){
+                notificacao.setAtendido(true);
+                DBManager.getInstance().getNotifications().remove(notificacao);
+                dbService.deleteNotification(notificacao);
                 break;
             }
         }

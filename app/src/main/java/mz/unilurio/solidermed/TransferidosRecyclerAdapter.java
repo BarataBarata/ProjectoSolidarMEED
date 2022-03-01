@@ -3,12 +3,10 @@ package mz.unilurio.solidermed;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,7 +22,7 @@ import java.util.List;
 
 import mz.unilurio.solidermed.model.Parturient;
 
-public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyclerAdpter.ViewHolder> implements Filterable {
+public class TransferidosRecyclerAdapter extends RecyclerView.Adapter<TransferidosRecyclerAdapter.ViewHolder> implements Filterable {
 
     private final Context context;
     private List<Parturient> originalListParturientes;
@@ -32,7 +30,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
     private final LayoutInflater layoutInflater;
 
 
-    public AtendidosRecyclerAdpter(Context context, List<Parturient> parturients) {
+    public TransferidosRecyclerAdapter(Context context, List<Parturient> parturients) {
         this.context = context;
         this.auxListParturientes =new ArrayList<>(parturients);
         layoutInflater = LayoutInflater.from(context);
@@ -124,7 +122,7 @@ public class AtendidosRecyclerAdpter extends RecyclerView.Adapter<AtendidosRecyc
                 list.addAll(auxListParturientes);
             }else{
                 for(Parturient parturient:auxListParturientes){
-                    if((parturient.getName() +" "+parturient.getSurname()).toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if((parturient.getName()+" "+parturient.getSurname()).toLowerCase().contains(constraint.toString().toLowerCase())){
                         list.add(parturient);
                         System.out.println(parturient.getName());
                     }

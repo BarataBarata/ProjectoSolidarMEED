@@ -53,7 +53,7 @@
                 android:layout_height="35dp"/>
             <TextView
                 android:gravity="center"
-                android:text="Registar um novo parturiente"
+                android:text="Registar uma nova parturiente"
                 android:layout_below="@id/imageParturiente"
                 android:id="@+id/txtTitlePartu"
                 android:layout_marginTop="10dp"
@@ -79,7 +79,7 @@
                     <EditText
                         android:layout_marginTop="15dp"
                         android:id="@+id/txtName"
-                        android:hint="Nome do parturiente"
+                        android:hint="Nome da parturiente"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_width="match_parent"
@@ -166,13 +166,26 @@
 <!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="wrap_content">-->
                      <TextView
+                         android:textSize="15dp"
                         android:layout_marginStart="16dp"
                         android:text="Dilatação cervical"
                         android:layout_marginTop="10dp"
                         android:id="@+id/txtTitledilatacao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
+                <TextView
 
+                    android:background="@color/black"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="italic"
+                    android:textSize="15dp"
+                    android:layout_marginStart="150dp"
+                    android:text=" na fase Latente"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:id="@+id/txtFase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 <!--                    <RelativeLayout-->
 <!--                        android:id="@+id/rec1"-->
 <!--                        android:layout_below="@id/txtTitledilatacao"-->
@@ -214,6 +227,7 @@
 
 
                     <TextView
+                        android:textSize="15dp"
                         android:id="@+id/txtOpc"
                         android:text="Opções de paridade"
                         android:layout_marginStart="16dp"

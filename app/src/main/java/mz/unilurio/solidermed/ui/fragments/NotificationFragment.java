@@ -15,7 +15,7 @@ import java.util.List;
 import mz.unilurio.solidermed.NotificationRecyclerAdpter;
 import mz.unilurio.solidermed.R;
 import mz.unilurio.solidermed.model.DBManager;
-import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Notificacao;
 
 public class NotificationFragment extends Fragment {
    RecyclerView recyclerView;
@@ -35,8 +35,8 @@ public class NotificationFragment extends Fragment {
     public void onResume() {
         super.onResume();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<Notification> notifications= DBManager.getInstance().getNotifications();
-        recyclerView.setAdapter(new NotificationRecyclerAdpter( getContext(), notifications));
+        List<Notificacao> notificacaos = DBManager.getInstance().getNotifications();
+        recyclerView.setAdapter(new NotificationRecyclerAdpter( getContext(), notificacaos));
     }
 
     @Override
@@ -45,8 +45,8 @@ public class NotificationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_notificacao, container, false);
         recyclerView = view.findViewById(R.id.list_notes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<Notification> notifications= DBManager.getInstance().getNotifications();
-        notificationRecyclerAdpter = new NotificationRecyclerAdpter( getContext(), notifications);
+        List<Notificacao> notificacaos = DBManager.getInstance().getNotifications();
+        notificationRecyclerAdpter = new NotificationRecyclerAdpter( getContext(), notificacaos);
         recyclerView.setAdapter(notificationRecyclerAdpter);
 
         return view;

@@ -37,11 +37,14 @@ public class SelectHospitalActivity extends AppCompatActivity {
         if(!dbService.isHospitalSelect()) {
 
             dbService.addOpcoesParidade(15+"");
+            //dbService.addAllAcess(false);
 
             dbService.addIdadeGestacional("Inferior a 28 semanas");
             dbService.addIdadeGestacional("De 28 a 33 semanas");
             dbService.addIdadeGestacional("De 34 a 36 semanas");
             dbService.addIdadeGestacional("Maior ou igual a 37 semanas");
+
+            dbService.addDoctorPrivilegios(false);
 
             dbService.addDilatation(1, 9, 0);
             dbService.addDilatation(0, 0, 1);

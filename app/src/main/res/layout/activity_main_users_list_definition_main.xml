@@ -65,7 +65,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_alignTop="@id/image1"
                 android:layout_toRightOf="@id/image1"
-                android:text="Definir o maximo de dilatação "
+                android:text="Definir o máximo de dilatação "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

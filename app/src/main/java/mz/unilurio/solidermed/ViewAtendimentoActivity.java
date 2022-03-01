@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -22,14 +21,14 @@ import java.util.Date;
 
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
-import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Notificacao;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class ViewAtendimentoActivity extends AppCompatActivity {
     private String idParturiente;
     private DBService dbService;
     private TextView textNomeParturiente;
-    private Parturient newParturient=new Parturient();
+    private Parturient newParturient;
     private ProgressDialog progressBar;
     private CheckBox checkBox1,checkBox2,checkBox5;
     private Switch aSwitchProcess;
@@ -95,8 +94,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
 
         if(getIntent().getStringExtra("idParturiente")!=null){
            idParturiente=(getIntent().getStringExtra("idParturiente"));
-
-           for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
+           for(Parturient parturient: dbService.getListAuxParturiente()){
                if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente+"")){
                     textNomeParturiente.setText(parturient.getName()+ " "+parturient.getSurname());
                     newParturient=parturient;
@@ -127,10 +125,10 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
 
     }
     public void removNotification(){
-        for(Notification notification: DBManager.getInstance().getNotifications()){
-            if(notification.getIdAuxParturiente().equals(idParturiente)){
-                dbService.deleteNotification(notification);
-                DBManager.getInstance().getNotifications().remove(notification);
+        for(Notificacao notificacao : DBManager.getInstance().getNotifications()){
+            if(notificacao.getIdAuxParturiente().equals(idParturiente)){
+                dbService.deleteNotification(notificacao);
+                DBManager.getInstance().getNotifications().remove(notificacao);
 
                 break;
             }
@@ -210,6 +208,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                             newParturient.setHoraAtendimento(format(new Date()));
                             newParturient.setTipoAtendimento(checkBoxTextOption+"");
                             newParturient.setInProcess(false);
+                            newParturient.setAtendido(true);
                             dbService.addAtendimento(newParturient);
                             DBManager.getInstance().addParturienteAtendido(newParturient);
                             removNotification();
@@ -295,10 +294,10 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     }
 
     public void setProgressNotification(String id){
-        for (Notification notification:DBManager.getInstance().getNotifications()){
-            if(notification.getIdAuxParturiente().equals(id)){
-                dbService.updadeInProcessNotification(notification);
-                notification.setInProcess(true);
+        for (Notificacao notificacao :DBManager.getInstance().getNotifications()){
+            if(notificacao.getIdAuxParturiente().equals(id)){
+                dbService.updadeInProcessNotification(notificacao);
+                notificacao.setInProcess(true);
                 break;
             }
         }

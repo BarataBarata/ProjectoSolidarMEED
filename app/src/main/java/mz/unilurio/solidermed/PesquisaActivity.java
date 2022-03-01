@@ -12,13 +12,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import mz.unilurio.solidermed.model.DBManager;
-import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Notificacao;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class PesquisaActivity extends AppCompatActivity {
      private  ParturienteRecyclerAdpter parturienteRecyclerAdpter;
      private NotificationRecyclerAdpter notificationRecyclerAdpter;
      private AtendidosRecyclerAdpter atendidosRecyclerAdpter;
+    private TransferidosRecyclerAdapter transferidosRecyclerAdapter;
      private static int optionSeacher;
      private  TextView textViewNullPesquisa;
 
@@ -58,7 +59,6 @@ public class PesquisaActivity extends AppCompatActivity {
                     case 0:{ notificationRecyclerAdpter.getFilter().filter(newText);break;}
                     case 1:{ atendidosRecyclerAdpter.getFilter().filter(newText);break;}
                     case 2:{ parturienteRecyclerAdpter.getFilter().filter(newText);break;}
-
                 }
 
                 return false;
@@ -101,9 +101,9 @@ public class PesquisaActivity extends AppCompatActivity {
         RecyclerView recyclerView;
         recyclerView = findViewById(R.id.recyclerVieParturienteSeacher);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Notification> notifications= DBManager.getInstance().getNotifications();
-        viewNullListPesquisa(notifications);
-        notificationRecyclerAdpter=new NotificationRecyclerAdpter( this, notifications);
+        List<Notificacao> notificacaos = DBManager.getInstance().getNotifications();
+        viewNullListPesquisa(notificacaos);
+        notificationRecyclerAdpter=new NotificationRecyclerAdpter( this, notificacaos);
         recyclerView.setAdapter(notificationRecyclerAdpter);
     }
 

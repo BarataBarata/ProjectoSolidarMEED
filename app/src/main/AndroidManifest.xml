@@ -13,26 +13,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projecto_S"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ActivitViewPasswordUser"></activity>
+        <activity android:name=".ActivityTransferidos"></activity>
+        <activity android:name=".ActivitViewPasswordUser" />
         <activity android:name=".MainActivity_Users_List_definitionMainActivity" />
         <activity android:name=".ActivityDefinirMaximoDeDilatacao" />
         <activity android:name=".ActivitDefinittionOptionParidade" />
         <activity android:name=".ActivityDefinitionIdadeGestacional" />
         <activity
             android:name=".SelectHospitalActivity"
-            android:theme="@style/Theme.Projecto_S.NoActionBar" >
+            android:theme="@style/Theme.Projecto_S.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-       <activity
-           android:name=".MainActivity">
-
-
-       </activity>
-
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".Activity_Confirmar_Registo" />
         <activity android:name=".Activity_RegistarUsuario" />
         <activity android:name=".MainActivity_Users_List" />
@@ -95,9 +91,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity" >
-
-        </activity>
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".Atendimento"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />

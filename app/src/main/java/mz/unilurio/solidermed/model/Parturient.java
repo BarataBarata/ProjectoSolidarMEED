@@ -4,14 +4,16 @@ import java.util.Date;
 
 public class Parturient {
 
+    private String horaExpulsoDoFeto;
+    private String sinaisDePatologia;
+
+
+
+
     //............horaparte..........//
-    private int horaParte;
-    private int diaRegisto;
-    private int minutoParte;
     private String idAuxParturiente;
     private int segundoParte;
     private  int allSegundos;
-    private static String idPassAll;
     private boolean isDisparo;
     ///.............................///
     public boolean isEditDilatation;
@@ -34,7 +36,7 @@ public class Parturient {
     private boolean isTransfered;
     private boolean isAtendimento;
     private String setYearDayMonthNotification="";
-    private String reason="";
+    private int reason;
     private String origemTransferencia="";
     private String motivosDaTrasferencia="";
     private String destinoTrasferencia="";
@@ -62,24 +64,22 @@ public class Parturient {
         this.setYearDayMonthNotification = setYearDayMonthNotification;
     }
 
-    public int getDiaRegisto() {
-        return diaRegisto;
+    public String getHoraExpulsoDoFeto() {
+        return horaExpulsoDoFeto;
     }
-    public void setDiaRegisto(int diaRegisto) {
-        this.diaRegisto = diaRegisto;
+
+    public void setHoraExpulsoDoFeto(String horaExpulsoDoFeto) {
+        this.horaExpulsoDoFeto = horaExpulsoDoFeto;
     }
-    public int getHoraParte() {
-        return horaParte;
+
+    public String getSinaisDePatologia() {
+        return sinaisDePatologia;
     }
-    public void setHoraParte(int horaParte) {
-        this.horaParte = horaParte;
+
+    public void setSinaisDePatologia(String sinaisDePatologia) {
+        this.sinaisDePatologia = sinaisDePatologia;
     }
-    public int getMinutoParte() {
-        return minutoParte;
-    }
-    public void setMinutoParte(int minutoParte) {
-        this.minutoParte = minutoParte;
-    }
+
     public int getSegundoParte() {
         return segundoParte;
     }
@@ -115,11 +115,19 @@ public class Parturient {
     }
 
     public boolean isAtendimento() {
+        return isAtendimento;
+    }
+
+    public void setAtendimento(boolean isAtendido) {
+        isAtendimento = isAtendido;
+    }
+
+    public boolean isDisparoAlerta() {
         return isDisparo;
     }
 
-    public void setAtendimento(boolean atendimento) {
-        isDisparo = atendimento;
+    public void setDisparoAlerta(boolean disparo) {
+        isDisparo = disparo;
     }
 
     public String getFullName() {
@@ -194,7 +202,7 @@ public class Parturient {
         this.surname = surname;
         this.age = age;
         this.isTransfered = isTransfered;
-        this.reason = reason;
+        // this.reason = reason;
     }
 
     public boolean isTrasferidoParaForaDoHospital() {
@@ -262,11 +270,11 @@ public class Parturient {
         isTransfered = transfered;
     }
 
-    public String getReason() {
+    public int getReason() {
         return reason;
     }
 
-    public void setReason(String reason) {
+    public void setReason(int reason) {
         this.reason = reason;
     }
 

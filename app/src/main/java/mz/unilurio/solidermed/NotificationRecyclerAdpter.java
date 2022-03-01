@@ -28,23 +28,23 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
-import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Notificacao;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class NotificationRecyclerAdpter extends RecyclerView.Adapter<NotificationRecyclerAdpter.ViewHolder> implements Filterable {
 
     private final Context context;
-    private  List<Notification>auxListNotificacao;
-    private List<Notification> notifications;
+    private  List<Notificacao>auxListNotificacao;
+    private List<Notificacao> notificacaos;
     private final LayoutInflater layoutInflater;
     private TimerTask taskMinutos;
     private Handler handlerMinutos;
 
-        public NotificationRecyclerAdpter(Context context, List<Notification> notifications) {
+        public NotificationRecyclerAdpter(Context context, List<Notificacao> notificacaos) {
         this.context = context;
-        this.auxListNotificacao =new ArrayList<>(notifications);
+        this.auxListNotificacao =new ArrayList<>(notificacaos);
         layoutInflater = LayoutInflater.from(context);
-        this.notifications = notifications;
+        this.notificacaos = notificacaos;
     }
 
     @NonNull
@@ -56,12 +56,12 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Notification notification = notifications.get(position);
+        Notificacao notificacao = notificacaos.get(position);
         holder.currentPosition = position;
 
-        holder.cardView.setCardBackgroundColor(notification.getColour());
-        holder.txtTime.setText(notification.getTime());
-        holder.txtNameParturient.setText(notification.getMessage());
+        holder.cardView.setCardBackgroundColor(notificacao.getColour());
+        holder.txtTime.setText(notificacao.getTime());
+        holder.txtNameParturient.setText(notificacao.getMessage());
 
         // atualiza os minutos
         handlerMinutos = new Handler();
@@ -76,22 +76,17 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     public void run() {
                         try {
-                            if (notification.isInProcess()) {
+                            if (notificacao.isInProcess()) {
                                 holder.txtDetails.setText("Em Processo de parto...");
                             } else {
 
-                                String tempoRestante = notification.getViewTimerTwo();
-                                if (tempoRestante.equals("Alerta Disparado")) {
+                                String tempoRestante = notificacao.getViewTimerTwo();
+                                holder.txtDetails.setText(" ( "+tempoRestante+" )");
+                                if (notificacao.getAlertaDisparada()) {
                                     holder.txtDetails.setText("Alerta Disparado");
                                     timerMinutos.cancel();
+                                    taskMinutos.cancel();
 
-                                } else {
-                                    for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
-                                        if(parturient.getIdAuxParturiente().equals(notification.getIdAuxParturiente())){
-                                            holder.txtDetails.setText("Idade : "+ parturient.getAge()+"-" + tempoRestante+"");
-                                        }
-                                    }
-                                    // System.out.println("========= : " +tempoRestante);
 
                                 }
                             }
@@ -106,18 +101,11 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
         timerMinutos.schedule(taskMinutos, 0, 1000);  // interval of one minute
 
-
-
-
-
-
-
-
-        if(isTrasferido(Integer.parseInt(notification.getId()))){
-            holder.idAlerteEmergence.setText("");
-        }else {
-            holder.idAlerteEmergence.setText("");
-        }
+//        if(isTrasferido(Integer.parseInt(notificacao.getId()))){
+//            holder.idAlerteEmergence.setText("");
+//        }else {
+//            holder.idAlerteEmergence.setText("");
+//        }
 
 
 
@@ -139,13 +127,13 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
                             case R.id.atendimento:{
                                 Intent intent = new Intent(context, ViewAtendimentoActivity.class);
-                                intent.putExtra("idParturiente",notifications.get(position).getIdAuxParturiente());
+                                intent.putExtra("idParturiente", notificacaos.get(position).getIdAuxParturiente());
                                 context.startActivity(intent);
                             }
                                 return true;
                             case R.id.edit:
                                 Intent intent = new Intent(context, AddParturientActivity.class);
-                                intent.putExtra("idParturiente",notifications.get(position).getIdAuxParturiente());
+                                intent.putExtra("idParturiente", notificacaos.get(position).getIdAuxParturiente());
                                 context.startActivity(intent);
                                 return true;
                             default:
@@ -171,7 +159,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
     @Override
     public int getItemCount() {
-        return notifications.size();
+        return notificacaos.size();
     }
 
     @Override
@@ -183,14 +171,14 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<Notification>list =new ArrayList<>();
+            List<Notificacao>list =new ArrayList<>();
 
             if(constraint.toString().isEmpty()){
                 list.addAll(auxListNotificacao);
             }else{
-                for(Notification notification:auxListNotificacao){
-                    if(notification.getMessage().toLowerCase().contains(constraint.toString().toLowerCase())){
-                        list.add(notification);
+                for(Notificacao notificacao :auxListNotificacao){
+                    if(notificacao.getMessage().toLowerCase().contains(constraint.toString().toLowerCase())){
+                        list.add(notificacao);
                     }
                 }
             }
@@ -202,8 +190,8 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            notifications.clear();
-            notifications.addAll((Collection<? extends Notification>) results.values);
+            notificacaos.clear();
+            notificacaos.addAll((Collection<? extends Notificacao>) results.values);
             notifyDataSetChanged();
         }
     };
@@ -232,7 +220,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ViewAtendimentoActivity.class);
-                         intent.putExtra("idParturiente", notifications.get(currentPosition).getIdAuxParturiente()+"");
+                         intent.putExtra("idParturiente", notificacaos.get(currentPosition).getIdAuxParturiente()+"");
                               context.startActivity(intent);
 
 //                        ProgressDialog progressBar;

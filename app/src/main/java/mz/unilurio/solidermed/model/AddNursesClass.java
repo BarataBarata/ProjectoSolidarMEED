@@ -44,7 +44,7 @@ public class AddNursesClass extends AppCompatDialogFragment {
         LayoutInflater inflater=getActivity().getLayoutInflater();
         View view=inflater.inflate(R.layout.layout_dialog_edit_nurse,null);
         builder.setView(view)
-                .setTitle("Adicionar Enfermeira").setIcon(R.drawable.ic_baseline_person_add_alt_1_24)
+                .setTitle("Adicionar credenciais").setIcon(R.drawable.ic_baseline_person_add_alt_1_24)
                 .setNegativeButton("Nao", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

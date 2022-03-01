@@ -51,16 +51,13 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
 
         if(getIntent().getStringExtra("idParturienteAtendidos")!=null) {
             idParturiente =(getIntent().getStringExtra("idParturienteAtendidos"));
-            for (Parturient parturient :DBManager.getInstance().getListParturientesAtendidos()) {
+            for (Parturient parturient :dbService.getListAuxParturiente()) {
                 if (parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)) {
                     sendDade(parturient);
                     break;
                 }
             }
         }
-
-
-
     }
     private void initialize() {
         cardView = findViewById(R.id.card3);
@@ -75,18 +72,11 @@ public class ViewDadosPessoaisActivity extends AppCompatActivity {
         tipoAtendimento =(TextView)findViewById(R.id.ViewTipoAtendimento);
     }
 
-
-
-
-
         private void sendDade(Parturient parturient) {
             System.out.println(" ================ "+ parturient.getTipoAtendimento());
 
-            if(!parturient.getTipoAtendimento().isEmpty()){
-            tipoAtendimento.setText("Tipo de atentimento :"+parturient.getTipoAtendimento());
-            tipoAtendimento.setVisibility(View.VISIBLE);
-        }
 
+                tipoAtendimento.setText("Tipo de atentimento :"+parturient.getTipoAtendimento());
         nomeParturiente.setText(" Nome da parturiente :"+ parturient.getName()+" "+parturient.getSurname());
         idadeParturiente.setText(" Idade da parturiente :"+ parturient.getAge()+" anos de idade");
         dilatacaoParturiente.setText(" dilatação inicial da parturiente :"+parturient.getReason()+" cm");

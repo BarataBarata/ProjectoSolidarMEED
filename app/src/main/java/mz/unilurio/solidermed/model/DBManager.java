@@ -3,8 +3,6 @@
 import android.graphics.Color;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import mz.unilurio.solidermed.R;
@@ -15,6 +13,7 @@ public class DBManager {
 
     private static DBManager ourInstance = null;
     private static List<UserDoctor> listDoctor=new ArrayList<>();
+    private List<Parturient>listaTransferidos=new ArrayList<>();
     private List<String> listIdParturiente=new ArrayList<>();
     private List<Parturient> auxlistNotificationParturients=new ArrayList<>();
     private List<DilatationAndTimer> dilatationAndTimerList=new ArrayList<>();
@@ -28,11 +27,11 @@ public class DBManager {
     private List<Parturient>listParturientesAtendidos=new ArrayList<>();
     private List<UserDoctor> userDoctorList=new ArrayList<>();
     private List<Settings> settingsList=new ArrayList<>();
-    private List<Notification> initNotifications = new ArrayList<>();
+    private List<Notificacao> initNotificacaos = new ArrayList<>();
     private List<String> listIdadeGestacional=new ArrayList<>();
     private List<Hospitais> hospitais= new ArrayList<>();
-    private List<Notification> notifications = new ArrayList<>();
-    private List<Notification> auxListNotifications = new ArrayList<>();
+    private List<Notificacao> notificacaos = new ArrayList<>();
+    private List<Notificacao> auxListNotificacaos = new ArrayList<>();
     private List<Parturient> parturients = new ArrayList<>();
     private List<String> listMotivosTrasferencia = new ArrayList<>();
     private List<String> listOpcoesUnidadeSanitaria = new ArrayList<>();
@@ -68,6 +67,11 @@ public class DBManager {
             ///ourInstance.initializeParturientesAtendidos();
         }
         return ourInstance;
+    }
+
+
+    public List<Parturient> getListaTransferidos() {
+        return listaTransferidos;
     }
 
     public List<UserDoctor> getUserDoctorList() {
@@ -195,12 +199,12 @@ public class DBManager {
 
     private void initializeInfermeira() {
     }
-    public void addAuxListNotification(Notification notification){
-           this.auxListNotifications.add(notification);
+    public void addAuxListNotification(Notificacao notificacao){
+           this.auxListNotificacaos.add(notificacao);
     }
 
-    public List<Notification> getAuxListNotifications() {
-        return auxListNotifications;
+    public List<Notificacao> getAuxListNotifications() {
+        return auxListNotificacaos;
     }
 
     public List<UserNurse> getUserNurseList() {
@@ -359,15 +363,15 @@ public class DBManager {
 //        initNotifications.add(initializeNotification2());
     }
 
-    public void addNewNotification(Notification notification){
-        notifications.add(notification);
+    public void addNewNotification(Notificacao notificacao){
+        notificacaos.add(notificacao);
     }
 
-    public List<Notification> getNotifications() {
-        return notifications;
+    public List<Notificacao> getNotifications() {
+        return notificacaos;
     }
-    public List<Notification> getInitNotifications() {
-        return initNotifications;
+    public List<Notificacao> getInitNotifications() {
+        return initNotificacaos;
     }
 
     public List<Parturient> getParturients() {

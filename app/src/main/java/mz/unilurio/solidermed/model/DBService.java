@@ -2,7 +2,6 @@ package mz.unilurio.solidermed.model;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -13,9 +12,13 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -24,97 +27,123 @@ import mz.unilurio.solidermed.MainActivity;
 
 public class DBService  extends SQLiteOpenHelper {
     public  boolean isNotificationAlerte;
-    private Notification notification;
+    private Notificacao notificacao;
     private static String nomeDB = "BDHospital.db";
     private static int versao = 1;
 
     private String[] sql = {
-           // "CREATE TABLE AllacessUser(id INTEGER NOT NULL UNIQUE, acess boolean NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
+            // "CREATE TABLE AllacessUser(id INTEGER NOT NULL UNIQUE, acess boolean NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE AuxParturientes(id INTEGER NOT NULL UNIQUE, " +
-                    "fullname TEXT NOT NULL," +
+                    "name TEXT NOT NULL," +
                     "apelido TEXT NOT NULL," +
+                    "isAtendido boolean NOT NULL," +
+                    "tipoAtendimento TEXT NOT NULL," +
                     "idade TEXT NOT NULL," +
+                    "sinaisDePatologia TEXT NOT NULL, " +
+                    "horaExpulsoDoFeto TEXT NOT NULL, " +
                     "idAuxParturiente TEXT NOT NULL," +
-                    "setYearDayMonthNotification TEXT NOT NULL," +
                     "dilatacao TEXT NOT NULL," +
                     "paridade TEXT NOT NULL," +
-                    "isTrasferencia boolean NOT NULL," +
+                    "isTrasferido boolean NOT NULL," +
                     "isTrasferenciaForaDaUnidade boolean NOT NULL," +
-                    "HoraEntrada TXT NOT NULL, " +
-                    "horaParte INTEGER NOT NULL, " +
-                    "minutoParte INTEGER NOT NULL," +
-                    "segundoParte INTEGER NOT NULL," +
-                    "HoraAtendimento TXT NOT NULL," +
-                    "origemTrasferencia TXT NOT NULL," +
-                    "motivoOrigemTrasferencia TXT NOT NULL," +
-                    "destinoTrasferencia TXT NOT NULL," +
-                    "motivosDestinoTrasferencia TXT NOT NULL," +
+                    "HoraEntrada TEXT NOT NULL, " +
+                    "HoraAtendimento TEXT NOT NULL," +
+                    "origemTrasferencia TEXT NOT NULL," +
+                    "motivoOrigemTrasferencia TEXT NOT NULL," +
+                    "destinoTrasferencia TEXT NOT NULL," +
+                    "motivosDestinoTrasferencia TEXT NOT NULL," +
                     "parturienteEmprocesso boolean NOT NULL," +
-                    "idadeGestacional TXT NOT NULL, " +
+                    "idadeGestacional TEXT NOT NULL, " +
+                    "isDisparo boolean NOT NULL," +
+                    "isEditDilatation boolean NOT NULL," +
                     "PRIMARY KEY(id AUTOINCREMENT ));",
 
             "CREATE TABLE Atendidos(id INTEGER NOT NULL UNIQUE," +
-                    "fullname TEXT NOT NULL," +
+                    "name TEXT NOT NULL," +
                     "apelido TEXT NOT NULL," +
-                    "idade TEXT NOT NULL," +
+                    "isAtendido boolean NOT NULL," +
                     "tipoAtendimento TEXT NOT NULL," +
+                    "idade TEXT NOT NULL," +
+                    "sinaisDePatologia TEXT NOT NULL, " +
+                    "horaExpulsoDoFeto TEXT NOT NULL, " +
                     "idAuxParturiente TEXT NOT NULL," +
-                    "setYearDayMonthNotification TEXT NOT NULL," +
                     "dilatacao TEXT NOT NULL," +
                     "paridade TEXT NOT NULL," +
-                    "isTrasferencia boolean NOT NULL," +
+                    "isTrasferido boolean NOT NULL," +
                     "isTrasferenciaForaDaUnidade boolean NOT NULL," +
-                    "HoraEntrada TXT NOT NULL, " +
-                    "horaParte INTEGER NOT NULL, " +
-                    "minutoParte INTEGER NOT NULL," +
-                    "segundoParte INTEGER NOT NULL," +
-                    "HoraAtendimento TXT NOT NULL," +
-                    "origemTrasferencia TXT NOT NULL," +
-                    "motivoOrigemTrasferencia TXT NOT NULL," +
-                    "destinoTrasferencia TXT NOT NULL," +
-                    "motivosDestinoTrasferencia TXT NOT NULL," +
+                    "HoraEntrada TEXT NOT NULL, " +
+                    "HoraAtendimento TEXT NOT NULL," +
+                    "origemTrasferencia TEXT NOT NULL," +
+                    "motivoOrigemTrasferencia TEXT NOT NULL," +
+                    "destinoTrasferencia TEXT NOT NULL," +
+                    "motivosDestinoTrasferencia TEXT NOT NULL," +
                     "parturienteEmprocesso boolean NOT NULL," +
-                    "idadeGestacional TXT NOT NULL, " +
+                    "idadeGestacional TEXT NOT NULL, " +
+                    "isDisparo boolean NOT NULL," +
+                    "isEditDilatation boolean NOT NULL," +
                     "PRIMARY KEY(id AUTOINCREMENT ));",
 
-            "CREATE TABLE Parturientes(id INTEGER NOT NULL UNIQUE," +
-                    " fullname TEXT NOT NULL," +
+            "CREATE TABLE Transferidos(id INTEGER NOT NULL UNIQUE," +
+                    "name TEXT NOT NULL," +
                     "apelido TEXT NOT NULL," +
+                    "isAtendido boolean NOT NULL," +
+                    "tipoAtendimento TEXT NOT NULL," +
                     "idade TEXT NOT NULL," +
+                    "sinaisDePatologia TEXT NOT NULL, " +
+                    "horaExpulsoDoFeto TEXT NOT NULL, " +
+                    "idAuxParturiente TEXT NOT NULL," +
                     "dilatacao TEXT NOT NULL," +
                     "paridade TEXT NOT NULL," +
-                    "setYearDayMonthNotification TEXT NOT NULL," +
-                    "idAuxParturiente TEXT NOT NULL," +
-                    "dia INTEGER NOT NULL," +
-                    "isTrasferencia boolean NOT NULL," +
+                    "isTrasferido boolean NOT NULL," +
                     "isTrasferenciaForaDaUnidade boolean NOT NULL," +
-                    "HoraEntrada TXT NOT NULL, " +
-                    "horaParte INTEGER NOT NULL," +
-                    "minutoParte INTEGER NOT NULL," +
-                    "segundoParte INTEGER NOT NULL," +
-                    "allSegundos INTEGER NOT NULL," +
-                    "HoraAtendimento TXT NOT NULL,origemTrasferencia TXT NOT NULL," +
-                    "motivoOrigemTrasferencia TXT NOT NULL," +
-                    "destinoTrasferencia TXT NOT NULL," +
-                    "motivosDestinoTrasferencia TXT NOT NULL," +
+                    "HoraEntrada TEXT NOT NULL, " +
+                    "HoraAtendimento TEXT NOT NULL," +
+                    "origemTrasferencia TEXT NOT NULL," +
+                    "motivoOrigemTrasferencia TEXT NOT NULL," +
+                    "destinoTrasferencia TEXT NOT NULL," +
+                    "motivosDestinoTrasferencia TEXT NOT NULL," +
                     "parturienteEmprocesso boolean NOT NULL," +
-                    "idadeGestacional TXT NOT NULL, " +
+                    "idadeGestacional TEXT NOT NULL, " +
+                    "isDisparo boolean NOT NULL," +
+                    "isEditDilatation boolean NOT NULL," +
+                    "PRIMARY KEY(id AUTOINCREMENT ));",
+
+
+            "CREATE TABLE Parturientes(id INTEGER NOT NULL UNIQUE," +
+
+                    "name TEXT NOT NULL," +
+                    "apelido TEXT NOT NULL," +
+                    "isAtendido boolean NOT NULL," +
+                    "tipoAtendimento TEXT NOT NULL," +
+                    "idade TEXT NOT NULL," +
+                    "sinaisDePatologia TEXT NOT NULL, " +
+                    "horaExpulsoDoFeto TEXT NOT NULL, " +
+                    "idAuxParturiente TEXT NOT NULL," +
+                    "dilatacao TEXT NOT NULL," +
+                    "paridade TEXT NOT NULL," +
+                    "isTrasferido boolean NOT NULL," +
+                    "isTrasferenciaForaDaUnidade boolean NOT NULL," +
+                    "HoraEntrada TEXT NOT NULL, " +
+                    "HoraAtendimento TEXT NOT NULL," +
+                    "origemTrasferencia TEXT NOT NULL," +
+                    "motivoOrigemTrasferencia TEXT NOT NULL," +
+                    "destinoTrasferencia TEXT NOT NULL," +
+                    "motivosDestinoTrasferencia TEXT NOT NULL," +
+                    "parturienteEmprocesso boolean NOT NULL," +
+                    "idadeGestacional TEXT NOT NULL, " +
                     "isDisparo boolean NOT NULL," +
                     "isEditDilatation boolean NOT NULL," +
                     "PRIMARY KEY(id AUTOINCREMENT ));",
 
             "CREATE TABLE Notificacao(id INTEGER NOT NULL UNIQUE," +
-                    "idParturiente INTEGER NOT NULL UNIQUE," +
-                    "hora INTEGER NOT NULL," +
-                    "minuto INTEGER NOT NULL," +
-                    "segundo INTEGER NOT NULL, " +
-                    "allSegundos INTEGER NOT NULL, " +
-                    "setYearDayMonthNotification TEXT NOT NULL,"+
+                    "horaDoEnvioDaMensagem TEXT NOT NULL," +
+                    "idParturiente TEXT NOT NULL ," +
                     "fullname TEXT NOT NULL," +
-                    "HoraNotification TXT NOT NULL," +
+                    "HoraNotification TEXT NOT NULL," +
                     "isOpen boolean NOT NULL," +
                     "inProcess boolean NOT NULL," +
                     "cor INTEGER NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
+            "CREATE TABLE privilegiosDoctor(id INTEGER NOT NULL UNIQUE, acessoTotal boolean NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE UserDoctor(id INTEGER NOT NULL UNIQUE, username TEXT NOT NULL,fullname TEXT NOT NULL,tellDoctor TEXT NOT NULL, pass TEXT NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE UserNurse(id INTEGER NOT NULL UNIQUE, username TEXT NOT NULL ,fullname TEXT NOT NULL ,tellNurse TEXT NOT NULL, pass TEXT NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE HospitalSelect(id INTEGER NOT NULL UNIQUE, hospital TEXT NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
@@ -125,8 +154,7 @@ public class DBService  extends SQLiteOpenHelper {
             "CREATE TABLE Alert(id INTEGER NOT NULL UNIQUE, horas TEXT NOT NULL , minutes TEXT NOT NULL  , PRIMARY KEY(id AUTOINCREMENT ));",
 
     };
-    private int valorTimer;
-    private int timerAlert;
+    private int tempoRestante;
 
     public DBService(@Nullable Context context) {
         super(context, nomeDB, null, versao);
@@ -139,6 +167,39 @@ public class DBService  extends SQLiteOpenHelper {
             db.execSQL(sql[i]);
         }
     }
+
+    public long addDoctorPrivilegios(boolean isAcessoTotal) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("acessoTotal",isAcessoTotal);
+        return db.insert(" privilegiosDoctor", null, cv);
+
+    }
+    public long updadeDoctorPrivilegios(boolean isAcessoTotal) {
+        String  id="1";
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("acessoTotal",isAcessoTotal);
+        return db.update("privilegiosDoctor", cv, "id=?", new String[]{String.valueOf(id)});
+    }
+
+    public boolean getPrivilegios() {
+        String id = "1";
+        boolean privilegios = false;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM privilegiosDoctor WHERE id = ?",
+                new String[]{id});
+        c.moveToFirst();
+        if (c.getCount() > 0) {
+            do {
+               privilegios = ((c.getInt(c.getColumnIndex("acessoTotal"))== 1)? true : false);
+            } while (c.moveToNext());
+        }
+        return privilegios;
+    }
+
+
 
     public long addDoctor(String username, String pass, String tellDoctor, String fullName) {
         SQLiteDatabase db = getWritableDatabase();
@@ -259,9 +320,6 @@ public class DBService  extends SQLiteOpenHelper {
     @Override
     public
 
-
-
-
     void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
@@ -300,7 +358,7 @@ public class DBService  extends SQLiteOpenHelper {
     public long updadeNurseUserAndPassword(int id, String pass) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-       // cv.put("username", username);
+        // cv.put("username", username);
         cv.put("pass", pass);
         return db.update("UserNurse", cv, "id=?", new String[]{String.valueOf(id)});
     }
@@ -727,24 +785,37 @@ public class DBService  extends SQLiteOpenHelper {
     }
 
     ///............................add parturiente ...........................////
+    public  void addParturiente(Parturient parturient) throws ParseException {
+        if(!parturient.getSinaisDePatologia().equalsIgnoreCase("Nenhum")){
+            envioDaNotificacao(parturient);
+            addAuxParturiente(parturient);
+        }else{
+            addParturienteInDB(parturient);
+        }
+    }
 
-    public long addParturiente(Parturient parturient) {
-        addAuxParturiente(parturient);
+
+    public long addParturienteInDB(Parturient parturient) throws ParseException {
+
+
+        initializeCountDownTimer(parturient,getTimerDilatation(parturient.getReason()+"")); // inicializa a contagem
+        addAuxParturiente(parturient);  /// coloca os parturintes numa lista auxiliar
+        DBManager.getInstance().getParturients().add(parturient);
+        DBManager.getInstance().addAuxListNotificationParturient(parturient);
+
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("horaParte", parturient.getHoraParte());
-        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
-        cv.put("minutoParte ", parturient.getMinutoParte());
-        cv.put("segundoParte", parturient.getSegundoParte());
-        cv.put("fullname ", parturient.getName());
-        cv.put("allSegundos", parturient.getAllSegundos());
-        cv.put("setYearDayMonthNotification", parturient.getSetYearDayMonthNotification());
-        cv.put("dia", parturient.getDiaRegisto());
-        cv.put("isEditDilatation", parturient.isEditDilatation());
-        cv.put("isDisparo", parturient.isAtendimento());
+        cv.put("name ", parturient.getName());
         cv.put("apelido", parturient.getSurname());
+        cv.put("isAtendido", parturient.isAtendido());
+        cv.put("tipoAtendimento", parturient.getTipoAtendimento());
+        cv.put("horaExpulsoDoFeto", parturient.getHoraExpulsoDoFeto());
+        cv.put("sinaisDePatologia", parturient.getSinaisDePatologia());
+        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
+        cv.put("isEditDilatation", parturient.isEditDilatation());
+        cv.put("isDisparo",parturient.isDisparoAlerta());
         cv.put("idade", parturient.getAge());
-        cv.put("isTrasferencia",parturient.isTransfered());
+        cv.put("isTrasferido",parturient.isTransfered());
         cv.put("isTrasferenciaForaDaUnidade",parturient.isTrasferidoParaForaDoHospital());
         cv.put("HoraEntrada ",parturient.getHoraEntrada());
         cv.put("paridade",parturient.getPara());
@@ -767,7 +838,6 @@ public class DBService  extends SQLiteOpenHelper {
     }
 
     public long updadeCorIsDispareNotification(int cor, String id) {
-        System.out.println(" =================== : "+cor+"  ======= +"+id);
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("cor",cor);
@@ -775,23 +845,20 @@ public class DBService  extends SQLiteOpenHelper {
     }
 
 
-
-
-
-
-
     public long addAuxParturiente(Parturient parturient) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("horaParte", parturient.getHoraParte());
-        cv.put("minutoParte ", parturient.getMinutoParte());
-        cv.put("setYearDayMonthNotification", parturient.getSetYearDayMonthNotification());
-        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
-        cv.put("segundoParte", parturient.getSegundoParte());
-        cv.put("fullname ", parturient.getName());
+        cv.put("name ", parturient.getName());
         cv.put("apelido", parturient.getSurname());
+        cv.put("isAtendido", parturient.isAtendido());
+        cv.put("tipoAtendimento", parturient.getTipoAtendimento());
+        cv.put("horaExpulsoDoFeto", parturient.getHoraExpulsoDoFeto());
+        cv.put("sinaisDePatologia", parturient.getSinaisDePatologia());
+        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
+        cv.put("isEditDilatation", parturient.isEditDilatation());
+        cv.put("isDisparo",parturient.isDisparoAlerta());
         cv.put("idade", parturient.getAge());
-        cv.put("isTrasferencia",parturient.isTransfered());
+        cv.put("isTrasferido",parturient.isTransfered());
         cv.put("isTrasferenciaForaDaUnidade",parturient.isTrasferidoParaForaDoHospital());
         cv.put("HoraEntrada ",parturient.getHoraEntrada());
         cv.put("paridade",parturient.getPara());
@@ -806,50 +873,37 @@ public class DBService  extends SQLiteOpenHelper {
         return db.insert("AuxParturientes", null, cv);
     }
 
-    public void updadeListParturiente() {
+
+    public void initializeListNotification() throws ParseException {
+
+        DBManager.getInstance().getNotifications().removeAll(DBManager.getInstance().getNotifications());
+
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM Parturientes", null);
+        Cursor c = db.rawQuery("SELECT * FROM Notificacao", null);
         c.moveToFirst();
         if (c.getCount()> 0) {
             do {
-                Parturient parturient=new Parturient();
-                parturient.setId(c.getInt(c.getColumnIndex("id")));
-                parturient.setReason(c.getString(c.getColumnIndex("dilatacao")));
-                parturient.setHoraEntrada(c.getString(c.getColumnIndex("HoraEntrada")));
+                Notificacao no=new Notificacao();
+                no.setId(c.getInt(c.getColumnIndex("id"))+"");
+                no.setTime(c.getString(c.getColumnIndex("HoraNotification")));
+                no.setIdAuxParturiente(c.getString(c.getColumnIndex("idParturiente")));
+                no.setHoraDoEnvioDaMensagem(c.getString(c.getColumnIndex("horaDoEnvioDaMensagem")));
+                no.setNome(c.getString(c.getColumnIndex("fullname")));
+                no.setOpen(((c.getInt(c.getColumnIndex("isOpen")))== 1)? true : false);
+                no.setColour(c.getInt(c.getColumnIndex("cor")));
+                no.setInProcess((c.getInt(c.getColumnIndex("inProcess"))== 1)? true : false);
+                tempoRestante = getTempoRestanteEmSeguntosDaNotificacao(no); // tras o tempo restante para terminar com a contagem
 
-                if(!c.getString(c.getColumnIndex("HoraAtendimento")).isEmpty()) {
-                    parturient.setHoraAtendimento(c.getString(c.getColumnIndex("HoraAtendimento")));
-                }
-
-                parturient.setIdAuxParturiente(c.getString(c.getColumnIndex("setYearDayMonthNotification")));
-
-                parturient.setIdAuxParturiente(c.getString(c.getColumnIndex("idAuxParturiente")));
-                parturient.setHoraParte(c.getInt(c.getColumnIndex("horaParte")));
-                parturient.setEditDilatation((c.getInt(c.getColumnIndex("isEditDilatation"))== 1)? true : false);
-                parturient.setMinutoParte(c.getInt(c.getColumnIndex("minutoParte")));
-                parturient.setSegundoParte(c.getInt(c.getColumnIndex("segundoParte")));
-                parturient.setName(c.getString(c.getColumnIndex("fullname")));
-                parturient.setSurname(c.getString(c.getColumnIndex("apelido")));
-                parturient.setInProcess(((c.getInt(c.getColumnIndex("parturienteEmprocesso")))== 1)? true : false);
-                parturient.setOrigemTransferencia(c.getString(c.getColumnIndex("origemTrasferencia")));
-                parturient.setDestinoTrasferencia(c.getString(c.getColumnIndex("destinoTrasferencia")));
-                parturient.setMotivosDestinoDaTrasferencia(c.getString(c.getColumnIndex("motivosDestinoTrasferencia")));
-                parturient.setPara(c.getInt(c.getColumnIndex("paridade")));
-                parturient.setAge(c.getInt(c.getColumnIndex("idade")));
-                parturient.setAllSegundos(c.getInt(c.getColumnIndex("allSegundos")));
-                parturient.setDiaRegisto(c.getInt(c.getColumnIndex("dia")));
-                System.out.println(c.getInt(c.getColumnIndex("idade"))+" : patdttdt idade : "+parturient.getAge());
-                parturient.setMotivosDaTrasferencia(c.getString(c.getColumnIndex("motivoOrigemTrasferencia")));
-                parturient.setTrasferidoParaForaDoHospital((c.getInt(c.getColumnIndex("isTrasferenciaForaDaUnidade"))== 1)? true : false);
-                parturient.setTransfered((c.getInt(c.getColumnIndex("isTrasferencia"))== 1)? true : false);
-
-
-                if(isToday(parturient)){
-                    if(isExistParturiente(parturient.getId())){
-                        initializeCountDownTimer(parturient,getTimerDilatation(parturient.getReason()));
-                        DBManager.getInstance().getParturients().add(parturient);
-                        DBManager.getInstance().addAuxListNotificationParturient(parturient);
-                    }
+                if(isFinishTimeNotification2(no)){
+                    no.setViewTimerTwo(" Alerta disparado ");
+                    ordeList();
+                    DBManager.getInstance().getNotifications().add(no);
+                    ordeList();
+                }else{
+                    ordeList();
+                    DBManager.getInstance().getNotifications().add(no);
+                    ordeList();
+                    initializeCountDownTimerNotification(no,tempoRestante);
                 }
 
             } while (c.moveToNext());
@@ -857,31 +911,30 @@ public class DBService  extends SQLiteOpenHelper {
         }
     }
 
-
-    public void initializeListParturiente() {
+    public void initializeListParturiente() throws ParseException {
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM Parturientes", null);
         DBManager.getInstance().getAuxlistNotificationParturients().removeAll( DBManager.getInstance().getAuxlistNotificationParturients());
+        DBManager.getInstance().getParturients().removeAll(DBManager.getInstance().getParturients());
         getListAuxParturiente();
-
         c.moveToFirst();
         if (c.getCount()> 0) {
             do {
-                Parturient parturient=new Parturient();
-                parturient.setId(c.getInt(c.getColumnIndex("id")));
-                parturient.setReason(c.getString(c.getColumnIndex("dilatacao")));
-                parturient.setHoraEntrada(c.getString(c.getColumnIndex("HoraEntrada")));
 
+                Parturient parturient=new Parturient();
+
+                parturient.setId(c.getInt(c.getColumnIndex("id")));
+                parturient.setReason(c.getInt(c.getColumnIndex("dilatacao")));
+                parturient.setHoraEntrada(c.getString(c.getColumnIndex("HoraEntrada")));
+                parturient.setTipoAtendimento(c.getString(c.getColumnIndex("tipoAtendimento")));
                 if(!c.getString(c.getColumnIndex("HoraAtendimento")).isEmpty()) {
                     parturient.setHoraAtendimento(c.getString(c.getColumnIndex("HoraAtendimento")));
                 }
-                parturient.setEditDilatation((c.getInt(c.getColumnIndex("isEditDilatation"))== 1)? true : false);
-                parturient.setIdAuxParturiente(c.getString(c.getColumnIndex("setYearDayMonthNotification")));
+                parturient.setSinaisDePatologia(c.getString(c.getColumnIndex("sinaisDePatologia")));
+                parturient.setHoraExpulsoDoFeto(c.getString(c.getColumnIndex("horaExpulsoDoFeto")));
+                parturient.setEditDilatation(false);
                 parturient.setIdAuxParturiente(c.getString(c.getColumnIndex("idAuxParturiente")));
-                parturient.setHoraParte(c.getInt(c.getColumnIndex("horaParte")));
-                parturient.setMinutoParte(c.getInt(c.getColumnIndex("minutoParte")));
-                parturient.setSegundoParte(c.getInt(c.getColumnIndex("segundoParte")));
-                parturient.setName(c.getString(c.getColumnIndex("fullname")));
+                parturient.setName(c.getString(c.getColumnIndex("name")));
                 parturient.setSurname(c.getString(c.getColumnIndex("apelido")));
                 parturient.setInProcess(((c.getInt(c.getColumnIndex("parturienteEmprocesso")))== 1)? true : false);
                 parturient.setOrigemTransferencia(c.getString(c.getColumnIndex("origemTrasferencia")));
@@ -889,40 +942,28 @@ public class DBService  extends SQLiteOpenHelper {
                 parturient.setMotivosDestinoDaTrasferencia(c.getString(c.getColumnIndex("motivosDestinoTrasferencia")));
                 parturient.setPara(c.getInt(c.getColumnIndex("paridade")));
                 parturient.setAge(c.getInt(c.getColumnIndex("idade")));
-                parturient.setDiaRegisto(c.getInt(c.getColumnIndex("dia")));
-
+                parturient.setInProcess((c.getInt(c.getColumnIndex("parturienteEmprocesso"))== 1)? true : false);
                 parturient.setGestatinalRange(c.getString(c.getColumnIndex("idadeGestacional")));
-                System.out.println(c.getInt(c.getColumnIndex("idade"))+" : patdttdt idade : "+parturient.getAge());
                 parturient.setMotivosDaTrasferencia(c.getString(c.getColumnIndex("motivoOrigemTrasferencia")));
                 parturient.setTrasferidoParaForaDoHospital((c.getInt(c.getColumnIndex("isTrasferenciaForaDaUnidade"))== 1)? true : false);
-                parturient.setTransfered((c.getInt(c.getColumnIndex("isTrasferencia"))== 1)? true : false);
-
-                valorTimer = getValueUpdadeAndSaveTimer(parturient);
-                if(isToday(parturient)){
-                    if(valorTimer>0 ||!parturient.isAtendimento() ){
-                        System.out.println("**************** : "+valorTimer);
-                        if(valorTimer>0){
-                            initializeCountDownTimer(parturient,valorTimer);
-                        }else {
-                            if(isInProcessParturiente(parturient)){
-                                parturient.setTempoRes("Parturiente Em Processo");
-                            }else {
-                                parturient.setTempoRes("Alerta Disparado");
-                            }
-
-                        }
-                        if(isExistParturiente(parturient.getId())){
-                            DBManager.getInstance().getParturients().add(parturient);
-                            DBManager.getInstance().addAuxListNotificationParturient(parturient);
-                        }
+                parturient.setTransfered((c.getInt(c.getColumnIndex("isTrasferido"))== 1)? true : false);
+                parturient.setAtendido((c.getInt(c.getColumnIndex("isAtendido"))== 1)? true : false);
+                tempoRestante = getTempoRestanteEmSeguntos(parturient); // tras o tempo restante para terminar com a contagem
+                if(isFinishTime(parturient)){
+                    if(parturient.isInProcess()){
+                        parturient.setTempoRes("Parturiente Em Processo");
+                        DBManager.getInstance().getParturients().add(parturient);
+                        DBManager.getInstance().addAuxListNotificationParturient(parturient);
 
                     }else {
-                        System.out.println(" nome : "+parturient.getName());
-                        parturient.setAtendimento(true);
-                        updadeCorIsDispareParturiente(true,parturient.getId());
-                        //deleteParturiente(parturient.getId());
+                        if(getIdNotification(parturient.getIdAuxParturiente())==-1)
+                            envioDaNotificacao(parturient);
+                            removeInBD(parturient);
                     }
-
+                }else{
+                    initializeCountDownTimer(parturient,tempoRestante);
+                    DBManager.getInstance().getParturients().add(parturient);
+                    DBManager.getInstance().addAuxListNotificationParturient(parturient);
                 }
 
             } while (c.moveToNext());
@@ -930,31 +971,128 @@ public class DBService  extends SQLiteOpenHelper {
         }
     }
 
+    private void envioDaNotificacao(Parturient parturient) throws ParseException {
+
+        Notificacao notifi=new Notificacao();
+        notifi.setAtendido(false);
+        notifi.setNome(notifi.getMessage());
+        notifi.setHoraDoEnvioDaMensagem(getTempoLimiteDoEnvioMensagem(getTimerAlertEmergenceDilatation()));
+        notifi.setIdAuxParturiente(parturient.getIdAuxParturiente());
+        notifi.setInProcess(false);
+        notifi.setOpen(false);
+        notifi.setNome(parturient.getName()+ " "+parturient.getSurname());
+        notifi.setTime(format(new Date()));
+        notifi.setColour(Color.YELLOW+Color.BLACK);
+       /// DBManager.getInstance().addAuxListNotification(notifi);
+
+        if(!isConten(notifi)){
+            if(!parturient.getSinaisDePatologia().equalsIgnoreCase("Nenhum")){
+                notifi.setColour( Color.rgb(248, 215, 218));
+                sendMensageEmergence(notifi,parturient);
+                notifi.setViewTimerTwo("Alerta disparado");
+                ordeList();
+                DBManager.getInstance().getNotifications().add(notifi);
+                ordeList();
+            }else{
+                initializeCountDownTimerNotification(notifi,getTimerAlertEmergenceDilatation());
+                ordeList();
+                DBManager.getInstance().getNotifications().add(notifi);
+                ordeList();
+            }
+            addNotificacao(notifi);
+        }
+
+    }
+
+    public void ordeList(){ // o primeiro a entrar fica no topo
+        ArrayList<Notificacao> list = new ArrayList<>();
+        for(int i=(DBManager.getInstance().getNotifications().size()-1);i>=0;i--){
+            list.add(DBManager.getInstance().getNotifications().get(i));
+        }
+        DBManager.getInstance().getNotifications().removeAll(DBManager.getInstance().getNotifications());
+        DBManager.getInstance().getNotifications().addAll(list);
+    }
+
+    public boolean isConten(Notificacao notificaca){
+           for(Notificacao noti: DBManager.getInstance().getNotifications()){
+               if(noti.getIdAuxParturiente().equalsIgnoreCase(notificaca.getIdAuxParturiente())){
+                   return true;
+               }else {
+                   return false;
+               }
+           }
+           return false;
+    }
+
+
+    private void initializeCountDownTimerNotification(Notificacao notifica, int seconds) {
+        initializeListParturientesTransferidos();
+        new CountDownTimer(seconds*1000+1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+                int hours = seconds / (60 * 60);
+                int tempMint = (seconds - (hours * 60 * 60));
+                int minutes = tempMint / 60;
+                seconds = tempMint - (minutes * 60);
+
+                if(iscontemInTransferido(notifica.getIdAuxParturiente())){
+                    cancel();
+                }
+
+                if(notifica.isInProcess()){
+                    notifica.setViewTimerTwo(" Emprocesso de parto ");
+                    cancel();
+                }
+
+                notifica.setViewTimerTwo("Tempo restante : " + String.format("%02d", hours)
+                        + ":" + String.format("%02d", minutes)
+                        + ":" + String.format("%02d", seconds)+" ");
+            }
+
+            public void onFinish() {
+                notifica.setAlertaDisparada(true);
+                notifica.setColour(Color.rgb(248, 215, 218));
+                AddParturientActivity addParturientActivity=new AddParturientActivity();
+                addParturientActivity.isFireAlert=true;
+                sendMensageEmergence(notifica,getParturiente(notifica.getIdAuxParturiente()));
+                cancel();
+                notifica.setViewTimerTwo("Alerta Disparado ");
+            }
+        }.start();
+
+    }
+
+    public Parturient getParturiente(String idParturiente){
+                for(Parturient parturient: getListAuxParturiente()){
+                    if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente)){
+                        return parturient;
+                    }
+                }
+                return null;
+    }
 
     public ArrayList<Parturient> getListAuxParturiente() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM AuxParturientes", null);
         List<Parturient> arrayList = new ArrayList<>();
-
         c.moveToFirst();
         if (c.getCount()> 0) {
             do {
                 Parturient parturient=new Parturient();
+
                 parturient.setId(c.getInt(c.getColumnIndex("id")));
-
-                parturient.setReason(c.getString(c.getColumnIndex("dilatacao")));
+                parturient.setReason(c.getInt(c.getColumnIndex("dilatacao")));
                 parturient.setHoraEntrada(c.getString(c.getColumnIndex("HoraEntrada")));
-                parturient.setGestatinalRange(c.getString(c.getColumnIndex("idadeGestacional")));
-
+                parturient.setTipoAtendimento(c.getString(c.getColumnIndex("tipoAtendimento")));
                 if(!c.getString(c.getColumnIndex("HoraAtendimento")).isEmpty()) {
                     parturient.setHoraAtendimento(c.getString(c.getColumnIndex("HoraAtendimento")));
                 }
-                parturient.setIdAuxParturiente(c.getString(c.getColumnIndex("setYearDayMonthNotification")));
+                parturient.setSinaisDePatologia(c.getString(c.getColumnIndex("sinaisDePatologia")));
+                parturient.setHoraExpulsoDoFeto(c.getString(c.getColumnIndex("horaExpulsoDoFeto")));
+                parturient.setEditDilatation(false);
                 parturient.setIdAuxParturiente(c.getString(c.getColumnIndex("idAuxParturiente")));
-                parturient.setHoraParte(c.getInt(c.getColumnIndex("horaParte")));
-                parturient.setMinutoParte(c.getInt(c.getColumnIndex("minutoParte")));
-                parturient.setSegundoParte(c.getInt(c.getColumnIndex("segundoParte")));
-                parturient.setName(c.getString(c.getColumnIndex("fullname")));
+                parturient.setName(c.getString(c.getColumnIndex("name")));
                 parturient.setSurname(c.getString(c.getColumnIndex("apelido")));
                 parturient.setInProcess(((c.getInt(c.getColumnIndex("parturienteEmprocesso")))== 1)? true : false);
                 parturient.setOrigemTransferencia(c.getString(c.getColumnIndex("origemTrasferencia")));
@@ -962,12 +1100,13 @@ public class DBService  extends SQLiteOpenHelper {
                 parturient.setMotivosDestinoDaTrasferencia(c.getString(c.getColumnIndex("motivosDestinoTrasferencia")));
                 parturient.setPara(c.getInt(c.getColumnIndex("paridade")));
                 parturient.setAge(c.getInt(c.getColumnIndex("idade")));
+                parturient.setInProcess((c.getInt(c.getColumnIndex("parturienteEmprocesso"))== 1)? true : false);
+                parturient.setGestatinalRange(c.getString(c.getColumnIndex("idadeGestacional")));
                 parturient.setMotivosDaTrasferencia(c.getString(c.getColumnIndex("motivoOrigemTrasferencia")));
                 parturient.setTrasferidoParaForaDoHospital((c.getInt(c.getColumnIndex("isTrasferenciaForaDaUnidade"))== 1)? true : false);
-                parturient.setTransfered((c.getInt(c.getColumnIndex("isTrasferencia"))== 1)? true : false);
-                DBManager.getInstance().getAuxlistNotificationParturients().add(parturient);
+                parturient.setTransfered((c.getInt(c.getColumnIndex("isTrasferido"))== 1)? true : false);
+                parturient.setAtendido((c.getInt(c.getColumnIndex("isAtendido"))== 1)? true : false);
                 arrayList.add(parturient);
-
             } while (c.moveToNext());
 
         }
@@ -976,7 +1115,55 @@ public class DBService  extends SQLiteOpenHelper {
 
 
 
+    public void initializeListParturientesTransferidos() {
+
+        DBManager.getInstance().getListParturientesAtendidos().removeAll(DBManager.getInstance().getListParturientesAtendidos());
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Transferidos", null);
+        List<Parturient> arrayList = new ArrayList<>();
+
+        c.moveToFirst();
+        if (c.getCount()> 0) {
+            do {
+                Parturient parturient=new Parturient();
+
+                parturient.setId(c.getInt(c.getColumnIndex("id")));
+                parturient.setReason(c.getInt(c.getColumnIndex("dilatacao")));
+                parturient.setHoraEntrada(c.getString(c.getColumnIndex("HoraEntrada")));
+                parturient.setTipoAtendimento(c.getString(c.getColumnIndex("tipoAtendimento")));
+                if(!c.getString(c.getColumnIndex("HoraAtendimento")).isEmpty()) {
+                    parturient.setHoraAtendimento(c.getString(c.getColumnIndex("HoraAtendimento")));
+                }
+                parturient.setSinaisDePatologia(c.getString(c.getColumnIndex("sinaisDePatologia")));
+                parturient.setHoraExpulsoDoFeto(c.getString(c.getColumnIndex("horaExpulsoDoFeto")));
+                parturient.setEditDilatation(false);
+                parturient.setIdAuxParturiente(c.getString(c.getColumnIndex("idAuxParturiente")));
+                parturient.setName(c.getString(c.getColumnIndex("name")));
+                parturient.setSurname(c.getString(c.getColumnIndex("apelido")));
+                parturient.setInProcess(((c.getInt(c.getColumnIndex("parturienteEmprocesso")))== 1)? true : false);
+                parturient.setOrigemTransferencia(c.getString(c.getColumnIndex("origemTrasferencia")));
+                parturient.setDestinoTrasferencia(c.getString(c.getColumnIndex("destinoTrasferencia")));
+                parturient.setMotivosDestinoDaTrasferencia(c.getString(c.getColumnIndex("motivosDestinoTrasferencia")));
+                parturient.setPara(c.getInt(c.getColumnIndex("paridade")));
+                parturient.setAge(c.getInt(c.getColumnIndex("idade")));
+                parturient.setInProcess((c.getInt(c.getColumnIndex("parturienteEmprocesso"))== 1)? true : false);
+                parturient.setGestatinalRange(c.getString(c.getColumnIndex("idadeGestacional")));
+                parturient.setMotivosDaTrasferencia(c.getString(c.getColumnIndex("motivoOrigemTrasferencia")));
+                parturient.setTrasferidoParaForaDoHospital((c.getInt(c.getColumnIndex("isTrasferenciaForaDaUnidade"))== 1)? true : false);
+                parturient.setTransfered((c.getInt(c.getColumnIndex("isTrasferido"))== 1)? true : false);
+                parturient.setAtendido((c.getInt(c.getColumnIndex("isAtendido"))== 1)? true : false);
+
+                DBManager.getInstance().getListaTransferidos().add(parturient);
+
+            } while (c.moveToNext());
+
+        }
+    }
+
+
     public void initializeListParturientesAtendidos() {
+
+        DBManager.getInstance().getListParturientesAtendidos().removeAll(DBManager.getInstance().getListParturientesAtendidos());
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM Atendidos", null);
         List<Parturient> arrayList = new ArrayList<>();
@@ -985,23 +1172,19 @@ public class DBService  extends SQLiteOpenHelper {
         if (c.getCount()> 0) {
             do {
                 Parturient parturient=new Parturient();
+
                 parturient.setId(c.getInt(c.getColumnIndex("id")));
-
-                parturient.setReason(c.getString(c.getColumnIndex("dilatacao")));
+                parturient.setReason(c.getInt(c.getColumnIndex("dilatacao")));
                 parturient.setHoraEntrada(c.getString(c.getColumnIndex("HoraEntrada")));
-                parturient.setGestatinalRange(c.getString(c.getColumnIndex("idadeGestacional")));
-
+                parturient.setTipoAtendimento(c.getString(c.getColumnIndex("tipoAtendimento")));
                 if(!c.getString(c.getColumnIndex("HoraAtendimento")).isEmpty()) {
                     parturient.setHoraAtendimento(c.getString(c.getColumnIndex("HoraAtendimento")));
                 }
-
-                parturient.setTipoAtendimento(c.getString(c.getColumnIndex("tipoAtendimento")));
-                parturient.setIdAuxParturiente(c.getString(c.getColumnIndex("setYearDayMonthNotification")));
+                parturient.setSinaisDePatologia(c.getString(c.getColumnIndex("sinaisDePatologia")));
+                parturient.setHoraExpulsoDoFeto(c.getString(c.getColumnIndex("horaExpulsoDoFeto")));
+                parturient.setEditDilatation(false);
                 parturient.setIdAuxParturiente(c.getString(c.getColumnIndex("idAuxParturiente")));
-                parturient.setHoraParte(c.getInt(c.getColumnIndex("horaParte")));
-                parturient.setMinutoParte(c.getInt(c.getColumnIndex("minutoParte")));
-                parturient.setSegundoParte(c.getInt(c.getColumnIndex("segundoParte")));
-                parturient.setName(c.getString(c.getColumnIndex("fullname")));
+                parturient.setName(c.getString(c.getColumnIndex("name")));
                 parturient.setSurname(c.getString(c.getColumnIndex("apelido")));
                 parturient.setInProcess(((c.getInt(c.getColumnIndex("parturienteEmprocesso")))== 1)? true : false);
                 parturient.setOrigemTransferencia(c.getString(c.getColumnIndex("origemTrasferencia")));
@@ -1009,62 +1192,46 @@ public class DBService  extends SQLiteOpenHelper {
                 parturient.setMotivosDestinoDaTrasferencia(c.getString(c.getColumnIndex("motivosDestinoTrasferencia")));
                 parturient.setPara(c.getInt(c.getColumnIndex("paridade")));
                 parturient.setAge(c.getInt(c.getColumnIndex("idade")));
+                parturient.setInProcess((c.getInt(c.getColumnIndex("parturienteEmprocesso"))== 1)? true : false);
+                parturient.setGestatinalRange(c.getString(c.getColumnIndex("idadeGestacional")));
                 parturient.setMotivosDaTrasferencia(c.getString(c.getColumnIndex("motivoOrigemTrasferencia")));
                 parturient.setTrasferidoParaForaDoHospital((c.getInt(c.getColumnIndex("isTrasferenciaForaDaUnidade"))== 1)? true : false);
-                parturient.setTransfered((c.getInt(c.getColumnIndex("isTrasferencia"))== 1)? true : false);
+                parturient.setTransfered((c.getInt(c.getColumnIndex("isTrasferido"))== 1)? true : false);
+                parturient.setAtendido((c.getInt(c.getColumnIndex("isAtendido"))== 1)? true : false);
 
-                if(!isContem(parturient)){
-                    DBManager.getInstance().getListParturientesAtendidos().add(parturient);
-                }
-
+                DBManager.getInstance().getListParturientesAtendidos().add(parturient);
 
             } while (c.moveToNext());
 
         }
     }
 
-    private boolean isContem(Parturient parturient) {
-         for(Parturient parturient1: DBManager.getInstance().getListParturientesAtendidos()){
-             if(parturient.getIdAuxParturiente().equals(parturient1.getIdAuxParturiente())){
-                 return false;
-             }else {
-                 return true;
-             }
-         }
-         return false;
-    }
 
-
-    public long deleteParturiente(int id) {
+    public long deleteParturiente(String id) {
         SQLiteDatabase db = getWritableDatabase();
-        return db.delete("Parturientes", "id=?", new String[]{String.valueOf(id)});
+        return db.delete("Parturientes", "idAuxParturiente=?", new String[]{String.valueOf(id)});
 
     }
 
-    public long deleteNotification(Notification notification) {
+    public long deleteNotification(Notificacao notificacao) {
         SQLiteDatabase db = getWritableDatabase();
-        return db.delete("Notificacao", "idParturiente=?", new String[]{String.valueOf(notification.getIdAuxParturiente())});
+        return db.delete("Notificacao", "idParturiente=?", new String[]{String.valueOf(notificacao.getIdAuxParturiente())});
     }
 
     //....................NOTIFICACAO.................................
-    public long addNotificacao(Notification notification) {
+    public long addNotificacao(Notificacao notificacao) {
 
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put("fullname", notification.getMessage());
-        cv.put("setYearDayMonthNotification", notification.yearDayMonthNotification);
-        cv.put("idParturiente", notification.getIdAuxParturiente());
-        cv.put("HoraNotification",format(new Date()));
-        cv.put("hora",notification.getHoras());
-        cv.put("minuto",notification.getMinutos());
-        cv.put("segundo",notification.getSegundo());
-        cv.put("allSegundos",notification.getAllSegundos());
-        cv.put("isOpen", notification.isOpen());
-        cv.put("cor",notification.getColour());
-        cv.put("inProcess",notification.isInProcess());
-        return db.insert("Notificacao", null, cv);
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put("horaDoEnvioDaMensagem", notificacao.getHoraDoEnvioDaMensagem());
+            cv.put("fullname", notificacao.getMessage());
+            cv.put("idParturiente", notificacao.getIdAuxParturiente());
+            cv.put("HoraNotification", format(new Date()));
+            cv.put("isOpen", notificacao.isOpen());
+            cv.put("cor", notificacao.getColour());
+            cv.put("inProcess", notificacao.isInProcess());
+            return db.insert("Notificacao", null, cv);
     }
-
 
     public long updadeCorNotification(String idParturiente, int cor) {
         int id=getIdNotification(idParturiente);
@@ -1076,17 +1243,21 @@ public class DBService  extends SQLiteOpenHelper {
     }
 
     public long updadeAllDadeAuxParturiente(Parturient parturient) {
-        int id=parturient.getId();
+        String id=parturient.getIdAuxParturiente();
+
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("horaParte", parturient.getHoraParte());
-        cv.put("minutoParte ", parturient.getMinutoParte());
-        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
-        cv.put("segundoParte", parturient.getSegundoParte());
-        cv.put("fullname ", parturient.getName());
+        cv.put("name ", parturient.getName());
         cv.put("apelido", parturient.getSurname());
+        cv.put("isAtendido", parturient.isAtendido());
+        cv.put("tipoAtendimento", parturient.getTipoAtendimento());
+        cv.put("horaExpulsoDoFeto", parturient.getHoraExpulsoDoFeto());
+        cv.put("sinaisDePatologia", parturient.getSinaisDePatologia());
+        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
+        cv.put("isEditDilatation", parturient.isEditDilatation());
+        cv.put("isDisparo",parturient.isDisparoAlerta());
         cv.put("idade", parturient.getAge());
-        cv.put("isTrasferencia",parturient.isTransfered());
+        cv.put("isTrasferido",parturient.isTransfered());
         cv.put("isTrasferenciaForaDaUnidade",parturient.isTrasferidoParaForaDoHospital());
         cv.put("HoraEntrada ",parturient.getHoraEntrada());
         cv.put("paridade",parturient.getPara());
@@ -1098,26 +1269,26 @@ public class DBService  extends SQLiteOpenHelper {
         cv.put("parturienteEmprocesso",parturient.isInProcess());
         cv.put("dilatacao ",parturient.getReason());
         cv.put("idadeGestacional ",parturient.getGestatinalRange());
-        return db.update("AuxParturientes", cv, "id=?", new String[]{String.valueOf(id)});
+        return db.update("AuxParturientes", cv, "idAuxParturiente=?", new String[]{String.valueOf(id)});
     }
 
 
     public long updadeAllDadeParturiente(Parturient parturient) {
-        int id=parturient.getId();
+        String id=parturient.getIdAuxParturiente();
         updadeAllDadeAuxParturiente(parturient);
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("horaParte", parturient.getHoraParte());
-        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
-        cv.put("minutoParte ", parturient.getMinutoParte());
-        cv.put("segundoParte", parturient.getSegundoParte());
-        cv.put("fullname ", parturient.getName());
-        cv.put("dia", parturient.getDiaRegisto());
-        cv.put("isEditDilatation", parturient.isEditDilatation());
-        cv.put("isDisparo", parturient.isAtendimento());
+        cv.put("name ", parturient.getName());
         cv.put("apelido", parturient.getSurname());
+        cv.put("isAtendido", parturient.isAtendido());
+        cv.put("tipoAtendimento", parturient.getTipoAtendimento());
+        cv.put("horaExpulsoDoFeto", parturient.getHoraExpulsoDoFeto());
+        cv.put("sinaisDePatologia", parturient.getSinaisDePatologia());
+        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
+        cv.put("isEditDilatation", parturient.isEditDilatation());
+        cv.put("isDisparo",parturient.isDisparoAlerta());
         cv.put("idade", parturient.getAge());
-        cv.put("isTrasferencia",parturient.isTransfered());
+        cv.put("isTrasferido",parturient.isTransfered());
         cv.put("isTrasferenciaForaDaUnidade",parturient.isTrasferidoParaForaDoHospital());
         cv.put("HoraEntrada ",parturient.getHoraEntrada());
         cv.put("paridade",parturient.getPara());
@@ -1129,79 +1300,40 @@ public class DBService  extends SQLiteOpenHelper {
         cv.put("parturienteEmprocesso",parturient.isInProcess());
         cv.put("dilatacao ",parturient.getReason());
         cv.put("idadeGestacional ",parturient.getGestatinalRange());
-
-        return db.update("Parturientes", cv, "id=?", new String[]{String.valueOf(id)});
+        return db.update("Parturientes", cv, "idAuxParturiente=?", new String[]{String.valueOf(id)});
     }
 
     public int getIdNotification( String idParturiente) {
-        int id=0;
+        int id=-1;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM Notification WHERE idParturiente = ?",
+        Cursor c = db.rawQuery("SELECT * FROM Notificacao WHERE idParturiente = ?",
                 new String[]{idParturiente});
         c.moveToFirst();
         if (c.getCount() > 0) {
             do {
-                id = c.getInt(c.getColumnIndex("id"));
+                id = c.getInt(c.getColumnIndex("idParturiente"));
             } while (c.moveToNext());
             c.close();
         }
         return id;
     }
 
-
-    public void initializeListNotification() {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM Notificacao", null);
-        c.moveToFirst();
-        if (c.getCount()> 0) {
-            do {
-                if(!isContenId(c.getInt(c.getColumnIndex("id")))) {
-                    Notification notification = new Notification();
-                    notification.setYearDayMonthNotification(c.getString(c.getColumnIndex("setYearDayMonthNotification")));
-                    notification.setHoras(c.getInt(c.getColumnIndex("hora")));
-                    notification.setMinutos(c.getInt(c.getColumnIndex("minuto")));
-                    notification.setSegundo(c.getInt(c.getColumnIndex("segundo")));
-                    notification.setIdAuxParturiente(c.getString(c.getColumnIndex("idParturiente")));
-                    notification.setId(c.getInt(c.getColumnIndex("id"))+"");
-                    notification.setInProcess(((c.getInt(c.getColumnIndex("inProcess"))) == 1) ? true : false);
-                    notification.setNome(c.getString(c.getColumnIndex("fullname")));
-                    notification.setOpen(((c.getInt(c.getColumnIndex("isOpen"))) == 1) ? true : false);
-                    notification.setTime(c.getString(c.getColumnIndex("HoraNotification")));
-                    notification.setColour(c.getInt(c.getColumnIndex("cor")));
-
-                    if(isTodayNotification(notification)){
-
-                       int valorCount=getValueUpdadeAndSaveTimerInNotification(notification);
-                        if(valorCount>0){
-                            alertaEmergence(notification,valorCount);
-                            DBManager.getInstance().addNewNotification(notification);
-                        }else{
-                            DBManager.getInstance().addNewNotification(notification);
-                        }
-                    }
-}
-            } while (c.moveToNext());
-
-        }
-    }
-
-
-
     //.................ATENDIMENTO...............................
     public long addAtendimento(Parturient parturient) {
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("horaParte", parturient.getHoraParte());
-        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
-        cv.put("minutoParte ", parturient.getMinutoParte());
-        cv.put("segundoParte", parturient.getSegundoParte());
-        cv.put("tipoAtendimento", parturient.getTipoAtendimento());
-        cv.put("fullname ", parturient.getName());
-        cv.put("setYearDayMonthNotification", parturient.getSetYearDayMonthNotification());
+        cv.put("name ", parturient.getName());
         cv.put("apelido", parturient.getSurname());
+        cv.put("isAtendido", parturient.isAtendido());
+        cv.put("tipoAtendimento", parturient.getTipoAtendimento());
+        cv.put("horaExpulsoDoFeto", parturient.getHoraExpulsoDoFeto());
+        cv.put("sinaisDePatologia", parturient.getSinaisDePatologia());
+        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
+        cv.put("isEditDilatation", parturient.isEditDilatation());
+        cv.put("isDisparo",parturient.isDisparoAlerta());
         cv.put("idade", parturient.getAge());
-        cv.put("isTrasferencia",parturient.isTransfered());
+        cv.put("isTrasferido",parturient.isTransfered());
         cv.put("isTrasferenciaForaDaUnidade",parturient.isTrasferidoParaForaDoHospital());
         cv.put("HoraEntrada ",parturient.getHoraEntrada());
         cv.put("paridade",parturient.getPara());
@@ -1216,142 +1348,62 @@ public class DBService  extends SQLiteOpenHelper {
         return db.insert("Atendidos", null, cv);
     }
 
-    ///.............................ccc..................................///
-    private String formatMinuto(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("mm");
-        return dateFormat.format(date);
-    }
-    private String formatSegundo(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("ss");
-        return dateFormat.format(date);
+    public long addTransferidos(Parturient parturient) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("name ", parturient.getName());
+        cv.put("apelido", parturient.getSurname());
+        cv.put("isAtendido", parturient.isAtendido());
+        cv.put("tipoAtendimento", parturient.getTipoAtendimento());
+        cv.put("horaExpulsoDoFeto", parturient.getHoraExpulsoDoFeto());
+        cv.put("sinaisDePatologia", parturient.getSinaisDePatologia());
+        cv.put("idAuxParturiente ", parturient.getIdAuxParturiente());
+        cv.put("isEditDilatation", parturient.isEditDilatation());
+        cv.put("isDisparo",parturient.isDisparoAlerta());
+        cv.put("idade", parturient.getAge());
+        cv.put("isTrasferido",parturient.isTransfered());
+        cv.put("isTrasferenciaForaDaUnidade",parturient.isTrasferidoParaForaDoHospital());
+        cv.put("HoraEntrada ",parturient.getHoraEntrada());
+        cv.put("paridade",parturient.getPara());
+        cv.put("HoraAtendimento ",parturient.getHoraAtendimento());
+        cv.put("motivosDestinoTrasferencia",parturient.getMotivosDestinoDaTrasferencia());
+        cv.put("motivoOrigemTrasferencia",parturient.getMotivosDaTrasferencia());
+        cv.put("destinoTrasferencia",parturient.getDestinoTrasferencia());
+        cv.put("origemTrasferencia",parturient.getOrigemTransferencia());
+        cv.put("parturienteEmprocesso",parturient.isInProcess());
+        cv.put("dilatacao ",parturient.getReason());
+        cv.put("idadeGestacional ",parturient.getGestatinalRange());
+        return db.insert("Transferidos", null, cv);
     }
 
-    private String formatHoras(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("hh");
-        return dateFormat.format(date);
-    }
     private String format(Date date){
         DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
         return dateFormat.format(date);
     }
 
-
-
     public void removeInBD(Parturient parturient) {
-        deleteParturiente(parturient.getId());
+        deleteParturiente(parturient.getIdAuxParturiente());
     }
 
     public void removParturiente(Parturient prt){
         for(Parturient parturient: DBManager.getInstance().getParturients()){
-            if(parturient.getId()==prt.getId()){
+            if(parturient.getIdAuxParturiente()==prt.getIdAuxParturiente()){
                 DBManager.getInstance().getParturients().remove(parturient);
                 break;
             }
         }
         AddParturientActivity addParturientActivity =new AddParturientActivity();
-       addParturientActivity.isFireAlert=true;
+        addParturientActivity.isFireAlert=true;
 
     }
-    private void sendMensageEmergence(Notification notification){
-
-        notification.setColour(Color.rgb(248, 215,218));
-        updadeCorIsDispareNotification(Color.rgb(248, 215,218),notification.getIdAuxParturiente());
-        String mensagem=notification.getMessage() +": Necessita  de cuidados medicos";
-        System.out.println(mensagem);
-
-        if(!notification.isInProcess()) {
-            for (UserDoctor userDoctor : getListDoctor()) {
-                sendSMS(userDoctor.getContacto(), mensagem);
-            }
-        }
-    }
-
-    void sendNotification(Parturient parturient){
-        notification = new Notification();
-        notification.setColour(Color.YELLOW+Color.BLACK);
-        notification.setNome(parturient.getName()+" "+parturient.getSurname());
-        notification.setIdAuxParturiente(parturient.getIdAuxParturiente());
-        notification.setTime(format(new Date()));
-        notification.setOpen(true);
-        String auxData=new Date().getYear()+""+new Date().getMonth()+""+new Date().getDay();
-        notification.setYearDayMonthNotification(auxData);
-        notification.setId(parturient.getId()+"");
-       // System.out.println("  yyyyyyyyyyyyyyyyyyyyyyyy= : "+parturient.getId());
-        notification.setInProcess(false);
-        alertaEmergence(notification,getTimerAlertEmergenceDilatation());
-        DBManager.getInstance().getNotifications().add(notification);
-        addNotificacao(notification);
-        //updadeListNotification();
-        System.out.println(" ======================"+parturient.getName()+"========================= ");
-    }
-
-    private void sendSMS(String phoneNumber, String message) {
-        phoneNumber = phoneNumber.trim();
-        message = message.trim();
-        System.out.println(message);
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-        } catch (Exception e) {
-            Log.i("EXPECTION SMS", e.getMessage());
-        }
-    }
 
 
-    private boolean isToday(Parturient parturient) {
-             String auxData=new Date().getYear()+""+new Date().getMonth()+""+new Date().getDay();
-            if(parturient.getSetYearDayMonthNotification().equals(auxData)){
-                return false;
-            }else{
-                return true;
-            }
-    }
-    private int getTempoRestanteEmergenceAlert(Notification notification) {
-        int segundosHoraAtual=Integer.parseInt(formatHoras(new Date()))*3600+Integer.parseInt(formatMinuto(new Date()))*60+Integer.parseInt(formatSegundo(new Date()));
-        int segundosHoraEntrada=notification.getHoras()*3600+notification.getMinutos()*60+notification.getSegundo();
-        int sub=segundosHoraAtual-segundosHoraEntrada;
 
-        System.out.println(" ==============ID================[ "+notification.getId());
-        System.out.println(segundosHoraAtual+" ] =====  ["+segundosHoraEntrada);
-        System.out.println(" SUBTRACAO  hAtual e entrada: "+sub);
-        System.out.println(getTimerSecAlertNotification()+" Sss : "+sub);
-
-        int tempoRestante= getTimerSecAlertNotification()-sub;
-        System.out.println(" SUBTRACAO TOTAL : "+tempoRestante);
-        return tempoRestante;
-    }
-
-    private int getTempoRestante(Parturient parturient) {
-        int segundosHoraAtual=Integer.parseInt(formatHoras(new Date()))*3600+Integer.parseInt(formatMinuto(new Date()))*60+Integer.parseInt(formatSegundo(new Date()));
-        int segundosHoraEntrada=parturient.getHoraParte()*3600+parturient.getMinutoParte()*60+parturient.getSegundoParte();
-        int sub=segundosHoraAtual-segundosHoraEntrada;
-        int tempoRestante=getTimerDilatation(parturient.getReason())-sub;
-        return tempoRestante;
-    }
-
-
-    private boolean isExistParturiente(int id) {
-
-        for(Parturient parturient: DBManager.getInstance().getParturients()){
-            if(parturient.getId()==id){
-                return false;
-            }
-        }
-        return true;
-    }
-    private boolean isTodayNotification(Notification notification) {
-        String auxData=new Date().getYear()+""+new Date().getMonth()+""+new Date().getDay();
-        if(notification.getYearDayMonthNotification().equals(auxData)){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-
-    private boolean isContenId(int id) {
-        for (Notification notification: DBManager.getInstance().getNotifications()){
-            if(Integer.parseInt(notification.getId())==id){
+    public boolean iscontemInTransferido(String id)
+    {
+        for(Parturient parturient: DBManager.getInstance().getListaTransferidos()){
+            if(parturient.getIdAuxParturiente().equalsIgnoreCase(id)){
                 return true;
             }
         }
@@ -1359,57 +1411,9 @@ public class DBService  extends SQLiteOpenHelper {
     }
 
 
-//    public long updadeInProcessParturiente(boolean isInProcess, int id) {
-//        SQLiteDatabase db = getWritableDatabase();
-//        ContentValues cv = new ContentValues();
-//        cv.put("parturienteEmprocesso",isInProcess);
-//        return db.update("Parturientes", cv, "id=?", new String[]{String.valueOf(id)});
-//    }
-
-    public long updadeAndSaveTimer(Parturient parturient, int segundos){
-         SQLiteDatabase db = getWritableDatabase();
-         ContentValues cv = new ContentValues();
-         cv.put("horaParte",formatHoras(new Date()));
-         cv.put("minutoParte",formatMinuto(new Date()));
-         cv.put("segundoParte",formatSegundo(new Date()));
-         cv.put("allSegundos",segundos);
-         return db.update("Parturientes", cv, "idAuxParturiente=?", new String[]{String.valueOf(parturient.getIdAuxParturiente())});
-     }
-
-
-    public int getValueUpdadeAndSaveTimer(Parturient parturient){
-        int horas = 0;
-        int minutos=0;
-        int segundos=0;
-        int timerSave = 0;
-
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM Parturientes WHERE idAuxParturiente = ?",
-                new String[]{parturient.getIdAuxParturiente()});
-        c.moveToFirst();
-        if (c.getCount() > 0) {
-            do {
-                horas= c.getInt(c.getColumnIndex("horaParte"));
-                minutos= c.getInt(c.getColumnIndex("minutoParte"));
-                segundos= c.getInt(c.getColumnIndex("segundoParte"));
-                timerSave=c.getInt(c.getColumnIndex("allSegundos"));
-            } while (c.moveToNext());
-            c.close();
-        }
-
-        int allTimerSave=horas*3600+minutos*60+segundos;
-        int allCurenteTimer=Integer.parseInt(formatHoras(new Date()))*3600+
-                Integer.parseInt(formatMinuto(new Date()))*60+
-                Integer.parseInt(formatSegundo(new Date()));
-
-        int totalTimer=allCurenteTimer-allTimerSave;
-
-        return timerSave-totalTimer;
-    }
-
-
     public void initializeCountDownTimer(Parturient parturient,int seconds) {
 
+        initializeListParturientesTransferidos();
 
         new CountDownTimer(seconds*1000+1000, 1000) {
 
@@ -1420,11 +1424,21 @@ public class DBService  extends SQLiteOpenHelper {
                 int tempMint = (seconds - (hours * 60 * 60));
                 int minutes = tempMint / 60;
                 seconds = tempMint - (minutes * 60);
-                int totalTimer=hours*3600+minutes*60+seconds;
-                updadeAndSaveTimer(parturient,totalTimer);
-                if(isVerificationEditDilatation(parturient)){
+
+
+                if(iscontemInTransferido(parturient.getIdAuxParturiente())){
+                    DBManager.getInstance().getParturients().remove(parturient);
                     cancel();
-                    initializeCountDownTimer(parturient,getTimerDilatation(getDilatationParturiente(parturient)));
+                }
+
+                System.out.println("Tempo Restante : [ " + String.format("%02d", hours)
+                        + ":" + String.format("%02d", minutes)
+                        + ":" + String.format("%02d", seconds)+" ]");
+                if(parturient.isEditDilatation()){// caso
+                    cancel();
+                    updateHoraExpulsoFeto(parturient);
+                    initializeCountDownTimer(parturient,getTimerDilatation(parturient.getReason()+""));
+                    parturient.setEditDilatation(false);
                 }
                 if(isInProcessParturiente(parturient)){
                     parturient.setTempoRes("Em processo de parto...");
@@ -1445,34 +1459,22 @@ public class DBService  extends SQLiteOpenHelper {
                 addParturientActivity.idParturienteNotification=parturient.getIdAuxParturiente();
                 addParturientActivity.alertFireNotification=true;
                 //System.out.println(" o valor total do parturiente eh : "+ mainActivity.getFunctionPreferenceSaveTimer(parturient));
-                parturient.setTempoRes("Alerta Disparado");
-                addParturientActivity.isFireAlert=true;
-                sendNotification(parturient);
+                parturient.setTempoRes("Alerta Disparado ");
+                try {
+                    removeInBD(parturient);
+                    removParturiente(parturient);
+                    envioDaNotificacao(parturient);
+                    cancel();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-                // System.out.println("==================: "+dbService.getTimerAlertEmergenceDilatation());
-            }
+                addParturientActivity.isFireAlert=true;
+           }
         }.start();
 
     }
 
-
-
-   private boolean isVerificationEditDilatation(Parturient parturient){
-        boolean isEdit=false;
-       SQLiteDatabase db = getReadableDatabase();
-       Cursor c = db.rawQuery("SELECT * FROM Parturientes WHERE idAuxParturiente = ?",
-               new String[]{parturient.getIdAuxParturiente()});
-       c.moveToFirst();
-       if (c.getCount() > 0) {
-           do {
-               isEdit= ((c.getInt(c.getColumnIndex("isEditDilatation"))== 1)? true : false);
-           } while (c.moveToNext());
-           c.close();
-       }
-       updadeIsEditDilatation(parturient.getIdAuxParturiente());
-       return isEdit;
-
-   }
     public long updadeIsEditDilatation(String id) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -1494,52 +1496,6 @@ public class DBService  extends SQLiteOpenHelper {
         }
         return dilatation;
     }
-
-
-
-    //// notification ///
-    public long updadeAndSaveTimerInNotification(Notification notification, int segundos){
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put("hora",formatHoras(new Date()));
-        cv.put("minuto",formatMinuto(new Date()));
-        cv.put("segundo",formatSegundo(new Date()));
-        cv.put("allSegundos",segundos);
-        return db.update("Notificacao", cv, "idParturiente=?", new String[]{String.valueOf(notification.getIdAuxParturiente())});
-    }
-
-
-    public int getValueUpdadeAndSaveTimerInNotification(Notification notification){
-        int horas = 0;
-        int minutos=0;
-        int segundos=0;
-        int timerSave = 0;
-
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM Notificacao WHERE idParturiente = ?",
-                new String[]{notification.getIdAuxParturiente()});
-        c.moveToFirst();
-        if (c.getCount() > 0) {
-            do {
-                horas= c.getInt(c.getColumnIndex("hora"));
-                minutos= c.getInt(c.getColumnIndex("minuto"));
-                segundos= c.getInt(c.getColumnIndex("segundo"));
-                timerSave=c.getInt(c.getColumnIndex("allSegundos"));
-            } while (c.moveToNext());
-            c.close();
-        }
-
-        int allTimerSave=horas*3600+minutos*60+segundos;
-        int allCurenteTimer=Integer.parseInt(formatHoras(new Date()))*3600+
-                Integer.parseInt(formatMinuto(new Date()))*60+
-                Integer.parseInt(formatSegundo(new Date()));
-
-        int totalTimer=allCurenteTimer-allTimerSave;
-
-        return timerSave-totalTimer;
-    }
-
-
     public long updadeInProcessParturiente(Parturient parturient) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -1547,11 +1503,11 @@ public class DBService  extends SQLiteOpenHelper {
         return db.update("Parturientes", cv, "idAuxParturiente=?", new String[]{String.valueOf(parturient.getIdAuxParturiente())});
     }
 
-    public long updadeInProcessNotification(Notification notification) {
+    public long updadeInProcessNotification(Notificacao notificacao) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("inProcess",true);
-        return db.update("Notificacao", cv, "idParturiente=?", new String[]{String.valueOf(notification.getIdAuxParturiente())});
+        return db.update("Notificacao", cv, "idParturiente=?", new String[]{String.valueOf(notificacao.getIdAuxParturiente())});
     }
 
     public boolean isInProcessParturiente(Parturient parturient){
@@ -1566,57 +1522,149 @@ public class DBService  extends SQLiteOpenHelper {
             } while (c.moveToNext());
             c.close();
         }
-        System.out.println(" ===========x======x===========  "+ isInprocess);
+        // System.out.println(" ===========x======x===========  "+ isInprocess);
         return isInprocess;
     }
 
-    public void alertaEmergence(Notification notification,int seconds) {
 
+    public boolean isFinishTimeNotification2(Notificacao notificacao) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        Calendar horaEnvioMensagem=Calendar.getInstance();
+        Calendar horaActual=Calendar.getInstance();
 
-        new CountDownTimer(seconds * 1000 + 1000, 1000) {
+        horaEnvioMensagem.setTime(dateFormat.parse(notificacao.getHoraDoEnvioDaMensagem()));
+        horaActual.setTime(dateFormat.parse(dateFormat.format(new Date())));
+        if(horaActual.after(horaEnvioMensagem)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean isFinishTime(Parturient parturient) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        Calendar horaExpulso=Calendar.getInstance();
+        Calendar horaActual=Calendar.getInstance();
 
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
+        horaExpulso.setTime(dateFormat.parse(parturient.getHoraExpulsoDoFeto()));
+        horaActual.setTime(dateFormat.parse(dateFormat.format(new Date())));
+        if(horaActual.after(horaExpulso)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public int getTempoRestanteEmSeguntosDaNotificacao(Notificacao notificacao) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        Calendar horaEnvioMensagem = Calendar.getInstance();
+        horaEnvioMensagem.setTime(dateFormat.parse(notificacao.getHoraDoEnvioDaMensagem()));
+        horaEnvioMensagem.add(Calendar.SECOND,-getSeguntosHoraActual());
 
-                int hours = seconds / (60 * 60);
-                int tempMint = (seconds - (hours * 60 * 60));
-                int minutes = tempMint / 60;
-                seconds = tempMint - (minutes * 60);
-                int allTimer=hours*3600+minutes*60+seconds;
-                updadeAndSaveTimerInNotification(notification,allTimer);
-                System.out.println(getValueUpdadeAndSaveTimerInNotification( notification));
-                if(notification.isAtendido()){
-                    cancel();
-                }else {
-                    if(notification.isInProcess()){
-                        notification.setViewTimerTwo(" Em processo de parto ...");
-                    }else{
-                        notification.setViewTimerTwo(" [" + String.format("%02d", hours)
-                                + ":" + String.format("%02d", minutes)
-                                + ":" + String.format("%02d", seconds)+"]");
-                    }
-                }
-
-            }
-
-            public void onFinish() {
-
-                notification.setViewTimerTwo(" Alerta Desparado");
-                AddParturientActivity addParturientActivity =new AddParturientActivity();
-                addParturientActivity.isFireAlert=true;
-
-                for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
-                    if(parturient.getIdAuxParturiente().equals(notification.getIdAuxParturiente())){
-                        removParturiente(parturient);
-                        removeInBD(parturient);
-                    }
-                }
-
-                sendMensageEmergence(notification);
-            }
-        }.start();
+        return horaEnvioMensagem.getTime().getHours()*3600+
+                horaEnvioMensagem.getTime().getMinutes()*60+
+                horaEnvioMensagem.getTime().getSeconds();
+    }
+    public  String getTempoLimiteDoEnvioMensagem(int seguntos) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.SECOND,seguntos);
+        return formatd(calendar.getTime());
     }
 
+    private String formatd(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+
+        return dateFormat.format(date);
+    }
+
+
+    public long updateHoraExpulsoFeto(Parturient parturient) {
+        String id=parturient.getIdAuxParturiente();
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("horaExpulsoDoFeto",parturient.getHoraExpulsoDoFeto());
+        return db.update("Parturientes", cv, "idAuxParturiente=?", new String[]{String.valueOf(id)});
+    }
+    public int getTempoRestanteEmSeguntos(Parturient parturient) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        Calendar horaExpulso = Calendar.getInstance();
+        horaExpulso.setTime(dateFormat.parse(parturient.getHoraExpulsoDoFeto()));
+        horaExpulso.add(Calendar.SECOND,-getSeguntosHoraActual());
+        return horaExpulso.getTime().getHours()*3600+horaExpulso.getTime().getMinutes()*60+horaExpulso.getTime().getSeconds();
+    }
+
+    public int getSeguntosHoraActual() throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateFormat.parse(dateFormat.format(new Date())));
+        return calendar.getTime().getHours()*3600+calendar.getTime().getMinutes()*60+calendar.getTime().getSeconds();
+    }
+
+
+    private void sendMensageEmergence(Notificacao notificacao, Parturient parturient) {
+        String mensagem = "";
+        String mensagem2 = "";
+        String mensagem3 = "";
+        mensagem = " HDC: ssita  de cuidados medicos";
+
+        updadeCorIsDispareNotification(Color.rgb(248, 215, 218), notificacao.getIdAuxParturiente());
+
+        if (!notificacao.isInProcess()) {
+            for (UserDoctor userDoctor : getListDoctor()) {
+                sendSMS(userDoctor.getContacto(), mensagem);
+              //  sendSMS(userDoctor.getContacto(), mensagem2);
+                //sendSMS(userDoctor.getContacto(), mensagem3);
+            }
+        }
+
+//
+//        for (Parturient parturient : getListAuxParturiente()) {
+//            if (parturient.getIdAuxParturiente().equals(notificacao.getIdAuxParturiente())) {
+//                mensagem = " HDC: [" + getHospitalSelect() + "], " + parturient.getName() + " " + parturient.getSurname() + " : Necessita  de cuidados medicos";
+//                mensagem2 = "Idade : " + parturient.getAge() + ", Paridade : " + parturient.getPara() + ",entrada :  " + parturient.getHoraEntrada();
+//                mensagem3 = "Patologias : " + parturient.getSinaisDePatologia();
+//
+//                if (parturient.getSinaisDePatologia().length() > 150) {
+//
+//                    if (!notificacao.isInProcess()) {
+//                        for (UserDoctor userDoctor : getListDoctor()) {
+//                            sendSMS(userDoctor.getContacto(), mensagem);
+//                            sendSMS(userDoctor.getContacto(), mensagem2);
+//                            sendSMS(userDoctor.getContacto(), mensagem3);
+//                        }
+////                    }
+////                }else {
+////                    mensagem= " HDC: ["+getHospitalSelect()+" ]," +parturient.getName()+" "+ parturient.getSurname()+" : Necessita  de cuidados medicos";
+////                    mensagem2= " Idade : "+ parturient.getAge() + ", Paridade : "+parturient.getPara() + ",entrada :  "+ parturient.getHoraEntrada()+" patologia :"+parturient.getSinaisDePatologia();
+////
+////                    if(!notificacao.isInProcess()) {
+////                        for (UserDoctor userDoctor : getListDoctor()) {
+////                            sendSMS(userDoctor.getContacto(), mensagem);
+////                            sendSMS(userDoctor.getContacto(), mensagem2);
+////                        }
+////                    }
+////                }
+////
+////            }
+////        }
+//
+//                    }
+//                }
+//            }
+//        }
+    }
+
+    private void sendSMS(String phoneNumber, String message) {
+        phoneNumber = phoneNumber.trim();
+        message = message.trim();
+        System.out.println(message);
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+        } catch (Exception e) {
+            Log.i("EXPECTION SMS", e.getMessage());
+        }
+    }
+
+
 }
-
-

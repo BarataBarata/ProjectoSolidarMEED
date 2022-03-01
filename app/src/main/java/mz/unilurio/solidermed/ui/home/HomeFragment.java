@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import mz.unilurio.solidermed.DataManager;
-import mz.unilurio.solidermed.NoteInfo;
 import mz.unilurio.solidermed.R;
 
 public class HomeFragment extends Fragment {
@@ -28,7 +26,7 @@ public class HomeFragment extends Fragment {
         noteRecyclerAdapter=view.findViewById(R.id.list_notes);
 
         noteRecyclerAdapter.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<NoteInfo> notes= DataManager.getInstance().getNotes();
+       // List<NoteInfo> notes= DataManager.getInstance().getNotes();
         //noteRecyclerAdapter.setAdapter(new NoteRecyclerAdapter2(this,notes));
 
         return view;

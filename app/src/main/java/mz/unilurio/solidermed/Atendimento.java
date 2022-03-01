@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import mz.unilurio.solidermed.model.DBManager;
-import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Notificacao;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class Atendimento extends AppCompatActivity {
@@ -62,7 +62,7 @@ public class Atendimento extends AppCompatActivity {
 
     }
     public void removNotification(){
-        for(Notification parturient: DBManager.getInstance().getNotifications()){
+        for(Notificacao parturient: DBManager.getInstance().getNotifications()){
             if(Integer.parseInt(parturient.getId())==idParturiente){
                 DBManager.getInstance().getNotifications().remove(parturient);
                break;

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,6 +36,7 @@ import androidx.viewpager.widget.ViewPager;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +47,7 @@ import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
-import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Notificacao;
 import mz.unilurio.solidermed.model.PageAdapder;
 import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.model.Privilegios;
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NotificationRecyclerAdpter notificationRecyclerAdapter;
     private AtendidosRecyclerAdpter atendidosRecyclerAdpter;
     private ParturienteRecyclerAdpter  parturienteRecyclerAdpter;
-    private HashMap<String, Notification> notificationTriggered = new HashMap<String, Notification>();
+    private HashMap<String, Notificacao> notificationTriggered = new HashMap<String, Notificacao>();
     private NotificationManagerCompat notificationManager;
     private TextView textNotificacao;
     private TextView textUserLogin;
@@ -78,12 +78,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String userLogin;
     private static int opcoesSeacher=0;
     private ViewPager pager;
-    private static List<Notification> notifications=new ArrayList<>();
+    private static List<Notificacao> notificacaos =new ArrayList<>();
     private PagerAdapter adapte;
     private TextView textNomeHospital;
     private String nomeHospitalExtra="";
     private NotificationManagerCompat notificationManagerCompat;
     private FloatingActionButton fab;
+    private Privilegios privilegios;
     //private DBService dbService;
     private DrawerLayout drawer;
 
@@ -94,9 +95,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
 
-
-
         dbService=new DBService(this);
+
+        dbService.initializeListParturientesAtendidos();
+        try {
+            dbService.initializeListParturiente();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            dbService.initializeListNotification();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        dbService.initializeListParturientesTransferidos();
+
+
+
+       // if(dbService.getAllAcess()){
+        //    privilegios.setViewAll(true);
+        //}else{
+          //  privilegios.setViewAll(false);
+       // }
         //dbService.updadeListParturiente();
 
 
@@ -240,8 +260,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         RecyclerView recyclerView;
         recyclerView = findViewById(R.id.list_notes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Notification> notifications= DBManager.getInstance().getNotifications();
-        notificationRecyclerAdapter=new NotificationRecyclerAdpter( this, notifications);
+        List<Notificacao> notificacaos = DBManager.getInstance().getNotifications();
+        notificationRecyclerAdapter=new NotificationRecyclerAdpter( this, notificacaos);
         recyclerView.setAdapter(notificationRecyclerAdapter);
     }
 
@@ -273,8 +293,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem menuDefinition=menu.findItem(R.id.idDefinicoes);
         //MenuItem m=menu.findItem(R.id.app_bar_search);
         //m.setVisible(visible);
-        if(!new Privilegios().isViewAll()) {
-            menuDefinition.setVisible(false);
+        if(dbService.getPrivilegios()) {
+            menuDefinition.setVisible(true);
+        }else{
+            menuDefinition.setVisible(true);
         }
 
         menuDefinition.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -293,6 +315,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if (id == R.id.id_trasferidos){
+             Intent intent=new Intent(MainActivity.this,ActivityTransferidos.class );
+             startActivity(intent);
+        }
 
             if (id == R.id.id_out){
 
@@ -406,7 +432,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
      public void centroSaude(View view) {
-         if(new Privilegios().isViewAll()) {
+         if(dbService.getPrivilegios()) {
              ProgressDialog progressBar;
              progressBar = new ProgressDialog(MainActivity.this);
              progressBar.setTitle("Aguarde");

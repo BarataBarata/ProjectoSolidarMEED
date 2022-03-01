@@ -103,12 +103,14 @@ public class Login extends AppCompatActivity {
         System.out.println("============================: "+dbService.isDoctorLogin(user,password));
         if(dbService.isDoctorLogin(user,password)){
             fullName=dbService.getFullNameDoctorLogin(user,password);
+            dbService.updadeDoctorPrivilegios(true);
             privilegios.setViewAll(true);
+            //dbService.apdateAllAcess(true);
             return true;
         }else {
            if(dbService.isNurseLogin(user,password)){
                fullName=dbService.getFullNameNurseLogin(user,password);
-               privilegios.setViewAll(false);
+               dbService.updadeDoctorPrivilegios(false);
                return true;
            }
         }

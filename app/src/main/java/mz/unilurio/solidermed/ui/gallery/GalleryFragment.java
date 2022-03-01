@@ -11,9 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import mz.unilurio.solidermed.CourseInfo;
-import mz.unilurio.solidermed.CoursesRecyclerAdapter;
-import mz.unilurio.solidermed.DataManager;
 import mz.unilurio.solidermed.R;
 
 public class GalleryFragment extends Fragment {
@@ -30,10 +27,10 @@ public class GalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
-        recyclerView = view.findViewById(R.id.recyclerVieParturiente);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<CourseInfo> courses = DataManager.getInstance().getCourses();
-        recyclerView.setAdapter(new CoursesRecyclerAdapter(this, courses));
+//        recyclerView = view.findViewById(R.id.recyclerVieParturiente);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        List<CourseInfo> courses = DataManager.getInstance().getCourses();
+//        recyclerView.setAdapter(new CoursesRecyclerAdapter(this, courses));
 
         return view;
     }

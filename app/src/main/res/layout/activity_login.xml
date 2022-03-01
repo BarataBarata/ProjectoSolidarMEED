@@ -25,9 +25,9 @@
                 android:layout_height="50sp">
               <ImageView
                   android:background="@color/black"
-                  android:src="@drawable/imagesh2"
+                  android:src="@drawable/imageshs"
                   android:layout_gravity="center"
-                  android:layout_width="67sp"
+                  android:layout_width="60sp"
                   android:layout_height="50sp">
               </ImageView>
           </androidx.cardview.widget.CardView>

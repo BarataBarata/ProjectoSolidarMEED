@@ -18,7 +18,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -45,26 +44,30 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import mz.unilurio.solidermed.model.AddDoctorClass;
 import mz.unilurio.solidermed.model.App;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
-import mz.unilurio.solidermed.model.EditDoctorClass;
+import mz.unilurio.solidermed.model.EscolhaSinaisPatologia;
 import mz.unilurio.solidermed.model.IdadeGestacional;
-import mz.unilurio.solidermed.model.Notification;
+import mz.unilurio.solidermed.model.Notificacao;
 import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.model.SelectSinal;
 import mz.unilurio.solidermed.model.SelectTransferencia;
 import mz.unilurio.solidermed.model.UserDoctor;
 
 public class AddParturientActivity extends AppCompatActivity{
+    private static int valueIdade1=1;
+    private static int valueIdade2=0;
     public static boolean alertFireNotification;
     public static String idParturienteNotification;
     public  static boolean isFireAlert=false;
@@ -81,11 +84,11 @@ public class AddParturientActivity extends AppCompatActivity{
     private Timer timer;
     TextView textViewOpcoesTrasf;
     TextView textViewOpcoesSinal;
-    private String allSelectSinal;
+    private String allSelectSinal="Nenhum";
     private static String origemTransferencia;
     private static String motivosTransferencia;
     public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
-    private Slider para;
+    private static Slider para;
     private Slider mSliderDilatation;
     private Switch aSwitchTransfered;
 
@@ -111,11 +114,14 @@ public class AddParturientActivity extends AppCompatActivity{
     private Parturient parturient;
     private CardView cardTransfered;
     private Switch swit;
+    private  TextView textFase;
     private String idParturiente;
     private TextView textContTimer;
     private SharedPreferences sharedPreferences;
-    private Notification notification;
+    private Notificacao notificacao;
     private String auxData;
+    private String mensagem;
+    private SelectSinal selectSinal;
 
 
     @Override
@@ -124,11 +130,12 @@ public class AddParturientActivity extends AppCompatActivity{
         setContentView(R.layout.activity_add_mother);
         firebaseDatabase=FirebaseDatabase.getInstance();
         dbService=new DBService(this);
+        initView();
 
         DBManager.getInstance().getUserDoctorList().removeAll(DBManager.getInstance().getUserDoctorList());
         DBManager.getInstance().getUserDoctorList().addAll(dbService.getListDoctor());
 
-       // updadeListDoctor();
+        // updadeListDoctor();
         aSwitchTransfered=findViewById(R.id.switchTransfered);
         cardTransfered=findViewById(R.id.card7);
         aSwitchTransfered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -143,13 +150,9 @@ public class AddParturientActivity extends AppCompatActivity{
                 }
             }
         });
-
-
-
-
         notificationManagerCompat= NotificationManagerCompat.from(this);
         textEditAndRegist=findViewById(R.id.txtRegisto_Edit);
-        initView();
+
         viewNumber();
         viewnumber2();
 
@@ -171,11 +174,63 @@ public class AddParturientActivity extends AppCompatActivity{
 
 
     private void viewnumber2() {
+        selectSinal = new SelectSinal();
+        selectSinal.addOptionSelect(6,"Primigesta com idade inferior a 16 anos");
+        selectSinal.setIsSelected2(true);
+        allSelectSinal="Primigesta com idade inferior a 16 anos";
+        textViewOpcoesSinal.setText(allSelectSinal);
         para.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
                 TextView textNumber=findViewById(R.id.id1);
                 textNumber.setText((int)para.getValue()+"");
+
+
+                if((int)para.getValue()==0 && Integer.parseInt(valueIdade1+""+valueIdade2)<16){
+                    allSelectSinal="";
+                    selectSinal.addOptionSelect(6,"Primigesta com idade inferior a 16 anos");
+                    selectSinal.setIsSelected2(true);
+                    for(EscolhaSinaisPatologia e: selectSinal.arrayList){
+                        allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
+                    }
+                    textViewOpcoesSinal.setText(allSelectSinal);
+                }else{
+                    allSelectSinal="";
+                    selectSinal.removeListItem(6);
+                    selectSinal.setIsSelected2(false);
+                    if(!selectSinal.arrayList.isEmpty()){
+                        for(EscolhaSinaisPatologia e: selectSinal.arrayList){
+                            allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
+                        }
+                    }else {
+                        allSelectSinal="Nenhum";
+                    }
+                }
+
+                if((int)para.getValue()>=6){
+                    allSelectSinal="";
+                    selectSinal.addOptionSelect(5,"Teve 6 ou mais partos (grande multipar)");
+                    selectSinal.setIsSelected(true);
+                    for(EscolhaSinaisPatologia e: selectSinal.arrayList){
+                        allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
+                    }
+                    textViewOpcoesSinal.setText(allSelectSinal);
+                } else {
+                    allSelectSinal="";
+                    selectSinal.removeListItem(5);
+                    selectSinal.setIsSelected(false);
+                    if(!selectSinal.arrayList.isEmpty()){
+                        for(EscolhaSinaisPatologia e: selectSinal.arrayList){
+                            allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
+                        }
+                    }else {
+                        allSelectSinal="Nenhum";
+                    }
+
+
+
+                    textViewOpcoesSinal.setText(allSelectSinal);
+                }
             }
         });
 
@@ -202,6 +257,13 @@ public class AddParturientActivity extends AppCompatActivity{
             public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
                 TextView textNumber=findViewById(R.id.id0);
                 textNumber.setText((int)mSliderDilatation.getValue()+"");
+                int fase=(int)mSliderDilatation.getValue();
+                if(fase>4){
+                    textFase.setText(" na fase activa");
+                }else{
+                    textFase.setText(" na fase latente");
+                }
+ 
             }
         });
 
@@ -222,14 +284,14 @@ public class AddParturientActivity extends AppCompatActivity{
         numberPicker1.setValue(numberPick1);
         numberPicker2.setValue(numberPick2);
         para.setValue(ediParturient.getPara());
-        mSliderDilatation.setValue((int)Float.parseFloat(ediParturient.getReason()));
+        mSliderDilatation.setValue((ediParturient.getReason()));
         spinner.setSelection(getPositionIdadeGestacional(ediParturient.getGestatinalRange()));
         isTrasferencia =false;
 
         if(ediParturient.isTransfered()){
             aSwitchTransfered.setChecked(true);
             isTrasferencia =true;
-       }
+        }
 
         parturient=ediParturient;
     }
@@ -259,7 +321,7 @@ public class AddParturientActivity extends AppCompatActivity{
         adapterTrasferencia.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerMotivos.setAdapter( adapterTrasferencia );
 
-
+        textFase= findViewById(R.id.txtFase);
         textViewOpcoesTrasf=findViewById(R.id.viewOpcoesTransferencia);
         textViewOpcoesSinal=findViewById(R.id.sinal);
         txtApelidoParturient=findViewById(R.id.txtNameApelido);
@@ -285,10 +347,10 @@ public class AddParturientActivity extends AppCompatActivity{
 
     private List<String> getListIdadeGestacional() {
         ArrayList<String> list=new ArrayList<>();
-         for(IdadeGestacional idadeGestacional: dbService.getListIdadeGestacional()){
-              list.add(idadeGestacional.getIdadeGestacional());
-         }
-         return  list;
+        for(IdadeGestacional idadeGestacional: dbService.getListIdadeGestacional()){
+            list.add(idadeGestacional.getIdadeGestacional());
+        }
+        return  list;
     }
 
     @Override
@@ -349,13 +411,37 @@ public class AddParturientActivity extends AppCompatActivity{
     }
 
     public void setUpNumberPickers(){
-
+        selectSinal = new SelectSinal();
         numberPicker1.setMinValue(1);
         numberPicker1.setMaxValue(5);
         numberPicker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
                 // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
+                valueIdade1=numberPicker.getValue();
+                if(((int)para.getValue()==0) && (Integer.parseInt(valueIdade1+""+valueIdade2)<16)){
+                    allSelectSinal="";
+                    selectSinal.addOptionSelect(6,"Primigesta com idade inferior a 16 anos");
+                    selectSinal.setIsSelected2(true);
+                    for(EscolhaSinaisPatologia e: selectSinal.arrayList){
+                        allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
+                    }
+                    textViewOpcoesSinal.setText(allSelectSinal);
+                }else{
+                    allSelectSinal="";
+                    selectSinal.removeListItem(6);
+                    selectSinal.setIsSelected2(false);
+                    if(!selectSinal.arrayList.isEmpty()){
+                        System.out.println(" tm dados");
+                        for(EscolhaSinaisPatologia e: selectSinal.arrayList){
+                            allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
+                        }
+                        textViewOpcoesSinal.setText(allSelectSinal);
+                    }else {
+                        allSelectSinal="Nenhum";
+                        textViewOpcoesSinal.setText(allSelectSinal);
+                    }
+                }
             }
         });
 
@@ -365,6 +451,30 @@ public class AddParturientActivity extends AppCompatActivity{
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
                 // tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
+                valueIdade2=numberPicker.getValue();
+                if(((int)para.getValue()==0) && (Integer.parseInt(valueIdade1+""+valueIdade2))<16){
+                    allSelectSinal="";
+                    selectSinal.addOptionSelect(6,"Primigesta com idade inferior a 16 anos");
+                    selectSinal.setIsSelected2(true);
+                    for(EscolhaSinaisPatologia e: selectSinal.arrayList){
+                        allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
+                    }
+                    textViewOpcoesSinal.setText(allSelectSinal);
+                }else{
+                    allSelectSinal="";
+                    selectSinal.removeListItem(6);
+                    selectSinal.setIsSelected2(false);
+                    if(!selectSinal.arrayList.isEmpty()){
+                        for(EscolhaSinaisPatologia e: selectSinal.arrayList){
+                            allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
+                        }
+                        textViewOpcoesSinal.setText(allSelectSinal);
+                    }else {
+                        allSelectSinal="Nenhum";
+                        textViewOpcoesSinal.setText(allSelectSinal);
+                    }
+                }
+
             }
         });
     }
@@ -381,7 +491,6 @@ public class AddParturientActivity extends AppCompatActivity{
         dialog.setIcon(getDrawable(R.drawable.icondilatacao));
 
         dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -393,14 +502,22 @@ public class AddParturientActivity extends AppCompatActivity{
                     String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
                     parturient.setAge(Integer.parseInt(age));
                     parturient.setTime(new Date());
+                    int dilatacao=(int)Float.parseFloat(mSliderDilatation.getValue()+"");
+                    System.out.println(parturient.getReason()+" :----- :"+((int)Float.parseFloat(mSliderDilatation.getValue()+"")));
 
-
-                    if(!parturient.getReason().equals(mSliderDilatation.getValue()+"")){
-                        System.out.println(
-                                " editadoiiii"
-                        );
-                        parturient.setReason((int)mSliderDilatation.getValue()+"");
+                    if(parturient.getReason()!=dilatacao){
                         parturient.setEditDilatation(true);
+                        parturient.setReason(dilatacao);
+                        try {
+                            System.out.println(" antes : "+parturient.getHoraExpulsoDoFeto());
+                            parturient.setHoraExpulsoDoFeto(getTempoExpulso(dbService.getTimerDilatation(dilatacao+"")));
+                            System.out.println(" depois : "+parturient.getHoraExpulsoDoFeto());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                    }else {
+                        parturient.setEditDilatation(false);
                     }
 
                     parturient.setGestatinalRange(spinner.getSelectedItem()+"");
@@ -408,12 +525,14 @@ public class AddParturientActivity extends AppCompatActivity{
 
                     if (isTrasferencia) {
                         parturient.setTransfered(true);
+                        parturient.setOrigemTransferencia(transferencia.getSelectedItem().toString());
+                        parturient.setMotivosDaTrasferencia(spinnerMotivos.getSelectedItem().toString());
                     } else {
                         parturient.setTransfered(false);
                         parturient.setMotivosDaTrasferencia("");
                         parturient.setOrigemTransferencia("");
                     }
-                    for (Notification notifica: DBManager.getInstance().getNotifications()){
+                    for (Notificacao notifica: DBManager.getInstance().getNotifications()){
                         System.out.println(notifica.getIdAuxParturiente()+" =="+parturient.getIdAuxParturiente());
                         if((notifica.getIdAuxParturiente()).equals(idParturiente)){
                             notifica.setNome(parturient.getName()+" "+parturient.getSurname());
@@ -439,8 +558,6 @@ public class AddParturientActivity extends AppCompatActivity{
                     }
                 },Long.parseLong("900"));
             }
-
-
         });
         dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             @Override
@@ -456,10 +573,8 @@ public class AddParturientActivity extends AppCompatActivity{
 
 
     public void addNewParturient() {
-
-        String mensagem="Deseja registar um Parturiente ?";
+        String mensagem="Deseja registar uma Parturiente ?";
         String mensagemTitle="REGISTAR";
-
 
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setTitle(mensagemTitle);
@@ -474,15 +589,17 @@ public class AddParturientActivity extends AppCompatActivity{
 
                 if(verificationNumberName(txtNameParturient) && verificationNumberName(txtApelidoParturient)  && verificatioNull(txtNameParturient)&&  verificatioNull(txtApelidoParturient)) {
                     String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
+                    int dilatacao=(int)Float.parseFloat(mSliderDilatation.getValue()+"");
                     parturient = new Parturient();
+
                     if (!isExistParturiente(parturient)) {
-                        parturient.setTimerEmergence(dbService.getHourasAlert()*3600+dbService.getMinutesAlert()*60);
+                        //parturient.setTimerEmergence(dbService.getHourasAlert()*3600+dbService.getMinutesAlert()*60);
                         parturient.setName(upCaseName(txtNameParturient.getText().toString()));
                         parturient.setSurname(upCaseName(txtApelidoParturient.getText().toString()));
-                        parturient.setFullName(upCaseName(txtNameParturient.getText().toString()));
+                        // parturient.setFullName(upCaseName(txtNameParturient.getText().toString()));
                         parturient.setAge(Integer.parseInt(age));
-                        parturient.setReason((int)mSliderDilatation.getValue()+"");
-                       if(isTrasferencia){
+                        parturient.setReason(dilatacao);
+                        if(isTrasferencia){
                             parturient.setTransfered(true);
                             parturient.setOrigemTransferencia(transferencia.getSelectedItem().toString());
                             parturient.setMotivosDaTrasferencia(spinnerMotivos.getSelectedItem().toString());
@@ -491,65 +608,46 @@ public class AddParturientActivity extends AppCompatActivity{
                             parturient.setMotivosDaTrasferencia("");
                             parturient.setTransfered(false);
                         }
+
+                        String codigo="";
+                        Random gerador = new Random();
+
+                        for (int i = 0; i <10; i++) {
+                            codigo=codigo+gerador.nextInt(30);
+                        }
+                        parturient.setIdAuxParturiente(codigo);
+
+                        parturient.setDisparoAlerta(false);
                         parturient.setPara((int) para.getValue());
-                        parturient.setHoraEntrada(format(new Date()));
-                        parturient.setIdAuxParturiente(new Date()+"");
+                        parturient.setHoraEntrada(formatd(new Date()));
                         parturient.setGestatinalRange(spinner.getSelectedItem()+"");
-                        System.out.println(" idade gestacional : "+spinner.getSelectedItem());
-                        parturient.setHoraParte(Integer.parseInt(formatHoras(new Date())));
-                        parturient.setMinutoParte(Integer.parseInt(formatMinuto(new Date())));
-                        parturient.setSegundoParte(Integer.parseInt(formatSegundo(new Date())));
+
+                        try {
+                            parturient.setHoraExpulsoDoFeto(getTempoExpulso(dbService.getTimerDilatation(dilatacao+"")));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                         parturient.setHoraAtendimento(format(new Date()));
                         parturient.setAtendimento(false);
                         String auxData=new Date().getYear()+""+new Date().getMonth()+""+new Date().getDay();
                         parturient.setSetYearDayMonthNotification(auxData);
-                        parturient.setDiaRegisto(new Date().getDay());
                         parturient.setDestinoTrasferencia(" ");
                         parturient.setMotivosDestinoDaTrasferencia(" ");
-
-                        SelectSinal selectSinal=new SelectSinal();
-                        if(!selectSinal.allNameselect.equals("Nenhum")){
-                            Notification notification =new Notification();
-                            notification.setColour(Color.rgb(248, 215,218));
-                            notification.setNome(parturient.getName()+" "+parturient.getSurname());
-                            notification.setIdAuxParturiente(parturient.getIdAuxParturiente());
-                            notification.setTime(format(new Date()));
-                            notification.setOpen(true);
-                            notification.setYearDayMonthNotification(auxData);
-                            notification.setId(parturient.getId()+"");
-                            // System.out.println("  yyyyyyyyyyyyyyyyyyyyyyyy= : "+parturient.getId());
-                            notification.setInProcess(false);
-                            DBManager.getInstance().getNotifications().add(notification);
-                            DBManager.getInstance().getAuxlistNotificationParturients().add(parturient);
-
-                            dbService.addNotificacao(notification);
-                            dbService.addAuxParturiente(parturient);
-                            Toast.makeText(getApplicationContext(), " Parturiente Enviando para lista de Notificoes", Toast.LENGTH_LONG).show();
-                            selectSinal.allNameselect="Nenhum";
-                            for(UserDoctor userDoctor: DBManager.getInstance().getUserDoctorList()){
-                                sendSMS(userDoctor.getContacto(),parturient.getName()+" "+parturient.getSurname()+" Necessita de cuidados medico");
-                            }
-                            finish();
-                        }else{
+                        parturient.setSinaisDePatologia(allSelectSinal);
                             ordeList();
+                        try {
                             dbService.addParturiente(parturient);
-                            dbService.updadeListParturiente();
-
-                            //initializeCountDownTimer(parturient,dbService.getTimerDilatation(parturient.getReason()));
-                            //initializeCountDownTimer(parturient,dbService.getTimerDilatation(parturient.getReason()));
-                            //DBManager.getInstance().getParturients().add(parturient);
-                            //DBManager.getInstance().getAuxlistNotificationParturients().add(parturient);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        //dbService.updadeListParturiente();
                             ordeList();
                             progressBar();
                             Toast.makeText(getApplicationContext(), " Parturiente Registado com sucesso", Toast.LENGTH_LONG).show();
 
-                        }
-
-
-                        //dbService.addParturiente(parturient);
-                        //dbService.updadeListParturiente();
-                   } else {
-                           alertaParturienteExist();
+                    } else {
+                        alertaParturienteExist();
                     }
                 }else{
                     Toast.makeText(getApplicationContext(), " O Nome não pode conter números", Toast.LENGTH_LONG).show();
@@ -565,7 +663,7 @@ public class AddParturientActivity extends AppCompatActivity{
                     @Override
                     public void run() {
                         progressBar.dismiss();
-                         finish();
+                        finish();
                     }
                 },Long.parseLong("900"));
             }
@@ -573,7 +671,7 @@ public class AddParturientActivity extends AppCompatActivity{
         dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext()," Operacao Cancelada",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext()," operação cancelada ",Toast.LENGTH_LONG).show();
 
             }
         });
@@ -598,6 +696,8 @@ public class AddParturientActivity extends AppCompatActivity{
         notificationManagerCompat.notify(Integer.parseInt(parturientNotificatio.getId()+""),notification1);
 
     }
+
+
 
     public void alertaNotification(){
 //        public static boolean alertFireNotification;
@@ -667,12 +767,14 @@ public class AddParturientActivity extends AppCompatActivity{
     }
 
     public boolean isExistParturiente(Parturient newParturient){
-           List<Parturient> list=DBManager.getInstance().getParturients();
-           for(Parturient parturientSeacher:list){
-               if(parturientSeacher.getName().equalsIgnoreCase(newParturient.getName())){
-                  return true;
-               }
-           }
+        List<Parturient> list=dbService.getListAuxParturiente();
+        for(Parturient parturientSeacher:list){
+            if((parturientSeacher.getName() +" "+parturientSeacher.getSurname()).
+                    equalsIgnoreCase(newParturient.getName()+ " "+
+                            newParturient.getSurname())){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -680,73 +782,38 @@ public class AddParturientActivity extends AppCompatActivity{
 
     public boolean verificationNumberName(TextView txtnome){
 
-       String nome=txtnome.getText().toString();
+        String nome=txtnome.getText().toString();
 
-           for (int i = 0; i < nome.length(); i++) {
-               char i1 = nome.charAt(i);
-               if (i1 <= '9' && i1 >= '0') {
-                   txtnome.setError("Não pode conter números");
-                   return false;
-               }
-           }
-
-    return true;
-    }
-
-    private String format(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-        return dateFormat.format(date);
-    }
-
-
-
-    private void updadeListDoctor() {
-
-        handler = new Handler();
-        timer = new Timer();
-
-        task = new TimerTask() {
-            @Override
-            public void run() {
-                EditDoctorClass e =new EditDoctorClass();
-                AddDoctorClass add=new AddDoctorClass();
-
-                handler.post(new Runnable() {
-                    public void run() {
-                        try {
-
-                           // System.out.println(" lista=============  : "+listDoctor);
-                        } catch (Exception e) {
-                            // error, do something
-                        }
-                    }
-                });
+        for (int i = 0; i < nome.length(); i++) {
+            char i1 = nome.charAt(i);
+            if (i1 <= '9' && i1 >= '0') {
+                txtnome.setError("Não pode conter números");
+                return false;
             }
-        };
-        timer.schedule(task, 0, 500);  // interval of one minute
+        }
 
+        return true;
     }
-
 
     public String upCaseName(String name){
 
-       name=oUpperFirstCase(name);
+        name=oUpperFirstCase(name);
         String auxStr="";
         int i=0;
 
         for( i=0;i<name.length();i++){
-          if(i<name.length()){
-              if(!(name.charAt(i)==' ' && i+1==name.length()))
-              if(name.charAt(i)==' ' && name.charAt(i+1)!=' '){
-                  auxStr=auxStr+(" ");
-                  auxStr=auxStr+(name.charAt(i+1)+"").toUpperCase();
-                  i++;
-              }else {
-                  auxStr=auxStr+(name.charAt(i)+"");
-              }
-          }
+            if(i<name.length()){
+                if(!(name.charAt(i)==' ' && i+1==name.length()))
+                    if(name.charAt(i)==' ' && name.charAt(i+1)!=' '){
+                        auxStr=auxStr+(" ");
+                        auxStr=auxStr+(name.charAt(i+1)+"").toUpperCase();
+                        i++;
+                    }else {
+                        auxStr=auxStr+(name.charAt(i)+"");
+                    }
+            }
         }
-       /// auxStr=auxStr+(name.charAt(i)+"");
+        /// auxStr=auxStr+(name.charAt(i)+"");
         return auxStr;
     }
 
@@ -756,25 +823,22 @@ public class AddParturientActivity extends AppCompatActivity{
     }
 
     public void ordeList(){ // o primeiro a entrar fica no topo
-           ArrayList<Parturient> list = new ArrayList<>();
-           for(int i=(DBManager.getInstance().getParturients().size()-1);i>=0;i--){
-               list.add(DBManager.getInstance().getParturients().get(i));
-           }
-            DBManager.getInstance().getParturients().removeAll(DBManager.getInstance().getParturients());
-            DBManager.getInstance().getParturients().addAll(list);
+        ArrayList<Parturient> list = new ArrayList<>();
+        for(int i=(DBManager.getInstance().getParturients().size()-1);i>=0;i--){
+            list.add(DBManager.getInstance().getParturients().get(i));
+        }
+        DBManager.getInstance().getParturients().removeAll(DBManager.getInstance().getParturients());
+        DBManager.getInstance().getParturients().addAll(list);
     }
 
-    private String formatMinuto(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("mm");
-        return dateFormat.format(date);
-    }
-    private String formatSegundo(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("ss");
-        return dateFormat.format(date);
-    }
 
-    private String formatHoras(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("hh");
+    private String formatd(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+
+        return dateFormat.format(date);
+    }
+    private String format(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
         return dateFormat.format(date);
     }
 
@@ -783,9 +847,13 @@ public class AddParturientActivity extends AppCompatActivity{
         selectSinal.show(getSupportFragmentManager(), "Selecionar");
     }
 
-    public void selectTransferencia(View view) {
-        SelectTransferencia selectTransferencia= new SelectTransferencia();
-        selectTransferencia.show(getSupportFragmentManager(), "Selecionar Transferencia");
+
+    public  String getTempoExpulso(int seguntos) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.SECOND,seguntos);
+        return formatd(calendar.getTime());
     }
 
     private void verificatioTransferencia() {
@@ -802,17 +870,21 @@ public class AddParturientActivity extends AppCompatActivity{
                 handlerTrans.post(new Runnable() {
                     public void run() {
                         try {
-                         if(e.isAcceptTransference){
+                            if(e.isAcceptTransference){
                                 e.isAcceptTransference=false;
                                 origemTransferencia=e.opcaoSanitaria;
                                 motivosTransferencia=e.motivoTransferencia;
                                 textViewOpcoesTrasf.setText("Origem da transferencia : "+origemTransferencia+ ", Motivos da transferencia : "+motivosTransferencia);
                             }
-                         if(selectSinal.isSelectetOptionSanitaria){
-                             selectSinal.isSelectetOptionSanitaria=false;
-                             allSelectSinal=selectSinal.allNameselect;
-                             textViewOpcoesSinal.setText(allSelectSinal);
-                         }
+                            if(selectSinal.isSelectetOptionSanitaria){
+                                selectSinal.isSelectetOptionSanitaria=false;
+                                allSelectSinal="";
+                                for(EscolhaSinaisPatologia e: selectSinal.arrayList){
+                                    allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
+                                }
+                                textViewOpcoesSinal.setText(allSelectSinal);
+                            }
+
                         } catch (Exception e) {
                             // error, do something
                         }
@@ -823,196 +895,7 @@ public class AddParturientActivity extends AppCompatActivity{
         timerTrans.schedule(taskTrans, 0, 500);  // interval of one minute
 
     }
-    int getPositionISanitaria(String sanitaria){
-        int index=0;
-        for(String list:DBManager.getInstance().getListOpcoesUnidadeSanitaria()){
-            if(list.equals(sanitaria)){
-                return index;
-            }
-            index++;
-        }
-        return  0;
-    }
-    int getPositionMotivosTrasferencia(String origem){
-        int index=0;
-        for(String list:DBManager.getInstance().getListMotivosTrasferencia()){
-            if(list.equals(origem)){
-                return index;
-            }
-            index++;
-        }
-        return  0;
-    }
-
-    private void sendSMS(String phoneNumber, String message) {
-        phoneNumber = phoneNumber.trim();
-        message = message.trim();
-        System.out.println(message);
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-        } catch (Exception e) {
-            Log.i("EXPECTION SMS", e.getMessage());
-        }
-    }
 
 
-
-
-    public void functionPreferenceSaveTimer(Parturient parturient, int segundos){
-        SharedPreferences savePreference=getSharedPreferences(parturient.getIdAuxParturiente(),MODE_PRIVATE);
-        SharedPreferences.Editor editor=savePreference.edit();
-        editor.putInt("horas",Integer.parseInt(formatHoras(new Date())));
-        editor.putInt("minutos",Integer.parseInt(formatMinuto(new Date())));
-        editor.putInt("segundos",Integer.parseInt(formatSegundo(new Date())));
-        editor.putInt("timerSave",segundos);
-        editor.commit();
-    }
-
-    public int getFunctionPreferenceSaveTimer(Parturient parturient){
-        SharedPreferences savePreference=getSharedPreferences(parturient.getIdAuxParturiente(),MODE_PRIVATE);
-        int timerSave=savePreference.getInt("timerSave",0);
-        int horas=savePreference.getInt("horas",0);
-        int minutos=savePreference.getInt("minutos",0);
-        int segundos=savePreference.getInt("segundos",0);
-
-        System.out.println( " "+horas+" : "+minutos+" "+segundos);
-
-
-        int allTimerSave=horas*3600+minutos*60+segundos;
-        int allCurenteTimer=Integer.parseInt(formatHoras(new Date()))*3600+
-                Integer.parseInt(formatMinuto(new Date()))*60+
-                Integer.parseInt(formatSegundo(new Date()));
-
-        int totalTimer=allCurenteTimer-allTimerSave;
-
-        return totalTimer-timerSave;
-
-    }
-
-
-
-
-
-
-    public void initializeCountDownTimer(Parturient parturient,int seconds) {
-        MainActivity mainActivity=new MainActivity();
-        new CountDownTimer(seconds*1000+1000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
-
-                int hours = seconds / (60 * 60);
-                int tempMint = (seconds - (hours * 60 * 60));
-                int minutes = tempMint / 60;
-                seconds = tempMint - (minutes * 60);
-
-                functionPreferenceSaveTimer(parturient,seconds);
-                //System.out.println(" o valor do parturiente eh : "+ mainActivity.getFunctionPreferenceSaveTimer(parturient));
-
-                if(parturient.isInProcess()){
-                    parturient.setTempoRes("Em processo de parto");
-                   // dbService.updadeInProcessParturiente(true,parturient.getIdAuxParturiente());
-                    cancel();
-                }else{
-                    if(parturient.isAtendido()){
-                        cancel();
-                    }else {
-                        parturient.setTempoRes("Tempo Restante : " + String.format("%02d", hours)
-                                + ":" + String.format("%02d", minutes)
-                                + ":" + String.format("%02d", seconds));
-                    }
-                }
-            }
-
-            public void onFinish() {
-                //System.out.println(" o valor total do parturiente eh : "+ mainActivity.getFunctionPreferenceSaveTimer(parturient));
-                parturient.setTempoRes("Alerta Disparado");
-                AddParturientActivity addParturientActivity =new AddParturientActivity();
-                addParturientActivity.isFireAlert=true;
-                sendNotification(parturient);
-
-                // System.out.println("==================: "+dbService.getTimerAlertEmergenceDilatation());
-            }
-        }.start();
-    }
-
-    void sendNotification(Parturient parturient){
-        notification = new Notification();
-        notification.setColour(Color.YELLOW+Color.BLACK);
-        notification.setNome(parturient.getName()+" "+parturient.getSurname());
-        notification.setIdAuxParturiente(parturient.getIdAuxParturiente());
-        notification.setTime(format(new Date()));
-        notification.setOpen(true);
-        String auxData=new Date().getYear()+""+new Date().getMonth()+""+new Date().getDay();
-        notification.setYearDayMonthNotification(auxData);
-        notification.setSegundo(Integer.parseInt(formatSegundo(new Date())));
-        notification.setHoras(Integer.parseInt(formatHoras(new Date())));
-        notification.setMinutos(Integer.parseInt(formatMinuto(new Date())));
-        notification.setId(parturient.getId()+"");
-        // System.out.println("  yyyyyyyyyyyyyyyyyyyyyyyy= : "+parturient.getId());
-        notification.setInProcess(false);
-        alertaEmergence(notification,dbService.getTimerAlertEmergenceDilatation());
-        DBManager.getInstance().getNotifications().add(notification);
-        dbService.addNotificacao(notification);
-        //updadeListNotification();
-        System.out.println(" ======================"+parturient.getName()+"========================= ");
-    }
-
-    private void sendMensageEmergence(Notification notification){
-
-        notification.setColour(Color.rgb(248, 215,218));
-        dbService.updadeCorIsDispareNotification(Color.rgb(248, 215,218),notification.getIdAuxParturiente());
-        String mensagem=notification.getMessage() +": Necessita  de cuidados medicos";
-        System.out.println(mensagem);
-        for(UserDoctor userDoctor:dbService.getListDoctor()){
-            sendSMS(userDoctor.getContacto(),mensagem);
-        }
-    }
-
-    public void alertaEmergence(Notification notification,int seconds) {
-
-
-        new CountDownTimer(seconds * 1000 + 1000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
-
-                int hours = seconds / (60 * 60);
-                int tempMint = (seconds - (hours * 60 * 60));
-                int minutes = tempMint / 60;
-                seconds = tempMint - (minutes * 60);
-
-                if(notification.isAtendido()){
-                    cancel();
-                }else {
-                    if(notification.isInProcess()){
-                        notification.setViewTimerTwo(" Em processo de parto");
-                    }else{
-                        notification.setViewTimerTwo("Tempo Restante : " + String.format("%02d", hours)
-                                + ":" + String.format("%02d", minutes)
-                                + ":" + String.format("%02d", seconds));
-                    }
-                }
-
-            }
-
-            public void onFinish() {
-
-                notification.setViewTimerTwo(" Alerta Desparado");
-                AddParturientActivity addParturientActivity =new AddParturientActivity();
-                addParturientActivity.isFireAlert=true;
-
-                for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
-                    if(parturient.getIdAuxParturiente().equals(notification.getIdAuxParturiente())){
-                        dbService.removParturiente(parturient);
-                        dbService.removeInBD(parturient);
-                    }
-                }
-
-                sendMensageEmergence(notification);
-            }
-        }.start();
-    }
 
 }

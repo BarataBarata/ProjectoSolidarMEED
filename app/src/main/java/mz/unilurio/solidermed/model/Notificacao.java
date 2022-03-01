@@ -4,33 +4,29 @@ import android.os.Parcel;
 
 import java.util.Date;
 
-public final class Notification {
-    public static final int TWO_INTERVAL = 1;
+public final class Notificacao {
     private boolean inProcess;
     private String id;
     private String idAuxParturiente;
-    private int horas=0;
-    private int allSegundos=0;
+    private String horaDoEnvioDaMensagem="";
     private int minutos=0;
     private boolean isAtendido;
-    String yearDayMonthNotification;
-    private int segundo=0;
     private int color;
-    private String viewTimerTwo;
+    public  String viewTimerTwo="";
     private String message;
     private String time;
     private boolean isOpen;
-    private Date nextNotifier;
+    private  boolean alertaDisparado;
 
-    public Notification(){
+    public Notificacao(){ }
 
+
+    public String getHoraDoEnvioDaMensagem() {
+        return horaDoEnvioDaMensagem;
     }
 
-    protected Notification(Parcel in) {
-        id = in.readString();
-        message = in.readString();
-        isOpen = in.readByte() != 0;
-    }
+    public void setHoraDoEnvioDaMensagem(String horaDoEnvioDaMensagem) {
+        this.horaDoEnvioDaMensagem = horaDoEnvioDaMensagem; }
 
     public String getIdAuxParturiente() {
         return idAuxParturiente;
@@ -39,7 +35,6 @@ public final class Notification {
     public void setIdAuxParturiente(String idAuxParturiente) {
         this.idAuxParturiente = idAuxParturiente;
     }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -50,15 +45,6 @@ public final class Notification {
     public String getViewTimerTwo() {
         return viewTimerTwo;
     }
-
-    public int getAllSegundos() {
-        return allSegundos;
-    }
-
-    public void setAllSegundos(int allSegundos) {
-        this.allSegundos = allSegundos;
-    }
-
     public int getColour() {
         return color;
     }
@@ -70,15 +56,6 @@ public final class Notification {
     public boolean isInProcess() {
         return inProcess;
     }
-
-    public String getYearDayMonthNotification() {
-        return yearDayMonthNotification;
-    }
-
-    public void setYearDayMonthNotification(String yearDayMonthNotification) {
-        this.yearDayMonthNotification = yearDayMonthNotification;
-    }
-
     public boolean isAtendido() {
         return isAtendido;
     }
@@ -119,27 +96,11 @@ public final class Notification {
         return this.id;
     }
 
-    public int getHoras() {
-        return horas;
-    }
 
-    public void setHoras(int horas) {
-        this.horas = horas;
+    public boolean getAlertaDisparada() {
+        return alertaDisparado;
     }
-
-    public int getMinutos() {
-        return minutos;
-    }
-
-    public void setMinutos(int minutos) {
-        this.minutos = minutos;
-    }
-
-    public int getSegundo() {
-        return segundo;
-    }
-
-    public void setSegundo(int segundo) {
-        this.segundo = segundo;
+    public void setAlertaDisparada(boolean alertaDisparado) {
+        this.alertaDisparado=alertaDisparado;
     }
 }

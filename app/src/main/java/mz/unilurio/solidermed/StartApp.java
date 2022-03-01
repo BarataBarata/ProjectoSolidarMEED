@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.widget.Toast;
 
+import java.text.ParseException;
+
 import mz.unilurio.solidermed.model.DBService;
 
 public class StartApp extends AppCompatActivity {
@@ -20,11 +22,18 @@ public class StartApp extends AppCompatActivity {
 
         dbService=new DBService(this);
         dbService.initializeListParturientesAtendidos();
-        dbService.initializeListParturiente();
-        dbService.initializeListNotification();
+        try {
+            dbService.initializeListParturiente();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            dbService.initializeListNotification();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        dbService.initializeListParturientesTransferidos();
         //dbService.updadeListNotification();
-
-
         if(start){
             finish();
             start=false;

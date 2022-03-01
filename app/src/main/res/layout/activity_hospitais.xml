@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:text="Hospitai"
+            android:text="Hospitais"
             android:textColor="#BC343534" />
     </androidx.appcompat.widget.Toolbar>
 

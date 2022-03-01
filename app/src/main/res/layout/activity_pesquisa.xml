@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/Theme.Projecto_S.PopupOverlay">
 
+
         <ImageView
             android:onClick="finish"
             android:src="@drawable/back_24"
@@ -41,7 +42,6 @@
         app:queryHint=" Procurar uma parturiente..."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerVieParturienteSeacher"
         android:layout_width="match_parent"
