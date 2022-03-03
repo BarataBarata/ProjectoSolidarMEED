@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -102,12 +103,24 @@ public class TrasferenciaActivity extends AppCompatActivity {
                             auxParturiente.setTrasferidoParaForaDoHospital(true);
                             auxParturiente.setDestinoTrasferencia(spinnerDestino.getSelectedItem().toString());
                             auxParturiente.setMotivosDestinoDaTrasferencia(spinnerMotivoDestino.getSelectedItem().toString());
-                            DBManager.getInstance().getListaTransferidos().add(auxParturiente);
+                            //DBManager.getInstance().getListaTransferidos().add(auxParturiente);
                             DBManager.getInstance().getParturients().remove(auxParturiente);
                             DBManager.getInstance().getAuxlistNotificationParturients().remove(auxParturiente);
                             dbService.removeInBD(auxParturiente);
                             removNotification();
-                            dbService.addTransferidos(auxParturiente);
+                            dbService.addAtendimento(auxParturiente);
+                            try {
+                                dbService.initializeListParturiente();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                dbService.initializeListNotification();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            //dbService.addTransferidos(auxParturiente);
 
                            finish();
                         }

@@ -171,8 +171,6 @@ public class AddParturientActivity extends AppCompatActivity{
 
     }
 
-
-
     private void viewnumber2() {
         selectSinal = new SelectSinal();
         selectSinal.addOptionSelect(6,"Primigesta com idade inferior a 16 anos");

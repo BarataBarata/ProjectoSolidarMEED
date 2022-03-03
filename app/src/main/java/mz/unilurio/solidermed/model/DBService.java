@@ -1117,7 +1117,7 @@ public class DBService  extends SQLiteOpenHelper {
 
     public void initializeListParturientesTransferidos() {
 
-        DBManager.getInstance().getListParturientesAtendidos().removeAll(DBManager.getInstance().getListParturientesAtendidos());
+        DBManager.getInstance().getListaTransferidos().removeAll(DBManager.getInstance().getListaTransferidos());
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM Transferidos", null);
         List<Parturient> arrayList = new ArrayList<>();
@@ -1320,7 +1320,7 @@ public class DBService  extends SQLiteOpenHelper {
 
     //.................ATENDIMENTO...............................
     public long addAtendimento(Parturient parturient) {
-
+        updadeAllDadeAuxParturiente(parturient);
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("name ", parturient.getName());
@@ -1349,7 +1349,7 @@ public class DBService  extends SQLiteOpenHelper {
     }
 
     public long addTransferidos(Parturient parturient) {
-
+        updadeAllDadeAuxParturiente(parturient);
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("name ", parturient.getName());
@@ -1605,14 +1605,14 @@ public class DBService  extends SQLiteOpenHelper {
         String mensagem = "";
         String mensagem2 = "";
         String mensagem3 = "";
-        mensagem = " HDC: ssita  de cuidados medicos";
-
+        mensagem = " HDC: ("+ parturient.getName()+" "+parturient.getSurname()+") , idade :"+parturient.getAge()+" ,entrada :"+parturient.getHoraEntrada()+" necessita de cuidados medico";
+        mensagem2=" Patologia : "+parturient.getSinaisDePatologia()+", unidade gestacional: "+parturient.getGestatinalRange()+" paridade : "+parturient.getPara();
         updadeCorIsDispareNotification(Color.rgb(248, 215, 218), notificacao.getIdAuxParturiente());
 
         if (!notificacao.isInProcess()) {
             for (UserDoctor userDoctor : getListDoctor()) {
                 sendSMS(userDoctor.getContacto(), mensagem);
-              //  sendSMS(userDoctor.getContacto(), mensagem2);
+                sendSMS(userDoctor.getContacto(), mensagem2);
                 //sendSMS(userDoctor.getContacto(), mensagem3);
             }
         }

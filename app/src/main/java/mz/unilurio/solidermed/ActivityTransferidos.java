@@ -30,9 +30,9 @@ public class ActivityTransferidos extends AppCompatActivity {
         setContentView(R.layout.activity_transferidos);
 
          viewTxt=findViewById(R.id.idNullResultAtendimento2);
+         initializeteDisplayContextTransferidos();
 
-        initializeteDisplayContextTransferidos();
-        if(DBManager.getInstance().getListParturientesAtendidos().isEmpty()){
+        if(DBManager.getInstance().getListaTransferidos().isEmpty()){
             viewTxt.setVisibility(View.VISIBLE);
         }else{
             viewTxt.setVisibility(View.INVISIBLE);

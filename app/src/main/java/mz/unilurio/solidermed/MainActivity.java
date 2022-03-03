@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(dbService.getPrivilegios()) {
             menuDefinition.setVisible(true);
         }else{
-            menuDefinition.setVisible(true);
+            menuDefinition.setVisible(false);
         }
 
         menuDefinition.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

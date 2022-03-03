@@ -100,7 +100,7 @@
                    android:layout_height="wrap_content"/>
                <CheckBox
                    android:textColor="#807A7A"
-                   android:text="Teve 6 ou mais partos (grande multipar) "
+                   android:text="Teve 6 ou mais partos (grande multipara) "
                    android:layout_below="@id/c4"
                    android:id="@+id/c5"
                    android:layout_marginBottom="16dp"
