@@ -801,7 +801,7 @@ public class DBService  extends SQLiteOpenHelper {
         initializeCountDownTimer(parturient,getTimerDilatation(parturient.getReason()+"")); // inicializa a contagem
         addAuxParturiente(parturient);  /// coloca os parturintes numa lista auxiliar
         DBManager.getInstance().getParturients().add(parturient);
-        DBManager.getInstance().addAuxListNotificationParturient(parturient);
+
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -846,6 +846,7 @@ public class DBService  extends SQLiteOpenHelper {
 
 
     public long addAuxParturiente(Parturient parturient) {
+        DBManager.getInstance().getAuxlistNotificationParturients().add(parturient);
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("name ", parturient.getName());
@@ -894,22 +895,28 @@ public class DBService  extends SQLiteOpenHelper {
                 no.setInProcess((c.getInt(c.getColumnIndex("inProcess"))== 1)? true : false);
                 tempoRestante = getTempoRestanteEmSeguntosDaNotificacao(no); // tras o tempo restante para terminar com a contagem
 
-                if(isFinishTimeNotification2(no)){
-                    no.setViewTimerTwo(" Alerta disparado ");
-                    ordeList();
-                    DBManager.getInstance().getNotifications().add(no);
-                    ordeList();
-                }else{
-                    ordeList();
-                    DBManager.getInstance().getNotifications().add(no);
-                    ordeList();
-                    initializeCountDownTimerNotification(no,tempoRestante);
-                }
+               if(!isConten(no)){
+                   if(isFinishTimeNotification2(no)){
+                       no.setViewTimerTwo(" Alerta disparado ");
+                       ordeList();
+                       DBManager.getInstance().getNotifications().add(no);
+                       ordeList();
+                   }else{
+                       ordeList();
+                       DBManager.getInstance().getNotifications().add(no);
+                       ordeList();
+                       initializeCountDownTimerNotification(no,tempoRestante);
+                   }
+               }
 
             } while (c.moveToNext());
             c.close();
         }
     }
+
+
+
+
 
     public void initializeListParturiente() throws ParseException {
         SQLiteDatabase db = getReadableDatabase();
@@ -988,7 +995,7 @@ public class DBService  extends SQLiteOpenHelper {
         if(!isConten(notifi)){
             if(!parturient.getSinaisDePatologia().equalsIgnoreCase("Nenhum")){
                 notifi.setColour( Color.rgb(248, 215, 218));
-                sendMensageEmergence(notifi,parturient);
+                sendMensageEmergenceOfPatologia(notifi, parturient);
                 notifi.setViewTimerTwo("Alerta disparado");
                 ordeList();
                 DBManager.getInstance().getNotifications().add(notifi);
@@ -1206,7 +1213,11 @@ public class DBService  extends SQLiteOpenHelper {
         }
     }
 
+    public long deleteParturienteInAuxList(String id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete("AuxParturientes", "idAuxParturiente=?", new String[]{String.valueOf(id)});
 
+    }
     public long deleteParturiente(String id) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete("Parturientes", "idAuxParturiente=?", new String[]{String.valueOf(id)});
@@ -1455,21 +1466,24 @@ public class DBService  extends SQLiteOpenHelper {
             }
 
             public void onFinish() {
-                AddParturientActivity addParturientActivity=new AddParturientActivity();
-                addParturientActivity.idParturienteNotification=parturient.getIdAuxParturiente();
-                addParturientActivity.alertFireNotification=true;
-                //System.out.println(" o valor total do parturiente eh : "+ mainActivity.getFunctionPreferenceSaveTimer(parturient));
-                parturient.setTempoRes("Alerta Disparado ");
-                try {
-                    removeInBD(parturient);
-                    removParturiente(parturient);
-                    envioDaNotificacao(parturient);
-                    cancel();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
 
-                addParturientActivity.isFireAlert=true;
+                        AddParturientActivity addParturientActivity=new AddParturientActivity();
+                        addParturientActivity.idParturienteNotification=parturient.getIdAuxParturiente();
+                        addParturientActivity.alertFireNotification=true;
+                        //System.out.println(" o valor total do parturiente eh : "+ mainActivity.getFunctionPreferenceSaveTimer(parturient));
+                        parturient.setTempoRes("Alerta Disparado ");
+                        try {
+                                removeInBD(parturient);
+                                removParturiente(parturient);
+                                envioDaNotificacao(parturient);
+                                cancel();
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        addParturientActivity.isFireAlert=true;
+
            }
         }.start();
 
@@ -1601,57 +1615,52 @@ public class DBService  extends SQLiteOpenHelper {
     }
 
 
+
+    private void sendMensageEmergenceOfPatologia(Notificacao notificacao, Parturient parturient) {
+        String mensagem = "";
+        String mensagem2 = "";
+        mensagem =abrevStr(getHospitalSelect())+": ("+ parturient.getName()+" "+parturient.getSurname()+") , idade :"+parturient.getAge()+",Entrada :"+parturient.getHoraEntrada()+", necessita de cuidados medico";
+        mensagem2="Patologia : "+parturient.getSinaisDePatologia()+", unidade gestacional: "+parturient.getGestatinalRange()+" paridade : "+parturient.getPara();
+        updadeCorIsDispareNotification(Color.rgb(248, 215, 218), notificacao.getIdAuxParturiente());
+
+
+                for (UserDoctor userDoctor : getListDoctor()) {
+                    sendSMS(userDoctor.getContacto(), mensagem);
+                    sendSMS(userDoctor.getContacto(), mensagem2);
+                }
+    }
     private void sendMensageEmergence(Notificacao notificacao, Parturient parturient) {
         String mensagem = "";
         String mensagem2 = "";
-        String mensagem3 = "";
-        mensagem = " HDC: ("+ parturient.getName()+" "+parturient.getSurname()+") , idade :"+parturient.getAge()+" ,entrada :"+parturient.getHoraEntrada()+" necessita de cuidados medico";
-        mensagem2=" Patologia : "+parturient.getSinaisDePatologia()+", unidade gestacional: "+parturient.getGestatinalRange()+" paridade : "+parturient.getPara();
+        mensagem = abrevStr(getHospitalSelect())+" : ("+ parturient.getName()+" "+parturient.getSurname()+") , idade :"+parturient.getAge()+", Entrada :"+parturient.getHoraEntrada()+", necessita de cuidados medico";
+        mensagem2="Patologia : "+parturient.getSinaisDePatologia()+", unidade gestacional: "+parturient.getGestatinalRange()+" paridade : "+parturient.getPara();
         updadeCorIsDispareNotification(Color.rgb(248, 215, 218), notificacao.getIdAuxParturiente());
 
-        if (!notificacao.isInProcess()) {
-            for (UserDoctor userDoctor : getListDoctor()) {
-                sendSMS(userDoctor.getContacto(), mensagem);
-                sendSMS(userDoctor.getContacto(), mensagem2);
-                //sendSMS(userDoctor.getContacto(), mensagem3);
+        if(parturient.getReason()>3) {
+            if (!notificacao.isInProcess()) {
+                for (UserDoctor userDoctor : getListDoctor()) {
+                    sendSMS(userDoctor.getContacto(), mensagem);
+                    sendSMS(userDoctor.getContacto(), mensagem2);
+                    //sendSMS(userDoctor.getContacto(), mensagem3);
+                }
             }
         }
+}
 
-//
-//        for (Parturient parturient : getListAuxParturiente()) {
-//            if (parturient.getIdAuxParturiente().equals(notificacao.getIdAuxParturiente())) {
-//                mensagem = " HDC: [" + getHospitalSelect() + "], " + parturient.getName() + " " + parturient.getSurname() + " : Necessita  de cuidados medicos";
-//                mensagem2 = "Idade : " + parturient.getAge() + ", Paridade : " + parturient.getPara() + ",entrada :  " + parturient.getHoraEntrada();
-//                mensagem3 = "Patologias : " + parturient.getSinaisDePatologia();
-//
-//                if (parturient.getSinaisDePatologia().length() > 150) {
-//
-//                    if (!notificacao.isInProcess()) {
-//                        for (UserDoctor userDoctor : getListDoctor()) {
-//                            sendSMS(userDoctor.getContacto(), mensagem);
-//                            sendSMS(userDoctor.getContacto(), mensagem2);
-//                            sendSMS(userDoctor.getContacto(), mensagem3);
-//                        }
-////                    }
-////                }else {
-////                    mensagem= " HDC: ["+getHospitalSelect()+" ]," +parturient.getName()+" "+ parturient.getSurname()+" : Necessita  de cuidados medicos";
-////                    mensagem2= " Idade : "+ parturient.getAge() + ", Paridade : "+parturient.getPara() + ",entrada :  "+ parturient.getHoraEntrada()+" patologia :"+parturient.getSinaisDePatologia();
-////
-////                    if(!notificacao.isInProcess()) {
-////                        for (UserDoctor userDoctor : getListDoctor()) {
-////                            sendSMS(userDoctor.getContacto(), mensagem);
-////                            sendSMS(userDoctor.getContacto(), mensagem2);
-////                        }
-////                    }
-////                }
-////
-////            }
-////        }
-//
-//                    }
-//                }
-//            }
-//        }
+
+    public  String abreviacaoDeNomes(String nome){
+        String newNome="";
+        int posicao=0;
+        int tamanho=nome.length();
+
+                     for(int i=0;i< nome.length();i++){
+                         if(nome.charAt(i)==' ')
+                             posicao=i;
+                     }
+
+                 newNome=nome.substring(posicao,tamanho);
+
+        return newNome;
     }
 
     private void sendSMS(String phoneNumber, String message) {
@@ -1664,6 +1673,49 @@ public class DBService  extends SQLiteOpenHelper {
         } catch (Exception e) {
             Log.i("EXPECTION SMS", e.getMessage());
         }
+    }
+
+
+    private String abrevStr(String str){
+
+        if(str.equalsIgnoreCase("Hospital Distrital de Chiúre")){
+            return "C.S DE CHIURE";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Catapua")){
+            return "C.S DE CATAPUA";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Ocua")){
+            return "C.S DE OCUA";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Chiúre Velho")){
+            return "C.S DE CHIURE VELHO";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Mmala")){
+            return "C.S DE MMALA";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Marera")){
+            return "C.S DE MARERA";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Mazeze")){
+            return "C.S DE MAZEZE";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Muege")){
+            return "C.S DE MUEGE";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Nakoto")){
+            return "C.S DE MAKOTO";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Namogeliua")){
+            return "C.S DE NAMOGELIUA";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Samora Machel")){
+            return "C.S DE SAMORA MACHEL";
+        }
+        if(str.equalsIgnoreCase("Centro de saúde de Bilibiza")){
+            return "C.S DE BILIBIZA";
+        }
+
+        return "C.S";
     }
 
 

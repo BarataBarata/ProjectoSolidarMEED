@@ -256,7 +256,7 @@ public class AddParturientActivity extends AppCompatActivity{
                 TextView textNumber=findViewById(R.id.id0);
                 textNumber.setText((int)mSliderDilatation.getValue()+"");
                 int fase=(int)mSliderDilatation.getValue();
-                if(fase>4){
+                if(fase>3){
                     textFase.setText(" na fase activa");
                 }else{
                     textFase.setText(" na fase latente");
@@ -506,6 +506,22 @@ public class AddParturientActivity extends AppCompatActivity{
                     if(parturient.getReason()!=dilatacao){
                         parturient.setEditDilatation(true);
                         parturient.setReason(dilatacao);
+
+                        for(Notificacao notificacao: DBManager.getInstance().getNotifications()){
+                             if(notificacao.getIdAuxParturiente().equalsIgnoreCase(parturient.getIdAuxParturiente())){
+                                 try {
+                                     dbService.deleteNotification(notificacao);
+                                     dbService.deleteParturienteInAuxList(parturient.getIdAuxParturiente());
+                                     DBManager.getInstance().getNotifications().remove(notificacao);
+                                     dbService.addParturiente(parturient);
+                                 } catch (ParseException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                        }
+
+
+
                         try {
                             System.out.println(" antes : "+parturient.getHoraExpulsoDoFeto());
                             parturient.setHoraExpulsoDoFeto(getTempoExpulso(dbService.getTimerDilatation(dilatacao+"")));

@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import mz.unilurio.solidermed.ui.fragments.AtendidosFragment;
 import mz.unilurio.solidermed.ui.fragments.NotificationFragment;
 import mz.unilurio.solidermed.ui.fragments.ParturientesFragment;
+import mz.unilurio.solidermed.ui.fragments.TransferidosFragment;
 
 public class PageAdapder extends FragmentStatePagerAdapter {
 
@@ -29,8 +30,10 @@ public class PageAdapder extends FragmentStatePagerAdapter {
             case 1:
                 return new NotificationFragment();
 
+            case 2:
+                return new AtendidosFragment();
 
-            default: return new AtendidosFragment();
+            default: return new TransferidosFragment();
         }
     }
 

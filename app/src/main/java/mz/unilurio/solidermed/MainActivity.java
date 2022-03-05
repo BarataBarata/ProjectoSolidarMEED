@@ -66,11 +66,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private LinearLayoutManager parturienteLinearLayoutManager;
     private NotificationRecyclerAdpter notificationRecyclerAdapter;
     private AtendidosRecyclerAdpter atendidosRecyclerAdpter;
+    private TransferidosRecyclerAdapter transferidosRecyclerAdapter;
     private ParturienteRecyclerAdpter  parturienteRecyclerAdpter;
     private HashMap<String, Notificacao> notificationTriggered = new HashMap<String, Notificacao>();
     private NotificationManagerCompat notificationManager;
     private TextView textNotificacao;
     private TextView textUserLogin;
+
     private TextView textVerificationNull;
     private static int id;
     private TextView textSeacher;
@@ -154,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case 0: {displayParturiente();fab.setVisibility(View.VISIBLE);break; }
                     case 1: {displayNotification(); fab.setVisibility(View.INVISIBLE);break;}
                     case 2: {displayAtendidos();fab.setVisibility(View.INVISIBLE);break;}
+                    case 3: {displayTransferidos();fab.setVisibility(View.INVISIBLE);break;}
                 }
             }
 
@@ -211,12 +214,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
    public void verificationIsNull(){
+
         textVerificationNull =findViewById(R.id.idNullResultParturiente);
         viewNullListParturiente(textVerificationNull);
         textVerificationNull =findViewById(R.id.idNullResultAtendimento);
         viewNullListAtendidos(textVerificationNull);
         textVerificationNull =findViewById(R.id.idNullResultNotification);
         viewNullListNotification(textVerificationNull);
+        textVerificationNull =findViewById(R.id.idNullResultTransferencia);
+        viewNullListTransferencia(textVerificationNull);
    }
 
     public void viewNullListAtendidos(TextView textView){
@@ -246,7 +252,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
        }
    }
 
+    public void viewNullListTransferencia(TextView textView){
 
+        if(DBManager.getInstance().getListaTransferidos().size()==0) {
+            textView.setVisibility(View.VISIBLE);
+        }else {
+            textView.setVisibility(View.INVISIBLE);
+        }
+    }
     private void displayAtendidos() {
         RecyclerView recyclerView;
         recyclerView =findViewById(R.id.recyclerViewAtendidos);
@@ -254,6 +267,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         List<Parturient> atendidos= DBManager.getInstance().getListParturientesAtendidos();
         atendidosRecyclerAdpter=new AtendidosRecyclerAdpter( this,atendidos);
         recyclerView.setAdapter(atendidosRecyclerAdpter);
+    }
+    private void displayTransferidos() {
+        RecyclerView recyclerView;
+        recyclerView =findViewById(R.id.recyclerViewTransferidos);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        List<Parturient> transferidos= DBManager.getInstance().getListaTransferidos();
+        transferidosRecyclerAdapter=new TransferidosRecyclerAdapter( this,transferidos);
+        recyclerView.setAdapter(transferidosRecyclerAdapter);
     }
 
     public void displayNotification() {

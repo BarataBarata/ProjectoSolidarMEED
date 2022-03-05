@@ -119,6 +119,7 @@ public class TrasferenciaActivity extends AppCompatActivity {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+                            dbService.initializeListParturientesAtendidos();
 
                             //dbService.addTransferidos(auxParturiente);
 
