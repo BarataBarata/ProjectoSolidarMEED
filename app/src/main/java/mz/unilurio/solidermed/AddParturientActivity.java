@@ -158,7 +158,7 @@ public class AddParturientActivity extends AppCompatActivity{
 
         if(getIntent().getStringExtra("idParturiente")!=null){
             idParturiente =(getIntent().getStringExtra("idParturiente"));
-            for(Parturient parturient: DBManager.getInstance().getAuxlistNotificationParturients()){
+            for(Parturient parturient: dbService.getListAuxParturiente()){
                 if(parturient.getIdAuxParturiente().equals(idParturiente)){
                     isEdit=true;
                     textEditAndRegist.setText("Editar Parturiente");
@@ -273,6 +273,8 @@ public class AddParturientActivity extends AppCompatActivity{
         String idade="";
 
         // ENVIANDO 0S DADOS PARA OS CAMPOS//
+        textViewOpcoesSinal.setText(ediParturient.getSinaisDePatologia());
+        allSelectSinal=ediParturient.getSinaisDePatologia();
         txtNameParturient.setText(ediParturient.getName());
         txtApelidoParturient.setText(ediParturient.getSurname());
         idade=String.valueOf(ediParturient.getAge());
@@ -499,6 +501,7 @@ public class AddParturientActivity extends AppCompatActivity{
                     parturient.setFullName(upCaseName(txtNameParturient.getText().toString())+" "+upCaseName(txtApelidoParturient.getText().toString()));
                     String age = numberPicker1.getValue() + "" + numberPicker2.getValue();
                     parturient.setAge(Integer.parseInt(age));
+                    parturient.setSinaisDePatologia(allSelectSinal);
                     parturient.setTime(new Date());
                     int dilatacao=(int)Float.parseFloat(mSliderDilatation.getValue()+"");
                     System.out.println(parturient.getReason()+" :----- :"+((int)Float.parseFloat(mSliderDilatation.getValue()+"")));
@@ -512,6 +515,8 @@ public class AddParturientActivity extends AppCompatActivity{
                                  try {
                                      dbService.deleteNotification(notificacao);
                                      dbService.deleteParturienteInAuxList(parturient.getIdAuxParturiente());
+                                     dbService.removeInBD(parturient);
+                                     dbService.removParturiente(parturient);
                                      DBManager.getInstance().getNotifications().remove(notificacao);
                                      dbService.addParturiente(parturient);
                                  } catch (ParseException e) {
@@ -553,6 +558,17 @@ public class AddParturientActivity extends AppCompatActivity{
                         }
                     }
                     dbService.updadeAllDadeParturiente(parturient);
+                    dbService.initializeListParturientesAtendidos();
+                    try {
+                        dbService.initializeListParturiente();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        dbService.initializeListNotification();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     Toast.makeText(getApplicationContext(), " Parturiente Editado com sucesso", Toast.LENGTH_LONG).show();
                 }
             }

@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class Parturient {
 
-    private String horaExpulsoDoFeto;
-    private String sinaisDePatologia;
+    private String horaExpulsoDoFeto="";
+    private String sinaisDePatologia="";
 
 
 

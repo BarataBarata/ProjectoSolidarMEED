@@ -110,21 +110,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        dbService.initializeListParturientesTransferidos();
+        //dbService.initializeListParturientesTransferidos();
 
-
-
-       // if(dbService.getAllAcess()){
-        //    privilegios.setViewAll(true);
-        //}else{
-          //  privilegios.setViewAll(false);
-       // }
-        //dbService.updadeListParturiente();
-
-
-//        if(DBManager.getInstance().getNotifications().isEmpty()){// atualiza se estiver vaziu
-//            dbService.updadeListNotification();
-//        }
 
         fab = findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
@@ -237,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void viewNullListParturiente(TextView textView){
 
-        if(DBManager.getInstance().getParturients().size()==0) {
+        if(DBManager.getInstance().getParturients().isEmpty()) {
             textView.setVisibility(View.VISIBLE);
         }else {
             textView.setVisibility(View.INVISIBLE);
@@ -245,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
    public void viewNullListNotification(TextView textView){
 
-       if(DBManager.getInstance().getNotifications().size()==0) {
+       if(DBManager.getInstance().getNotifications().isEmpty()) {
            textView.setVisibility(View.VISIBLE);
        }else {
            textView.setVisibility(View.INVISIBLE);
@@ -254,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void viewNullListTransferencia(TextView textView){
 
-        if(DBManager.getInstance().getListaTransferidos().size()==0) {
+        if(DBManager.getInstance().getListaTransferidos().isEmpty()) {
             textView.setVisibility(View.VISIBLE);
         }else {
             textView.setVisibility(View.INVISIBLE);

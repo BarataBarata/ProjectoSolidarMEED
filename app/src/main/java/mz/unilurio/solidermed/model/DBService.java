@@ -1033,7 +1033,6 @@ public class DBService  extends SQLiteOpenHelper {
 
 
     private void initializeCountDownTimerNotification(Notificacao notifica, int seconds) {
-        initializeListParturientesTransferidos();
         new CountDownTimer(seconds*1000+1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -1160,7 +1159,7 @@ public class DBService  extends SQLiteOpenHelper {
                 parturient.setTransfered((c.getInt(c.getColumnIndex("isTrasferido"))== 1)? true : false);
                 parturient.setAtendido((c.getInt(c.getColumnIndex("isAtendido"))== 1)? true : false);
 
-                DBManager.getInstance().getListaTransferidos().add(parturient);
+                //DBManager.getInstance().getListaTransferidos().add(parturient);
 
             } while (c.moveToNext());
 
@@ -1221,6 +1220,11 @@ public class DBService  extends SQLiteOpenHelper {
     public long deleteParturiente(String id) {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete("Parturientes", "idAuxParturiente=?", new String[]{String.valueOf(id)});
+
+    }
+    public long deleteParturienteAtendidos(String id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete("Atendidos", "idAuxParturiente=?", new String[]{String.valueOf(id)});
 
     }
 
@@ -1424,7 +1428,7 @@ public class DBService  extends SQLiteOpenHelper {
 
     public void initializeCountDownTimer(Parturient parturient,int seconds) {
 
-        initializeListParturientesTransferidos();
+        //initializeListParturientesTransferidos();
 
         new CountDownTimer(seconds*1000+1000, 1000) {
 

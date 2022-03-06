@@ -32,7 +32,7 @@ public class StartApp extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        dbService.initializeListParturientesTransferidos();
+       // dbService.initializeListParturientesTransferidos();
         //dbService.updadeListNotification();
         if(start){
             finish();

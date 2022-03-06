@@ -70,7 +70,7 @@ public class TransferidosFragment extends Fragment {
     public void onResume() {
         super.onResume();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<Parturient> parturients= DBManager.getInstance().getParturients();
+        List<Parturient> parturients= DBManager.getInstance().getListaTransferidos();
         recyclerView.setAdapter(new ParturienteRecyclerAdpter(getContext(),parturients));
     }
 
