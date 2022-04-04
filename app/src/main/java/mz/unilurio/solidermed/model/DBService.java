@@ -847,7 +847,7 @@ public class DBService  extends SQLiteOpenHelper {
 
     ///............................add parturiente ...........................////
     public  void addParturiente(Parturient parturient) throws ParseException {
-        if(!parturient.getSinaisDePatologia().equalsIgnoreCase("Nenhum")){
+        if(!parturient.getSinaisDePatologia().equalsIgnoreCase("AcimaDoTempo")){
             envioDaNotificacao(parturient);
             addAuxParturiente(parturient);
         }else{
@@ -1054,7 +1054,7 @@ public class DBService  extends SQLiteOpenHelper {
        /// DBManager.getInstance().addAuxListNotification(notifi);
 
         if(!isConten(notifi)){
-            if(!parturient.getSinaisDePatologia().equalsIgnoreCase("Nenhum")){
+            if(!parturient.getSinaisDePatologia().equalsIgnoreCase("AcimaDoTempo")){
                 notifi.setColour( Color.rgb(248, 215, 218));
                 sendMensageEmergenceOfPatologia(notifi, parturient);
                 notifi.setViewTimerTwo("Alerta disparado");
@@ -1684,7 +1684,7 @@ public class DBService  extends SQLiteOpenHelper {
     private void sendMensageEmergenceOfPatologia(Notificacao notificacao, Parturient parturient) {
         String mensagem = "";
         String mensagem2 = "";
-        mensagem =abrevStr(getHospitalSelect())+":"+ parturient.getName()+" "+parturient.getSurname()+", idade:"+parturient.getAge()+",Entro:"+parturient.getHoraEntrada()+"Motivo."+parturient.getSinaisDePatologia()+",UG:"+parturient.getGestatinalRange()+"Paridade:"+parturient.getPara();
+        mensagem =abrevStr(getHospitalSelect())+":"+ parturient.getName()+""+parturient.getSurname()+",idade:"+parturient.getAge()+",Entro:"+parturient.getHoraEntrada()+",UG:"+parturient.getGestatinalRange()+",Parid:"+parturient.getPara()+",Motivo."+parturient.getSinaisDePatologia();
 
         updadeCorIsDispareNotification(Color.rgb(248, 215, 218), notificacao.getIdAuxParturiente());
 
@@ -1697,7 +1697,7 @@ public class DBService  extends SQLiteOpenHelper {
     private void sendMensageEmergence(Notificacao notificacao, Parturient parturient) {
         String mensagem = "";
         String mensagem2 = "";
-        mensagem =abrevStr(getHospitalSelect())+":"+ parturient.getName()+" "+parturient.getSurname()+", idade:"+parturient.getAge()+",Entro:"+parturient.getHoraEntrada()+"Motivo."+parturient.getSinaisDePatologia()+",UG:"+parturient.getGestatinalRange()+"Paridade:"+parturient.getPara();
+        mensagem =abrevStr(getHospitalSelect())+":"+ parturient.getName()+""+parturient.getSurname()+",idade:"+parturient.getAge()+",Entro:"+parturient.getHoraEntrada()+",UG:"+parturient.getGestatinalRange()+",Parid:"+parturient.getPara()+",Motivo."+parturient.getSinaisDePatologia();
 
 
         updadeCorIsDispareNotification(Color.rgb(248, 215, 218), notificacao.getIdAuxParturiente());
@@ -1745,40 +1745,40 @@ public class DBService  extends SQLiteOpenHelper {
     private String abrevStr(String str){
 
         if(str.equalsIgnoreCase("Hospital Distrital de Chiúre")){
-            return "C.S DE CHIURE";
+            return "CHIURE";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Catapua")){
-            return "C.S DE CATAPUA";
+            return "CATAPUA";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Ocua")){
-            return "C.S DE OCUA";
+            return "OCUA";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Chiúre Velho")){
-            return "C.S DE CHIURE VELHO";
+            return "CHIURE VELHO";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Mmala")){
-            return "C.S DE MMALA";
+            return "MMALA";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Marera")){
-            return "C.S DE MARERA";
+            return "MARERA";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Mazeze")){
-            return "C.S DE MAZEZE";
+            return "MAZEZE";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Muege")){
-            return "C.S DE MUEGE";
+            return "MUEGE";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Nakoto")){
-            return "C.S DE MAKOTO";
+            return "MAKOTO";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Namogeliua")){
-            return "C.S DE NAMOGELIUA";
+            return "NAMOGELIUA";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Samora Machel")){
-            return "C.S DE SAMORA MACHEL";
+            return "SAMORA MACHEL";
         }
         if(str.equalsIgnoreCase("Centro de saúde de Bilibiza")){
-            return "C.S DE BILIBIZA";
+            return "BILIBIZA";
         }
         return "C.S";
     }

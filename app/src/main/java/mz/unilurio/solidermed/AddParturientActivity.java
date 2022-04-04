@@ -85,7 +85,7 @@ public class AddParturientActivity extends AppCompatActivity{
     private Timer timer;
     TextView textViewOpcoesTrasf;
     TextView textViewOpcoesSinal;
-    private String allSelectSinal="Nenhum";
+    private String allSelectSinal="AcimaDoTempo";
     private static String origemTransferencia;
     private static String motivosTransferencia;
     public static final  String NOTE_POSITION="mz.unilurio.projecto200.NOTE_INFO";
@@ -215,7 +215,7 @@ public class AddParturientActivity extends AppCompatActivity{
                             allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
                         }
                     }else {
-                        allSelectSinal="Nenhum";
+                        allSelectSinal="AcimaDoTempo";
                     }
                 }
 
@@ -236,7 +236,7 @@ public class AddParturientActivity extends AppCompatActivity{
                             allSelectSinal=allSelectSinal+e.getNomeSinal()+ ", ";
                         }
                     }else {
-                        allSelectSinal="Nenhum";
+                        allSelectSinal="AcimaDoTempo";
                     }
 
 
@@ -453,7 +453,7 @@ public class AddParturientActivity extends AppCompatActivity{
                         }
                         textViewOpcoesSinal.setText(allSelectSinal);
                     }else {
-                        allSelectSinal="Nenhum";
+                        allSelectSinal="AcimaDoTempo";
                         textViewOpcoesSinal.setText(allSelectSinal);
                     }
                 }
@@ -485,7 +485,7 @@ public class AddParturientActivity extends AppCompatActivity{
                         }
                         textViewOpcoesSinal.setText(allSelectSinal);
                     }else {
-                        allSelectSinal="Nenhum";
+                        allSelectSinal="AcimaDoTempo";
                         textViewOpcoesSinal.setText(allSelectSinal);
                     }
                 }
