@@ -6,6 +6,10 @@
         android:id="@+id/edit"
         android:title="Editar" />
     <item
+        android:id="@+id/editFase"
+        android:onClick="editDilatacao"
+        android:title="Fase activa/Latente" />
+    <item
         android:id="@+id/atendimento"
         android:title="Atendimento" />
 

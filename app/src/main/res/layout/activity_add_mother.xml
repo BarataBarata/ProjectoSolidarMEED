@@ -165,14 +165,63 @@
 <!--                <RelativeLayout-->
 <!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="wrap_content">-->
-                     <TextView
-                         android:textSize="15dp"
-                        android:layout_marginStart="16dp"
-                        android:text="Dilatação cervical"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/txtTitledilatacao"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+
+<!--                        android:id="@+id/rec1"-->
+<!--                        android:layout_below="@id/txtTitledilatacao"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content">-->
+                <TextView
+                    android:textSize="15dp"
+                    android:id="@+id/txtOpc"
+                    android:text="Opções de paridade"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/para"
+                            app:tickVisible="true"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="60dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:paddingLeft="0dp"
+                            android:paddingTop="40dp"
+                            android:paddingRight="0dp"
+                            android:stepSize="1"
+                            android:valueFrom="0"
+                            android:valueTo="10" />
+
+                        <TextView
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_gravity="end"
+                            android:background="@drawable/circle"
+                            android:layout_marginStart="16dp"
+                            android:id="@+id/id1"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_marginEnd="16dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+
+
+                <TextView
+                    android:textSize="15dp"
+                    android:layout_marginStart="16dp"
+                    android:text="Dilatação cervical"
+                    android:layout_marginTop="65dp"
+                    android:id="@+id/txtTitledilatacao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
                 <TextView
 
                     android:background="@color/black"
@@ -181,96 +230,47 @@
                     android:textSize="15dp"
                     android:layout_marginStart="150dp"
                     android:text=" na fase Latente"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="65dp"
                     android:layout_marginEnd="16dp"
                     android:id="@+id/txtFase"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-<!--                    <RelativeLayout-->
-<!--                        android:id="@+id/rec1"-->
-<!--                        android:layout_below="@id/txtTitledilatacao"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content">-->
-
-                        <com.google.android.material.slider.Slider
-                            app:tickVisible="true"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:layout_marginTop="20dp"
-                            android:id="@+id/dilatation"
-                            android:layout_marginEnd="60dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:paddingLeft="0dp"
-                            android:paddingTop="40dp"
-                            android:paddingRight="0dp"
-                            android:stepSize="1"
-                            android:valueFrom="0"
-                            android:valueTo="10" />
-
-                        <TextView
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="16dp"
-                            android:layout_gravity="end"
-                            android:background="@drawable/circle"
-                            android:layout_marginStart="16dp"
-                            android:id="@+id/id0"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_marginEnd="16dp"
-                            android:gravity="center"
-                            android:text="0"
-                            android:textSize="25sp"
-                            android:textStyle="bold" />
 
 
-                    <TextView
-                        android:textSize="15dp"
-                        android:id="@+id/txtOpc"
-                        android:text="Opções de paridade"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginTop="65dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                                        <com.google.android.material.slider.Slider
+                                            android:id="@+id/dilatation"
+                                            android:layout_marginStart="16dp"
+                                            android:layout_marginBottom="16dp"
+                                            android:layout_marginTop="75dp"
+                                            android:layout_marginEnd="60dp"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_toEndOf="@id/id1"
+                                            android:clickable="true"
+                                            android:focusable="true"
+                                            android:paddingLeft="0dp"
+                                            android:paddingTop="40dp"
+                                            android:paddingRight="0dp"
+                                            android:stepSize="1"
+                                            android:valueFrom="0"
+                                            android:valueTo="10" />
 
-                        <com.google.android.material.slider.Slider
-                            android:id="@+id/para"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:layout_marginTop="75dp"
-                            android:layout_marginEnd="60dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_toEndOf="@id/id1"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:paddingLeft="0dp"
-                            android:paddingTop="40dp"
-                            android:paddingRight="0dp"
-                            android:stepSize="1"
-                            android:valueFrom="0"
-                            android:valueTo="10" />
+                                        <TextView
+                                            android:layout_marginTop="75dp"
+                                            android:layout_marginBottom="16dp"
+                                            android:layout_gravity="end"
+                                            android:background="@drawable/circle"
+                                            android:layout_marginStart="16dp"
+                                            android:id="@+id/id0"
+                                            android:layout_width="45dp"
+                                            android:layout_height="45dp"
+                                            android:layout_alignTop="@id/dilatation"
+                                            android:layout_marginEnd="16dp"
+                                            android:gravity="center"
+                                            android:text="0"
+                                            android:textSize="25sp"
+                                            android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_marginTop="75dp"
-                            android:layout_marginBottom="16dp"
-                            android:layout_gravity="end"
-                            android:background="@drawable/circle"
-                            android:layout_marginStart="16dp"
-                            android:id="@+id/id1"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_alignTop="@id/para"
-                            android:layout_marginEnd="16dp"
-                            android:gravity="center"
-                            android:text="0"
-                            android:textSize="25sp"
-                            android:textStyle="bold" />
-
-<!--                </RelativeLayout>-->
             </androidx.cardview.widget.CardView>
 
             <TextView

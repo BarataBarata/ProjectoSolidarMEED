@@ -16,6 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
@@ -27,6 +29,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mz.unilurio.solidermed.model.AddIdadeGestacional;
+import mz.unilurio.solidermed.model.EditDilatacao;
+import mz.unilurio.solidermed.model.EditDoctorClass;
 import mz.unilurio.solidermed.model.Parturient;
 
 public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteRecyclerAdpter.ViewHolder> implements Filterable {
@@ -36,6 +41,7 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
     private final LayoutInflater layoutInflater;
     private TimerTask taskMinutos;
     private Handler handlerMinutos;
+    private Object FragmentManager;
 
 
     public ParturienteRecyclerAdpter(Context context, List<Parturient> parturients) {
@@ -67,9 +73,11 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(!originalListParturientes.isEmpty()){
+                    MainActivity mainActivity=new MainActivity();
+                    mainActivity.publicParturiente=originalListParturientes.get(position);
+                }
                 //creating a popup menu
-                Context mCtx = null;
                 PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
                 //inflating menu from xml resource
                 popup.inflate(R.menu.options_menu_parturiente);
@@ -77,13 +85,17 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+
                         switch (item.getItemId()) {
+
                             case R.id.idEdit:{
                                 Intent intent = new Intent(context,AddParturientActivity.class);
                                 intent.putExtra("idParturiente", originalListParturientes.get(position).getIdAuxParturiente()+"");
                                 context.startActivity(intent);
                             }
                             return true;
+
+
                             case R.id.transferir:
                                 Intent intent = new Intent(context,ViewAtendimentoActivity.class);
                                 intent.putExtra("idParturiente", originalListParturientes.get(holder.currentPosition).getIdAuxParturiente()+"");
@@ -139,6 +151,8 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
 
 
     }
+
+
 
     @Override
     public int getItemCount() {

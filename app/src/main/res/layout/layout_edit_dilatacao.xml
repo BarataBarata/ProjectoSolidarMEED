@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:background="@color/white">
+
+            <!--                <RelativeLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content">-->
+            <TextView
+                android:textSize="15dp"
+                android:layout_marginStart="16dp"
+                android:text="Dilatação cervical"
+                android:layout_marginTop="10dp"
+                android:id="@+id/txtTitledilatacao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+
+                android:background="@color/black"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="italic"
+                android:textSize="15dp"
+                android:layout_marginStart="150dp"
+                android:text=" na fase Latente"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:id="@+id/txtFasez"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <!--                    <RelativeLayout-->
+            <!--                        android:id="@+id/rec1"-->
+            <!--                        android:layout_below="@id/txtTitledilatacao"-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="wrap_content">-->
+
+            <com.google.android.material.slider.Slider
+                app:thumbColor="@color/ic_launcher_background"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="40dp"
+                android:id="@+id/dilatation2"
+                android:layout_marginEnd="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingLeft="0dp"
+                android:paddingTop="40dp"
+                android:paddingRight="0dp"
+                android:stepSize="1"
+                android:valueFrom="0"
+                android:valueTo="10" />
+
+            <TextView
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="end"
+                android:background="@drawable/circle"
+                android:layout_marginStart="16dp"
+                android:id="@+id/id00"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="0"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+
+</ScrollView>

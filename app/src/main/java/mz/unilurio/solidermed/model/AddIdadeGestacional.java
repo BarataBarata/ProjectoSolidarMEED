@@ -59,7 +59,6 @@ public class AddIdadeGestacional extends AppCompatDialogFragment {
 
                             dbService.addIdadeGestacional(textIdadeGestacional.getText().toString());
                             isAdd=true;
-                            Toast.makeText(getContext(), "Erro ! o numero da dilatação existe", Toast.LENGTH_SHORT).show();
 
                     }
                 });

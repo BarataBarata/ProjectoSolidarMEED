@@ -45,8 +45,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mz.unilurio.solidermed.model.AddIdadeGestacional;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
+import mz.unilurio.solidermed.model.EditDilatacao;
 import mz.unilurio.solidermed.model.Notificacao;
 import mz.unilurio.solidermed.model.PageAdapder;
 import mz.unilurio.solidermed.model.Parturient;
@@ -55,7 +57,10 @@ import mz.unilurio.solidermed.model.Privilegios;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public  static  Parturient publicParturiente;
     public DBService dbService;
+    public static Notificacao publicNotificacoes;
+    public static boolean isOutEdit;
     private String fullNameUserLogin;
     private TabLayout tabLayout;
     private AppBarConfiguration mAppBarConfiguration;
@@ -118,9 +123,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         notificationManagerCompat=NotificationManagerCompat.from(this);
         textNomeHospital = findViewById(R.id.idCentroSaudeTitle);
 
-        if(getIntent().getStringExtra("nomeUserLogin")!=null) {
-            fullNameUserLogin=getIntent().getStringExtra("nomeUserLogin");
-        }
+        // usuario de login
+        fullNameUserLogin=dbService.getSessaoUserLogin();
+
 
         if(getIntent().getStringExtra("nomeHospital")!=null) {
             textNomeHospital.setText(getIntent().getStringExtra("nomeHospital"));
@@ -296,9 +301,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem menuDefinition=menu.findItem(R.id.idDefinicoes);
+        MenuItem action_finish=menu.findItem(R.id.action_finish);
         //MenuItem m=menu.findItem(R.id.app_bar_search);
         //m.setVisible(visible);
         if(dbService.getPrivilegios()) {
@@ -306,6 +311,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else{
             menuDefinition.setVisible(false);
         }
+
+        action_finish.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                dbService.updadeSessaoTerminado(true);
+                viewAction();
+
+                return false;
+            }
+        });
+
 
         menuDefinition.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -317,7 +333,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   return true;
     }
 
+    public void viewAction(){
 
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setMessage("Logout");
+        builder.setMessage("Terminar a sessão ? ");
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity();
+                System.exit(0);
+            }
+        });
+        builder.setNegativeButton("Nao", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
     @Override
     public boolean onNavigationItemSelected(@NotNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -328,27 +363,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
              startActivity(intent);
         }
 
-            if (id == R.id.id_out){
-
-                AlertDialog.Builder builder=new AlertDialog.Builder(this);
-                builder.setMessage("Logout");
-                builder.setMessage("Terminar a sessão ? ");
-                builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finishAffinity();
-                        System.exit(0);
-                    }
-                });
-                builder.setNegativeButton("Nao", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.show();
-
-        }
+            //if (id == R.id.id_out){ }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -489,5 +504,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (Exception e) {
             Log.i("EXPECTION SMS", e.getMessage());
         }
+    }
+
+    public void editDilatacao(MenuItem item) {
+        EditDilatacao edit=new EditDilatacao();
+        edit.show(getSupportFragmentManager(),"Editar");
     }
 }

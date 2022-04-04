@@ -28,6 +28,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.Notificacao;
 import mz.unilurio.solidermed.model.Parturient;
 
@@ -39,6 +40,7 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
     private final LayoutInflater layoutInflater;
     private TimerTask taskMinutos;
     private Handler handlerMinutos;
+    private DBService dbService;
 
         public NotificationRecyclerAdpter(Context context, List<Notificacao> notificacaos) {
         this.context = context;
@@ -112,7 +114,17 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dbService=new DBService(context);
+                if(!notificacaos.isEmpty()){
+                    for(Parturient parturient2: dbService.getListAuxParturiente()){
+                        if( parturient2.getIdAuxParturiente().equalsIgnoreCase(notificacaos.get(position).getIdAuxParturiente())){
+                            MainActivity mainActivity=new MainActivity();
+                            mainActivity.publicParturiente=parturient2;
+                            mainActivity.isOutEdit=true;
+                        }
+                    }
 
+                }
 
                 //creating a popup menu
                 Context mCtx = null;
@@ -127,13 +139,13 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
                             case R.id.atendimento:{
                                 Intent intent = new Intent(context, ViewAtendimentoActivity.class);
-                                intent.putExtra("idParturiente", notificacaos.get(position).getIdAuxParturiente());
+                                intent.putExtra("idParturienteNotificacao", notificacaos.get(position).getIdAuxParturiente());
                                 context.startActivity(intent);
                             }
                                 return true;
                             case R.id.edit:
                                 Intent intent = new Intent(context, AddParturientActivity.class);
-                                intent.putExtra("idParturiente", notificacaos.get(position).getIdAuxParturiente());
+                                intent.putExtra("idParturienteNotificacao", notificacaos.get(position).getIdAuxParturiente());
                                 context.startActivity(intent);
                                 return true;
                             default:

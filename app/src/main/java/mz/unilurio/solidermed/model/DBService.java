@@ -143,7 +143,8 @@ public class DBService  extends SQLiteOpenHelper {
                     "isOpen boolean NOT NULL," +
                     "inProcess boolean NOT NULL," +
                     "cor INTEGER NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
-            "CREATE TABLE privilegiosDoctor(id INTEGER NOT NULL UNIQUE, acessoTotal boolean NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
+            "CREATE TABLE Sessao(id INTEGER NOT NULL UNIQUE,userlogin TEXT NOT NULL,sessaoTerminado boolean NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
+            "CREATE TABLE privilegiosDoctor(id INTEGER NOT NULL UNIQUE,acessoTotal boolean NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE UserDoctor(id INTEGER NOT NULL UNIQUE, username TEXT NOT NULL,fullname TEXT NOT NULL,tellDoctor TEXT NOT NULL, pass TEXT NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE UserNurse(id INTEGER NOT NULL UNIQUE, username TEXT NOT NULL ,fullname TEXT NOT NULL ,tellNurse TEXT NOT NULL, pass TEXT NOT NULL, PRIMARY KEY(id AUTOINCREMENT ));",
             "CREATE TABLE HospitalSelect(id INTEGER NOT NULL UNIQUE, hospital TEXT NOT NULL , PRIMARY KEY(id AUTOINCREMENT ));",
@@ -175,6 +176,32 @@ public class DBService  extends SQLiteOpenHelper {
         return db.insert(" privilegiosDoctor", null, cv);
 
     }
+
+    public long addSessao(boolean sessaoTerminado, String user) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("sessaoTerminado",sessaoTerminado);
+        cv.put("userlogin",user);
+        return db.insert(" Sessao", null, cv);
+
+    }
+
+    public long updadeSessaoTerminado(boolean sessaoTerminado) {
+        String  id="1";
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("sessaoTerminado",sessaoTerminado);
+        return db.update("Sessao", cv, "id=?", new String[]{String.valueOf(id)});
+    }
+
+    public long updateSessaoUserLogin(String userlogin) {
+        String  id="1";
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("userlogin",userlogin);
+        return db.update("Sessao", cv, "id=?", new String[]{String.valueOf(id)});
+    }
+
     public long updadeDoctorPrivilegios(boolean isAcessoTotal) {
         String  id="1";
         SQLiteDatabase db = getWritableDatabase();
@@ -182,6 +209,39 @@ public class DBService  extends SQLiteOpenHelper {
         cv.put("acessoTotal",isAcessoTotal);
         return db.update("privilegiosDoctor", cv, "id=?", new String[]{String.valueOf(id)});
     }
+    public boolean getSessaoTerminada() {
+        String id = "1";
+        boolean sessao = false;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Sessao WHERE id = ?",
+                new String[]{id});
+        c.moveToFirst();
+        if (c.getCount() > 0) {
+            do {
+                sessao = ((c.getInt(c.getColumnIndex("sessaoTerminado"))== 1)? true : false);
+            } while (c.moveToNext());
+        }
+        return sessao;
+    }
+
+
+    public String getSessaoUserLogin() {
+        String id = "1";
+        String user = null;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Sessao WHERE id = ?",
+                new String[]{id});
+        c.moveToFirst();
+        if (c.getCount() > 0) {
+            do {
+                user = c.getString(c.getColumnIndex("userlogin"));
+            } while (c.moveToNext());
+        }
+        return user;
+    }
+
 
     public boolean getPrivilegios() {
         String id = "1";
@@ -198,6 +258,7 @@ public class DBService  extends SQLiteOpenHelper {
         }
         return privilegios;
     }
+
 
 
 
@@ -1403,7 +1464,7 @@ public class DBService  extends SQLiteOpenHelper {
 
     public void removParturiente(Parturient prt){
         for(Parturient parturient: DBManager.getInstance().getParturients()){
-            if(parturient.getIdAuxParturiente()==prt.getIdAuxParturiente()){
+            if(parturient.getIdAuxParturiente().equalsIgnoreCase(prt.getIdAuxParturiente())){
                 DBManager.getInstance().getParturients().remove(parturient);
                 break;
             }
@@ -1623,32 +1684,33 @@ public class DBService  extends SQLiteOpenHelper {
     private void sendMensageEmergenceOfPatologia(Notificacao notificacao, Parturient parturient) {
         String mensagem = "";
         String mensagem2 = "";
-        mensagem =abrevStr(getHospitalSelect())+": ("+ parturient.getName()+" "+parturient.getSurname()+") , idade :"+parturient.getAge()+",Entrada :"+parturient.getHoraEntrada()+", necessita de cuidados medico";
-        mensagem2="Patologia : "+parturient.getSinaisDePatologia()+", unidade gestacional: "+parturient.getGestatinalRange()+" paridade : "+parturient.getPara();
+        mensagem =abrevStr(getHospitalSelect())+":"+ parturient.getName()+" "+parturient.getSurname()+", idade:"+parturient.getAge()+",Entro:"+parturient.getHoraEntrada()+"Motivo."+parturient.getSinaisDePatologia()+",UG:"+parturient.getGestatinalRange()+"Paridade:"+parturient.getPara();
+
         updadeCorIsDispareNotification(Color.rgb(248, 215, 218), notificacao.getIdAuxParturiente());
 
 
                 for (UserDoctor userDoctor : getListDoctor()) {
                     sendSMS(userDoctor.getContacto(), mensagem);
-                    sendSMS(userDoctor.getContacto(), mensagem2);
+                    //sendSMS(userDoctor.getContacto(), mensagem2);
                 }
     }
     private void sendMensageEmergence(Notificacao notificacao, Parturient parturient) {
         String mensagem = "";
         String mensagem2 = "";
-        mensagem = abrevStr(getHospitalSelect())+" : ("+ parturient.getName()+" "+parturient.getSurname()+") , idade :"+parturient.getAge()+", Entrada :"+parturient.getHoraEntrada()+", necessita de cuidados medico";
-        mensagem2="Patologia : "+parturient.getSinaisDePatologia()+", unidade gestacional: "+parturient.getGestatinalRange()+" paridade : "+parturient.getPara();
+        mensagem =abrevStr(getHospitalSelect())+":"+ parturient.getName()+" "+parturient.getSurname()+", idade:"+parturient.getAge()+",Entro:"+parturient.getHoraEntrada()+"Motivo."+parturient.getSinaisDePatologia()+",UG:"+parturient.getGestatinalRange()+"Paridade:"+parturient.getPara();
+
+
         updadeCorIsDispareNotification(Color.rgb(248, 215, 218), notificacao.getIdAuxParturiente());
 
-        if(parturient.getReason()>3) {
+
             if (!notificacao.isInProcess()) {
                 for (UserDoctor userDoctor : getListDoctor()) {
                     sendSMS(userDoctor.getContacto(), mensagem);
-                    sendSMS(userDoctor.getContacto(), mensagem2);
+                   // sendSMS(userDoctor.getContacto(), mensagem2);
                     //sendSMS(userDoctor.getContacto(), mensagem3);
                 }
             }
-        }
+
 }
 
 
@@ -1718,7 +1780,6 @@ public class DBService  extends SQLiteOpenHelper {
         if(str.equalsIgnoreCase("Centro de saúde de Bilibiza")){
             return "C.S DE BILIBIZA";
         }
-
         return "C.S";
     }
 

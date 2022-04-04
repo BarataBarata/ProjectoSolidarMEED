@@ -9,9 +9,9 @@
         android:title="Definições"
         app:showAsAction="collapseActionView" />
     <item
-        android:id="@+id/action_refresh"
-        android:icon="@drawable/refresh"
-        android:title="Atualizar"
+        android:id="@+id/action_finish"
+        android:icon="@drawable/sair_do_sistema"
+        android:title="Terminar sessão"
         app:showAsAction="collapseActionView" />
     <item
         android:id="@+id/app_bar_search"

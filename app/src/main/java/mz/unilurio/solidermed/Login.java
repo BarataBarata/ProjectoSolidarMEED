@@ -33,7 +33,6 @@ public class Login extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private Privilegios privilegios;
-    private String fullName;
     DBService dbService;
     private ProgressBar  progressBarCirc;
 
@@ -75,13 +74,12 @@ public class Login extends AppCompatActivity {
                      if(password.isEmpty()){
                          textPassword.setError("campo vazio");
                      }else {
+                         dbService.updadeSessaoTerminado(false);
                          progressBarCirc.setVisibility(View.VISIBLE);
                          if(isExistUser(email,password)){
                              textPassword.setError("");
                              textEmail.setError("");
-                             Intent intent= new Intent(Login.this, MainActivity.class);
-                             intent.putExtra("nomeUserLogin",fullName);
-                             startActivity(intent);
+                             startActivity( new Intent(Login.this, MainActivity.class));
                          }else{
                              textEmail.setError(" ");
                              progressBarCirc.setVisibility(View.INVISIBLE);
@@ -102,14 +100,14 @@ public class Login extends AppCompatActivity {
     public boolean isExistUser(String user, String password){
         System.out.println("============================: "+dbService.isDoctorLogin(user,password));
         if(dbService.isDoctorLogin(user,password)){
-            fullName=dbService.getFullNameDoctorLogin(user,password);
+            dbService.updateSessaoUserLogin(dbService.getFullNameDoctorLogin(user,password));
             dbService.updadeDoctorPrivilegios(true);
             privilegios.setViewAll(true);
             //dbService.apdateAllAcess(true);
             return true;
         }else {
            if(dbService.isNurseLogin(user,password)){
-               fullName=dbService.getFullNameNurseLogin(user,password);
+               dbService.updateSessaoUserLogin(dbService.getFullNameNurseLogin(user,password));
                dbService.updadeDoctorPrivilegios(false);
                return true;
            }

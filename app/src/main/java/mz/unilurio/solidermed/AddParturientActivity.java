@@ -67,6 +67,7 @@ import mz.unilurio.solidermed.model.UserDoctor;
 
 public class AddParturientActivity extends AppCompatActivity{
     private static int valueIdade1=1;
+    private boolean isEditNotification;
     private static int valueIdade2=0;
     public static boolean alertFireNotification;
     public static String idParturienteNotification;
@@ -168,6 +169,19 @@ public class AddParturientActivity extends AppCompatActivity{
             }
 
         }
+        if(getIntent().getStringExtra("idParturienteNotificacao")!=null){
+            idParturiente =(getIntent().getStringExtra("idParturienteNotificacao"));
+            for(Parturient parturient: dbService.getListAuxParturiente()){
+                if(parturient.getIdAuxParturiente().equals(idParturiente)){
+                    isEdit=true;
+                    isEditNotification=true;
+                    textEditAndRegist.setText("Editar Parturiente");
+                    editParturiente(parturient);
+                    break;
+                }
+            }
+
+        }
 
     }
 
@@ -257,8 +271,10 @@ public class AddParturientActivity extends AppCompatActivity{
                 textNumber.setText((int)mSliderDilatation.getValue()+"");
                 int fase=(int)mSliderDilatation.getValue();
                 if(fase>3){
+                    textFase.setTextColor(Color.RED);
                     textFase.setText(" na fase activa");
                 }else{
+                    textFase.setTextColor(Color.BLACK);
                     textFase.setText(" na fase latente");
                 }
  
@@ -292,7 +308,6 @@ public class AddParturientActivity extends AppCompatActivity{
             aSwitchTransfered.setChecked(true);
             isTrasferencia =true;
         }
-
         parturient=ediParturient;
     }
 
@@ -510,23 +525,25 @@ public class AddParturientActivity extends AppCompatActivity{
                         parturient.setEditDilatation(true);
                         parturient.setReason(dilatacao);
 
-                        for(Notificacao notificacao: DBManager.getInstance().getNotifications()){
-                             if(notificacao.getIdAuxParturiente().equalsIgnoreCase(parturient.getIdAuxParturiente())){
-                                 try {
-                                     dbService.deleteNotification(notificacao);
-                                     dbService.deleteParturienteInAuxList(parturient.getIdAuxParturiente());
-                                     dbService.removeInBD(parturient);
-                                     dbService.removParturiente(parturient);
-                                     DBManager.getInstance().getNotifications().remove(notificacao);
-                                     dbService.addParturiente(parturient);
-                                 } catch (ParseException e) {
-                                     e.printStackTrace();
-                                 }
-                             }
+                        if(isEditNotification){
+                            if(!DBManager.getInstance().getNotifications().isEmpty()){
+                                for(Notificacao notificacaor:DBManager.getInstance().getNotifications()){
+                                    if(notificacaor.getIdAuxParturiente().equalsIgnoreCase(parturient.getIdAuxParturiente())){
+                                        dbService.deleteNotification(notificacaor);
+                                        dbService.deleteParturienteInAuxList(parturient.getIdAuxParturiente());
+                                        dbService.removeInBD(parturient);
+                                        dbService.removParturiente(parturient);
+                                        DBManager.getInstance().getNotifications().remove(notificacaor);
+                                    }
+                                }
+                                try {
+                                    dbService.addParturiente(parturient);
+                                    isEditNotification=false;
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
-
-
-
                         try {
                             System.out.println(" antes : "+parturient.getHoraExpulsoDoFeto());
                             parturient.setHoraExpulsoDoFeto(getTempoExpulso(dbService.getTimerDilatation(dilatacao+"")));

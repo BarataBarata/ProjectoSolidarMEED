@@ -49,9 +49,9 @@ public class StartApp extends AppCompatActivity {
             start=false;
             startDow=true;
         }else {
-            if(startDow){
-                startActivity(new Intent(StartApp.this,Login.class));
-            }else {
+//            if(startDow){
+//                startActivity(new Intent(StartApp.this,Login.class));
+//            }else {
                 new CountDownTimer(1 * 1000 + 1000, 1000) {
 
                     public void onTick(long millisUntilFinished) {
@@ -65,13 +65,15 @@ public class StartApp extends AppCompatActivity {
 
                     public void onFinish() {
                         // tv.setText("Completed");
-                        startActivity(new Intent(StartApp.this,Login.class));
+                        if(dbService.getSessaoTerminada()){
+                            startActivity(new Intent(StartApp.this,Login.class));
+                        }else{
+                            startActivity(new Intent(StartApp.this,MainActivity.class));
+                        }
                     }
                 }.start();
+              }
             }
-            }
-
-    }
 
     @Override
     protected void onPause() {

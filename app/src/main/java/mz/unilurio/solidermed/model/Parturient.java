@@ -36,7 +36,7 @@ public class Parturient {
     private boolean isTransfered;
     private boolean isAtendimento;
     private String setYearDayMonthNotification="";
-    private int reason;
+    private int reason=0;
     private String origemTransferencia="";
     private String motivosDaTrasferencia="";
     private String destinoTrasferencia="";
