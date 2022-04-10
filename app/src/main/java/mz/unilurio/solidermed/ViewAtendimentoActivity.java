@@ -104,6 +104,21 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
             }
         }
 
+        if(getIntent().getStringExtra("idParturienteNotificacao")!=null){
+            idParturiente=(getIntent().getStringExtra("idParturienteNotificacao"));
+            for(Parturient parturient: dbService.getListAuxParturiente()){
+                if(parturient.getIdAuxParturiente().equalsIgnoreCase(idParturiente+"")){
+                    textNomeParturiente.setText(parturient.getName()+ " "+parturient.getSurname());
+                    newParturient=parturient;
+                    aSwitchProcess.setChecked(dbService.isInProcessParturiente(parturient));
+                    break;
+                }
+            }
+        }
+
+
+
+
     }
     public  String oUpperFirstCase(String string){
         String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
@@ -127,7 +142,7 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
     public void removNotification(){
         for(Notificacao notificacao : DBManager.getInstance().getNotifications()){
             if(notificacao.getIdAuxParturiente().equals(idParturiente)){
-                dbService.deleteNotification(notificacao);
+                dbService.deleteNotification(notificacao.getIdAuxParturiente());
                 DBManager.getInstance().getNotifications().remove(notificacao);
 
                 break;
@@ -204,7 +219,9 @@ public class ViewAtendimentoActivity extends AppCompatActivity {
                                 }
                             }
                         }else {
-                            setHoraAtendimento(newParturient);
+                            //setHoraAtendimento(newParturient);
+
+                            newParturient.setHoraAtendimento(new Date()+"");
                             newParturient.setHoraAtendimento(format(new Date()));
                             newParturient.setTipoAtendimento(checkBoxTextOption+"");
                             newParturient.setInProcess(false);

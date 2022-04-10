@@ -3,6 +3,7 @@
     package="mz.unilurio.solidermed">
 
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".model.App"
@@ -13,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projecto_S"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ActivityTransferidos"></activity>
+        <activity android:name=".Activity_SelectPatologia"></activity>
+        <activity android:name=".ActivityPatologia" />
+        <activity android:name=".ActivityTransferidos" />
         <activity android:name=".ActivitViewPasswordUser" />
         <activity android:name=".MainActivity_Users_List_definitionMainActivity" />
         <activity android:name=".ActivityDefinirMaximoDeDilatacao" />
@@ -28,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".Activity_Confirmar_Registo" />
         <activity android:name=".Activity_RegistarUsuario" />
         <activity android:name=".MainActivity_Users_List" />
@@ -91,7 +94,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Atendimento"
             android:theme="@style/Theme.Projecto_S.NoActionBar" />

@@ -115,16 +115,16 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
             @Override
             public void onClick(View view) {
                 dbService=new DBService(context);
-                if(!notificacaos.isEmpty()){
-                    for(Parturient parturient2: dbService.getListAuxParturiente()){
-                        if( parturient2.getIdAuxParturiente().equalsIgnoreCase(notificacaos.get(position).getIdAuxParturiente())){
-                            MainActivity mainActivity=new MainActivity();
-                            mainActivity.publicParturiente=parturient2;
-                            mainActivity.isOutEdit=true;
-                        }
-                    }
+                MainActivity mainActivity=new MainActivity();
 
-                }
+                  for(int i=0; i<DBManager.getInstance().getNotifications().size();i++){
+                       if(DBManager.getInstance().getNotifications().get(i).getIdAuxParturiente().equalsIgnoreCase(notificacaos.get(position).getIdAuxParturiente())){
+                           mainActivity.publicParturiente=getParturiente(notificacaos.get(position).getIdAuxParturiente());
+                           mainActivity.isOutEditNotification=true;
+                           System.out.println(" nome : "+ mainActivity.publicParturiente.getName());
+                           break;
+                       }
+                  }
 
                 //creating a popup menu
                 Context mCtx = null;
@@ -158,6 +158,20 @@ public class NotificationRecyclerAdpter extends RecyclerView.Adapter<Notificatio
 
             }
         });
+    }
+
+    private Parturient getParturiente(String idAuxParturiente) {
+        ArrayList<Parturient> list=new ArrayList<>();
+        Parturient parturient=new Parturient();
+
+        list.addAll(dbService.getListAuxParturiente());
+
+        for(int j=0;j<list.size();j++){
+            if(list.get(j).getIdAuxParturiente().equalsIgnoreCase(idAuxParturiente)){
+                return list.get(j);
+            }
+        }
+        return parturient;
     }
 
     private boolean isTrasferido(int parseInt) {

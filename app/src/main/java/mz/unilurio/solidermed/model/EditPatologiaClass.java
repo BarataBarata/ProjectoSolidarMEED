@@ -15,69 +15,50 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.security.NoSuchAlgorithmException;
-
 import mz.unilurio.solidermed.R;
 
-public class AddDoctorClass extends AppCompatDialogFragment {
-
+public class EditPatologiaClass extends AppCompatDialogFragment {
     private EditText editNome;
-    private EditText editContact;
-    private EditText editUser;
-    private EditText editPassword;
-    public static boolean isAdd=false;
-    public static boolean isRemove=false;
+    public static boolean isEdit=false;
+    private Patologia patologia;
     DBService dbService;
-
     @NonNull
     @NotNull
     @Override
     public Dialog onCreateDialog(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         LayoutInflater inflater=getActivity().getLayoutInflater();
-        View view=inflater.inflate(R.layout.layout_dialog_edit_contact,null);
+        View view=inflater.inflate(R.layout.layout_dialog_edit_patologia,null);
         builder.setView(view)
-                .setTitle("Adicionar Medico").setIcon(R.drawable.ic_baseline_person_add_alt_1_24)
+                .setTitle("Editar").setIcon(R.drawable.edit_timer_and_dilatation)
                 .setNegativeButton("Nao", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                       if(validation(editContact)){
-                           if(validation(editNome)){
-                               if(!dbService.isTellDoctor(editContact.getText().toString())) {
-                                   try {
-                                       dbService.addDoctor(editUser.getText().toString(),editPassword.getText().toString(),editContact.getText().toString(),upCaseName(editNome.getText().toString()));
-                                   } catch (NoSuchAlgorithmException e) {
-                                       e.printStackTrace();
-                                   }
-                                   DBManager.getInstance().getUserDoctorList().removeAll(DBManager.getInstance().getUserDoctorList());
-                                   DBManager.getInstance().getUserDoctorList().addAll(dbService.getListDoctor());
-                                   isAdd = true;
-                                   Toast.makeText( getContext(), " Usuario registado com sucesso", Toast.LENGTH_SHORT).show();
+                                isEdit=true;
+                                if(validation(editNome)) {
 
-                               }else {
-                                   Toast.makeText( getContext(), " Falha ao registar, o contacto existe", Toast.LENGTH_SHORT).show();
-                               }
-                           }
-                       }
-
-                    }
+                                    dbService.updatePatologia(patologia.getId(), patologia.isSelected(), editNome.getText().toString());
+                                }
+                              }
                 });
-              editContact=view.findViewById(R.id.idContactEditContact);
-              editNome=view.findViewById(R.id.idNomeEditContact);
-              editUser=view.findViewById(R.id.idUserDoctor);
-              editPassword=view.findViewById(R.id.idSenhaUser);
-              dbService=new DBService(this.getContext());
+
+
+        editNome=view.findViewById(R.id.idNomeEditNurse);
+        editNome.setText(patologia.getPatologia());
+        dbService=new DBService(this.getContext());
 
         return builder.create();
 
     }
-
+    public  void setPatologia(Patologia patologia1){
+        this.patologia=patologia1;
+    }
     @Override
     public void onPause() {
         super.onPause();
@@ -88,14 +69,26 @@ public class AddDoctorClass extends AppCompatDialogFragment {
         super.onResume();
     }
 
-    public  boolean validation(EditText editText){
-            if(editText.getText().toString().isEmpty()){
-                Toast.makeText(getContext(), "Erro campo vazio", Toast.LENGTH_SHORT).show();
-            return false;
+
+    public String removeFiristSpece(String nome){
+
+        String user="";
+        for(int i=0; i<nome.length();i++){
+            if(nome.charAt(i)!=' '){
+                user=nome.substring(i);
+                return user;
             }
-            return true;
+        }
+        return user;
     }
 
+    public  boolean validation(EditText editText){
+        if(editText.getText().toString().isEmpty()){
+            Toast.makeText(getContext(), "Erro campo vazio", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 
     public String upCaseName(String name){
 

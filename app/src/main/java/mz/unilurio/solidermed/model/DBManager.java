@@ -27,6 +27,7 @@ public class DBManager {
     private List<Parturient>listParturientesAtendidos=new ArrayList<>();
     private List<UserDoctor> userDoctorList=new ArrayList<>();
     private List<Settings> settingsList=new ArrayList<>();
+    private static ArrayList<Patologia> sinaisPatologiaList=new ArrayList<>();
     private List<Notificacao> initNotificacaos = new ArrayList<>();
     private List<String> listIdadeGestacional=new ArrayList<>();
     private List<Hospitais> hospitais= new ArrayList<>();
@@ -99,6 +100,26 @@ public class DBManager {
         this.integerListTimer.add(6);
     }
 
+    public List<Patologia> getSinaisPatologiaList() {
+        return sinaisPatologiaList;
+    }
+
+    public void  addPatologia(Patologia patologia){
+        int cont=0;
+           for(Patologia patologia1: sinaisPatologiaList){
+               if(patologia1.getId().equalsIgnoreCase(patologia.getId())){
+                  cont++;
+               }
+           }
+        if(cont==0){
+            sinaisPatologiaList.add(patologia);
+            cont=0;
+        }
+    }
+
+
+
+
     public List<Integer> getIntegerListTimer() {
         return integerListTimer;
     }
@@ -123,6 +144,22 @@ public class DBManager {
     public void addAuxListNotificationParturient(Parturient parturient){
                 this.auxlistNotificationParturients.add(parturient);
     }
+
+
+    public void addNewAuxPartEndNot(Parturient parturient){
+        int cont =0;
+        for(int i=0;i<auxlistNotificationParturients.size();i++){
+            if(auxlistNotificationParturients.get(i).getIdAuxParturiente().equalsIgnoreCase(parturient.getIdAuxParturiente())){
+                cont++;
+            }
+        }
+        if(cont==0){
+            cont=0;
+            auxlistNotificationParturients.add(parturient);
+        }
+
+    }
+
 
     private void initializeOpcoesParidade() {
         this.integerListOpcoesParidade.add(4);
@@ -364,9 +401,31 @@ public class DBManager {
     }
 
     public void addNewNotification(Notificacao notificacao){
-        notificacaos.add(notificacao);
-    }
+        int cont =0;
+        for(int i=0;i<notificacaos.size();i++){
+            if(notificacaos.get(i).getIdAuxParturiente().equalsIgnoreCase(notificacao.getIdAuxParturiente())){
+                cont++;
+            }
+        }
+        if(cont==0){
+            cont=0;
+            notificacaos.add(notificacao);
+        }
 
+    }
+    public void addNewParturiente(Parturient parturient){
+        int cont =0;
+        for(int i=0;i<parturients.size();i++){
+            if(parturients.get(i).getIdAuxParturiente().equalsIgnoreCase(parturient.getIdAuxParturiente())){
+                cont++;
+            }
+        }
+        if(cont==0){
+            cont=0;
+            parturients.add(parturient);
+        }
+
+    }
     public List<Notificacao> getNotifications() {
         return notificacaos;
     }

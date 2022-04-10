@@ -7,6 +7,7 @@ import java.util.Date;
 public final class Notificacao {
     private boolean inProcess;
     private String id;
+    private  boolean isSendMenssage;
     private String idAuxParturiente;
     private String horaDoEnvioDaMensagem="";
     private int minutos=0;
@@ -82,6 +83,14 @@ public final class Notificacao {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public boolean isSendMenssage() {
+        return isSendMenssage;
+    }
+
+    public void setSendMenssage(boolean sendMenssage) {
+        isSendMenssage = sendMenssage;
     }
 
     public boolean isOpen() {

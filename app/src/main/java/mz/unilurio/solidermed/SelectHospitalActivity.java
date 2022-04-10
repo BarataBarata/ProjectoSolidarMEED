@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,9 +37,25 @@ public class SelectHospitalActivity extends AppCompatActivity {
         dbService=new DBService(this);
 
         if(!dbService.isHospitalSelect()) {
-
+            int i=0;
             dbService.addOpcoesParidade(15+"");
             //dbService.addAllAcess(false);
+            dbService.addPatologia(false,new Date()+""+ i++,"Hemorragia anteparto, com suspeita de placenta previa");
+            dbService.addPatologia(false,new Date()+""+ i++,"Hemorragia anteparto, com suspeita de deslocamento prematuro da placenta normalmente inserida");
+            dbService.addPatologia(false,new Date()+""+ i++,"Hemorragia anteparto, com suspeita de ruptura uterina");
+            dbService.addPatologia(false,new Date()+""+ i++,"Suspeita de ruptura uterina pré-termo de membranas");
+
+            dbService.addPatologia(false,new Date()+""+ i++,"Trabalho de parto arrastado");
+            dbService.addPatologia(false,new Date()+""+ i++,"Primigesta com idade inferior a 16 anos");
+            dbService.addPatologia(false,new Date()+""+ i++,"Pre-eclampsia");
+            dbService.addPatologia(false,new Date()+""+ i++,"Eclampsia");
+            dbService.addPatologia(false,new Date()+""+ i++,"Teve 6 ou mais partos (grande multipar)");
+            dbService.addPatologia(false,new Date()+""+ i++,"Parto pre-termo");
+
+            dbService.addPatologia(false,new Date()+""+ i++,"Sofrimento fetal");
+            dbService.addPatologia(false,new Date()+""+ i++,"Homorragia anteparto, com suspeita de placenta previa");
+            dbService.addPatologia(false,new Date()+""+ i++,"Outros");
+
 
             dbService.addIdadeGestacional("Inferior a 28 semanas");
             dbService.addIdadeGestacional("De 28 a 33 semanas");
@@ -57,7 +75,11 @@ public class SelectHospitalActivity extends AppCompatActivity {
             dbService.addDilatation(9, 1, 30);
             dbService.addDilatation(10, 0, 30);
             dbService.addAlertDilatation(0, 1);
-            dbService.addDoctor("barata", "123", "845740722", "Barata Estevao Mario Barata");
+            try {
+                dbService.addDoctor("barata", "123", "845740722", "Barata Estevao Mario Barata");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
             dbService.addHospital("Hospital Distrital de Chiúre");
             dbService.addHospital("Centro de saúde de Catapua");
             dbService.addHospital("Centro de saúde de Ocua");

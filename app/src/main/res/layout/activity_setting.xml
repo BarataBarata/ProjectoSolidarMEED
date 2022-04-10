@@ -221,7 +221,7 @@
                 android:id="@+id/image7"
                 android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/common_google_signin_btn_text_dark_normal_background"
+                android:src="@drawable/assigner"
                 android:layout_width="25dp"
                 android:layout_height="25dp"/>
 
@@ -233,6 +233,42 @@
                 android:layout_alignTop="@id/image7"
                 android:layout_toRightOf="@id/image7"
                 android:text="Definir idade gestacional"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card6"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/card5"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/white"
+        android:onClick="selectedPatologia"
+        app:cardCornerRadius="20dp">
+        <RelativeLayout
+
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/image8"
+                android:layout_marginStart="8dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/add2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"/>
+            <TextView
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                android:textSize="16sp"
+                android:id="@+id/title8"
+                android:layout_marginStart="10dp"
+                android:layout_alignTop="@id/image8"
+                android:layout_toRightOf="@id/image8"
+                android:text="Adicionar/Remover Patologia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>

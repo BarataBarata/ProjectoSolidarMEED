@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -127,7 +128,11 @@ public class ActivityChengePassword extends AppCompatActivity {
             @Override
             public void run() {
                 progressBar.dismiss();
-                trocar(numberSeacher,newPassword);
+                try {
+                    trocar(numberSeacher,newPassword);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
                 startActivity(new Intent(ActivityChengePassword.this,Login.class));
 
             }
@@ -135,7 +140,7 @@ public class ActivityChengePassword extends AppCompatActivity {
     }
 
 
-    public void trocar(String numberSeacher, String newPassword){
+    public void trocar(String numberSeacher, String newPassword) throws NoSuchAlgorithmException {
 
         if(dbService.isTellDoctor(numberSeacher)){
             dbService.updadeDoctorUserAndPassword(dbService.getIdDoctor(numberSeacher),newPassword);

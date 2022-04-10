@@ -39,7 +39,7 @@
             android:layout_alignEnd="@+id/idNomeEditNurse"
             android:layout_marginTop="39dp"
             android:layout_marginEnd="0dp"
-            android:hint="User :" />
+            android:hint="Insira o Novo nome do Utilizador:" />
 
         <EditText
             android:id="@+id/idNursePassword"
@@ -50,7 +50,7 @@
             android:layout_alignEnd="@+id/idNomeEditNurse"
             android:layout_marginTop="39dp"
             android:layout_marginEnd="0dp"
-            android:hint="Senha : " />
+            android:hint="Insira a nova Senha do Utilizador : " />
 
     </RelativeLayout>
 </ScrollView>

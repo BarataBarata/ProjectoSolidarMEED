@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import mz.unilurio.solidermed.R;
@@ -53,7 +54,17 @@ public class EditDoctorClass extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         if(validation(editContact)){
                             if(validation(editNome)){
-                                dbService.updadeDoctor(dbService.getIdDoctor(editContact.getText().toString()),editUser.getText().toString(),editPassword.getText().toString(),editContact.getText().toString(),upCaseName(editNome.getText().toString()));
+                                try {
+                                    if(!editPassword.getText().toString().isEmpty() && !editUser.getText().toString().isEmpty()){
+                                        dbService.updadeDoctor(dbService.getIdDoctor(editContact.getText().toString()),editUser.getText().toString(),editPassword.getText().toString(),editContact.getText().toString(),upCaseName(editNome.getText().toString()));
+
+                                    }else {
+                                        dbService.updadeDoctor(dbService.getIdDoctor(editContact.getText().toString()),userDoctor.getUserLogin(),userDoctor.getPasswordUser(),editContact.getText().toString(),upCaseName(editNome.getText().toString()));
+
+                                    }
+                                } catch (NoSuchAlgorithmException e) {
+                                    e.printStackTrace();
+                                }
                                 isOK=true;
                             }
                         }
@@ -66,8 +77,8 @@ public class EditDoctorClass extends AppCompatDialogFragment {
 
         editContact.setText(userDoctor.getContacto());
         editNome.setText(userDoctor.getFullName());
-        editUser.setText(userDoctor.getUserLogin());
-        editPassword.setText(userDoctor.getPasswordUser());
+        //editUser.setText(userDoctor.getUserLogin());
+       // editPassword.setText(userDoctor.getPasswordUser());
 
         dbService=new DBService(this.getContext());
         return builder.create();

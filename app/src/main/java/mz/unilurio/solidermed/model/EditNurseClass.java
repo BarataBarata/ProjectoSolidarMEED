@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import mz.unilurio.solidermed.R;
@@ -53,7 +54,18 @@ public class EditNurseClass  extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                          if(validation(editContact)){
                              if(validation(editNome)){
-                                 dbService.updadeNurse(dbService.getIdNurse(editContact.getText().toString()),upCaseName(editNome.getText().toString()),editUser.getText().toString(),editPassword.getText().toString(),editContact.getText().toString());
+                                 try {
+
+                                     if(!editUser.getText().toString().isEmpty() && !editPassword.getText().toString().isEmpty()){
+                                         dbService.updadeNurse(dbService.getIdNurse(editContact.getText().toString()),upCaseName(editNome.getText().toString()),editUser.getText().toString(),editPassword.getText().toString(),editContact.getText().toString());
+
+                                     }else {
+                                         dbService.updadeNurse(dbService.getIdNurse(editContact.getText().toString()),upCaseName(editNome.getText().toString()),userNurse.getUserNurse(),userNurse.getPassworNurse(),editContact.getText().toString());
+                                     }
+
+                                 } catch (NoSuchAlgorithmException e) {
+                                     e.printStackTrace();
+                                 }
                                  contact=editContact.getText().toString();
                                  isEdit=true;
                              }
@@ -70,8 +82,8 @@ public class EditNurseClass  extends AppCompatDialogFragment {
 
         editContact.setText(userNurse.getContacto());
         editNome.setText(userNurse.getFullName());
-        editPassword.setText(userNurse.getPassworNurse());
-        editUser.setText(userNurse.getUserNurse());
+        //editPassword.setText(userNurse.getPassworNurse());
+        //editUser.setText(userNurse.getUserNurse());
         dbService=new DBService(this.getContext());
 
         return builder.create();

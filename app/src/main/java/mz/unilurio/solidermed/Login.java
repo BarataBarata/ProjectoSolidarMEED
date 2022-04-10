@@ -2,14 +2,17 @@ package mz.unilurio.solidermed;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -20,9 +23,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+
 import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.Privilegios;
-import mz.unilurio.solidermed.model.UserNurse;
+import mz.unilurio.solidermed.model.Sha;
 
 public class Login extends AppCompatActivity {
     private ProgressDialog progressBar;
@@ -34,7 +41,7 @@ public class Login extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private Privilegios privilegios;
     DBService dbService;
-    private ProgressBar  progressBarCirc;
+    private ProgressBar progressBarCirc;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -42,9 +49,11 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        dbService=new DBService(this);
-       // requestPermissions(new String[]{Manifest.permission.CALL_PHONE},1);
-        requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
+        dbService = new DBService(this);
+        // requestPermissions(new String[]{Manifest.permission.CALL_PHONE},1);
+        // requestPermissions(new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS},1);
+        ActivityCompat.requestPermissions(Login.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.SEND_RESPOND_VIA_MESSAGE}, PackageManager.PERMISSION_GRANTED);
+
 
 
         privilegios = new Privilegios();
@@ -54,7 +63,7 @@ public class Login extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
     }
 
-    public void Entrar(View view) {
+    public void Entrar(View view) throws NoSuchAlgorithmException {
         //callPhone();
         String email=textEmail.getEditText().getText().toString();
         String password=textPassword.getEditText().getText().toString();
@@ -62,7 +71,7 @@ public class Login extends AppCompatActivity {
     }
 
 
-    private void verificationUser(String email, String password) {
+    private void verificationUser(String email, String password) throws NoSuchAlgorithmException {
         //privilegios.setViewAll(true);
 
 //        Intent intent= new Intent(Login.this, MainActivity.class);
@@ -74,7 +83,7 @@ public class Login extends AppCompatActivity {
                      if(password.isEmpty()){
                          textPassword.setError("campo vazio");
                      }else {
-                         dbService.updadeSessaoTerminado(false);
+                         dbService.updateSessaoTerminado(false);
                          progressBarCirc.setVisibility(View.VISIBLE);
                          if(isExistUser(email,password)){
                              textPassword.setError("");
@@ -97,18 +106,18 @@ public class Login extends AppCompatActivity {
         super.finish();
     }
 
-    public boolean isExistUser(String user, String password){
+    public boolean isExistUser(String user, String password) throws NoSuchAlgorithmException {
         System.out.println("============================: "+dbService.isDoctorLogin(user,password));
-        if(dbService.isDoctorLogin(user,password)){
+        if(dbService.isDoctorLogin(getSHA256(user),getSHA256(password))){
             dbService.updateSessaoUserLogin(dbService.getFullNameDoctorLogin(user,password));
-            dbService.updadeDoctorPrivilegios(true);
+            dbService.updateDoctorPrivilegios(true);
             privilegios.setViewAll(true);
             //dbService.apdateAllAcess(true);
             return true;
         }else {
-           if(dbService.isNurseLogin(user,password)){
+           if(dbService.isNurseLogin(getSHA256(user),getSHA256(password))){
                dbService.updateSessaoUserLogin(dbService.getFullNameNurseLogin(user,password));
-               dbService.updadeDoctorPrivilegios(false);
+               dbService.updateDoctorPrivilegios(false);
                return true;
            }
         }
@@ -117,6 +126,17 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    public String getSHA256(String str) throws NoSuchAlgorithmException {
+
+        byte[] imputData=str.getBytes();
+        byte[] outputData=new byte[0];
+
+        outputData= Sha.encryptSHA(imputData,"SHA-512");
+        BigInteger bigInteger=new BigInteger(1,outputData);
+
+        return bigInteger.toString(16);
     }
 
     @Override

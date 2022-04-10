@@ -68,58 +68,43 @@ public class EditDilatacao extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                       MainActivity mainActivity=new MainActivity();
 
-                        
-                        if(mainActivity.isOutEdit){
-                            mainActivity.isOutEdit=false;
-                            if(!DBManager.getInstance().getNotifications().isEmpty()){
-                                for(Notificacao notificacaor:DBManager.getInstance().getNotifications()){
-                                    if(notificacaor.getIdAuxParturiente().equalsIgnoreCase(parturientR.getIdAuxParturiente())){
-                                        dbService.deleteNotification(notificacaor);
-                                        dbService.deleteParturienteInAuxList(parturientR.getIdAuxParturiente());
-                                        dbService.removeInBD(parturientR);
-                                        dbService.removParturiente(parturientR);
-                                        DBManager.getInstance().getNotifications().remove(notificacaor);
-                                    }
-                                }
-                                try {
-                                    dbService.addParturiente(parturientR);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }else {
+                      if(mainActivity.isOutEditNotification){
+                          System.out.println(" editando ..................");
 
+                          mainActivity.isOutEditNotification=true;
+                          parturientR.setReason(fase);
+                          try {
+                              updataDataOfDilatacaoInNotificacao(parturientR);
+                          } catch (ParseException e) {
+                              e.printStackTrace();
+                          }
+                      }  else {
 
-                            parturientR.setReason(fase);
-                            parturientR.setEditDilatation(true);
-                            try {
-                                parturientR.setHoraExpulsoDoFeto(getTempoExpulso(dbService.getTimerDilatation(fase + "")));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            dbService.updadeAllDadeParturiente(parturientR);
-                            dbService.initializeListParturientesAtendidos();
-                            try {
-                                dbService.initializeListParturiente();
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            try {
-                                dbService.initializeListNotification();
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                          if (mainActivity.isOutEdit) {
+                              System.out.println(" editando ..................");
+                              mainActivity.isOutEdit = false;
+                              try {
+                                  parturientR.setReason(fase);
+                                  parturientR.setEditDilatation(true);
+                                  updataDataOfDilatacao(parturientR);
+
+                              } catch (ParseException e) {
+                                  e.printStackTrace();
+                              }
+                          }
+                      }
 
                     }
                 });
+
         MainActivity mainActivity=new MainActivity();
         parturientR=mainActivity.publicParturiente;
         sliderViewDlatation=view.findViewById(R.id.dilatation2);
         TextView textNumber=view.findViewById(R.id.id00);
         TextView textFase=view.findViewById(R.id.txtFasez);
-        sliderViewDlatation.setValue(parturientR.getReason());
-        textNumber.setText(parturientR.getReason()+"");
+        sliderViewDlatation.setValue(4);
+        textNumber.setText(4+"");
+        fase=4;
         sliderViewDlatation.addOnChangeListener(new Slider.OnChangeListener(){
             @Override
             public void onValueChange(@NonNull @NotNull Slider slider, float value, boolean fromUser) {
@@ -161,7 +146,30 @@ public class EditDilatacao extends AppCompatDialogFragment {
 
         return dateFormat.format(date);
     }
-    public void setParturiente(Parturient parturient2) {
-           // parturientR=parturient2;
+
+    private void updataDataOfDilatacao(Parturient parturient) throws ParseException {
+        parturient.setHoraExpulsoDoFeto(getTempoExpulso(dbService.getTimerDilatation(fase + "")));
+        dbService.updadeAllDadeParturiente(parturientR);
+        dbService.initializeListParturiente();
     }
+
+
+    private void updataDataOfDilatacaoInNotificacao(Parturient parturient) throws ParseException {
+
+        for (int i=0;i<DBManager.getInstance().getNotifications().size();i++){
+            if(DBManager.getInstance().getNotifications().get(i).getIdAuxParturiente().equalsIgnoreCase(parturient.getIdAuxParturiente())){
+                DBManager.getInstance().getNotifications().remove(i);
+            }
+        }
+        dbService.deleteNotification(parturient.getIdAuxParturiente());
+        dbService.deleteParturienteInAuxList(parturient.getIdAuxParturiente());
+        dbService.deleteParturiente(parturient.getIdAuxParturiente());
+        dbService.addParturiente(parturient);
+        dbService.initializeListNotification();
+
+    }
+
+
+
+
 }

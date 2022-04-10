@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 import mz.unilurio.solidermed.ActivityViewUserSeacher;
@@ -55,7 +56,11 @@ public class AddNursesClass extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         if(validation(editNome)){
                             if(validation(editContact)){
-                                dbService.addNurse(removeFiristSpece(upCaseName(editNome.getText().toString())),user.getText().toString(),password.getText().toString(),editContact.getText().toString());
+                                try {
+                                    dbService.addNurse(removeFiristSpece(upCaseName(editNome.getText().toString())),user.getText().toString(),password.getText().toString(),editContact.getText().toString());
+                                } catch (NoSuchAlgorithmException e) {
+                                    e.printStackTrace();
+                                }
                                 isAdd=true;
                             }
                         }

@@ -2,6 +2,7 @@ package mz.unilurio.solidermed;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -30,6 +31,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mz.unilurio.solidermed.model.AddIdadeGestacional;
+import mz.unilurio.solidermed.model.DBManager;
+import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.EditDilatacao;
 import mz.unilurio.solidermed.model.EditDoctorClass;
 import mz.unilurio.solidermed.model.Parturient;
@@ -73,9 +76,15 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!originalListParturientes.isEmpty()){
-                    MainActivity mainActivity=new MainActivity();
-                    mainActivity.publicParturiente=originalListParturientes.get(position);
+
+                MainActivity mainActivity=new MainActivity();
+                for(int i = 0; i< DBManager.getInstance().getParturients().size(); i++){
+                    if(DBManager.getInstance().getParturients().get(i).getIdAuxParturiente().equalsIgnoreCase(originalListParturientes.get(position).getIdAuxParturiente())){
+                        mainActivity.publicParturiente=DBManager.getInstance().getParturients().get(i);
+                        mainActivity.isOutEdit=true;
+                        System.out.println("  wwwwwwww : wwww");
+                        break;
+                    }
                 }
                 //creating a popup menu
                 PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
@@ -136,8 +145,8 @@ public class ParturienteRecyclerAdpter extends RecyclerView.Adapter<ParturienteR
                                     } else {
                                         // System.out.println("========= : " +tempoRestante);
                                         holder.horaAlerta.setText(tempoRestante);
-                                    }
 
+                                    }
 
                             } catch (Exception e) {
                                 // error, do something

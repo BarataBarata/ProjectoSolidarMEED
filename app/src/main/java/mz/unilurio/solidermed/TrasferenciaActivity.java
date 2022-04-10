@@ -147,7 +147,7 @@ public class TrasferenciaActivity extends AppCompatActivity {
             if(notificacao.getIdAuxParturiente().equals(idParturiente)){
                 notificacao.setAtendido(true);
                 DBManager.getInstance().getNotifications().remove(notificacao);
-                dbService.deleteNotification(notificacao);
+                dbService.deleteNotification(notificacao.getIdAuxParturiente());
                 break;
             }
         }

@@ -8,6 +8,8 @@ import android.view.View;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.security.NoSuchAlgorithmException;
+
 import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.UserDoctor;
 import mz.unilurio.solidermed.model.UserNurse;
@@ -51,7 +53,7 @@ public class Activity_Confirmar_Registo extends AppCompatActivity {
         finish();
     }
 
-    public void confirmarRegisto(View view) {
+    public void confirmarRegisto(View view) throws NoSuchAlgorithmException {
         boolean isExist=false;
            if(!confirmarCodigo.getEditText().getText().toString().isEmpty()) {
 

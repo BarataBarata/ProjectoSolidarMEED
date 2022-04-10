@@ -5,11 +5,8 @@ import java.util.Date;
 public class Parturient {
 
     private String horaExpulsoDoFeto="";
-    private String sinaisDePatologia="";
-
-
-
-
+    private String sinaisDePatologia="Nenhum";
+    private static boolean corMensasgeAlertaInCont;
     //............horaparte..........//
     private String idAuxParturiente;
     private int segundoParte;
@@ -26,7 +23,7 @@ public class Parturient {
     private boolean inProcess;
     private static int timerEmergence;
     private String horaEntrada;
-    private String horaAtendimento;
+    private String horaAtendimento="";
     private String name;
     private String surname;
     private int age;
@@ -112,6 +109,14 @@ public class Parturient {
     }
     public void setTipoAtendimento(String tipoAtendimento) {
         this.tipoAtendimento = tipoAtendimento;
+    }
+
+    public boolean isCorMensasgeAlertaInCont() {
+        return corMensasgeAlertaInCont;
+    }
+
+    public void setCorMensasgeAlertaInCont(boolean corMensasgeAlertaInCont) {
+        this.corMensasgeAlertaInCont = corMensasgeAlertaInCont;
     }
 
     public boolean isAtendimento() {

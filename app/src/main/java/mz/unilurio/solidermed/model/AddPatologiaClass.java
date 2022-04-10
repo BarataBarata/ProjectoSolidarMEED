@@ -15,19 +15,16 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 import mz.unilurio.solidermed.R;
 
-public class AddDoctorClass extends AppCompatDialogFragment {
-
+public class AddPatologiaClass extends AppCompatDialogFragment {
     private EditText editNome;
-    private EditText editContact;
-    private EditText editUser;
-    private EditText editPassword;
     public static boolean isAdd=false;
     public static boolean isRemove=false;
-    DBService dbService;
+    private  DBService dbService;
+
 
     @NonNull
     @NotNull
@@ -35,45 +32,25 @@ public class AddDoctorClass extends AppCompatDialogFragment {
     public Dialog onCreateDialog(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         LayoutInflater inflater=getActivity().getLayoutInflater();
-        View view=inflater.inflate(R.layout.layout_dialog_edit_contact,null);
+        View view=inflater.inflate(R.layout.layout_dialog_edit_patologia,null);
         builder.setView(view)
-                .setTitle("Adicionar Medico").setIcon(R.drawable.ic_baseline_person_add_alt_1_24)
+                .setTitle("Adicionar Patologia").setIcon(R.drawable.ic_baseline_redo_24)
                 .setNegativeButton("Nao", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_SHORT).show();
                     }
+
                 })
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                       if(validation(editContact)){
-                           if(validation(editNome)){
-                               if(!dbService.isTellDoctor(editContact.getText().toString())) {
-                                   try {
-                                       dbService.addDoctor(editUser.getText().toString(),editPassword.getText().toString(),editContact.getText().toString(),upCaseName(editNome.getText().toString()));
-                                   } catch (NoSuchAlgorithmException e) {
-                                       e.printStackTrace();
-                                   }
-                                   DBManager.getInstance().getUserDoctorList().removeAll(DBManager.getInstance().getUserDoctorList());
-                                   DBManager.getInstance().getUserDoctorList().addAll(dbService.getListDoctor());
-                                   isAdd = true;
-                                   Toast.makeText( getContext(), " Usuario registado com sucesso", Toast.LENGTH_SHORT).show();
-
-                               }else {
-                                   Toast.makeText( getContext(), " Falha ao registar, o contacto existe", Toast.LENGTH_SHORT).show();
-                               }
-                           }
-                       }
-
+                        isAdd=true;
+                     dbService.addPatologia(false,new Date()+"",upCaseName(editNome.getText().toString()));
                     }
                 });
-              editContact=view.findViewById(R.id.idContactEditContact);
-              editNome=view.findViewById(R.id.idNomeEditContact);
-              editUser=view.findViewById(R.id.idUserDoctor);
-              editPassword=view.findViewById(R.id.idSenhaUser);
-              dbService=new DBService(this.getContext());
-
+        editNome=view.findViewById(R.id.idNomeEditNurse);
+        dbService=new DBService(this.getContext());
         return builder.create();
 
     }
@@ -89,13 +66,12 @@ public class AddDoctorClass extends AppCompatDialogFragment {
     }
 
     public  boolean validation(EditText editText){
-            if(editText.getText().toString().isEmpty()){
-                Toast.makeText(getContext(), "Erro campo vazio", Toast.LENGTH_SHORT).show();
+        if(editText.getText().toString().isEmpty()){
+            Toast.makeText(getContext(), "Erro campo vazio", Toast.LENGTH_SHORT).show();
             return false;
-            }
-            return true;
+        }
+        return true;
     }
-
 
     public String upCaseName(String name){
 
@@ -123,4 +99,5 @@ public class AddDoctorClass extends AppCompatDialogFragment {
         String auxString=(string.charAt(0)+"").toUpperCase()+""+string.substring(1)+"";
         return  auxString;
     }
+
 }

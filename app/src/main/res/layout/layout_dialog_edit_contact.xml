@@ -40,7 +40,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="0dp"
-            android:hint="Usuario :" />
+            android:hint="Insira o novo nome do Utilizador:" />
 
         <EditText
             android:id="@+id/idSenhaUser"
@@ -52,6 +52,6 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="0dp"
-            android:hint="Senha :" />
+            android:hint="Insira a nova senha do Utilizador :" />
     </RelativeLayout>
 </ScrollView>

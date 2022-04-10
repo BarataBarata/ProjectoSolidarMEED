@@ -7,12 +7,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -35,6 +38,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,7 +50,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import mz.unilurio.solidermed.model.AddIdadeGestacional;
 import mz.unilurio.solidermed.model.DBManager;
 import mz.unilurio.solidermed.model.DBService;
 import mz.unilurio.solidermed.model.EditDilatacao;
@@ -54,6 +58,8 @@ import mz.unilurio.solidermed.model.PageAdapder;
 import mz.unilurio.solidermed.model.Parturient;
 import mz.unilurio.solidermed.model.Privilegios;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -61,12 +67,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public DBService dbService;
     public static Notificacao publicNotificacoes;
     public static boolean isOutEdit;
+    public static boolean isOutEditNotification;
     private String fullNameUserLogin;
     private TabLayout tabLayout;
     private AppBarConfiguration mAppBarConfiguration;
     private RecyclerView recyclerItems;
     private RecyclerView recyclerParturientes;
     private static int currentPositionPager=0;
+    Vibrator vibrator;
     private LinearLayoutManager notificationLayoutManager;
     private LinearLayoutManager parturienteLinearLayoutManager;
     private NotificationRecyclerAdpter notificationRecyclerAdapter;
@@ -77,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NotificationManagerCompat notificationManager;
     private TextView textNotificacao;
     private TextView textUserLogin;
-
     private TextView textVerificationNull;
     private static int id;
     private TextView textSeacher;
@@ -167,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
+
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         notificationManager=NotificationManagerCompat.from(this);
@@ -226,6 +234,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             textView.setVisibility(View.INVISIBLE);
         }
     }
+
+
+
 
     public void viewNullListParturiente(TextView textView){
 
@@ -315,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         action_finish.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                dbService.updadeSessaoTerminado(true);
+                dbService.updateSessaoTerminado(true);
                 viewAction();
 
                 return false;
@@ -394,6 +405,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onResume() {
         super.onResume();
         verificationNull();
+
     }
 
     private void setRepeatingAsyncTask(MainActivity activity) {
@@ -431,6 +443,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void run() {
                         try {
                             if(addParturientActivity.isFireAlert){
+                                vibrador();
                                 System.out.println(" ==========atualizou+++++++++++");
                                 displayNotification();
                                 displayParturiente();
@@ -453,6 +466,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(MainActivity.this,SettingActivity.class));
     }
 
+    public void vibrador() {
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        if (!vibrator.hasVibrator()) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE)
+                );
+            }
+
+        }
+        long[] patter = {0, 1000, 10, 5000};
+        vibrator.vibrate(patter, -1);
+    }
 
      public void centroSaude(View view) {
          if(dbService.getPrivilegios()) {

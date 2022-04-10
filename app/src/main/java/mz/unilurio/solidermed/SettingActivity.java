@@ -54,4 +54,8 @@ public class SettingActivity extends AppCompatActivity {
     public void selectOpcoesParidade(View view) {
         startActivity(new Intent(SettingActivity.this,ActivitDefinittionOptionParidade.class));
     }
+
+    public void selectedPatologia(View view) {
+        startActivity(new Intent(SettingActivity.this,ActivityPatologia.class));
+    }
 }
